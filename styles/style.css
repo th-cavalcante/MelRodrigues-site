@@ -466,18 +466,19 @@ footer {
     margin: 5px;
   }
   #main #container-main #card1-main #adress {
-    padding: 1px;
+    padding: 2px 15px 2px 10px;
     background: transparent;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border: 1px solid #fff;
-    width: 200px;
+    border: 1px solid var(--secondary);
+    width: auto;
     border-radius: 5px;
+    margin: auto;
   }
   #main #container-main #card1-main #adress .material-symbols-outlined {
     color: var(--color-text);
-    font-size: 30px;
+    font-size: 15px;
   }
   #main #container-main #card1-main #adress .material-symbols-outlined:hover {
     color: var(--color-text);
@@ -485,7 +486,7 @@ footer {
   #main #container-main #card1-main #adress a {
     text-decoration: none;
     color: var(--color-text);
-    font-size: 1.2rem;
+    font-size: 12px;
   }
   #main #container-main #card1-main #adress:hover {
     background-color: transparent;
