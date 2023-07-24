@@ -463,6 +463,7 @@ footer {
   }
   #main #container-main #card1-main #txt-adress {
     font-size: 11px;
+    margin: 5px;
   }
   #main #container-main #card1-main #adress {
     padding: 1px;
@@ -473,7 +474,6 @@ footer {
     border: 1px solid #fff;
     width: 200px;
     border-radius: 5px;
-    margin: auto;
   }
   #main #container-main #card1-main #adress .material-symbols-outlined {
     color: var(--color-text);
