@@ -425,29 +425,29 @@ footer {
   }
   #main #container-main #card1-main {
     margin-top: 60px;
-    max-width: 90%;
+    max-width: 100%;
   }
   #main #container-main #card1-main h1 {
-    font-size: 2.3rem;
-    font-weight: bold;
-  }
-  #main #container-main #card1-main h2 {
     font-size: 2rem;
     font-weight: bold;
   }
+  #main #container-main #card1-main h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
   #main #container-main #card1-main p {
-    font-size: 15px;
+    font-size: 14px;
     display: flex;
     align-items: center;
     font-weight: 500;
   }
   #main #container-main #card1-main p .material-symbols-outlined {
     color: #eeffff;
-    font-size: 40px;
+    font-size: 20px;
     font-weight: bold;
   }
   #main #container-main #card1-main #adress {
-    font-size: 10px;
+    font-size: 11px;
   }
   #main #container-main #card1-main #btn-main {
     width: 320px;
@@ -459,7 +459,7 @@ footer {
   #main #container-main #card2-main {
     max-width: 90%;
     margin-top: 0;
-    margin-right: 20px;
+    margin-right: 0px;
   }
   #main #container-main #card2-main img {
     height: auto;
@@ -469,7 +469,7 @@ footer {
   }
   #benefits #card-depoiments {
     display: block;
-    max-width: 70%;
+    max-width: 90%;
     margin: auto;
     padding: 15px;
     height: 300px;
@@ -507,7 +507,7 @@ footer {
     color: var(--tertiary);
   }
   #benefits #container-benefits .card-benefit p {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 500;
     text-align: justify;
   }
@@ -531,7 +531,7 @@ footer {
     width: auto;
   }
   #clinic #container-carrossel #carousel {
-    width: 90%;
+    width: 95%;
   }
   #clinic #container-carrossel #carouselExampleSlidesOnly {
     display: none;
@@ -542,7 +542,7 @@ footer {
     margin-bottom: 2rem;
   }
   #questions h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     text-align: center;
     font-size: 40px;
     font-weight: bold;
@@ -655,9 +655,9 @@ footer {
     font-weight: 500;
   }
   #contact #box-btn-contact #btn-contact:hover {
-    width: 500px;
-    height: 50px;
-    border: 3px solid rgb(219, 42, 42);
+    width: 350px;
+    height: 40px;
+    border: 1px solid rgb(219, 42, 42);
   }
   footer {
     text-align: center;

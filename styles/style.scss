@@ -536,37 +536,39 @@ footer{
         height: auto;
         padding: 10px;   
         #container-main{
-            
+          
             flex-direction: column;
+           
             margin-top: 50px;    
             #card1-main{
                 margin-top: 60px;    
-                max-width: 90%;
+                max-width: 100%;
+             
                 h1{
-                    font-size: 2.3rem;
+                    font-size: 2rem;
                     font-weight: bold;
                     
                 }
                 h2{  
-                    font-size: 2rem;
+                    font-size: 1.5rem;
                     font-weight: bold;          
                 }
                 p{
-                    font-size: 15px;
+                    font-size: 14px;
                     display: flex;
                     align-items: center;
                     font-weight: 500;
                 
                     .material-symbols-outlined{
                         color: #efff;
-                        font-size: 40px;
+                        font-size: 20px;
                         font-weight: bold;
 
                     }
                    
                 }
                 #adress{
-                    font-size: 10px;
+                    font-size: 11px;
 
                 }
                 #btn-main{           
@@ -581,14 +583,10 @@ footer{
             #card2-main{         
                 max-width: 90%;
                 margin-top: 0;
-                margin-right: 20px;
-                
-              
-               
+                margin-right: 0px;
+                           
                 img{
-                    height: auto;
-                    
-                   
+                    height: auto;           
                 }
             }
         }
@@ -605,7 +603,7 @@ footer{
             font-size: 1rem;
         }
         display: block;
-        max-width: 70%;
+        max-width: 90%;
         margin: auto;
         padding: 15px;
         height: 300px;
@@ -642,7 +640,7 @@ footer{
 
             }
             p{
-                font-size: 18px;
+                font-size: 17px;
                 font-weight: 500;
                 text-align: justify;
                 
@@ -677,7 +675,7 @@ footer{
         width: auto;
 
     #carousel{
-        width: 90%;     
+        width: 95%;     
     }
     #carouselExampleSlidesOnly{
         display: none;
@@ -692,7 +690,7 @@ footer{
     padding-top: 50px;
     margin-bottom: 2rem;
     h1{
-        font-size: 2rem;
+        font-size: 1.5rem;
         text-align: center;
         font-size: 40px;
         font-weight: bold;
@@ -837,9 +835,9 @@ footer{
             
         }
         #btn-contact:hover{
-            width: 500px;
-            height: 50px;
-            border: 3px solid rgb(219, 42, 42);
+            width: 350px;
+            height: 40px;
+            border: 1px solid rgb(219, 42, 42);
             
 
         }
