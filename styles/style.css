@@ -461,7 +461,11 @@ footer {
     align-items: center;
     font-weight: 500;
   }
+  #main #container-main #card1-main #txt-adress {
+    font-size: 12px;
+  }
   #main #container-main #card1-main #adress {
+    padding: 1px;
     background: transparent;
     display: flex;
     justify-content: space-around;
@@ -469,21 +473,22 @@ footer {
     border: 1px solid #fff;
     width: 200px;
     border-radius: 5px;
+    margin: auto;
   }
   #main #container-main #card1-main #adress .material-symbols-outlined {
     color: var(--color-text);
     font-size: 30px;
   }
   #main #container-main #card1-main #adress .material-symbols-outlined:hover {
-    color: none;
+    color: var(--color-text);
   }
   #main #container-main #card1-main #adress a {
     text-decoration: none;
     color: var(--color-text);
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
   #main #container-main #card1-main #adress:hover {
-    background-color: none;
+    background-color: transparent;
   }
   #main #container-main #card1-main #btn-main {
     width: 320px;

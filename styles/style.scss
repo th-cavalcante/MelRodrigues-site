@@ -581,7 +581,11 @@ footer{
                     font-weight: 500;            
                    
                 }
+                #txt-adress{
+                    font-size: 12px;
+                }
                 #adress{
+                    padding: 1px;
                     background: transparent;
                     display: flex;
                     justify-content: space-around;
@@ -589,6 +593,7 @@ footer{
                     border:1px solid #fff;
                     width: 200px;
                     border-radius: 5px;
+                    margin: auto;
                     
                     
                     .material-symbols-outlined{
@@ -596,17 +601,17 @@ footer{
                         font-size: 30px;
                     }
                     .material-symbols-outlined:hover{
-                        color:  none;
+                        color:  var(--color-text);
                     }
                     
                     a{
                         text-decoration: none;
                         color: var(--color-text);
-                        font-size: 1.5rem;
+                        font-size: 1.2rem;
                     }            
                 }
                 #adress:hover{
-                    background-color: none;
+                    background-color: transparent;
                 }
                 #btn-main{           
                     width: 320px;
