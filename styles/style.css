@@ -124,10 +124,6 @@ hr {
   align-items: center;
   font-weight: 500;
 }
-#main #container-main #card1-main p .material-symbols-outlined {
-  color: #eeffff;
-  font-size: 25px;
-}
 #main #container-main #card1-main #btn-main {
   width: 350px;
   height: 40px;
@@ -145,6 +141,30 @@ hr {
 #main #container-main #card1-main #btn-main:hover {
   box-shadow: 0 0 5px 1px #eeffff;
   height: 60px;
+}
+#main #container-main #card1-main #adress {
+  background: transparent;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid #fff;
+  width: 200px;
+  border-radius: 5px;
+}
+#main #container-main #card1-main #adress .material-symbols-outlined {
+  color: var(--color-text);
+  font-size: 30px;
+}
+#main #container-main #card1-main #adress .material-symbols-outlined:hover {
+  color: rgb(248, 248, 11);
+}
+#main #container-main #card1-main #adress a {
+  text-decoration: none;
+  color: var(--color-text);
+  font-size: 1.5rem;
+}
+#main #container-main #card1-main #adress:hover {
+  background-color: var(--primary);
 }
 #main #container-main #card2-main {
   max-width: 35%;
@@ -441,13 +461,29 @@ footer {
     align-items: center;
     font-weight: 500;
   }
-  #main #container-main #card1-main p .material-symbols-outlined {
-    color: #eeffff;
-    font-size: 20px;
-    font-weight: bold;
-  }
   #main #container-main #card1-main #adress {
-    font-size: 11px;
+    background: transparent;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid #fff;
+    width: 200px;
+    border-radius: 5px;
+  }
+  #main #container-main #card1-main #adress .material-symbols-outlined {
+    color: var(--color-text);
+    font-size: 30px;
+  }
+  #main #container-main #card1-main #adress .material-symbols-outlined:hover {
+    color: rgb(248, 248, 11);
+  }
+  #main #container-main #card1-main #adress a {
+    text-decoration: none;
+    color: var(--color-text);
+    font-size: 1.5rem;
+  }
+  #main #container-main #card1-main #adress:hover {
+    background-color: var(--primary);
   }
   #main #container-main #card1-main #btn-main {
     width: 320px;
@@ -458,8 +494,7 @@ footer {
   }
   #main #container-main #card2-main {
     max-width: 90%;
-    margin-top: 0;
-    margin-right: 0px;
+    margin-top: 30px;
   }
   #main #container-main #card2-main img {
     height: auto;

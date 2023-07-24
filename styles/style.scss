@@ -142,12 +142,7 @@ hr{
                 font-weight: 500;
              
 
-                .material-symbols-outlined{
-                    color: #efff;
-                    font-size: 25px;
-                   
-
-                }
+                
                
             }
             #btn-main{           
@@ -169,6 +164,32 @@ hr{
                 box-shadow: 0 0 5px 1px #efff;
                 height: 60px;
                 
+            }
+            #adress{
+                background: transparent;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                border:1px solid #fff;
+                width: 200px;
+                border-radius: 5px;
+                
+                .material-symbols-outlined{
+                    color: var(--color-text);
+                    font-size: 30px;
+                }
+                .material-symbols-outlined:hover{
+                    color:  rgb(248, 248, 11);
+                }
+                
+                a{
+                    text-decoration: none;
+                    color: var(--color-text);
+                    font-size: 1.5rem;
+                }            
+            }
+            #adress:hover{
+                background-color: var(--primary);
             }
         }
         
@@ -557,19 +578,35 @@ footer{
                     font-size: 14px;
                     display: flex;
                     align-items: center;
-                    font-weight: 500;
-                
-                    .material-symbols-outlined{
-                        color: #efff;
-                        font-size: 20px;
-                        font-weight: bold;
-
-                    }
+                    font-weight: 500;            
                    
                 }
                 #adress{
-                    font-size: 11px;
-
+                    background: transparent;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    border:1px solid #fff;
+                    width: 200px;
+                    border-radius: 5px;
+                    
+                    
+                    .material-symbols-outlined{
+                        color: var(--color-text);
+                        font-size: 30px;
+                    }
+                    .material-symbols-outlined:hover{
+                        color:  rgb(248, 248, 11);
+                    }
+                    
+                    a{
+                        text-decoration: none;
+                        color: var(--color-text);
+                        font-size: 1.5rem;
+                    }            
+                }
+                #adress:hover{
+                    background-color: var(--primary);
                 }
                 #btn-main{           
                     width: 320px;
@@ -582,9 +619,8 @@ footer{
             
             #card2-main{         
                 max-width: 90%;
-                margin-top: 0;
-                margin-right: 0px;
-                           
+                margin-top: 30px;
+                 
                 img{
                     height: auto;           
                 }
