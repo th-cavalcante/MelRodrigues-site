@@ -1,0 +1,679 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+:root {
+  --primary: #A88F7F;
+  --secondary: #EEDFD4;
+  --tertiary: #BF7E62;
+  --color-text: #fff;
+  --color-text-secondary: #000;
+  --color-text-tertiary: #5d5d5d;
+  --text: "montserrat";
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--text);
+}
+
+body {
+  background-color: #F6F7F8;
+}
+
+hr {
+  color: var(--primary);
+}
+
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  height: 80px;
+  background-color: #ffffff;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 4px 1px rgb(107, 107, 96);
+}
+#header #logo {
+  margin-left: 30px;
+}
+#header #logo img {
+  margin-top: 30px;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+#header #menu #nav-list {
+  display: flex;
+  margin-top: 30px;
+  z-index: 998;
+}
+#header #menu #nav-list .nav-menu {
+  list-style-type: none;
+  margin-right: 30px;
+}
+#header #menu #nav-list .nav-menu #btn-menu {
+  background-color: #fff;
+  padding: 3px 5px 3px 5px;
+  border: 1px solid var(--tertiary);
+  border-radius: 4px;
+  margin-top: -5px;
+  transition: 0.3s;
+}
+#header #menu #nav-list .nav-menu #btn-menu a {
+  text-decoration: none;
+  text-underline-offset: none;
+  color: var(--tertiary);
+}
+#header #menu #nav-list .nav-menu #btn-menu:hover {
+  background-color: #f8f4f4;
+}
+#header #menu #nav-list .nav-menu a {
+  font-family: var(--text);
+  font-weight: 400;
+  text-decoration: none;
+  transition: ease 0.2s all;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  font-size: 13px;
+}
+#header #menu #nav-list .nav-menu a:hover {
+  text-decoration: underline;
+  text-underline-offset: 25px;
+  color: var(--tertiary);
+}
+
+#hamburguer {
+  display: none;
+}
+
+#main {
+  width: 100%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../img/sala3.jpg");
+  background-position: center;
+  background-size: cover;
+  height: 550px;
+  color: var(--color-text);
+  box-shadow: 0 0 4px 1px rgb(107, 107, 96);
+}
+#main #container-main {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#main #container-main #card1-main {
+  margin-top: 30px;
+  max-width: 46%;
+}
+#main #container-main #card1-main h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+}
+#main #container-main #card1-main h2 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+#main #container-main #card1-main p {
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+#main #container-main #card1-main p .material-symbols-outlined {
+  color: #eeffff;
+  font-size: 25px;
+}
+#main #container-main #card1-main #btn-main {
+  width: 350px;
+  height: 40px;
+  background-color: rgb(49, 194, 49);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.4s;
+}
+#main #container-main #card1-main #btn-main a {
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: var(--color-text);
+}
+#main #container-main #card1-main #btn-main:hover {
+  box-shadow: 0 0 5px 1px #eeffff;
+  height: 60px;
+}
+#main #container-main #card2-main {
+  max-width: 35%;
+  margin-top: 95px;
+}
+#main #container-main #card2-main img {
+  width: 300px;
+  height: 440px;
+}
+
+#benefits #card-depoiments {
+  display: none;
+}
+#benefits h1 {
+  color: var(--color-text-tertiary);
+  text-align: center;
+  font-size: 35px;
+  padding: 3rem;
+}
+#benefits #container-benefits {
+  display: flex;
+  justify-content: space-around;
+}
+#benefits #container-benefits .card-benefit {
+  max-width: 30%;
+  text-align: center;
+}
+#benefits #container-benefits .card-benefit h3 {
+  color: var(--tertiary);
+}
+#benefits #container-benefits .card-benefit p {
+  font-size: 18px;
+  font-weight: 500;
+}
+#benefits #container-benefits .card-benefit img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+#clinic h1 {
+  margin-top: 2rem;
+  font-family: var(--text);
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #B65D49;
+  font-size: 2rem;
+  padding: 3rem;
+  color: var(--color-text-tertiary);
+}
+#clinic #container-carrossel {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#clinic #container-carrossel #carousel {
+  width: 60%;
+}
+#clinic #container-carrossel #carouselExampleSlidesOnly {
+  width: 30%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 1px 1px 7px rgb(184, 179, 179);
+}
+#clinic #container-carrossel #carouselExampleSlidesOnly h3 {
+  color: var(--color-text-tertiary);
+  font-size: 18px;
+}
+
+button {
+  background-color: #000;
+}
+
+#questions {
+  height: 600px;
+  padding-top: 50px;
+}
+#questions h1 {
+  text-align: center;
+  font-size: 40px;
+  font-weight: bold;
+  color: var(--color-text-tertiary);
+}
+#questions #container-questions {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#questions #title-questions {
+  max-width: 30%;
+}
+#questions #title-questions img {
+  height: 380px;
+  width: 380px;
+}
+#questions #accordionFlushExample {
+  max-width: 60%;
+}
+#questions #accordionFlushExample .accordion-button:focus {
+  box-shadow: none;
+}
+#questions #accordionFlushExample .accordion-button:not(.collapsed) {
+  background-color: var(--tertiary);
+  color: #ffffff;
+}
+#questions #accordionFlushExample .accordion-button.collapsed {
+  background-color: var(--secondary);
+  color: #000000;
+  font-weight: 400;
+}
+#questions #accordionFlushExample .accordion-body {
+  background-color: #fff;
+  color: #333333;
+}
+
+#about-me {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../img/sala1.jpg");
+  background-position: center;
+  background-size: cover;
+}
+#about-me h1 {
+  font-family: "montserrat";
+  text-transform: uppercase;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  color: var(--color-text);
+}
+#about-me #container-about-me {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#about-me #container-about-me #card-about-me {
+  max-width: 30%;
+}
+#about-me #container-about-me #card-about-me img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+#about-me #container-about-me #card-text-about-me {
+  max-width: 60%;
+}
+#about-me #container-about-me #card-text-about-me p {
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+#contact {
+  padding: 10px;
+  text-align: center;
+  height: 400px;
+  background-color: rgb(29, 31, 43);
+  color: #eeffff;
+}
+#contact #container-contact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#contact #container-contact .content-contact {
+  margin: 1rem;
+  text-align: center;
+}
+#contact #container-contact .content-contact h2 {
+  font-size: 22px;
+}
+#contact #container-contact .content-contact p {
+  font-size: 16px;
+}
+#contact #container-contact .content-contact .material-symbols-outlined {
+  font-size: 35px;
+}
+#contact #box-btn-contact #btn-contact {
+  width: 400px;
+  height: 40px;
+  border: 1px solid rgb(219, 42, 42);
+  background-color: #fff;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+#contact #box-btn-contact #btn-contact a {
+  text-decoration: none;
+  color: rgb(219, 42, 42);
+  font-weight: 500;
+}
+#contact #box-btn-contact #btn-contact:hover {
+  width: 500px;
+  height: 50px;
+  border: 3px solid rgb(219, 42, 42);
+}
+
+footer {
+  text-align: center;
+  background-color: rgb(29, 31, 43);
+  color: #eeffff;
+  padding: 15px;
+}
+
+#redes {
+  margin-right: 50px;
+  display: flex;
+}
+#redes img {
+  height: 30px;
+  width: 30px;
+  margin: 7px;
+  opacity: 0.8;
+}
+
+.whats-fixed {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 9999;
+  cursor: pointer;
+}
+
+@media (max-width: 790px) {
+  #header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #fff;
+  }
+  #header #logo {
+    margin-left: 10px;
+  }
+  #header #logo img {
+    margin-top: 0;
+    height: 70px;
+    width: 70px;
+  }
+  #header #menu #nav-list {
+    width: 300px;
+    position: fixed;
+    top: 0;
+    right: -350px;
+    height: 200vh;
+    font-size: 1px;
+    flex-direction: column;
+    z-index: 998;
+    align-items: center;
+    background-color: var(--secondary);
+    margin: 0;
+    padding-top: 80px;
+    box-shadow: 0 0 4px 1px rgb(204, 204, 196);
+    transition: all 0.3s;
+  }
+  #header #menu #nav-list .nav-menu {
+    margin: 15px;
+  }
+  #header #menu #nav-list .nav-menu a {
+    font-weight: 500;
+  }
+  #header #menu #nav-list.open {
+    right: 0;
+  }
+  #hamburguer {
+    display: block;
+    font-size: 40px;
+    position: fixed; /* Mudamos a posição para fixed */
+    top: 25px; /* Ajuste a posição conforme necessário */
+    right: 10px; /* Ajuste a posição conforme necessário */
+    color: var(--tertiary);
+    z-index: 999;
+  }
+  #main {
+    width: auto;
+    height: auto;
+    padding: 10px;
+  }
+  #main #container-main {
+    flex-direction: column;
+    margin-top: 50px;
+  }
+  #main #container-main #card1-main {
+    margin-top: 60px;
+    max-width: 90%;
+  }
+  #main #container-main #card1-main h1 {
+    font-size: 2.3rem;
+    font-weight: bold;
+  }
+  #main #container-main #card1-main h2 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  #main #container-main #card1-main p {
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+  }
+  #main #container-main #card1-main p .material-symbols-outlined {
+    color: #eeffff;
+    font-size: 40px;
+    font-weight: bold;
+  }
+  #main #container-main #card1-main #adress {
+    font-size: 10px;
+  }
+  #main #container-main #card1-main #btn-main {
+    width: 320px;
+    height: 40px;
+  }
+  #main #container-main #card1-main #btn-main a {
+    font-size: 1.2rem;
+  }
+  #main #container-main #card2-main {
+    max-width: 90%;
+    margin-top: 0;
+    margin-right: 20px;
+  }
+  #main #container-main #card2-main img {
+    height: auto;
+  }
+  #benefits {
+    margin-top: 1rem;
+  }
+  #benefits #card-depoiments {
+    display: block;
+    max-width: 70%;
+    margin: auto;
+    padding: 15px;
+    height: 300px;
+    border-radius: 5px;
+    box-shadow: 0 0 4px 1px rgb(204, 204, 196);
+  }
+  #benefits #card-depoiments h3 {
+    font-size: 1rem;
+  }
+  #benefits h1 {
+    color: var(--color-text-tertiary);
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 3rem;
+  }
+  #benefits #container-benefits {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+  }
+  #benefits #container-benefits .card-benefit {
+    justify-content: center;
+    align-items: center;
+    border: none;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 4px 1px rgb(204, 204, 196);
+    max-width: 90%;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  #benefits #container-benefits .card-benefit h3 {
+    color: var(--tertiary);
+  }
+  #benefits #container-benefits .card-benefit p {
+    font-size: 18px;
+    font-weight: 500;
+    text-align: justify;
+  }
+  #benefits #container-benefits .card-benefit img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+  }
+  #clinic {
+    width: auto;
+  }
+  #clinic h1 {
+    margin-top: 2rem;
+    font-size: 2rem;
+    padding: 3rem;
+  }
+  #clinic #container-carrossel {
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: auto;
+  }
+  #clinic #container-carrossel #carousel {
+    width: 90%;
+  }
+  #clinic #container-carrossel #carouselExampleSlidesOnly {
+    display: none;
+  }
+  #questions {
+    height: auto;
+    padding-top: 50px;
+    margin-bottom: 2rem;
+  }
+  #questions h1 {
+    font-size: 2rem;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: var(--color-text-tertiary);
+  }
+  #questions #container-questions {
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: auto;
+  }
+  #questions #title-questions {
+    max-width: 100%;
+  }
+  #questions #title-questions img {
+    height: 200px;
+    width: 200px;
+  }
+  #questions #accordionFlushExample {
+    max-width: 90%;
+  }
+  #questions #accordionFlushExample .accordion-button:focus {
+    box-shadow: none;
+  }
+  #questions #accordionFlushExample .accordion-button:not(.collapsed) {
+    background-color: var(--tertiary);
+    color: #ffffff;
+  }
+  #questions #accordionFlushExample .accordion-button.collapsed {
+    background-color: var(--secondary);
+    color: #000000;
+    font-weight: 400;
+  }
+  #questions #accordionFlushExample .accordion-body {
+    background-color: #fff;
+    color: #333333;
+  }
+  #about-me {
+    width: auto;
+    justify-content: center;
+    align-items: center;
+  }
+  #about-me h1 {
+    font-size: 1.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  #about-me #container-about-me {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  #about-me #container-about-me #card-about-me {
+    max-width: 90%;
+    margin-bottom: 1rem;
+  }
+  #about-me #container-about-me #card-about-me img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+  }
+  #about-me #container-about-me #card-text-about-me {
+    max-width: 90%;
+  }
+  #about-me #container-about-me #card-text-about-me p {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+  #contact {
+    width: auto;
+    padding: 10px;
+    text-align: center;
+    height: 400px;
+    background-color: rgb(29, 31, 43);
+    color: #eeffff;
+  }
+  #contact h1 {
+    font-size: 1.5rem;
+  }
+  #contact #container-contact {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  #contact #container-contact .content-contact {
+    margin: 1rem;
+    text-align: center;
+  }
+  #contact #container-contact .content-contact h2 {
+    font-size: 20px;
+  }
+  #contact #container-contact .content-contact p {
+    font-size: 16px;
+  }
+  #contact #container-contact .content-contact .material-symbols-outlined {
+    font-size: 35px;
+  }
+  #contact #box-btn-contact #btn-contact {
+    width: 350px;
+    height: 40px;
+    border: 1px solid rgb(219, 42, 42);
+    background-color: #fff;
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+  #contact #box-btn-contact #btn-contact a {
+    text-decoration: none;
+    color: rgb(219, 42, 42);
+    font-weight: 500;
+  }
+  #contact #box-btn-contact #btn-contact:hover {
+    width: 500px;
+    height: 50px;
+    border: 3px solid rgb(219, 42, 42);
+  }
+  footer {
+    text-align: center;
+    background-color: rgb(29, 31, 43);
+    color: #eeffff;
+    padding: 15px;
+    font-size: 13px;
+  }
+}
+.whats-fixed {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 9999;
+  cursor: pointer;
+}
+.whats-fixed img {
+  width: 60px;
+}/*# sourceMappingURL=style.css.map */
