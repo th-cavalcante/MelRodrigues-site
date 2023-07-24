@@ -1,0 +1,51 @@
+
+
+
+#price-list{
+  
+    h1{
+        margin-top: 2rem;
+        font-family: 'montserrat';
+        color: #B65D49;
+        font-size: 3rem;
+       }
+    #container-price-list{
+        display: flex;
+        justify-content: space-around;
+        
+    }
+    img{
+        width: 450px;
+        margin: 1rem;
+    }
+
+}
+#back-price-list{
+    display: flex;
+    justify-content: center;
+
+    #btn-back-price-list{
+        background-color: rgb(245, 244, 239);
+        margin-top: 30px;
+        width: 250px;
+        height: 40px;
+        border: 1px solid rgb(29,31,43);
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        cursor: pointer;
+        transition: .4s;
+        font-family: 'montserrat';
+        border-radius: 4px;
+    }
+    #btn-back-price-list:hover{
+        background-color:rgb(29,31,43);
+        color: #fff;
+    }
+   
+    
+}
+a{
+    text-decoration: none;
+}
