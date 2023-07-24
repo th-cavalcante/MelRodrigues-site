@@ -1,0 +1,876 @@
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root{
+    --primary: #A88F7F;
+    --secondary: #EEDFD4;
+    --tertiary: #BF7E62;
+    --color-text: #fff;
+    --color-text-secondary: #000;
+    --color-text-tertiary: #5d5d5d;
+    --text: 'montserrat';
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: (var(--text));
+    
+}
+body{
+    background-color:#F6F7F8;
+}
+hr{
+    color: var(--primary);
+    
+}
+
+
+#header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    height: 80px;
+    background-color: #ffffff;
+    width: 100%;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    box-shadow: 0 0 4px 1px rgb(107, 107, 96);
+    #logo{   
+        margin-left: 30px;
+        img{
+            margin-top: 30px;
+            height: 100px;
+            width: 100px;  
+            border-radius: 50%;        
+        }
+    }
+
+    #menu{     
+       
+        #nav-list{
+            display: flex;      
+            margin-top: 30px;
+            z-index: 998;
+            .nav-menu{
+                list-style-type: none;  
+                margin-right: 30px;
+               
+
+                #btn-menu{
+                    background-color: #fff;
+                    padding: 3px 5px 3px 5px;
+                    border: 1px solid var(--tertiary);
+                    border-radius: 4px;
+                    margin-top: -5px;
+                    transition: .3s;
+                    a{
+                        text-decoration: none;
+                        text-underline-offset: none;
+                        color: var(--tertiary);
+                       
+                    }   
+                }
+                #btn-menu:hover{
+                    background-color: #f8f4f4;
+        
+                }
+                
+                a{
+                    
+                    font-family: var(--text);
+                    font-weight: 400;
+                    text-decoration: none;        
+                    transition: ease 0.2s all;
+                    color: var(--color-text-secondary);
+                    text-transform: uppercase;
+                    font-size: 13px;
+                    
+                }
+                a:hover{
+                    text-decoration: underline;
+                    text-underline-offset: 25px;
+                    color: var(--tertiary);
+                }
+            }
+          
+        }
+
+    }  
+}
+
+//Hamburguer Mobile apagado//
+#hamburguer{
+    display: none;
+}
+
+
+
+#main{
+    width: 100%;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    url('../img/sala3.jpg');
+    background-position: center;
+    background-size: cover;
+    height: 550px;
+    color: var(--color-text);
+    box-shadow: 0 0 4px 1px rgb(107, 107, 96);
+    
+    #container-main{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+       
+        #card1-main{
+            margin-top: 30px;    
+            max-width: 46%;
+            h1{
+                font-size: 3.5rem;
+                font-weight: bold;
+                
+            }
+            h2{  
+                font-size: 2rem;
+                font-weight: bold;          
+            }
+            p{
+                font-size: 15px;
+                display: flex;
+                align-items: center;
+                font-weight: 500;
+             
+
+                .material-symbols-outlined{
+                    color: #efff;
+                    font-size: 25px;
+                   
+
+                }
+               
+            }
+            #btn-main{           
+                width: 350px;
+                height: 40px;
+                background-color: rgb(49, 194, 49);
+                border:none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: .4s;
+                
+
+                a{
+                    text-decoration: none;
+                    font-size: 1.2rem;
+                    color: var(--color-text);
+                }
+            }#btn-main:hover{
+                box-shadow: 0 0 5px 1px #efff;
+                height: 60px;
+                
+            }
+        }
+        
+        #card2-main{         
+            max-width: 35%;
+            margin-top: 95px;
+           
+            img{
+                width: 300px;
+                height: 440px;  
+            }
+        }
+    }
+
+}
+
+//Beneficios da depilacao a laser//
+#benefits{
+    #card-depoiments{
+        display: none;
+    }
+    h1{
+        color: var(--color-text-tertiary);
+        text-align: center;
+        font-size: 35px;
+        padding: 3rem;
+    }
+    #container-benefits{
+        display: flex;
+        justify-content: space-around;
+        .card-benefit{
+            max-width: 30%;
+            text-align: center;
+            h3{
+                color: var(--tertiary);
+
+            }
+            p{
+                font-size: 18px;
+                font-weight: 500;
+
+            }
+            img{
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+
+            }
+        }
+    }
+}
+
+
+//Corrocel//
+
+#clinic{
+    
+    
+    h1{
+        margin-top: 2rem;
+        font-family: var(--text);
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #B65D49;
+        font-size: 2rem;
+        padding: 3rem;
+        color: var(--color-text-tertiary);
+       }
+    #container-carrossel{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+
+    #carousel{
+        width: 60%;
+        
+        
+    }
+    #carouselExampleSlidesOnly{
+       
+        h3{
+            color: var(--color-text-tertiary);
+            font-size: 18px;
+        }
+        width: 30%;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 1px 1px 7px rgb(184, 179, 179);
+       
+
+    }
+  
+
+    }
+     
+
+}
+button{
+    background-color: #000;
+}
+
+
+//Fim carrocel
+
+
+#questions{
+    height: 600px;
+    padding-top: 50px;
+    h1{
+        text-align: center;
+        font-size: 40px;
+        font-weight: bold;
+        color: var(--color-text-tertiary);
+        
+    }
+    #container-questions{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+    }
+
+    #title-questions{
+        max-width: 30%;
+        img{
+            height: 380px;
+            width: 380px;
+        }
+    }
+    #accordionFlushExample{
+        max-width: 60%;
+
+        .accordion-button:focus {
+            box-shadow: none;
+          }
+       
+        .accordion-button:not(.collapsed) {
+            background-color: var(--tertiary); 
+            color: #ffffff; 
+            
+          }
+          .accordion-button.collapsed {
+            background-color:var(--secondary); 
+            color: #000000; 
+            font-weight: 400;
+         
+            
+          }
+          .accordion-body {
+            background-color: #fff; 
+            color: #333333; 
+            
+          }
+        
+    }    
+}
+
+//sobre mim abaixo://
+
+#about-me{
+    
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    url('../img/sala1.jpg');
+    background-position: center;
+    background-size: cover;
+    
+    h1{
+        font-family: 'montserrat';
+        text-transform: uppercase;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        color:var(--color-text);
+    }
+    #container-about-me{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        #card-about-me{
+            max-width: 30%;
+            img{
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+            }
+        }
+        #card-text-about-me{
+            max-width: 60%;
+            p{
+                font-size: 19px;
+                font-weight: 500;
+                color: var(--color-text);
+                
+            }
+        }
+    }
+
+}
+
+//Fim sobre mim //
+
+//contatos abaixo://
+#contact{
+    padding: 10px;
+    text-align: center;
+    height: 400px;
+    background-color: rgb(29,31,43);
+    color: #efff;
+   
+   
+    #container-contact{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .content-contact{
+           margin: 1rem;
+           text-align: center;
+
+           h2{
+            font-size: 22px;
+
+           }
+           p{
+            font-size: 16px;
+
+           }    
+            .material-symbols-outlined{
+                font-size: 35px;
+            }
+        }
+    }
+
+    #box-btn-contact{
+        #btn-contact{
+            width: 400px;
+            height: 40px;
+            border: 1px solid rgb(219, 42, 42);
+            background-color: #fff;
+            border-radius: 5px;
+            transition: .3s;
+
+            a{
+                text-decoration: none;
+                color: rgb(219, 42, 42);
+                font-weight: 500;
+            }
+            
+        }
+        #btn-contact:hover{
+            width: 500px;
+            height: 50px;
+            border: 3px solid rgb(219, 42, 42);
+            
+
+        }
+    }
+
+      
+}
+//Fim contatos//
+
+footer{
+    text-align: center;
+    background-color: rgb(29,31,43);
+    color: #efff;
+    padding: 15px;
+}
+
+
+#redes{
+    margin-right: 50px;
+    display: flex;
+    img{
+        height: 30px;
+        width: 30px;
+        margin: 7px;
+        opacity: 0.8    ;
+    }
+}
+
+
+.whats-fixed{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 9999;
+    cursor: pointer;
+}
+
+//-----------------------------RESPONSIVIDADE----------------------------------------------
+
+
+@media (max-width: 790px) {
+
+    //Seção Main//
+    #header {  
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        background-color: #fff;
+      
+        #logo {
+          margin-left: 10px;
+          img {
+            margin-top: 0;
+            height: 70px;
+            width: 70px;
+          }
+        }
+      
+        #menu {
+          #nav-list{
+            width: 300px;
+            position: fixed;
+            top: 0;
+            right: -350px;
+            height: 200vh;
+            font-size: 1px;
+            flex-direction: column;
+            z-index: 998;
+            align-items: center;
+            background-color: var(--secondary);
+            margin: 0;
+            padding-top: 80px;
+            box-shadow: 0 0 4px 1px rgb(204, 204, 196);
+            transition: all .3s;
+           
+            
+            .nav-menu{
+                margin: 15px;
+                a{
+                    font-weight: 500;
+                }      
+            }
+
+            &.open{
+               right: 0;
+                
+              }
+          }
+
+          
+        }
+      }
+      
+      #hamburguer {
+        display: block;
+        font-size: 40px;
+        position: fixed; /* Mudamos a posição para fixed */
+        top: 25px; /* Ajuste a posição conforme necessário */
+        right: 10px; /* Ajuste a posição conforme necessário */
+        color: var(--tertiary);   
+        z-index: 999;
+      }
+    
+
+    //Hamburguer mobile//
+
+    
+    
+    
+    #main{
+        width: auto;
+        height: auto;
+        padding: 10px;   
+        #container-main{
+            
+            flex-direction: column;
+            margin-top: 50px;    
+            #card1-main{
+                margin-top: 60px;    
+                max-width: 90%;
+                h1{
+                    font-size: 2.3rem;
+                    font-weight: bold;
+                    
+                }
+                h2{  
+                    font-size: 2rem;
+                    font-weight: bold;          
+                }
+                p{
+                    font-size: 15px;
+                    display: flex;
+                    align-items: center;
+                    font-weight: 500;
+                
+                    .material-symbols-outlined{
+                        color: #efff;
+                        font-size: 40px;
+                        font-weight: bold;
+
+                    }
+                   
+                }
+                #adress{
+                    font-size: 10px;
+
+                }
+                #btn-main{           
+                    width: 320px;
+                    height: 40px;
+                    a{
+                        font-size: 1.2rem;
+                    }
+                }
+            }
+            
+            #card2-main{         
+                max-width: 90%;
+                margin-top: 0;
+                margin-right: 20px;
+                
+              
+               
+                img{
+                    height: auto;
+                    
+                   
+                }
+            }
+        }
+    
+    }
+    //fim secao Main//  
+    
+    //Beneficios da depilacao a laser//
+#benefits{
+    margin-top: 1rem;
+  
+    #card-depoiments{
+        h3{
+            font-size: 1rem;
+        }
+        display: block;
+        max-width: 70%;
+        margin: auto;
+        padding: 15px;
+        height: 300px;
+        border-radius: 5px;
+        box-shadow: 0 0 4px 1px rgb(204, 204, 196);
+          
+    }
+   
+    h1{
+        color: var(--color-text-tertiary);
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        padding: 3rem;
+    }
+    #container-benefits{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: auto;
+        .card-benefit{
+            
+            justify-content: center;
+            align-items: center;
+            border: none;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 4px 1px rgb(204, 204, 196);
+            max-width: 90%;
+            text-align: center;
+            margin-bottom: 30px;
+            h3{
+                color: var(--tertiary);
+
+            }
+            p{
+                font-size: 18px;
+                font-weight: 500;
+                text-align: justify;
+                
+
+            }
+            img{
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+
+            }
+        }
+    }
+}
+
+//Fim benefits
+
+//Corrocel//
+
+#clinic{
+    width: auto;
+    h1{
+        margin-top: 2rem;
+        font-size: 2rem;
+        padding: 3rem;
+     
+       }
+    #container-carrossel{
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        width: auto;
+
+    #carousel{
+        width: 90%;     
+    }
+    #carouselExampleSlidesOnly{
+        display: none;
+    }
+    }    
+}
+
+//Perguntas Frquentes abaixo: //
+
+#questions{
+    height: auto;
+    padding-top: 50px;
+    margin-bottom: 2rem;
+    h1{
+        font-size: 2rem;
+        text-align: center;
+        font-size: 40px;
+        font-weight: bold;
+        color: var(--color-text-tertiary);
+        
+    }
+    #container-questions{
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        width: auto;
+
+    }
+
+
+    
+    #title-questions{
+        max-width: 100%;
+        img{
+            height: 200px;
+            width: 200px;
+        }
+    }
+    #accordionFlushExample{
+        max-width: 90%;
+
+        .accordion-button:focus {
+            box-shadow: none;
+          }
+       
+        .accordion-button:not(.collapsed) {
+            background-color: var(--tertiary); 
+            color: #ffffff; 
+            
+          }
+          .accordion-button.collapsed {
+            background-color:var(--secondary); 
+            color: #000000; 
+            font-weight: 400;
+         
+            
+          }
+          .accordion-body {
+            background-color: #fff; 
+            color: #333333; 
+            
+          }
+        
+    }
+      
+}
+//fim perguntas frequentes//
+
+
+//sobre mim mobile abaixo://
+#about-me{
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    h1{ 
+        font-size: 1.5rem;   
+        padding: 1rem;
+        margin-bottom: 1rem;     
+    }
+    #container-about-me{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        #card-about-me{
+            max-width: 90%;
+            margin-bottom: 1rem;
+            img{
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+            }
+        }
+        #card-text-about-me{
+            max-width: 90%;
+            p{
+                font-size: 17px;
+                font-weight: 500;
+                color: var(--color-text);
+                
+            }
+        }
+    }
+
+}
+//fim sobre mim//
+
+//contatos abaixo://
+#contact{
+    width: auto;
+    padding: 10px;
+    text-align: center;
+    height: 400px;
+    background-color: rgb(29,31,43);
+    color: #efff;
+
+    h1{
+        font-size: 1.5rem;
+    }
+   
+   
+    #container-contact{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .content-contact{
+           margin: 1rem;
+           text-align: center;
+
+           h2{
+            font-size: 20px;
+
+           }
+           p{
+            font-size: 16px;
+
+           }    
+            .material-symbols-outlined{
+                font-size: 35px;
+            }
+        }
+    }
+
+    #box-btn-contact{
+        #btn-contact{
+            width: 350px;
+            height: 40px;
+            border: 1px solid rgb(219, 42, 42);
+            background-color: #fff;
+            border-radius: 5px;
+            transition: .3s;
+
+            a{
+                text-decoration: none;
+                color: rgb(219, 42, 42);
+                font-weight: 500;
+            }
+            
+        }
+        #btn-contact:hover{
+            width: 500px;
+            height: 50px;
+            border: 3px solid rgb(219, 42, 42);
+            
+
+        }
+    }
+      
+}
+//Fim contatos//
+
+footer{
+    text-align: center;
+    background-color: rgb(29,31,43);
+    color: #efff;
+    padding: 15px;
+    font-size: 13px;
+}
+
+
+}
+
+.whats-fixed{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 9999;
+    cursor: pointer;
+
+    img{
+        width: 60px;
+    }
+
+}
+
+
+
