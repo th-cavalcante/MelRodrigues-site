@@ -134,6 +134,7 @@ hr {
   transition: 0.4s;
   padding-left: 10px;
   padding-right: 10px;
+  margin-bottom: 2rem;
 }
 #main #container-main #card1-main #btn-main a {
   text-decoration: none;
