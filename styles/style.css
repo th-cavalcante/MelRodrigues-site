@@ -471,6 +471,7 @@ footer {
     background-color: rgb(49, 194, 49);
     text-align: center;
     margin: auto;
+    margin-bottom: 1rem;
   }
   #main #container-main #card1-main #btn-main a {
     font-weight: 600;
