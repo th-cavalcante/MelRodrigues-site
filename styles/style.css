@@ -472,6 +472,9 @@ footer {
     text-align: center;
     margin: auto;
   }
+  #main #container-main #card1-main #btn-main a {
+    font-weight: 600;
+  }
   #main #container-main #card1-main #txt-adress {
     font-size: 11px;
     margin: 5px;
