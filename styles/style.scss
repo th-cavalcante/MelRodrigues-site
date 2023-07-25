@@ -563,6 +563,7 @@ footer{
             #card1-main{
                 margin-top: 22px;    
                 max-width: 100%;
+               
                 h1{
                     font-size: 2rem;
                     font-weight: bold;
@@ -580,12 +581,14 @@ footer{
                    
                 }
                 #btn-main{ 
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                     width: auto;     
-                    margin: auto;
                     height: 40px;
-                    background-color: rgb(49, 194, 49);
-                    margin-left: 20px;
-                            
+                    background-color: rgb(49, 194, 49); 
+                    text-align: center; 
+                    margin: auto;                    
                 }   
                    
                    
