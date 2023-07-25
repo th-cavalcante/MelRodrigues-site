@@ -461,6 +461,13 @@ footer {
     align-items: center;
     font-weight: 500;
   }
+  #main #container-main #card1-main #btn-main {
+    width: auto;
+    margin: auto;
+    height: 40px;
+    background-color: rgb(49, 194, 49);
+    margin-left: 20px;
+  }
   #main #container-main #card1-main #txt-adress {
     font-size: 11px;
     margin: 5px;
