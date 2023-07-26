@@ -471,6 +471,33 @@ footer{
     }
 }
 
+#my-propagand{
+    p{
+        font-size: 13px;
+        
+
+        span{
+            color:rgb(77, 243, 0);
+            font-weight: 600;
+        }
+    }
+    #btn-propagand{
+        background-color: green;
+        border: none;
+        padding: 6px;
+        border-radius: 3px;
+        opacity: .9;
+        a{
+            color: var(--color-text);
+            text-decoration: none;
+            font-weight: 500;
+        }
+    }
+    #btn-propagand:hover{
+        opacity: 1;
+    }
+}
+
 
 .whats-fixed{
     position: fixed;
@@ -916,6 +943,34 @@ footer{
 }
 
 
+}
+
+#my-propagand{
+    max-width: 100%;
+    p{
+        font-size: 12px;
+        
+
+        span{
+            color:rgb(77, 243, 0);
+            font-weight: 600;
+        }
+    }
+    #btn-propagand{
+        background-color: green;
+        border: none;
+        padding: 6px;
+        border-radius: 3px;
+        opacity: .9;
+        a{
+            color: var(--color-text);
+            text-decoration: none;
+            font-weight: 500;
+        }
+    }
+    #btn-propagand:hover{
+        opacity: 1;
+    }
 }
 
 .whats-fixed{

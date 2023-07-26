@@ -379,6 +379,29 @@ footer {
   opacity: 0.8;
 }
 
+#my-propagand p {
+  font-size: 13px;
+}
+#my-propagand p span {
+  color: rgb(77, 243, 0);
+  font-weight: 600;
+}
+#my-propagand #btn-propagand {
+  background-color: green;
+  border: none;
+  padding: 6px;
+  border-radius: 3px;
+  opacity: 0.9;
+}
+#my-propagand #btn-propagand a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+}
+#my-propagand #btn-propagand:hover {
+  opacity: 1;
+}
+
 .whats-fixed {
   position: fixed;
   bottom: 10px;
@@ -724,6 +747,32 @@ footer {
     font-size: 13px;
   }
 }
+#my-propagand {
+  max-width: 100%;
+}
+#my-propagand p {
+  font-size: 12px;
+}
+#my-propagand p span {
+  color: rgb(77, 243, 0);
+  font-weight: 600;
+}
+#my-propagand #btn-propagand {
+  background-color: green;
+  border: none;
+  padding: 6px;
+  border-radius: 3px;
+  opacity: 0.9;
+}
+#my-propagand #btn-propagand a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+}
+#my-propagand #btn-propagand:hover {
+  opacity: 1;
+}
+
 .whats-fixed {
   position: fixed;
   bottom: 10px;
