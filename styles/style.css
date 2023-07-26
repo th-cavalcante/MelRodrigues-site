@@ -82,6 +82,10 @@ hr {
   text-transform: uppercase;
   font-size: 13px;
 }
+#header #menu #nav-list .nav-menu #menu-cuide-se {
+  color: var(--tertiary);
+  font-weight: 600;
+}
 #header #menu #nav-list .nav-menu a:hover {
   text-decoration: underline;
   text-underline-offset: 25px;
@@ -445,6 +449,10 @@ footer {
   }
   #header #menu #nav-list .nav-menu a {
     font-weight: 500;
+  }
+  #header #menu #nav-list .nav-menu #menu-cuide-se {
+    color: var(--tertiary);
+    font-weight: 600;
   }
   #header #menu #nav-list.open {
     right: 0;
