@@ -585,11 +585,18 @@ footer {
   }
   #benefits #container-benefits .card-benefit h3 {
     color: var(--tertiary);
+    font-size: 20px;
+    font-weight: bold;
   }
   #benefits #container-benefits .card-benefit p {
+    display: flex;
+    align-items: center;
     font-size: 17px;
     font-weight: 500;
+    -webkit-hyphens: auto;
+            hyphens: auto;
     text-align: justify;
+    line-height: 1.5;
   }
   #benefits #container-benefits .card-benefit img {
     width: 150px;
@@ -600,9 +607,13 @@ footer {
     width: auto;
   }
   #clinic h1 {
-    margin-top: 2rem;
-    font-size: 2rem;
-    padding: 3rem;
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+  }
+  #clinic h1 span {
+    color: var(--tertiary);
   }
   #clinic #container-carrossel {
     flex-direction: column;
@@ -624,7 +635,7 @@ footer {
   #questions h1 {
     font-size: 1.5rem;
     text-align: center;
-    font-size: 40px;
+    font-size: 1.7rem;
     font-weight: bold;
     color: var(--color-text-tertiary);
   }

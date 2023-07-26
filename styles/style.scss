@@ -725,12 +725,19 @@ footer{
             margin-bottom: 30px;
             h3{
                 color: var(--tertiary);
+                font-size: 20px;
+                font-weight: bold;
 
             }
             p{
+                display: flex;
+                align-items: center;
                 font-size: 17px;
-                font-weight: 500;
-                text-align: justify;
+                font-weight: 500; 
+                hyphens: auto; 
+                text-align: justify;           
+                line-height: 1.5;
+               
                 
 
             }
@@ -751,9 +758,14 @@ footer{
 #clinic{
     width: auto;
     h1{
-        margin-top: 2rem;
-        font-size: 2rem;
-        padding: 3rem;
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+        font-size: 1.2rem;
+        
+        span{
+            color: var(--tertiary);
+        }
      
        }
     #container-carrossel{
@@ -780,7 +792,7 @@ footer{
     h1{
         font-size: 1.5rem;
         text-align: center;
-        font-size: 40px;
+        font-size: 1.7rem;
         font-weight: bold;
         color: var(--color-text-tertiary);
         
