@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="styles/ficha.css">
+    <script src="ficha.js"></script>
+</head>
+<body>
+    <section id="anamnese">
+        <h1 id="title">PREENCHA A FICHA ABAIXO E GERE UM PDF AO CONCLUIR</h1>
+        <form action="#">
+            <div id="dados-pessoais">
+                <label for="name">Nome Completo:</label>
+                <input type="text" id="name" >
+    
+                <label for="date">Data de Nascimento</label>
+                <input type="Date" id="date" >
+                
+                <label for="rg">RG:</label>
+                <input type="text" id="rg" >
+            </div>
+            
+    
+            <div id="genero">
+                <p>Sexo:</p>
+                <label for="masculino">Masculino</label>
+                <input type="radio" id="Masculino" name="genero" value="Masculino">
+                <label for="feminino">Feminino</label>
+                <input type="radio" id="feminino" name="genero" value="Feminino">
+            </div>
+    
+            <div id="adress">
+                <label for="adress">Rua e nº</label>
+                <input type="text" id="rua" >
+               
+                <div id="container-input-align">
+                    <div class="input-align">
+                        <label for="">Bairro</label>
+                        <input type="text" id="bairro">
+                    </div>
+                    <div id="input-align">
+                        <label for="">Cidade</label>
+                        <input type="text" id="cidade">
+                    </div>
+                </div>
+                <label for="cep">CEP:</label>
+                <input type="text" id="cep">       
+            </div>
+    
+            <div id="questions">
+                <h2>Questionario clinico</h2>
+                <div class="container-questions">
+                    <p>Realizou alguma cirurgia?</p>
+                    <label for="question1-no">Não</label>
+                    <input type="radio" id="question1-no" name="pergunta1" value="Não">
+                    <label for="question1-yes">Sim</label>
+                    <input type="radio" id="question1-yes" name="pergunta1" value="Sim">
+                </div>
+                <div class="container-questions">
+                    <p>Costuma fazer Depilação?</p>
+                    <label for="question2-no">Não</label>
+                    <input type="radio" id="question2-no" name="pergunta2" value="Não">
+                    <label for="question2-yes">Sim</label>
+                    <input type="radio" id="question2-yes" name="pergunta2" value="Sim">
+                </div>
+                <div class="container-questions">
+                    <p>Está fazendo algum tratamento dermatológico?</p>
+                    <label for="question3-no">Não</label>
+                    <input type="radio" id="question3-no" name="pergunta3" value="Não">
+                    <label for="question3-yes">Sim</label>
+                    <input type="radio" id="question3-yes" name="pergunta3" value="Sim">
+                </div>
+               
+              
+                <div id="observation">
+                    <label for="campo-observation">Deseja mais alguma observação?</label>
+                    <textarea name="text-observation" id="campo-observation" cols="60" rows="5" ></textarea>
+    
+                </div>
+                <div>
+                    <button onclick="enviar()">Enviar</button>
+                </div>
+            </div>
+        </form>    
+    </section>
+
+
+
+
+
+    <!------------------------------------------------------------->
+
+    <div id="respostas">
+        <h1>Ficha Anamnese preenchida</h1>
+        
+            <div id="dados-pessoais">
+                <label for="name">Nome Completo:</label>
+                <p id="name-print" class="respostas"></p>
+    
+                <label for="date">Data de Nascimento</label>
+                <p id="date-print" class="respostas"></p>
+                
+                <label for="rg">RG:</label>
+                <p id="rg-print" class="respostas"></p>
+            </div>
+            
+    
+            <div id="genero">
+                <p>Sexo:</p>
+                <p id="genero-print" class="respostas"></p>
+            </div>
+    
+            <div id="adress">
+                <label for="adress">Rua e nº</label>
+                <p id="rua-print" class="respostas"></p>
+               
+                <div id="container-input-align">
+                    <div class="input-align">
+                        <label for="">Bairro</label>
+                        <p id="bairro-print" class="respostas"></p>
+                    </div>
+                    <div id="input-align">
+                        <label for="">Cidade</label>
+                        <p id="cidade-print" class="respostas"></p>
+                    </div>
+                </div>
+                <label for="cep">CEP:</label>
+                <p id="cep-print" class="respostas"></p>      
+            </div>
+    
+            <div id="questions" >
+                <h3>Questionario clinico:</h3>
+                <div class="container-questions">
+                    <p>Realizou alguma cirurgia?</p>
+                    <p id="resposta1"  class="respostas" ></p>          
+                </div>
+                <div class="container-questions">
+                    <p>Costuma fazer Depilação?</p>
+                    <p id="resposta2"  class="respostas"></p>                 
+                </div>
+                <div class="container-questions">
+                    <p>Está fazendo algum tratamento dermatológico?</p>
+                    <p id="resposta3" class="respostas"></p>
+                </div>
+               
+              
+                <div>
+                    <label for="campo-observation">Observações</label>
+                    <p id="resposta-obs" class="respostas">asdasdasd</p>
+                </div>
+                <br>           
+        </div>
+
+        <p>Assinatura:</p>
+        <p>____________________________________________</p>
+
+        <button type="button" onclick="GerarPdf()">Gerar PDF e Enviar</button>
+
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+
+    
+</body>
+</html>

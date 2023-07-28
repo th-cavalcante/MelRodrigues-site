@@ -1,0 +1,71 @@
+
+
+form{
+    border: 1px solid black;
+    width: 40%;
+    padding: 20px;
+    margin: auto;
+    margin-top: 2rem;
+    
+}
+h1{
+    font-size: 20px;
+    text-align: center;
+}
+#dados-pessoais{
+    label{
+        display: block;
+        
+    }
+    #name{
+        width: 400px;
+        
+    }  
+}
+
+#genero{  
+    p{
+        font-size: 16px;
+    }
+   
+}
+#adress{
+
+    label{
+        display: block;
+    }
+    
+    #container-input-align{
+        display: flex;
+       
+
+    }
+   
+}
+
+
+
+#respostas{
+    display: none;
+    border: 1px solid red;
+    width: 500px;
+    margin: auto;
+    padding: 20px;
+    margin-top: 2rem;
+    font-size: 16px;
+    border-radius: 5px;
+   
+ 
+    .respostas{
+        color: rgb(255, 0, 0);
+    }
+    #genero{
+       
+        p{
+            font-size: 16px;
+            
+        }
+        
+    }   
+}
+
