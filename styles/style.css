@@ -810,17 +810,19 @@ footer #my-propagand #btn-propagand:hover {
     font-size: 35px;
   }
   #contact #container-contact #box-btn-contact #btn-contact {
-    width: 400px;
+    width: auto;
     height: 40px;
     border: 1px solid rgb(219, 42, 42);
     background-color: #fff;
     border-radius: 5px;
     transition: 0.3s;
+    padding: 0px 10px 0px 10px;
   }
   #contact #container-contact #box-btn-contact #btn-contact a {
     text-decoration: none;
     color: rgb(219, 42, 42);
     font-weight: 500;
+    font-size: 14px;
   }
   #contact #container-contact #box-btn-contact #btn-contact:hover {
     box-shadow: 1px 1px 5px var(--secondary);
@@ -835,6 +837,8 @@ footer #my-propagand #btn-propagand:hover {
     width: auto;
     text-align: left;
     border-radius: 4px;
+    padding-left: 25px;
+    padding-right: 25px;
   }
   #contact #form form h3 {
     font-size: 18px;
@@ -847,7 +851,7 @@ footer #my-propagand #btn-propagand:hover {
   #contact #form form input {
     border-radius: none;
     outline: none;
-    width: 350px;
+    width: 100%;
     height: 35px;
     border: none;
   }
@@ -861,7 +865,7 @@ footer #my-propagand #btn-propagand:hover {
     outline: none;
     font-family: "montserrat";
     letter-spacing: 0.8px;
-    width: 350px;
+    width: 100%;
   }
   #contact #form form button {
     margin-top: 1rem;
