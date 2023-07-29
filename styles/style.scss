@@ -412,59 +412,128 @@ button{
 #contact{
     padding: 10px;
     text-align: center;
-    height: 400px;
     background-color: rgb(29,31,43);
     color: #efff;
-   
-   
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+     
     #container-contact{
-        display: flex;
-        justify-content: center;
+        justify-content:flex-start;
         align-items: center;
-        .content-contact{
-           margin: 1rem;
-           text-align: center;
+        #title-contact{
+            h1{
+                font-size: 40px;
+                text-transform: uppercase;
+                color: var(--secondary);
+                
+            }
 
-           h2{
-            font-size: 22px;
-
-           }
-           p{
-            font-size: 16px;
-
-           }    
-            .material-symbols-outlined{
-                font-size: 35px;
+        }
+        #card-contact{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .content-contact{
+               margin: 1rem;
+               text-align: center;
+    
+               h2{
+                font-size: 18px;
+    
+               }
+               p{
+                font-size: 16px;
+    
+               }    
+                .material-symbols-outlined{
+                    font-size: 35px;
+                }
+            }
+        }
+    
+        #box-btn-contact{
+            #btn-contact{
+                width: 400px;
+                height: 40px;
+                border: 1px solid rgb(219, 42, 42);
+                background-color: #fff;
+                border-radius: 5px;
+                transition: .3s;
+               
+    
+                a{
+                    text-decoration: none;
+                    color: rgb(219, 42, 42);
+                    font-weight: 500;
+                }
+                
+            }
+            #btn-contact:hover{
+               
+                box-shadow: 1px 1px 5px var(--secondary);
+        
             }
         }
     }
 
-    #box-btn-contact{
-        #btn-contact{
-            width: 400px;
-            height: 40px;
-            border: 1px solid rgb(219, 42, 42);
-            background-color: #fff;
-            border-radius: 5px;
-            transition: .3s;
-
-            a{
-                text-decoration: none;
-                color: rgb(219, 42, 42);
+    #form{
+        margin-top: 2rem;
+      
+         
+        form{
+            margin: auto;
+            background-color: var(--primary);
+            width: 330px;
+            padding: 20px 20px 10px 15px;
+            text-align: left;
+          
+            h3{
+                font-size: 18px;
+                margin-bottom: 2rem;
+                text-align: center;
+            }  
+            label{
+                padding: 2px;
+              
+                   
+               
+            }
+            input{
+                outline: none;
+                width: 300px;
+                height: 35px;   
+                border-radius: 5px;     
+                border: none;
+            }
+            input:focus{
+                border: 1px solid rgb(70, 70, 198);
+            }
+            #msg{
+                height: 100px;
+            }
+            textarea{
+                outline: none;
+                font-family:'montserrat';
+                letter-spacing: 0.8px;
+            }
+            button{
+                margin-top: 1rem;
+                color: var(--tertiary);
+                width: 100px;
+                border: none;
+                display: flex;
+                justify-content: center;
+                margin: auto;
+                background-color: #EEDFD4;
+           
                 font-weight: 500;
             }
-            
-        }
-        #btn-contact:hover{
-            width: 500px;
-            height: 50px;
-            border: 3px solid rgb(219, 42, 42);
-            
-
-        }
+                 
     }
 
       
+}
 }
 //Fim contatos//
 
@@ -475,7 +544,38 @@ footer{
     background-color: rgb(29,31,43);
     color: #efff;
     padding: 15px;
+    #copy{
+        margin-top: 5rem;
+    }
+    #my-propagand{
+        p{
+            font-size: 13px;
+            
+    
+            span{
+                color:rgb(77, 243, 0);
+                font-weight: 600;
+            }
+        }
+        #btn-propagand{
+            background-color: green;
+            border: none;
+            padding: 6px;
+            border-radius: 3px;
+            opacity: .9;
+            a{
+                color: var(--color-text);
+                text-decoration: none;
+                font-weight: 500;
+            }
+        }
+        #btn-propagand:hover{
+            opacity: 1;
+        }
+    }
+    
 }
+
 
 
 #redes{
@@ -489,32 +589,7 @@ footer{
     }
 }
 
-#my-propagand{
-    p{
-        font-size: 13px;
-        
 
-        span{
-            color:rgb(77, 243, 0);
-            font-weight: 600;
-        }
-    }
-    #btn-propagand{
-        background-color: green;
-        border: none;
-        padding: 6px;
-        border-radius: 3px;
-        opacity: .9;
-        a{
-            color: var(--color-text);
-            text-decoration: none;
-            font-weight: 500;
-        }
-    }
-    #btn-propagand:hover{
-        opacity: 1;
-    }
-}
 
 
 .whats-fixed{
@@ -906,65 +981,132 @@ footer{
 
 //contatos abaixo://
 #contact{
-    width: auto;
     padding: 10px;
     text-align: center;
-    height: 400px;
     background-color: rgb(29,31,43);
     color: #efff;
-
-    h1{
-        font-size: 1.5rem;
-    }
-   
-   
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: auto;
+     
     #container-contact{
-        flex-direction: column;
-        justify-content: center;
         align-items: center;
-        .content-contact{
-           margin: 1rem;
-           text-align: center;
+        #title-contact{
+            h1{
+                font-size: 25px;
+                text-transform: uppercase;
+                color: var(--secondary);
+                
+            }
 
-           h2{
-            font-size: 20px;
-
-           }
-           p{
-            font-size: 16px;
-
-           }    
-            .material-symbols-outlined{
-                font-size: 35px;
+        }
+        #card-contact{
+           flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            .content-contact{
+               margin: 1rem;
+               text-align: center;
+    
+               h2{
+                font-size: 14px;
+    
+               }
+               p{
+                font-size: 16px;
+    
+               }    
+                .material-symbols-outlined{
+                    font-size: 35px;
+                }
+            }
+        }
+    
+        #box-btn-contact{
+            #btn-contact{
+                width: 400px;
+                height: 40px;
+                border: 1px solid rgb(219, 42, 42);
+                background-color: #fff;
+                border-radius: 5px;
+                transition: .3s;
+               
+    
+                a{
+                    text-decoration: none;
+                    color: rgb(219, 42, 42);
+                    font-weight: 500;
+                }
+                
+            }
+            #btn-contact:hover{
+               
+                box-shadow: 1px 1px 5px var(--secondary);
+        
             }
         }
     }
 
-    #box-btn-contact{
-        #btn-contact{
-            width: 350px;
-            height: 40px;
-            border: 1px solid rgb(219, 42, 42);
-            background-color: #fff;
-            border-radius: 5px;
-            transition: .3s;
-
-            a{
-                text-decoration: none;
-                color: rgb(219, 42, 42);
-                font-weight: 500;
-            }
-            
-        }
-        #btn-contact:hover{
-            width: 350px;
-            height: 40px;
-            border: 1px solid rgb(219, 42, 42);
-            
-
-        }
-    }
+    #form{
+        margin-top: 2rem;
+        width: auto;
       
+         
+        form{
+            margin: auto;
+            background-color: var(--primary);
+            width: auto;
+            text-align: left;
+            border-radius: 4px;
+          
+            h3{
+                font-size: 18px;
+                margin-bottom: 2rem;
+                text-align: center;
+            }  
+            label{
+                display: block;     
+            }
+            input{
+                border-radius: none;
+                outline: none;
+                width: 350px;
+                height: 35px;   
+                border: none;
+            }
+            input:focus{
+                border: 1px solid rgb(70, 70, 198);
+            }
+            #msg{
+                height: 100px;
+            }
+            textarea{
+                outline: none;
+                font-family:'montserrat';
+                letter-spacing: 0.8px;
+                width: 350px;
+            }
+            button{
+                margin-top: 1rem;
+                color: var(--tertiary);
+                width: 100%;
+                border: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: auto;
+                background-color: #EEDFD4;   
+                font-weight: 500;
+                height: 40px;
+                font-size: 18px;
+                text-transform: uppercase;
+            }
+                 
+    }
+
+      
+}
 }
 //Fim contatos//
 

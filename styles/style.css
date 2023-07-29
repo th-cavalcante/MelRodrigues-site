@@ -328,29 +328,40 @@ button {
 #contact {
   padding: 10px;
   text-align: center;
-  height: 400px;
   background-color: rgb(29, 31, 43);
   color: #eeffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 #contact #container-contact {
+  justify-content: flex-start;
+  align-items: center;
+}
+#contact #container-contact #title-contact h1 {
+  font-size: 40px;
+  text-transform: uppercase;
+  color: var(--secondary);
+}
+#contact #container-contact #card-contact {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-#contact #container-contact .content-contact {
+#contact #container-contact #card-contact .content-contact {
   margin: 1rem;
   text-align: center;
 }
-#contact #container-contact .content-contact h2 {
-  font-size: 22px;
+#contact #container-contact #card-contact .content-contact h2 {
+  font-size: 18px;
 }
-#contact #container-contact .content-contact p {
+#contact #container-contact #card-contact .content-contact p {
   font-size: 16px;
 }
-#contact #container-contact .content-contact .material-symbols-outlined {
+#contact #container-contact #card-contact .content-contact .material-symbols-outlined {
   font-size: 35px;
 }
-#contact #box-btn-contact #btn-contact {
+#contact #container-contact #box-btn-contact #btn-contact {
   width: 400px;
   height: 40px;
   border: 1px solid rgb(219, 42, 42);
@@ -358,15 +369,60 @@ button {
   border-radius: 5px;
   transition: 0.3s;
 }
-#contact #box-btn-contact #btn-contact a {
+#contact #container-contact #box-btn-contact #btn-contact a {
   text-decoration: none;
   color: rgb(219, 42, 42);
   font-weight: 500;
 }
-#contact #box-btn-contact #btn-contact:hover {
-  width: 500px;
-  height: 50px;
-  border: 3px solid rgb(219, 42, 42);
+#contact #container-contact #box-btn-contact #btn-contact:hover {
+  box-shadow: 1px 1px 5px var(--secondary);
+}
+#contact #form {
+  margin-top: 2rem;
+}
+#contact #form form {
+  margin: auto;
+  background-color: var(--primary);
+  width: 330px;
+  padding: 20px 20px 10px 15px;
+  text-align: left;
+}
+#contact #form form h3 {
+  font-size: 18px;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+#contact #form form label {
+  padding: 2px;
+}
+#contact #form form input {
+  outline: none;
+  width: 300px;
+  height: 35px;
+  border-radius: 5px;
+  border: none;
+}
+#contact #form form input:focus {
+  border: 1px solid rgb(70, 70, 198);
+}
+#contact #form form #msg {
+  height: 100px;
+}
+#contact #form form textarea {
+  outline: none;
+  font-family: "montserrat";
+  letter-spacing: 0.8px;
+}
+#contact #form form button {
+  margin-top: 1rem;
+  color: var(--tertiary);
+  width: 100px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  background-color: #EEDFD4;
+  font-weight: 500;
 }
 
 footer {
@@ -374,6 +430,31 @@ footer {
   background-color: rgb(29, 31, 43);
   color: #eeffff;
   padding: 15px;
+}
+footer #copy {
+  margin-top: 5rem;
+}
+footer #my-propagand p {
+  font-size: 13px;
+}
+footer #my-propagand p span {
+  color: rgb(77, 243, 0);
+  font-weight: 600;
+}
+footer #my-propagand #btn-propagand {
+  background-color: green;
+  border: none;
+  padding: 6px;
+  border-radius: 3px;
+  opacity: 0.9;
+}
+footer #my-propagand #btn-propagand a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+}
+footer #my-propagand #btn-propagand:hover {
+  opacity: 1;
 }
 
 #redes {
@@ -385,29 +466,6 @@ footer {
   width: 30px;
   margin: 7px;
   opacity: 0.8;
-}
-
-#my-propagand p {
-  font-size: 13px;
-}
-#my-propagand p span {
-  color: rgb(77, 243, 0);
-  font-weight: 600;
-}
-#my-propagand #btn-propagand {
-  background-color: green;
-  border: none;
-  padding: 6px;
-  border-radius: 3px;
-  opacity: 0.9;
-}
-#my-propagand #btn-propagand a {
-  color: var(--color-text);
-  text-decoration: none;
-  font-weight: 500;
-}
-#my-propagand #btn-propagand:hover {
-  opacity: 1;
 }
 
 .whats-fixed {
@@ -716,51 +774,109 @@ footer {
     color: var(--color-text);
   }
   #contact {
-    width: auto;
     padding: 10px;
     text-align: center;
-    height: 400px;
     background-color: rgb(29, 31, 43);
     color: #eeffff;
-  }
-  #contact h1 {
-    font-size: 1.5rem;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: auto;
   }
   #contact #container-contact {
+    align-items: center;
+  }
+  #contact #container-contact #title-contact h1 {
+    font-size: 25px;
+    text-transform: uppercase;
+    color: var(--secondary);
+  }
+  #contact #container-contact #card-contact {
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
-  #contact #container-contact .content-contact {
+  #contact #container-contact #card-contact .content-contact {
     margin: 1rem;
     text-align: center;
   }
-  #contact #container-contact .content-contact h2 {
-    font-size: 20px;
+  #contact #container-contact #card-contact .content-contact h2 {
+    font-size: 14px;
   }
-  #contact #container-contact .content-contact p {
+  #contact #container-contact #card-contact .content-contact p {
     font-size: 16px;
   }
-  #contact #container-contact .content-contact .material-symbols-outlined {
+  #contact #container-contact #card-contact .content-contact .material-symbols-outlined {
     font-size: 35px;
   }
-  #contact #box-btn-contact #btn-contact {
-    width: 350px;
+  #contact #container-contact #box-btn-contact #btn-contact {
+    width: 400px;
     height: 40px;
     border: 1px solid rgb(219, 42, 42);
     background-color: #fff;
     border-radius: 5px;
     transition: 0.3s;
   }
-  #contact #box-btn-contact #btn-contact a {
+  #contact #container-contact #box-btn-contact #btn-contact a {
     text-decoration: none;
     color: rgb(219, 42, 42);
     font-weight: 500;
   }
-  #contact #box-btn-contact #btn-contact:hover {
+  #contact #container-contact #box-btn-contact #btn-contact:hover {
+    box-shadow: 1px 1px 5px var(--secondary);
+  }
+  #contact #form {
+    margin-top: 2rem;
+    width: auto;
+  }
+  #contact #form form {
+    margin: auto;
+    background-color: var(--primary);
+    width: auto;
+    text-align: left;
+    border-radius: 4px;
+  }
+  #contact #form form h3 {
+    font-size: 18px;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  #contact #form form label {
+    display: block;
+  }
+  #contact #form form input {
+    border-radius: none;
+    outline: none;
     width: 350px;
+    height: 35px;
+    border: none;
+  }
+  #contact #form form input:focus {
+    border: 1px solid rgb(70, 70, 198);
+  }
+  #contact #form form #msg {
+    height: 100px;
+  }
+  #contact #form form textarea {
+    outline: none;
+    font-family: "montserrat";
+    letter-spacing: 0.8px;
+    width: 350px;
+  }
+  #contact #form form button {
+    margin-top: 1rem;
+    color: var(--tertiary);
+    width: 100%;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    background-color: #EEDFD4;
+    font-weight: 500;
     height: 40px;
-    border: 1px solid rgb(219, 42, 42);
+    font-size: 18px;
+    text-transform: uppercase;
   }
   footer {
     text-align: center;
