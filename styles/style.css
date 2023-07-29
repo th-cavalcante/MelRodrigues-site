@@ -43,13 +43,9 @@ hr {
   align-items: center;
   box-shadow: 0 0 4px 1px rgb(107, 107, 96);
 }
-#header #logo {
-  margin-left: 30px;
-}
 #header #logo img {
-  margin-top: 30px;
-  height: 100px;
-  width: 100px;
+  height: 150px;
+  width: 150px;
   border-radius: 50%;
 }
 #header #menu #nav-list {
@@ -484,12 +480,11 @@ footer #my-propagand #btn-propagand:hover {
     background-color: #fff;
   }
   #header #logo {
-    margin-left: 10px;
+    margin-left: 0px;
   }
   #header #logo img {
-    margin-top: 0;
-    height: 70px;
-    width: 70px;
+    height: 110px;
+    width: 110px;
   }
   #header #menu #nav-list {
     width: 250px;
