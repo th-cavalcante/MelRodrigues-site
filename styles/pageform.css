@@ -1,0 +1,23 @@
+:root {
+  --primary: #A88F7F;
+  --secondary: #EEDFD4;
+  --tertiary: #BF7E62;
+  --color-text: #fff;
+  --color-text-secondary: #000;
+  --color-text-tertiary: #5d5d5d;
+  --text: "montserrat";
+}
+
+body {
+  background-color: #F6F7F8;
+}
+
+section {
+  text-align: center;
+}
+section h1 {
+  font-size: 20px;
+  margin-top: 5rem;
+  font-size: "montserrat";
+  color: var(--tertiary);
+}/*# sourceMappingURL=pageform.css.map */
