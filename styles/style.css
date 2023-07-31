@@ -360,14 +360,14 @@ button {
 #contact #container-contact #box-btn-contact #btn-contact {
   width: 400px;
   height: 40px;
-  border: 1px solid rgb(219, 42, 42);
+  border: 1px solid var(--tertiary);
   background-color: #fff;
   border-radius: 5px;
   transition: 0.3s;
 }
 #contact #container-contact #box-btn-contact #btn-contact a {
   text-decoration: none;
-  color: rgb(219, 42, 42);
+  color: var(--tertiary);
   font-weight: 500;
 }
 #contact #container-contact #box-btn-contact #btn-contact:hover {
@@ -378,13 +378,14 @@ button {
 }
 #contact #form form {
   margin: auto;
-  background-color: var(--primary);
+  border: 1px solid var(--tertiary);
   width: 330px;
   padding: 20px 20px 10px 15px;
   text-align: left;
+  border-radius: 3px;
 }
-#contact #form form h3 {
-  font-size: 18px;
+#contact #form form p {
+  font-size: 15px;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -395,7 +396,7 @@ button {
   outline: none;
   width: 300px;
   height: 35px;
-  border-radius: 5px;
+  border-radius: 3px;
   border: none;
 }
 #contact #form form input:focus {
@@ -412,12 +413,14 @@ button {
 #contact #form form button {
   margin-top: 1rem;
   color: var(--tertiary);
-  width: 100px;
+  height: 35px;
   border: none;
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: auto;
   background-color: #EEDFD4;
+  width: 100%;
   font-weight: 500;
 }
 
@@ -807,7 +810,7 @@ footer #my-propagand #btn-propagand:hover {
   #contact #container-contact #box-btn-contact #btn-contact {
     width: auto;
     height: 40px;
-    border: 1px solid rgb(219, 42, 42);
+    border: 1px solid var(--tertiary);
     background-color: #fff;
     border-radius: 5px;
     transition: 0.3s;
@@ -815,7 +818,7 @@ footer #my-propagand #btn-propagand:hover {
   }
   #contact #container-contact #box-btn-contact #btn-contact a {
     text-decoration: none;
-    color: rgb(219, 42, 42);
+    color: var(--tertiary);
     font-weight: 500;
     font-size: 14px;
   }
@@ -828,7 +831,7 @@ footer #my-propagand #btn-propagand:hover {
   }
   #contact #form form {
     margin: auto;
-    background-color: var(--primary);
+    border: 1px solid var(--tertiary);
     width: auto;
     text-align: left;
     border-radius: 4px;
@@ -864,14 +867,14 @@ footer #my-propagand #btn-propagand:hover {
   }
   #contact #form form button {
     margin-top: 1rem;
-    color: var(--tertiary);
+    color: var(--color-text);
     width: 100%;
     border: none;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: auto;
-    background-color: #EEDFD4;
+    background-image: linear-gradient(180deg, var(--tertiary), var(--color-text-tertiary));
     font-weight: 500;
     height: 40px;
     font-size: 18px;
