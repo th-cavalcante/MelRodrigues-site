@@ -499,7 +499,7 @@ footer #my-propagand #btn-propagand:hover {
     flex-direction: column;
     z-index: 998;
     align-items: center;
-    background-image: linear-gradient(180deg, var(--secondary), var(--tertiary));
+    background-image: linear-gradient(180deg, var(--secondary), #dfc8b8);
     margin: 0;
     padding-top: 80px;
     transition: all 0.3s;
