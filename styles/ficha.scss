@@ -1,15 +1,30 @@
+:root{
+    --primary: #A88F7F;
+    --secondary: #EEDFD4;
+    --tertiary: #BF7E62;
+    --color-text: #fff;
+    --color-text-secondary: #000;
+    --color-text-tertiary: #5d5d5d;
+    --text: 'montserrat';
+}
 
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'montserrat';
+}
 
 form{
     border: 1px solid black;
-    width: 40%;
+    width: 35%;
     padding: 20px;
     margin: auto;
     margin-top: 2rem;
     
 }
 h1{
-    font-size: 20px;
+    font-size: 13px;
     text-align: center;
 }
 #dados-pessoais{
@@ -37,8 +52,9 @@ h1{
     
     #container-input-align{
         display: flex;
+        justify-content: space-between;
+        
        
-
     }
    
 }
@@ -68,4 +84,117 @@ h1{
         
     }   
 }
+
+@media (max-width: 780px){
+    form{
+        border: 1px solid black;
+        width: 95%;
+        padding: 20px;
+        margin: auto;
+        margin-top: 2rem;
+        
+    }
+    h1{
+        font-size: 14px;
+        text-align: center;
+        color:var(--tertiary);
+    }
+    #dados-pessoais{
+        label{
+            display: block;
+            font-weight: 500;  
+        }
+        #name{
+            width: 300px;
+            
+        } 
+        input{
+            height: 27px;
+        } 
+    }
+    
+    #genero{  
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+        p{
+            font-size: 16px;
+            font-weight: 500;
+        }
+        label{
+            font-weight: 500;
+        }
+       
+    }
+    #adress{
+    
+        label{
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        #container-input-align{
+            display: block;
+           
+            
+           
+        }
+        input{
+            height: 27px;
+        }
+       
+    }
+   
+    
+    
+    
+    #respostas{
+        display: none;
+        border: 1px solid red;
+        width: 500px;
+        margin: auto;
+        padding: 20px;
+        margin-top: 2rem;
+        font-size: 16px;
+        border-radius: 5px;
+       
+     
+        .respostas{
+            color: rgb(255, 0, 0);
+        }
+        #genero{
+           
+            p{
+                font-size: 16px;
+                
+            }
+            
+        } 
+        
+        
+    }
+    
+    #questions{
+        margin-top: 2rem;
+        h2{
+            font-size: 20px;
+            margin-bottom: 1rem;
+            color: var(--tertiary);
+           
+            
+        }
+        .container-questions{
+            margin-bottom: 1rem;
+        }
+        button{
+            width: 100%;
+            border: 2px solid var(--tertiary);
+            color: var(--tertiary);
+            background: var(--secondary);
+        }
+    }   
+    
+
+}
+
 

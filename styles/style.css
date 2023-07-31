@@ -22,7 +22,7 @@ body {
 }
 
 #ficha {
-  display: none;
+  display: block;
 }
 
 hr {
