@@ -19,8 +19,7 @@ function closeOnClickMenu(){
         menu.remove()
     } 
 }
-
-
+//----------Script area cliente //////
 
 function redirecionarPagina() {
     const selectElement = document.getElementById('area-cliente');
