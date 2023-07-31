@@ -499,7 +499,7 @@ footer #my-propagand #btn-propagand:hover {
     flex-direction: column;
     z-index: 998;
     align-items: center;
-    background-color: var(--secondary);
+    background-image: linear-gradient(180deg, var(--secondary), var(--tertiary));
     margin: 0;
     padding-top: 80px;
     transition: all 0.3s;
@@ -511,7 +511,7 @@ footer #my-propagand #btn-propagand:hover {
     font-weight: 500;
   }
   #header #menu #nav-list .nav-menu #menu-cuide-se {
-    color: var(--tertiary);
+    color: var(--color-text-tertiary);
     font-weight: 600;
   }
   #header #menu #nav-list.open {
