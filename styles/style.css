@@ -519,9 +519,17 @@ footer #my-propagand #btn-propagand:hover {
   #header #menu #nav-list .nav-menu a {
     font-weight: 500;
   }
-  #header #menu #nav-list .nav-menu #menu-cuide-se {
+  #header #menu #nav-list .nav-menu #area-cliente {
+    border: none;
+    outline: none;
     color: var(--tertiary);
     font-weight: 600;
+    font-size: 14px;
+    background: none;
+  }
+  #header #menu #nav-list .nav-menu #area-cliente option {
+    font-weight: 500;
+    background: none;
   }
   #header #menu #nav-list.open {
     right: 0;

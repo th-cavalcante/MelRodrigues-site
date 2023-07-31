@@ -658,11 +658,22 @@ footer{
                 a{
                     font-weight: 500;
                 }
-                #menu-cuide-se{
+                #area-cliente{
+                    border: none;
+                    outline: none;
                     color: var(--tertiary);
                     font-weight: 600;
-                }      
+                    font-size: 14px;
+                    background: none;
+                    option{
+                        font-weight: 500;
+                        background: none;
+                    }
+                }
+               
+                     
             }
+            
 
             &.open{
                right: 0;
