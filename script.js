@@ -19,4 +19,17 @@ function closeOnClickMenu(){
         menu.remove()
     } 
 }
+
+
+
+function redirecionarPagina() {
+    const selectElement = document.getElementById('area-cliente');
+    const selectedOptionValue = selectElement.value;
+
+    if (selectedOptionValue) {
+        // Redirecionar para a página selecionada
+        window.location.href = selectedOptionValue + '.html';
+    }
+}
+
   

@@ -45,10 +45,21 @@
                     <li class="nav-menu" onclick="closeOnClickMenu()"><a href="#questions">Perguntas frequentes</a> </li>
                     <li class="nav-menu" onclick="closeOnClickMenu()"><a href="#about-me">Sobre mim</a></li>
                     <li class="nav-menu" onclick="closeOnClickMenu()"><a href="#contact">Contato</a> </li>
-                    <li class="nav-menu" onclick="closeOnClickMenu()"><a href="cuide-se.html" id="menu-cuide-se">Cuide-se</a> </li>
-                    <li class="nav-menu" onclick="closeOnClickMenu()"><a href="ficha.html" id="ficha">Ficha</a> </li>
+                    
+                      <li class="nav-menu"><select id="area-cliente" onchange="redirecionarPagina()">
+                        <option value="" disabled selected>Area Cliente</option>
+                        <option value="ficha">Ficha Anamnese</option>
+                        <option value="cuide-se">Cuide-se</option>
+                    </select>
+                    </li>
+
+                    <!--
+                      <li class="nav-menu" onclick="closeOnClickMenu()"><a href="cuide-se.html" id="menu-cuide-se">Cuide-se</a> </li>
+                      <li class="nav-menu" onclick="closeOnClickMenu()"><a href="ficha.html" id="ficha">Ficha</a> </li>
+                    -->
                     
                 </ul>
+                
         </nav> 
        
           

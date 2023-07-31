@@ -91,6 +91,15 @@ hr {
   text-underline-offset: 25px;
   color: var(--tertiary);
 }
+#header #menu #nav-list .nav-menu #area-cliente {
+  border: none;
+  outline: none;
+  color: var(--tertiary);
+  font-weight: 600;
+}
+#header #menu #nav-list .nav-menu #area-cliente option {
+  font-weight: 500;
+}
 
 #hamburguer {
   display: none;

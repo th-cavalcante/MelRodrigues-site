@@ -62,6 +62,8 @@ hr{
             display: flex;      
             margin-top: 30px;
             z-index: 998;
+
+            
             .nav-menu{
                 list-style-type: none;  
                 margin-right: 30px;
@@ -109,13 +111,25 @@ hr{
                     text-underline-offset: 25px;
                     color: var(--tertiary);
                 }
+                #area-cliente{
+                    border: none;
+                    outline: none;
+                    color: var(--tertiary);
+                    font-weight: 600;
+                    option{
+                        font-weight: 500;
+                    }
+                }
+                
             }
+            
             
           
         }
 
     }  
 }
+
 
 //Hamburguer Mobile apagado//
 #hamburguer{
