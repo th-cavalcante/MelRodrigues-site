@@ -511,7 +511,7 @@ footer #my-propagand #btn-propagand:hover {
     font-weight: 500;
   }
   #header #menu #nav-list .nav-menu #menu-cuide-se {
-    color: var(--color-text-tertiary);
+    color: var(--tertiary);
     font-weight: 600;
   }
   #header #menu #nav-list.open {
