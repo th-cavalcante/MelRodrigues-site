@@ -109,6 +109,10 @@ hr{
                 }
                 #area-cliente{
                     appearance: none;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    -ms-appearance: none;
+                    -o-appearance: none;
                     border: none;
                     outline: none;
                     color: var(--tertiary);
