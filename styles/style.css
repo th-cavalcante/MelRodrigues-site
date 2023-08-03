@@ -93,12 +93,13 @@ hr {
   -moz-appearance: none;
   -ms-appearance: none;
   -o-appearance: none;
+  background-image: url("../img/seta.svg");
   background-repeat: no-repeat;
-  background-position: right center;
-  background-size: 12px 12px;
+  background-position: right;
+  background-size: 35px 35px;
   border: none;
   outline: none;
-  color: var(--tertiary);
+  color: var(--color-text-tertiary);
   font-weight: 600;
   cursor: pointer;
 }
