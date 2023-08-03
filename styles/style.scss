@@ -108,22 +108,21 @@ hr{
                     color: var(--tertiary);
                 }
                 #area-cliente{
-                    appearance: none;
+                    appearance:none;
                     -webkit-appearance: none;
                     -moz-appearance: none;
                     -ms-appearance: none;
                     -o-appearance: none;
+                    background-repeat: no-repeat;
+                    background-position: right center;
+                    background-size: 12px 12px;
                     border: none;
                     outline: none;
                     color: var(--tertiary);
                     font-weight: 600;
                     cursor: pointer;
                     option{
-                        
                         color: var(--color-text-tertiary);
-                       
-                        
-
                     }
                 }
                 
