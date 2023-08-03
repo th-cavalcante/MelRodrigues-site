@@ -88,6 +88,9 @@ hr {
   color: var(--tertiary);
 }
 #header #menu #nav-list .nav-menu #area-cliente {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   border: none;
   outline: none;
   color: var(--tertiary);
