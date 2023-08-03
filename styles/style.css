@@ -82,10 +82,6 @@ hr {
   text-transform: uppercase;
   font-size: 13px;
 }
-#header #menu #nav-list .nav-menu #menu-cuide-se {
-  color: var(--tertiary);
-  font-weight: 600;
-}
 #header #menu #nav-list .nav-menu a:hover {
   text-decoration: underline;
   text-underline-offset: 25px;
@@ -96,9 +92,10 @@ hr {
   outline: none;
   color: var(--tertiary);
   font-weight: 600;
+  cursor: pointer;
 }
 #header #menu #nav-list .nav-menu #area-cliente option {
-  font-weight: 500;
+  color: var(--color-text-tertiary);
 }
 
 #hamburguer {

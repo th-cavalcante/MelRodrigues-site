@@ -21,14 +21,29 @@ function closeOnClickMenu(){
 }
 //----------Script area cliente //////
 
+
+
+
+///Script Select Area Cliente
+// Verificar se o localStorage contém um valor para a opção selecionada
+const selectedOption = localStorage.getItem('selectedOption');
+
 function redirecionarPagina() {
     const selectElement = document.getElementById('area-cliente');
     const selectedOptionValue = selectElement.value;
 
     if (selectedOptionValue) {
-        // Redirecionar para a página selecionada
-        window.location.href = selectedOptionValue + '.html';
+        window.location.href = selectedOptionValue + '.html'; // Value do option + html (ficha.html e cuide-se.html)
     }
 }
+
+// Limpar o valor selecionado do select ao sair da página
+window.addEventListener('beforeunload', () => {
+    const selectElement = document.getElementById('area-cliente');
+    selectElement.value = '';
+    localStorage.removeItem('selectedOption');
+});
+
+
 
   

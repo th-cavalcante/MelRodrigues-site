@@ -100,11 +100,7 @@ hr{
 
                     
                     
-                }
-                #menu-cuide-se{
-                    color: var(--tertiary);
-                    font-weight: 600;
-                }
+                } 
                 
                 a:hover{
                     text-decoration: underline;
@@ -116,8 +112,13 @@ hr{
                     outline: none;
                     color: var(--tertiary);
                     font-weight: 600;
+                    cursor: pointer;
                     option{
-                        font-weight: 500;
+                        
+                        color: var(--color-text-tertiary);
+                       
+                        
+
                     }
                 }
                 
