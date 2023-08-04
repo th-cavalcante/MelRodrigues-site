@@ -14,27 +14,45 @@
     box-sizing: border-box;
     font-family: 'montserrat';
 }
+body{
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+    url(/img/clinic1.png);
+    background-size: cover;
+    background-position: center;
+}
 
 form{
-  
-    width: 50%;
+   
+    width: 60%;
     padding: 20px;
     margin: auto;
     margin-top: 2rem;
+    border-radius: 5px;
+    box-shadow: 1px 1px 7px rgb(146, 142, 142);
+    
     
 }
 #title{
     font-size: 20px;
     text-align: center;
+    color: #fff;
 }
 #dados-pessoais{
     label{
         display: block;
+        font-weight: 500;
+        color: #fff;
         
     }
     input{
         height: 30px;
         outline: none;
+        border: 1px solid rgb(192, 183, 183);
+        border-radius: 3px;
+    }
+    input:focus{
+        border: 1.5px solid rgb(144, 144, 248);
+        border-radius: 3px;
     }
     #name{
         width: 400px;
@@ -49,9 +67,16 @@ form{
 
 #genero{  
     margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    font-weight: 500;
     p{
         font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+    label{
+        color: #fff;
     }
    
 }
@@ -59,12 +84,19 @@ form{
 
     label{
         display: block;
+        font-weight: 500;
+        margin-top: 12px;
+        color: #fff;
     }
     input{
         height: 30px;
         outline: none;
+        border: 1px solid rgb(192, 183, 183);
     }
-    
+    input:focus{
+        border: 1.5px solid rgb(144, 144, 248);
+        border-radius: 3px;
+    }    
     #container-input-align{
         display: flex;
        
@@ -83,13 +115,25 @@ form{
 #questions{
     margin-top: 2rem;
     h2{
-        font-size: 15px;
+        font-size: 20px;
+        margin-bottom: 2rem;
+        color: #fff;
     }
     .container-questions{
-        margin-top: 1rem;
+        margin-top: 2rem;
+        p{
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        label{
+            font-weight: 400;
+            color: #fff;
+        }
     }
     #observation{
         margin-top: 1rem;
+        font-weight: 500;
         #campo-observation{
             width: 500px;
             outline: none;
@@ -100,14 +144,14 @@ form{
 
 
 #respostas{
-    display: none;
-    border: 1px solid red;
-    width: 500px;
+    display: none ;
+    box-shadow: 1px 1px 10px rgba(0,0,0,0.4 );
+    width: 700px;
     margin: auto;
     padding: 20px;
     margin-top: 2rem;
     font-size: 16px;
-    border-radius: 5px;
+    border-radius: 3px;
    
  
     .respostas{

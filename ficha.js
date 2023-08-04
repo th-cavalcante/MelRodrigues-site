@@ -3,7 +3,7 @@ function enviar() {
     event.preventDefault();
 // Chamando os inputs do formulário
 const name = document.getElementById("name").value;
-const date = document.getElementById("date").value;
+const date = document.getElementById("input-date").value;
 const rg = document.getElementById("rg").value;
 const rua = document.getElementById("rua").value;
 const bairro = document.getElementById("bairro").value;
