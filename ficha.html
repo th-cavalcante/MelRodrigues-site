@@ -55,7 +55,7 @@
                         <input type="text" id="cidade" required>
                     </div>
                 </div>
-                <label for="cep">CEP:</label>
+                <label for="cep" id="label-cep">CEP:</label>
                 <input type="text" id="cep">       
             </div>
     
@@ -135,11 +135,11 @@
               
                 <div id="observation">
                     <label for="campo-observation">Deseja mais alguma observação?</label>
-                    <textarea name="text-observation" id="campo-observation" cols="35" rows="5" ></textarea>
+                    <textarea name="text-observation" id="campo-observation" cols="60" rows="5" ></textarea>
     
                 </div>
-                <div>
-                    <button onclick="enviar()">Enviar</button>
+                <div id="container-btn">
+                    <button onclick="enviar()" id="btn-form">Salvar informações</button>
                 </div>
             </div>
         </form>    
@@ -153,6 +153,7 @@
 
     <div id="respostas">
         <h1>Ficha Anamnese preenchida</h1>
+        <h2>Confirme se seus dados estao corretos e clique no botão "Gerar PDF"</h2>
         
             <div id="dados-pessoais">
                 <label for="name">Nome Completo:</label>
@@ -243,7 +244,7 @@
 
       
 
-        <button type="button" onclick="GerarPdf()">Gerar PDF e Enviar</button>
+        <button type="button" onclick="GerarPdf()" id="btn-pdf">Gerar PDF e Enviar</button>
 
 
     </div>

@@ -16,7 +16,7 @@
 }
 
 body {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/img/clinic1.png);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/img/bodyFichaimg.png);
   background-size: cover;
   background-position: center;
 }
@@ -28,6 +28,7 @@ form {
   margin-top: 2rem;
   border-radius: 5px;
   box-shadow: 1px 1px 7px rgb(146, 142, 142);
+  margin-bottom: 2rem;
 }
 
 #title {
@@ -119,32 +120,75 @@ form {
   color: #fff;
 }
 #questions #observation {
-  margin-top: 1rem;
+  margin-top: 2rem;
   font-weight: 500;
+  color: #fff;
 }
 #questions #observation #campo-observation {
   width: 500px;
   outline: none;
 }
 
+#container-btn {
+  margin-top: 1rem;
+}
+#container-btn #btn-form {
+  width: 40%;
+  height: 30px;
+  cursor: pointer;
+  border: none;
+  background-color: var(--tertiary);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 15px;
+  color: #fff;
+  border-radius: 2px;
+}
+#container-btn #btn-form:hover {
+  background-color: #b07055;
+}
+
 #respostas {
-  display: none;
-  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.4);
-  width: 700px;
+  display: block;
+  box-shadow: 1px 1px 10px rgba(181, 175, 175, 0.4);
+  width: 60%;
   margin: auto;
   padding: 20px;
   margin-top: 2rem;
   font-size: 16px;
   border-radius: 3px;
+  color: #fff;
+}
+#respostas h1 {
+  text-align: center;
+  font-size: 25px;
+}
+#respostas h2 {
+  font-size: 15px;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 #respostas .respostas {
-  color: rgb(255, 0, 0);
+  color: rgb(242, 113, 113);
 }
 #respostas #genero p {
   font-size: 16px;
 }
 #respostas #questions .respostas .pergunta {
-  color: black;
+  color: #fff;
+}
+#respostas #btn-pdf {
+  width: 40%;
+  height: 30px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: #b07055;
+  color: #fff;
+  border-radius: 2px;
+}
+#respostas #btn-pdf:hover {
+  background-color: #c68c73;
 }
 
 @media (max-width: 780px) {
@@ -194,6 +238,56 @@ form {
   }
   #adress input {
     height: 27px;
+  }
+  #adress #label-cep {
+    margin-top: 2rem;
+  }
+  #questions {
+    margin-top: 2rem;
+  }
+  #questions h2 {
+    font-size: 20px;
+    margin-bottom: 2rem;
+    color: #fff;
+  }
+  #questions .container-questions {
+    margin-top: 2rem;
+  }
+  #questions .container-questions p {
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+  #questions .container-questions label {
+    font-weight: 400;
+    color: #fff;
+  }
+  #questions #observation {
+    margin-top: 2rem;
+    font-weight: 500;
+    color: #fff;
+  }
+  #questions #observation #campo-observation {
+    width: 330px;
+    outline: none;
+  }
+  #container-btn {
+    margin-top: 1rem;
+  }
+  #container-btn #btn-form {
+    width: 100%;
+    height: 30px;
+    cursor: pointer;
+    border: none;
+    background-color: var(--tertiary);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #fff;
+    border-radius: 2px;
+  }
+  #container-btn #btn-form:hover {
+    background-color: #b07055;
   }
   #respostas {
     display: none;
