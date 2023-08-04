@@ -16,25 +16,36 @@
 }
 
 form {
-  border: 1px solid black;
-  width: 35%;
+  width: 50%;
   padding: 20px;
   margin: auto;
   margin-top: 2rem;
 }
 
-h1 {
-  font-size: 13px;
+#title {
+  font-size: 20px;
   text-align: center;
 }
 
 #dados-pessoais label {
   display: block;
 }
+#dados-pessoais input {
+  height: 30px;
+  outline: none;
+}
 #dados-pessoais #name {
   width: 400px;
 }
+#dados-pessoais #date {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
 
+#genero {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
 #genero p {
   font-size: 16px;
 }
@@ -42,9 +53,34 @@ h1 {
 #adress label {
   display: block;
 }
+#adress input {
+  height: 30px;
+  outline: none;
+}
 #adress #container-input-align {
   display: flex;
-  justify-content: space-between;
+}
+#adress #container-input-align #input-align {
+  margin-left: 50px;
+  height: 30px;
+  outline: none;
+}
+
+#questions {
+  margin-top: 2rem;
+}
+#questions h2 {
+  font-size: 15px;
+}
+#questions .container-questions {
+  margin-top: 1rem;
+}
+#questions #observation {
+  margin-top: 1rem;
+}
+#questions #observation #campo-observation {
+  width: 500px;
+  outline: none;
 }
 
 #respostas {
@@ -62,6 +98,9 @@ h1 {
 }
 #respostas #genero p {
   font-size: 16px;
+}
+#respostas #questions .respostas .pergunta {
+  color: black;
 }
 
 @media (max-width: 780px) {
@@ -105,6 +144,9 @@ h1 {
   }
   #adress #container-input-align {
     display: block;
+  }
+  #adress #container-input-align #input-align {
+    margin-left: 0px;
   }
   #adress input {
     height: 27px;

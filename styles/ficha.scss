@@ -16,15 +16,15 @@
 }
 
 form{
-    border: 1px solid black;
-    width: 35%;
+  
+    width: 50%;
     padding: 20px;
     margin: auto;
     margin-top: 2rem;
     
 }
-h1{
-    font-size: 13px;
+#title{
+    font-size: 20px;
     text-align: center;
 }
 #dados-pessoais{
@@ -32,13 +32,24 @@ h1{
         display: block;
         
     }
+    input{
+        height: 30px;
+        outline: none;
+    }
     #name{
         width: 400px;
         
-    }  
+    } 
+    #date{
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        
+    } 
 }
 
 #genero{  
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     p{
         font-size: 16px;
     }
@@ -49,14 +60,41 @@ h1{
     label{
         display: block;
     }
+    input{
+        height: 30px;
+        outline: none;
+    }
     
     #container-input-align{
         display: flex;
-        justify-content: space-between;
+       
+
+        #input-align{
+            margin-left: 50px;
+            height: 30px;
+            outline: none;
+        }
         
        
     }
    
+}
+
+#questions{
+    margin-top: 2rem;
+    h2{
+        font-size: 15px;
+    }
+    .container-questions{
+        margin-top: 1rem;
+    }
+    #observation{
+        margin-top: 1rem;
+        #campo-observation{
+            width: 500px;
+            outline: none;
+        }
+    }
 }
 
 
@@ -82,6 +120,13 @@ h1{
             
         }
         
+    }
+    #questions{
+        .respostas{
+            .pergunta{
+                color: black;
+            }
+        }
     }   
 }
 
@@ -135,6 +180,9 @@ h1{
         
         #container-input-align{
             display: block;
+            #input-align{
+                margin-left: 0px;
+            }
            
             
            

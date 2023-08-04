@@ -21,13 +21,14 @@
         <form action="#">
             <div id="dados-pessoais">
                 <label for="name">Nome Completo:</label>
-                <input type="text" id="name" >
-    
-                <label for="date">Data de Nascimento</label>
-                <input type="Date" id="date" >
-                
+                <input type="text" id="name" required >
+                <div id="date">
+                    <label  for="date">Data de Nascimento</label>
+                    <input type="Date" id="input-date" required>
+                </div>
+                  
                 <label for="rg">RG:</label>
-                <input type="text" id="rg" >
+                <input type="text" id="rg"  required>
             </div>
             
     
@@ -41,16 +42,16 @@
     
             <div id="adress">
                 <label for="adress">Rua e nº</label>
-                <input type="text" id="rua" >
+                <input type="text" id="rua" required>
                
                 <div id="container-input-align">
                     <div class="input-align">
                         <label for="">Bairro</label>
-                        <input type="text" id="bairro">
+                        <input type="text" id="bairro" required>
                     </div>
                     <div id="input-align">
-                        <label for="">Cidade</label>
-                        <input type="text" id="cidade">
+                        <label >Cidade</label>
+                        <input type="text" id="cidade" required>
                     </div>
                 </div>
                 <label for="cep">CEP:</label>
@@ -64,7 +65,7 @@
                     <label for="question1-no">Não</label>
                     <input type="radio" id="question1-no" name="pergunta1" value="Não">
                     <label for="question1-yes">Sim</label>
-                    <input type="radio" id="question1-yes" name="pergunta1" value="Sim">
+                    <input type="radio" id="question1-yes" name="pergunta1" value="Sim" >
                 </div>
                 <div class="container-questions">
                     <p>Costuma fazer Depilação?</p>
@@ -79,6 +80,55 @@
                     <input type="radio" id="question3-no" name="pergunta3" value="Não">
                     <label for="question3-yes">Sim</label>
                     <input type="radio" id="question3-yes" name="pergunta3" value="Sim">
+                </div>
+                <div class="container-questions">
+                    <p>Está fazendo algum tratamento dermatológico?</p>
+                    <label for="question4-no">Não</label>
+                    <input type="radio" id="question4-no" name="pergunta4" value="Não">
+                    <label for="question4-yes">Sim</label>
+                    <input type="radio" id="question4-yes" name="pergunta4" value="Sim">
+                </div>
+                <div class="container-questions">
+                    <p>Está fazendo algum tratamento dermatológico?</p>
+                    <label for="question5-no">Não</label>
+                    <input type="radio" id="question5-no" name="pergunta5" value="Não">
+                    <label for="question5-yes">Sim</label>
+                    <input type="radio" id="question5-yes" name="pergunta5" value="Sim">
+                </div>
+                <div class="container-questions">
+                    <p>Está fazendo algum tratamento dermatológico?</p>
+                    <label for="question6-no">Não</label>
+                    <input type="radio" id="question6-no" name="pergunta6" value="Não">
+                    <label for="question6-yes">Sim</label>
+                    <input type="radio" id="question6-yes" name="pergunta6" value="Sim">
+                </div>
+                <div class="container-questions">
+                    <p>Está fazendo algum tratamento dermatológico?</p>
+                    <label for="question7-no">Não</label>
+                    <input type="radio" id="question7-no" name="pergunta7" value="Não">
+                    <label for="question7-yes">Sim</label>
+                    <input type="radio" id="question7-yes" name="pergunta7" value="Sim">
+                </div>
+                <div class="container-questions">
+                    <p>Está fazendo algum tratamento dermatológico?</p>
+                    <label for="question8-no">Não</label>
+                    <input type="radio" id="question8-no" name="pergunta8" value="Não">
+                    <label for="question8-yes">Sim</label>
+                    <input type="radio" id="question8-yes" name="pergunta8" value="Sim">
+                </div>
+                <div class="container-questions">
+                    <p>Está fazendo algum tratamento dermatológico?</p>
+                    <label for="question9-no">Não</label>
+                    <input type="radio" id="question9-no" name="pergunta9" value="Não">
+                    <label for="question9-yes">Sim</label>
+                    <input type="radio" id="question9-yes" name="pergunta9" value="Sim">
+                </div>
+                <div class="container-questions">
+                    <p>Está fazendo algum tratamento dermatológico?</p>
+                    <label for="question10-no">Não</label>
+                    <input type="radio" id="question10-no" name="pergunta10" value="Não">
+                    <label for="question10-yes">Sim</label>
+                    <input type="radio" id="question10-yes" name="pergunta10" value="Sim">
                 </div>
                
               
@@ -140,19 +190,48 @@
     
             <div id="questions" >
                 <h3>Questionario clinico:</h3>
-                <div class="container-questions">
-                    <p>Realizou alguma cirurgia?</p>
-                    <p id="resposta1"  class="respostas" ></p>          
-                </div>
-                <div class="container-questions">
-                    <p>Costuma fazer Depilação?</p>
-                    <p id="resposta2"  class="respostas"></p>                 
-                </div>
-                <div class="container-questions">
-                    <p>Está fazendo algum tratamento dermatológico?</p>
-                    <p id="resposta3" class="respostas"></p>
-                </div>
-               
+               <div class="respostas">
+                   <p class="pergunta">Pergunta: Realizou alguma cirurgia?</p>
+                   <p class="resposta" id="resposta1">Resposta: </p>
+               </div>
+               <div class="respostas">
+                <p class="pergunta">Pergunta: Realizou alguma cirurgia?</p>
+                <p class="resposta" id="resposta2">Resposta: </p>
+            </div>
+            <div class="respostas">
+                <p class="pergunta">Pergunta: Realizou alguma cirurgia?</p>
+                <p class="resposta" id="resposta3">Resposta: </p>
+            </div>
+            <div class="respostas">
+                <p class="pergunta">Pergunta: Realizou alguma cirurgia?</p>
+                <p class="resposta" id="resposta4">Resposta: </p>
+            </div>
+            <div class="respostas">
+                <p class="pergunta">Pergunta: Realizou alguma cirurgia?</p>
+                <p class="resposta" id="resposta5">Resposta: </p>
+            </div>
+            <div class="respostas">
+                <p class="pergunta">Pergunta: Realizou alguma cirurgia?</p>
+                <p class="resposta" id="resposta6">Resposta: </p>
+            </div>
+            <div class="respostas">
+                <p class="pergunta">Pergunta: Realizou alguma cirurgia?</p>
+                <p class="resposta" id="resposta7">Resposta: </p>
+            </div>
+            <div class="respostas">
+                <p class="pergunta">Pergunta: Realizou alguma cirurgia?</p>
+                <p class="resposta" id="resposta8">Resposta: </p>
+            </div>
+            <div class="respostas">
+                <p class="pergunta">Pergunta: Realizou alguma cirurgia?</p>
+                <p class="resposta" id="resposta9">Resposta: </p>
+            </div>
+            <div class="respostas">
+                <p class="pergunta">Pergunta: Realizou alguma cirurgia?</p>
+                <p class="resposta" id="resposta10">Resposta: </p>
+            </div>
+
+
               
                 <div>
                     <label for="campo-observation">Observações</label>
@@ -161,8 +240,7 @@
                 <br>           
         </div>
 
-        <p>Assinatura:</p>
-        <p>____________________________________________</p>
+      
 
         <button type="button" onclick="GerarPdf()">Gerar PDF e Enviar</button>
 

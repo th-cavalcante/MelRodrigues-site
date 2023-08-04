@@ -88,15 +88,6 @@ hr {
   color: var(--tertiary);
 }
 #header #menu #nav-list .nav-menu #area-cliente {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  -o-appearance: none;
-  background-image: url("../img/seta.svg");
-  background-repeat: no-repeat;
-  background-position: right;
-  background-size: 35px 35px;
   border: none;
   outline: none;
   color: var(--color-text-tertiary);
@@ -261,7 +252,7 @@ button {
 }
 
 #questions {
-  height: 600px;
+  height: auto;
   padding-top: 50px;
 }
 #questions h1 {
