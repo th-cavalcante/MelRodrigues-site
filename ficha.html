@@ -62,12 +62,50 @@
             <div id="questions">
                 <h2>Questionario clinico:</h2>
                 <div class="container-questions">
-                    <p>Realizou alguma cirurgia?</p>
-                    <label for="question1-no">Não</label>
-                    <input type="radio" id="question1-no" name="pergunta1" value="Não">
-                    <label for="question1-yes">Sim</label>
-                    <input type="radio" id="question1-yes" name="pergunta1" value="Sim" >
+                    <p>Qual dessas condições de exposição solar mais se assemelha ao seu tom de pele ? Selecione a imagem </p>
+
+                    <div id="container-img-cor-pele">
+                       <div class=" card-img-cor-pele">
+                          <label for="pele01">
+                            <img src="img/pele1.png" class="img-cor-pele" onclick="checkedImg(this)">
+                            <p>sempre queima intensamente, nunca bronzeia</p>
+                        </label>
+                    </div>
+                    <div class=" card-img-cor-pele">
+                         <label for="pele02">
+                         <img src="img/pele2.png" class="img-cor-pele" onclick="checkedImg(this)">
+                         <p>geralmente queima, bronzeia minimamente</p>
+                    </label>   
+                    </div> 
+                    <div class=" card-img-cor-pele">
+                        <label for="pele03">
+                        <img src="img/pele3.png" class="img-cor-pele" onclick="checkedImg(this)">
+                        <p>às vezes queima, bronzeia moderadamente</p>
+                   </label>   
+                   </div> 
+                   <div class=" card-img-cor-pele">
+                         <label for="pele04">
+                         <img src="img/pele4.png" class="img-cor-pele" onclick="checkedImg(this)">
+                         <p>queima minimamente, sempre bronzeia</p>
+                    </label>   
+                    </div>
+                    <div class=" card-img-cor-pele">
+                        <label for="pele05">
+                        <img src="img/pele5.png" class="img-cor-pele" onclick="checkedImg(this)">
+                        <p>raramente queima, bronzeia muito e facil
+                        </p>
+                   </label>   
+                   </div>
+                   <div class=" card-img-cor-pele">
+                    <label for="pele06">
+                    <img src="img/pele6.png" class="img-cor-pele" onclick="checkedImg(this)">
+                    <p>nunca queima, bronzeia intensamente</p>
+                   </label>   
+                    </div>   
+
+                    </div>
                 </div>
+
                 <div class="container-questions">
                     <p>Costuma fazer Depilação?</p>
                     <label for="question2-no">Não</label>

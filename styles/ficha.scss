@@ -92,6 +92,7 @@ form{
         height: 30px;
         outline: none;
         border: 1px solid rgb(192, 183, 183);
+        border-radius: 3px;
     }
     input:focus{
         border: 1.5px solid rgb(144, 144, 248);
@@ -112,6 +113,9 @@ form{
    
 }
 
+
+
+
 #questions{
     margin-top: 2rem;
     h2{
@@ -121,6 +125,7 @@ form{
     }
     .container-questions{
         margin-top: 2rem;
+           
         p{
             font-weight: 500;
             margin-bottom: 10px;
@@ -130,7 +135,28 @@ form{
             font-weight: 400;
             color: #fff;
         }
+        #container-img-cor-pele{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .card-img-cor-pele{
+               
+                .img-cor-pele{
+                    height: 150px;                
+                   
+                }
+                p{
+                    font-size: 11px;
+                    
+                    
+                    
+                   
+                }
+            }
+        }
+        
     }
+    
     #observation{
         margin-top: 2rem;
         font-weight: 500;
@@ -305,14 +331,25 @@ form{
         }
         .container-questions{
             margin-top: 2rem;
-            p{
-                font-weight: 500;
-                margin-bottom: 10px;
-                color: #fff;
-            }
-            label{
-                font-weight: 400;
-                color: #fff;
+            
+            #container-img-cor-pele{
+                flex-direction: column;
+               
+                .card-img-cor-pele{
+                    text-align: center;
+                   max-width: 90%;
+                    .img-cor-pele{
+                        height: 200px;                
+                       
+                    }
+                    p{
+                        font-size: 15px;
+                        
+                        
+                        
+                       
+                    }
+                }
             }
         }
         #observation{

@@ -85,6 +85,7 @@ form {
   height: 30px;
   outline: none;
   border: 1px solid rgb(192, 183, 183);
+  border-radius: 3px;
 }
 #adress input:focus {
   border: 1.5px solid rgb(144, 144, 248);
@@ -118,6 +119,17 @@ form {
 #questions .container-questions label {
   font-weight: 400;
   color: #fff;
+}
+#questions .container-questions #container-img-cor-pele {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#questions .container-questions #container-img-cor-pele .card-img-cor-pele .img-cor-pele {
+  height: 150px;
+}
+#questions .container-questions #container-img-cor-pele .card-img-cor-pele p {
+  font-size: 11px;
 }
 #questions #observation {
   margin-top: 2rem;
@@ -253,14 +265,18 @@ form {
   #questions .container-questions {
     margin-top: 2rem;
   }
-  #questions .container-questions p {
-    font-weight: 500;
-    margin-bottom: 10px;
-    color: #fff;
+  #questions .container-questions #container-img-cor-pele {
+    flex-direction: column;
   }
-  #questions .container-questions label {
-    font-weight: 400;
-    color: #fff;
+  #questions .container-questions #container-img-cor-pele .card-img-cor-pele {
+    text-align: center;
+    max-width: 90%;
+  }
+  #questions .container-questions #container-img-cor-pele .card-img-cor-pele .img-cor-pele {
+    height: 200px;
+  }
+  #questions .container-questions #container-img-cor-pele .card-img-cor-pele p {
+    font-size: 15px;
   }
   #questions #observation {
     margin-top: 2rem;

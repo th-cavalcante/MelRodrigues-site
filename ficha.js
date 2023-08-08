@@ -99,6 +99,18 @@ if (form) {
 }
 }
 
+function checkedImg(imgElement) {
+    const allImages = document.getElementsByClassName('img-cor-pele');
+    for(const img of allImages){
+        if(img === imgElement){
+            img.style.border ='2px solid blue';
+        }else{
+            img.style.border =  '';
+        }
+    }
+  
+}
+
 
 
 
