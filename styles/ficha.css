@@ -203,6 +203,10 @@ form {
   background-color: #c68c73;
 }
 
+.selected {
+  border: 2px solid blue;
+}
+
 @media (max-width: 780px) {
   form {
     border: 1px solid black;

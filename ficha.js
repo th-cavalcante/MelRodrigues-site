@@ -39,8 +39,8 @@ if (form) {
     const generoSelecionado = document.querySelector("input[name='genero']:checked").value;
     generoPrint.innerHTML = generoSelecionado;
 
-    // Respostas (checked- Radio)
-    const resposta1 = document.getElementById('resposta1');
+    
+
     const resposta2 = document.getElementById('resposta2');
     const resposta3 = document.getElementById('resposta3');
     const resposta4 = document.getElementById('resposta4');
@@ -50,9 +50,13 @@ if (form) {
     const resposta8 = document.getElementById('resposta8');
     const resposta9 = document.getElementById('resposta9');
     const resposta10 = document.getElementById('resposta10');
-    //pergunta e resposta 1
-    const respSelecionada1 = document.querySelector("input[name='pergunta1']:checked").value;
-    resposta1.innerHTML = respSelecionada1
+    const resposta11 = document.getElementById('resposta11');
+    const resposta12 = document.getElementById('resposta12');
+    const resposta13 = document.getElementById('resposta13');
+  
+ 
+
+
      //pergunta e resposta 2
     const respSelecionada2 = document.querySelector("input[name='pergunta2']:checked").value;
     resposta2.innerHTML = respSelecionada2
@@ -80,6 +84,15 @@ if (form) {
     //pergunta e resposta 10
     const respSelecionada10 = document.querySelector("input[name='pergunta10']:checked").value;
     resposta10.innerHTML = respSelecionada10
+    //pergunta e resposta 11
+    const respSelecionada11 = document.querySelector("input[name='pergunta10']:checked").value;
+    resposta11.innerHTML = respSelecionada11
+    //pergunta e resposta 12
+    const respSelecionada12 = document.querySelector("input[name='pergunta10']:checked").value;
+    resposta12.innerHTML = respSelecionada12
+    //pergunta e resposta 13
+    const respSelecionada13 = document.querySelector("input[name='pergunta10']:checked").value;
+    resposta13.innerHTML = respSelecionada13
 
     //observacoes
     const respObservation = document.getElementById('campo-observation').value;
@@ -99,17 +112,33 @@ if (form) {
 }
 }
 
+let selectedImage = null;
+
 function checkedImg(imgElement) {
-    const allImages = document.getElementsByClassName('img-cor-pele');
-    for(const img of allImages){
-        if(img === imgElement){
-            img.style.border ='2px solid blue';
-        }else{
-            img.style.border =  '';
-        }
+    const resposta1 = document.getElementById('box-img-resposta1');
+
+    if (selectedImage) {
+        selectedImage.classList.remove('selected');
     }
-  
+
+    if (selectedImage === imgElement) {
+        selectedImage = null;
+        resposta1.innerHTML = '';
+    } else {
+        imgElement.classList.add('selected');
+        selectedImage = imgElement;
+
+        const cloneImg = imgElement.cloneNode(true);
+        cloneImg.removeAttribute('onclick');
+        cloneImg.style.border = '';
+        cloneImg.style.cursor = 'default';
+        cloneImg.removeAttribute('class');
+        resposta1.innerHTML = '';
+        resposta1.appendChild(cloneImg);
+    }
 }
+
+
 
 
 
