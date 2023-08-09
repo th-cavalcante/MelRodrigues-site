@@ -15,8 +15,7 @@
     font-family: 'montserrat';
 }
 body{
-    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
-    url(/img/bodyFichaimg.png);
+    background-color: var(--secondary);
     background-size: cover;
     background-position: center;
 }
@@ -27,8 +26,9 @@ form{
     margin: auto;
     margin-top: 2rem;
     border-radius: 5px;
-    box-shadow: 1px 1px 7px rgb(146, 142, 142);
+    box-shadow: 1px 1px 7px var(--primary);
     margin-bottom: 2rem;
+    background-color: var(--color-text-tertiary);
     
     
 }
@@ -133,7 +133,7 @@ form{
         }
         label{
             font-weight: 400;
-            color: #fff;
+            color: var(--color-text);
         }
         #container-img-cor-pele{
             display: flex;
@@ -207,6 +207,7 @@ form{
     font-size: 16px;
     border-radius: 3px;
     color: #fff;
+    background-color: var(--color-text-tertiary);
     h1{
         text-align: center;
         font-size: 25px;
@@ -385,58 +386,113 @@ form{
     
         }
     }
-   
-   
-    
-    
-    
-    #respostas{
-        display: none;
-        border: 1px solid red;
-        width: 500px;
-        margin: auto;
-        padding: 20px;
-        margin-top: 2rem;
-        font-size: 16px;
-        border-radius: 5px;
-       
-     
-        .respostas{
-            color: rgb(255, 0, 0);
-        }
-        #genero{
-           
-            p{
-                font-size: 16px;
-                
-            }
-            
-        } 
-        
-        
-    }
-    
-    #questions{
-        margin-top: 2rem;
-        h2{
-            font-size: 20px;
-            margin-bottom: 1rem;
-            color: var(--tertiary);
-           
-            
-        }
-        .container-questions{
-            margin-bottom: 1rem;
-        }
-        button{
-            width: 100%;
-            border: 2px solid var(--tertiary);
-            color: var(--tertiary);
-            background: var(--secondary);
-        }
-    }   
+
+
     
 
+
+#respostas{
+    display: block;
+    box-shadow: 1px 1px 10px rgba(181, 175, 175, 0.4);
+    width: 95%;
+    margin: auto;
+    padding: 20px;
+    margin-top: 2rem;
+    font-size: 16px;
+    border-radius: 3px;
+    color: var(--color-text-tertiary);
+    background-color: #fff;
+    h1{
+        text-align: center;
+        font-size: 25px;
+    }
+    h2{
+        font-size: 15px;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    #dados-pessoais{
+        label{
+            color: var(--color-text-secondary);
+        }
+        .respostas{
+            color: #000;
+        }
+        
+    }
+    #genero{
+        p{
+            color: #000;
+        }
+        .respostas{
+            color: #000;
+        }
+    }
+    #adress{
+        label{
+            color: #000;
+        }
+        .respostas{
+            color: rgb(15, 15, 208);
+        }
+    }
+   
+ 
+    .respostas{
+        .pergunta{
+            color: var(--color-text-secondary);
+            margin-top: 2rem;
+
+        }
+        .resposta{
+            font-weight: 500;
+            color: rgb(15, 15, 208);
+            margin-top: 5px;
+        }
+       
+    }
+    #genero{
+       
+        p{
+            font-size: 16px;
+            
+            
+        }
+        
+    }
+    #questions{
+        h3{
+            text-align: center;
+        }
+        .respostas{
+            .pergunta{
+                color: var(--color-text-secondary);
+            }
+        }
+    }
+    #btn-pdf{
+        width: 100%;
+        height: 40px;
+        
+        cursor: pointer;
+        background-color:#b07055;
+        color: #fff;
+        border-radius: 2px;
+    }
+    #btn-pdf:hover{
+        background-color:#c68c73;
+        ;
+    }   
+}
+
+.selected {
+    border: 2px solid blue;
 }
 
 
+   
+   
+    
+    
+
+}
