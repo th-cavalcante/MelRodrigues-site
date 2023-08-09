@@ -211,7 +211,7 @@ form {
 
 @media (max-width: 780px) {
   form {
-    border: 1px solid black;
+    border: none;
     width: 95%;
     padding: 20px;
     margin: auto;
@@ -312,7 +312,7 @@ form {
     background-color: #b07055;
   }
   #respostas {
-    display: block;
+    display: none;
     box-shadow: 1px 1px 10px rgba(181, 175, 175, 0.4);
     width: 95%;
     margin: auto;
