@@ -212,10 +212,10 @@ form {
 @media (max-width: 780px) {
   form {
     border: none;
-    width: 95%;
+    width: 100%;
     padding: 20px;
     margin: auto;
-    margin-top: 2rem;
+    margin-top: 0rem;
   }
   h1 {
     font-size: 14px;
@@ -230,7 +230,7 @@ form {
     width: 300px;
   }
   #dados-pessoais input {
-    height: 27px;
+    height: 35px;
   }
   #genero {
     margin-top: 1rem;
@@ -255,7 +255,7 @@ form {
     margin-left: 0px;
   }
   #adress input {
-    height: 27px;
+    height: 35px;
   }
   #adress #label-cep {
     margin-top: 2rem;
@@ -312,12 +312,12 @@ form {
     background-color: #b07055;
   }
   #respostas {
-    display: none;
+    display: block;
     box-shadow: 1px 1px 10px rgba(181, 175, 175, 0.4);
     width: 95%;
     margin: auto;
     padding: 20px;
-    margin-top: 2rem;
+    margin-top: none;
     font-size: 16px;
     border-radius: 3px;
     color: var(--color-text-tertiary);
@@ -342,7 +342,7 @@ form {
     color: #000;
   }
   #respostas #genero .respostas {
-    color: #000;
+    color: rgb(15, 15, 208);
   }
   #respostas #adress label {
     color: #000;
