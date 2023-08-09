@@ -206,7 +206,7 @@ form {
 }
 
 .selected {
-  border: 2px solid blue;
+  border: 2px solid rgb(33, 33, 247);
 }
 
 @media (max-width: 780px) {
@@ -312,7 +312,7 @@ form {
     background-color: #b07055;
   }
   #respostas {
-    display: none;
+    display: block;
     box-shadow: 1px 1px 10px rgba(181, 175, 175, 0.4);
     width: 95%;
     margin: auto;
@@ -325,18 +325,24 @@ form {
   }
   #respostas h1 {
     text-align: center;
-    font-size: 25px;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
   }
   #respostas h2 {
     font-size: 15px;
     margin-bottom: 2rem;
     text-align: center;
   }
+  #respostas #obs {
+    color: rgb(244, 8, 8);
+    font-size: 13px;
+  }
   #respostas #dados-pessoais label {
     color: var(--color-text-secondary);
   }
   #respostas #dados-pessoais .respostas {
-    color: #000;
+    color: rgb(15, 15, 208);
   }
   #respostas #genero p {
     color: #000;

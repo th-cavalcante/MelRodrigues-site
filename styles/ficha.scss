@@ -255,7 +255,7 @@ form{
 }
 
 .selected {
-    border: 2px solid blue;
+    border: 2px solid rgb(33, 33, 247);
 }
 
 
@@ -394,7 +394,7 @@ form{
 
 
 #respostas{
-    display: none;
+    display: block;
     box-shadow: 1px 1px 10px rgba(181, 175, 175, 0.4);
     width: 95%;
     margin: auto;
@@ -406,19 +406,25 @@ form{
     background-color: #fff;
     h1{
         text-align: center;
-        font-size: 25px;
+        font-size: 16px;
+        text-transform: uppercase;
+        font-weight: bold;
     }
     h2{
         font-size: 15px;
         margin-bottom: 2rem;
         text-align: center;
     }
+    #obs{
+        color: rgb(244, 8, 8);
+        font-size: 13px;
+    }
     #dados-pessoais{
         label{
             color: var(--color-text-secondary);
         }
         .respostas{
-            color: #000;
+            color: rgb(15, 15, 208);
         }
         
     }
