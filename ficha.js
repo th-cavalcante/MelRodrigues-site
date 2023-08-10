@@ -172,7 +172,7 @@ function checkedImg(imgElement) {
         cloneImg.removeAttribute('class');
 
         // Defina o tamanho desejado da imagem no PDF (por exemplo, 200px de largura)
-        cloneImg.style.width = '190px';
+        cloneImg.style.width = '180px';
         cloneImg.style.height = 'auto'; // Mantém a proporção original
 
         resposta1.innerHTML = '';
