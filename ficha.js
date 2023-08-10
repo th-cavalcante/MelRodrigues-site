@@ -110,7 +110,7 @@ if (form) {
     form.style.display = 'none';
     respostas.style.display = 'block';
 
-    imprimirRespostas();
+   
 }
 }
 
@@ -141,6 +141,10 @@ function checkedImg(imgElement) {
    
 }
 
+function confirmarRespostas()
+{
+    imprimirRespostas();
+}
 
 function imprimirRespostas() {
     var conteudoRespostas = document.getElementById("respostas").innerHTML;
@@ -151,15 +155,3 @@ function imprimirRespostas() {
     janelaNova.document.close();
     janelaNova.print();
 }
-
-imprimirRespostas();
-
-
-
-
-
-
-
-
-
-
