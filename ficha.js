@@ -178,4 +178,4 @@ function checkedImg(imgElement) {
         resposta1.innerHTML = '';
         resposta1.appendChild(cloneImg);
     }
-}
+};
