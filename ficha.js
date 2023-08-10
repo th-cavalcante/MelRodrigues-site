@@ -109,6 +109,8 @@ if (form) {
     // Ao clicar em enviar, o formulário fecha e abre a div de respostas
     form.style.display = 'none';
     respostas.style.display = 'block';
+
+    imprimirRespostas();
 }
 }
 
@@ -136,58 +138,27 @@ function checkedImg(imgElement) {
         resposta1.innerHTML = '';
         resposta1.appendChild(cloneImg);
     }
+   
 }
 
 
-
-
-
-
-
-
-
-function GerarPdf() {
-    // Verifica se todos os campos obrigatórios foram preenchidos
-    const name = document.getElementById("name").value;
-    const date = document.getElementById("input-date").value;
-    const rg = document.getElementById("rg").value;
-    const rua = document.getElementById("rua").value;
-    const bairro = document.getElementById("bairro").value;
-    const cidade = document.getElementById("cidade").value;
-    const cep = document.getElementById("cep").value;
-
-    if (!name || !date || !rg || !rua || !bairro || !cidade || !cep) {
-        alert('Por favor, preencha todos os campos obrigatórios antes de gerar o PDF.');
-        return;
-    }
-
-    // Verifica se todas as perguntas foram respondidas
-    const perguntasRespondidas = document.querySelectorAll('input[name^="pergunta"]:checked');
-    if (perguntasRespondidas.length < 10) {
-        alert('Por favor, responda todas as perguntas antes de gerar o PDF.');
-        return;
-    }
-
-    // Se todos os campos obrigatórios e perguntas foram preenchidos, continua com a geração do PDF
-    const doc = new jsPDF();
-    doc.setFontSize(20);
-    doc.text(10, 20, 'Ficha Anamnese preenchida');
-
-    const perguntasRespostas = document.querySelectorAll('.respostas');
-    let yPosition = 40; // Define a posição vertical inicial
-
-    perguntasRespostas.forEach((item) => {
-        const pergunta = item.querySelector('.pergunta').textContent;
-        const resposta = item.querySelector('.resposta').textContent;
-
-        doc.setFontSize(12);
-        doc.text(20, yPosition, pergunta);
-        doc.text(80, yPosition, resposta);
-        yPosition += 15; // Incrementa a posição vertical para a próxima pergunta e resposta
-    });
-
-    doc.save('ficha_anamnese.pdf');
+function imprimirRespostas() {
+    var conteudoRespostas = document.getElementById("respostas").innerHTML;
+    var janelaNova = window.open("", "", "width=800, height=600");
+    janelaNova.document.write("<html><head><title>Respostas do Formulário</title></head><body>");
+    janelaNova.document.write(conteudoRespostas);
+    janelaNova.document.write("</body></html>");
+    janelaNova.document.close();
+    janelaNova.print();
 }
+
+imprimirRespostas();
+
+
+
+
+
+
 
 
 
