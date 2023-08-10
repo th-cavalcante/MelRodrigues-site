@@ -1,5 +1,5 @@
 
-function enviar() {
+function enviar(callback) {
     event.preventDefault();
 // Chamando os inputs do formulário
 const name = document.getElementById("name").value;
@@ -85,13 +85,13 @@ if (form) {
     const respSelecionada10 = document.querySelector("input[name='pergunta10']:checked").value;
     resposta10.innerHTML = respSelecionada10
     //pergunta e resposta 11
-    const respSelecionada11 = document.querySelector("input[name='pergunta10']:checked").value;
+    const respSelecionada11 = document.querySelector("input[name='pergunta11']:checked").value;
     resposta11.innerHTML = respSelecionada11
     //pergunta e resposta 12
-    const respSelecionada12 = document.querySelector("input[name='pergunta10']:checked").value;
+    const respSelecionada12 = document.querySelector("input[name='pergunta12']:checked").value;
     resposta12.innerHTML = respSelecionada12
     //pergunta e resposta 13
-    const respSelecionada13 = document.querySelector("input[name='pergunta10']:checked").value;
+    const respSelecionada13 = document.querySelector("input[name='pergunta13']:checked").value;
     resposta13.innerHTML = respSelecionada13
 
     //observacoes
@@ -110,9 +110,44 @@ if (form) {
     form.style.display = 'none';
     respostas.style.display = 'block';
 
+    const enviado = true; // Defina o valor de acordo com a sua lógica
+
+    if (enviado) {
+        callback(true); // Chama o callback com valor true
+    } else {
+        callback(false); // Chama o callback com valor false
+    }
+
+
    
 }
 }
+
+
+
+
+function confirmarRespostas() {
+    enviar(function(envioBemSucedido) {
+        if (envioBemSucedido) {
+            const doc = new jsPDF();
+
+            // Captura o HTML do elemento "respostas"
+            const elementoRespostas = document.getElementById('respostas');
+            const html = elementoRespostas.innerHTML;
+
+            // Adiciona o HTML ao PDF usando um callback
+            doc.fromHTML(html, 15, 15, {
+                width: 170
+            }, function () {
+                // Ação a ser executada após a renderização bem-sucedida do HTML
+                // Salva o PDF (download automático)
+                doc.save('formulario.pdf');
+            });
+        }
+    });
+}
+
+
 
 let selectedImage = null;
 
@@ -135,23 +170,12 @@ function checkedImg(imgElement) {
         cloneImg.style.border = '';
         cloneImg.style.cursor = 'default';
         cloneImg.removeAttribute('class');
+
+        // Defina o tamanho desejado da imagem no PDF (por exemplo, 200px de largura)
+        cloneImg.style.width = '190px';
+        cloneImg.style.height = 'auto'; // Mantém a proporção original
+
         resposta1.innerHTML = '';
         resposta1.appendChild(cloneImg);
     }
-   
-}
-
-function confirmarRespostas()
-{
-    imprimirRespostas();
-}
-
-function imprimirRespostas() {
-    var conteudoRespostas = document.getElementById("respostas").innerHTML;
-    var janelaNova = window.open("", "", "width=800, height=600");
-    janelaNova.document.write("<html><head><title>Respostas do Formulário</title></head><body>");
-    janelaNova.document.write(conteudoRespostas);
-    janelaNova.document.write("</body></html>");
-    janelaNova.document.close();
-    janelaNova.print();
 }
