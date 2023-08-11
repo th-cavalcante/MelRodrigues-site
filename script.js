@@ -46,7 +46,7 @@ window.addEventListener('beforeunload', () => {
 
 
 
-// Animação da pagina //
+// Animação da de algumas seções //
 
 window.sr = ScrollReveal({reset: true });
 
@@ -57,17 +57,17 @@ sr.reveal('.card-benefit', {
 
 sr.reveal('#container-carrossel', {
     rotate: { x: 80, y: 0, z: 0},
-    duration: 1000,
+    duration: 2000,
 })
 
 sr.reveal('#container-questions', {
     rotate: { x: 80, y: 0, z: 0},
-    duration: 1000,
+    duration: 2000,
 })
 
 sr.reveal('#card-text-about-me', {
     rotate: { x: 80, y: 0, z: 0},
-    duration: 1000,
+    duration: 2000,
 })
 
 
