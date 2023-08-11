@@ -55,4 +55,29 @@ sr.reveal('#container-benefits', {
     duration: 2000,
 })
 
+sr.reveal('#container-carrossel', {
+    rotate: { x: 80, y: 0, z: 0},
+    duration: 2000,
+})
+
+sr.reveal('#container-questions', {
+    rotate: { x: 80, y: 0, z: 0},
+    duration: 2000,
+})
+
+sr.reveal('#card-text-about-me', {
+    rotate: { x: 0, y: 0, z: 80},
+    duration: 1000,
+})
+
+
+
+
+
+
+
+
+
+
+
   
