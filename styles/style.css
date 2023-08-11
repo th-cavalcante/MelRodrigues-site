@@ -197,6 +197,7 @@ hr {
   padding: 3rem;
 }
 #benefits #container-benefits {
+  visibility: hidden;
   display: flex;
   justify-content: space-around;
 }

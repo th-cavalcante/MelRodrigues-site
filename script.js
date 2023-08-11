@@ -46,4 +46,13 @@ window.addEventListener('beforeunload', () => {
 
 
 
+// Animação da pagina //
+
+window.sr = ScrollReveal({reset: true });
+
+sr.reveal('#container-benefits', {
+    rotate: { x: 0, y: 80, z: 0},
+    duration: 2000,
+})
+
   
