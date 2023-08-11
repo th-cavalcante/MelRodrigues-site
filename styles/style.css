@@ -486,7 +486,7 @@ footer #my-propagand #btn-propagand:hover {
   #header {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: auto;
     background-color: #fff;
   }
   #header #logo {
