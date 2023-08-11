@@ -197,11 +197,11 @@ hr {
   padding: 3rem;
 }
 #benefits #container-benefits {
-  visibility: hidden;
   display: flex;
   justify-content: space-around;
 }
 #benefits #container-benefits .card-benefit {
+  visibility: hidden;
   max-width: 30%;
   text-align: center;
 }

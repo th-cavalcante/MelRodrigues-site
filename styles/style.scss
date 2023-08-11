@@ -250,10 +250,11 @@ hr{
         padding: 3rem;
     }
     #container-benefits{
-        visibility: hidden;
+        
         display: flex;
         justify-content: space-around;
         .card-benefit{
+            visibility: hidden;
             max-width: 30%;
             text-align: center;
             h3{
