@@ -50,6 +50,11 @@ window.addEventListener('beforeunload', () => {
 
 window.sr = ScrollReveal({reset: true });
 
+sr.reveal('#title-principal', {
+    rotate: { x: 0, y: 80, z: 0},
+    duration: 2000,
+})
+
 sr.reveal('.card-benefit', {
     rotate: { x: 0, y: 80, z: 0},
     duration: 2000,
@@ -69,6 +74,9 @@ sr.reveal('#card-text-about-me', {
     rotate: { x: 80, y: 0, z: 0},
     duration: 2000,
 })
+
+
+
 
 
 
