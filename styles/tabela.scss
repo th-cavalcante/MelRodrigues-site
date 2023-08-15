@@ -13,29 +13,69 @@
     box-sizing: border-box;
     font-family: 'montserrat';
 }
+body{
+    background-color: #f7f4f2;
+}
 
 
 #price-list{
   
-    h1{
-        margin-top: 2rem;
-        font-family: 'montserrat';
-        color: #B65D49;
-        font-size: 2rem;
-        margin-bottom: 2rem;
-        text-transform: uppercase;
-       }
+    #title-tabela{
+        display: flex;
+        justify-content: space-around;
+        background-color: var(--secondary);
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        
+
+        h1{
+            margin-top: 2rem;
+            font-family: 'montserrat';
+            color:#5d5d5d;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+           }
+           #formas-pagamento{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            p{
+                font-weight: 500;
+
+            }
+            #bandeiras{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                
+                img{
+                    margin: 5px;  
+                    height: 20px;      
+                }
+                #master{
+                    height: 50px;
+                }
+                #paypal{
+                    height: 50px;
+                }
+                
+                
+            }
+            
+           }
+    }
        #back-price-list{
         display: flex;
         justify-content: center;
     
         #btn-back-price-list{
             background-color: rgb(245, 244, 239);
-            margin-top: 30px;
+            margin-top: 10px;
             width: 250px;
             height: 40px;
             border: 1px solid rgb(29,31,43);
-            font-size: 18px;
+            font-size: 17px;
             display: flex;
             align-items: center;
             justify-content: space-around;
@@ -43,6 +83,10 @@
             transition: .4s;
             font-family: 'montserrat';
             border-radius: 4px;
+        }
+        #btn-back-price-list:hover{
+            background-color: var(--primary);
+            color: #fff;
         }
         a{
             text-decoration: none;
@@ -168,6 +212,48 @@
 
 @media  (max-width: 768px) {
     #price-list{
+        #title-tabela{
+            flex-direction: column;
+            
+            
+    
+            h1{
+                margin-top: 1rem;
+                font-family: 'montserrat';
+                color:#5d5d5d;
+                font-size: 1.2rem;
+                margin-bottom: 2rem;
+                text-transform: uppercase;
+               }
+               #formas-pagamento{
+                flex-direction: column;
+                
+                p{
+                    font-size: 12px;
+                    font-weight: 500;
+    
+                }
+                #bandeiras{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    
+                    img{
+                        margin: 5px;  
+                        height: 15px;      
+                    }
+                    #master{
+                        height: 50px;
+                    }
+                    #paypal{
+                        height: 50px;
+                    }
+                    
+                    
+                }
+                
+               }
+        }
       
   
         h1{
