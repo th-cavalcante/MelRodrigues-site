@@ -59,11 +59,15 @@
 }
 #price-list #container-cards .cards .body-card {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  height: 150px;
 }
 #price-list #container-cards .cards .body-card img {
-  width: auto;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  padding: 10px;
 }
 #price-list #container-cards .cards .body-card .text-body-card h2 {
   font-size: 18px;
