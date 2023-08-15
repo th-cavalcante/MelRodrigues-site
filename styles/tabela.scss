@@ -104,4 +104,23 @@ a{
         text-decoration: none;
     }
 
+    #container-cards{
+        .card{
+            text-align: center;
+           
+            border-radius: 5px;
+            box-shadow: 1px 1px 10px rgb(210, 206, 206);
+            h1{
+                font-size: 35px;
+            }
+            #span{
+                font-size: 15px;
+            }
+            p{
+                font-size: 35px;
+                font-weight: bold;
+            }
+        }
+    }
+
 }

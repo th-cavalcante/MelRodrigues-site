@@ -85,4 +85,19 @@ a {
   a {
     text-decoration: none;
   }
+  #container-cards .card {
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px rgb(210, 206, 206);
+  }
+  #container-cards .card h1 {
+    font-size: 35px;
+  }
+  #container-cards .card #span {
+    font-size: 15px;
+  }
+  #container-cards .card p {
+    font-size: 35px;
+    font-weight: bold;
+  }
 }/*# sourceMappingURL=tabela.css.map */
