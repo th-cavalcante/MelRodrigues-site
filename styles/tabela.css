@@ -3,6 +3,7 @@
   font-family: "montserrat";
   color: #B65D49;
   font-size: 3rem;
+  text-transform: uppercase;
 }
 #price-list #container-price-list {
   display: flex;
