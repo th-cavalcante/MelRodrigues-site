@@ -1,24 +1,33 @@
+:root {
+  --primary: #A88F7F;
+  --secondary: #EEDFD4;
+  --tertiary: #BF7E62;
+  --color-text: #fff;
+  --color-text-secondary: #000;
+  --color-text-tertiary: #5d5d5d;
+  --text: "montserrat";
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "montserrat";
+}
+
 #price-list h1 {
   margin-top: 2rem;
   font-family: "montserrat";
   color: #B65D49;
-  font-size: 3rem;
+  font-size: 2rem;
+  margin-bottom: 2rem;
   text-transform: uppercase;
 }
-#price-list #container-price-list {
-  display: flex;
-  justify-content: space-around;
-}
-#price-list img {
-  width: 450px;
-  margin: 1rem;
-}
-
-#back-price-list {
+#price-list #back-price-list {
   display: flex;
   justify-content: center;
 }
-#back-price-list #btn-back-price-list {
+#price-list #back-price-list #btn-back-price-list {
   background-color: rgb(245, 244, 239);
   margin-top: 30px;
   width: 250px;
@@ -33,37 +42,96 @@
   font-family: "montserrat";
   border-radius: 4px;
 }
-#back-price-list #btn-back-price-list:hover {
-  background-color: rgb(29, 31, 43);
-  color: #fff;
-}
-
-a {
+#price-list #back-price-list a {
   text-decoration: none;
 }
+#price-list #container-cards {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-column-gap: 10px;
+  grid-row-gap: 20px;
+}
+#price-list #container-cards .cards {
+  border: 1px solid var(--tertiary);
+  border-radius: 0px 0px 10px 10px;
+}
+#price-list #container-cards .cards .body-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#price-list #container-cards .cards .body-card img {
+  width: auto;
+}
+#price-list #container-cards .cards .body-card .text-body-card h2 {
+  font-size: 20px;
+}
+#price-list #container-cards .cards .body-card .text-body-card p {
+  font-size: 20px;
+}
+#price-list #container-cards .rodape-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary);
+  border-radius: 0px 0px 10px 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: #fff;
+}
+#price-list #container-cards .rodape-card .preco {
+  width: 40%;
+  border-right: 2px solid black;
+  text-align: center;
+}
+#price-list #container-cards .rodape-card .preco .qtdd-parcelas {
+  font-size: 16px;
+}
+#price-list #container-cards .rodape-card .preco p {
+  font-size: 20px;
+}
+#price-list #container-cards .rodape-card .btn-card {
+  width: 60%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#price-list #container-cards .rodape-card .btn-card .box-price-total .price-before {
+  font-size: 12px;
+  text-decoration: line-through;
+}
+#price-list #container-cards .rodape-card .btn-card .box-price-total p {
+  font-size: 15px;
+}
+#price-list #container-cards .rodape-card .btn-card .btn {
+  width: 100px;
+  height: 30px;
+  background-color: rgb(7, 194, 7);
+  border: none;
+}
+#price-list #container-cards .rodape-card .btn-card .btn a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  text-transform: uppercase;
+}
 
-@media (max-width: 790px) {
+@media (max-width: 768px) {
   #price-list h1 {
     margin-top: 2rem;
     font-family: "montserrat";
     color: #B65D49;
-    font-size: 1.7rem;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
   }
-  #price-list #container-price-list {
-    display: flex;
-    justify-content: space-around;
-  }
-  #price-list img {
-    display: flex;
-    text-align: center;
-    max-width: 90%;
-    margin: 1rem;
-  }
-  #back-price-list {
+  #price-list #back-price-list {
     display: flex;
     justify-content: center;
   }
-  #back-price-list #btn-back-price-list {
+  #price-list #back-price-list #btn-back-price-list {
     background-color: rgb(245, 244, 239);
     margin-top: 30px;
     width: 250px;
@@ -78,30 +146,81 @@ a {
     font-family: "montserrat";
     border-radius: 4px;
   }
-  #back-price-list #btn-back-price-list:hover {
-    background-color: rgb(29, 31, 43);
-    color: #fff;
-  }
-  a {
+  #price-list #back-price-list a {
     text-decoration: none;
   }
-  #container-cards .card {
+  #price-list #container-cards {
+    max-width: 768px;
     text-align: center;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    border-radius: 5px;
-    box-shadow: 1px 1px 10px rgb(210, 206, 206);
+    display: grid;
+    grid-template-columns: auto;
+    grid-column-gap: none;
+    grid-row-gap: 20px;
+    justify-items: center;
   }
-  #container-cards .card h1 {
+  #price-list #container-cards .cards {
+    border: 1px solid var(--tertiary);
+    border-radius: 0px 0px 10px 10px;
+    width: 90%;
+  }
+  #price-list #container-cards .cards .body-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #price-list #container-cards .cards .body-card img {
+    width: auto;
+  }
+  #price-list #container-cards .cards .body-card .text-body-card h2 {
     font-size: 20px;
-    color: rgb(98, 92, 92);
-    font-weight: 400;
   }
-  #container-cards .card p {
-    text-align: left;
-    margin-left: 28px;
-    margin-top: -15px;
-    font-family: "montserrat";
+  #price-list #container-cards .cards .body-card .text-body-card p {
+    font-size: 20px;
+  }
+  #price-list #container-cards .rodape-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primary);
+    border-radius: 0px 0px 10px 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #fff;
+  }
+  #price-list #container-cards .rodape-card .preco {
+    width: 40%;
+    border-right: 2px solid black;
+    text-align: center;
+  }
+  #price-list #container-cards .rodape-card .preco .qtdd-parcelas {
+    font-size: 16px;
+  }
+  #price-list #container-cards .rodape-card .preco p {
+    font-size: 20px;
+  }
+  #price-list #container-cards .rodape-card .btn-card {
+    width: 60%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  #price-list #container-cards .rodape-card .btn-card .box-price-total .price-before {
     font-size: 12px;
+    text-decoration: line-through;
+  }
+  #price-list #container-cards .rodape-card .btn-card .box-price-total p {
+    font-size: 15px;
+  }
+  #price-list #container-cards .rodape-card .btn-card .btn {
+    width: 120px;
+    height: 30px;
+    background-color: rgb(7, 194, 7);
+    border: none;
+  }
+  #price-list #container-cards .rodape-card .btn-card .btn a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
   }
 }/*# sourceMappingURL=tabela.css.map */
