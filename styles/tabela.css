@@ -66,10 +66,17 @@
   width: auto;
 }
 #price-list #container-cards .cards .body-card .text-body-card h2 {
-  font-size: 20px;
+  font-size: 18px;
+  color: #6d6a6a;
 }
 #price-list #container-cards .cards .body-card .text-body-card p {
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+#price-list #container-cards .cards .body-card .text-body-card .obs-title {
+  font-size: 12px;
+  font-weight: 400;
+  max-width: 150px;
 }
 #price-list #container-cards .rodape-card {
   display: flex;
@@ -91,6 +98,7 @@
 }
 #price-list #container-cards .rodape-card .preco p {
   font-size: 20px;
+  font-weight: 600;
 }
 #price-list #container-cards .rodape-card .btn-card {
   width: 60%;

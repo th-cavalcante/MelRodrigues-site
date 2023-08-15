@@ -70,12 +70,20 @@
                 }
                 .text-body-card{
                     h2{
-                        font-size: 20px;
+                        font-size: 18px;
+                        color: #6d6a6a;
 
                     }
                     p{
-                        font-size: 20px;
+                        font-size: 18px;
+                        font-weight: bold;
+                        
 
+                    }
+                    .obs-title{
+                        font-size: 12px;
+                        font-weight: 400;
+                        max-width: 150px;
                     }
 
                 }
@@ -101,6 +109,7 @@
                 }
                 p{
                     font-size: 20px;
+                    font-weight: 600;
                 }
             }
             .btn-card{
