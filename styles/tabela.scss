@@ -107,19 +107,25 @@ a{
     #container-cards{
         .card{
             text-align: center;
-           
+            padding-top: 1rem;
+            padding-bottom: 1rem;
             border-radius: 5px;
             box-shadow: 1px 1px 10px rgb(210, 206, 206);
             h1{
-                font-size: 35px;
-            }
-            #span{
-                font-size: 15px;
+                font-size: 20px;
+                color: rgb(98, 92, 92);
+                font-weight: 400;
+               
             }
             p{
-                font-size: 35px;
-                font-weight: bold;
+                text-align: left;
+                margin-left: 28px;
+                margin-top: -15px;
+                font-family: 'montserrat';
+                font-size: 12px;
             }
+           
+           
         }
     }
 
