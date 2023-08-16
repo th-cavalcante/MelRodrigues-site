@@ -553,7 +553,7 @@ body{
             #pacotes{
                 margin-top: 2rem;
                 margin-bottom: 2rem;    
-                width: auto;
+                width: 100%;
                 box-shadow: 1px 1px 6px  #a39286 ;
                 border-radius: 0px 0px 10px 10px;
                 margin: 10px;
@@ -633,7 +633,7 @@ body{
                             text-align: center;
                             border-right: 2px solid black;
                             p{
-                                font-size: 20px;
+                                font-size: 18px;
                                 font-weight: 600;
                             }
                                       
@@ -654,8 +654,8 @@ body{
                                 font-size: 12px;
                             }
                             p{
-                                font-weight: 500;
-                                font-size: 15px;
+                                font-weight: bold;
+                                font-size: 20px;
                             }
                         }
                         .box-btn-pacotes{
