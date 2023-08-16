@@ -481,16 +481,33 @@ body {
     font-weight: 500;
     text-transform: uppercase;
   }
-  #price-list #container-pacotes #pacotes .cards-pacotes .list-options {
-    height: 340px;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes .list-options li {
+  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote1 {
     font-weight: 500;
-    margin-left: 25px;
-    font-size: 18px;
+    height: 170px;
   }
-  #price-list #container-pacotes #pacotes .cards-pacotes #list-option-last-card li {
-    font-size: 13px;
+  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote1 li {
+    font-size: 15px;
+  }
+  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote2 {
+    font-weight: 500;
+    height: 170px;
+  }
+  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote2 li {
+    font-size: 15px;
+  }
+  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote3 {
+    font-weight: 500;
+    height: 240px;
+  }
+  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote3 li {
+    font-size: 15px;
+  }
+  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote4 {
+    font-weight: 500;
+    height: 390px;
+  }
+  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote4 li {
+    font-size: 15px;
   }
   #price-list #container-pacotes #pacotes .cards-pacotes .card-price {
     display: flex;

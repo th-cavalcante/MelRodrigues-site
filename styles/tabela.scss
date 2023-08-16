@@ -592,21 +592,33 @@ body{
                         text-transform: uppercase;
             
                     }
-                    .list-options{
-                        height: 340px;
-                        
+                    #list-pacote1{
+                        font-weight: 500;
+                        height: 170px;
                         li{
-                            font-weight: 500;
-                            margin-left: 25px;
-                            font-size: 18px;
-                        }
+                            font-size: 15px;
+                        }                      
                     }
-                    #list-option-last-card{
+                    #list-pacote2{
+                        font-weight: 500;
+                        height: 170px;
                         li{
-                            font-size: 13px;
-    
-                        }
-                        
+                            font-size: 15px;
+                        }                      
+                    }
+                    #list-pacote3{
+                        font-weight: 500;
+                        height: 240px;
+                        li{
+                            font-size: 15px;
+                        }                      
+                    }
+                    #list-pacote4{
+                        font-weight: 500;
+                        height: 390px;
+                        li{
+                            font-size: 15px;
+                        }                      
                     }
                     .card-price{
                         display: flex;
