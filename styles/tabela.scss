@@ -220,106 +220,151 @@ body{
 
     #container-pacotes{
         display: flex;
-        margin: 2rem;
+        margin: 1.5rem;
         #pacotes{
-            margin-top: 2rem;
-            margin-bottom: 2rem;    
-            width: 350px;
-            box-shadow: 1px 1px 10px  #a39286 ;
-            border-radius: 0px 0px 10px 10px;
-            margin: 5px;
-            .title-pacotes{
-                background-color: var(--primary);
-                width: 85%;
-                text-align: center;
-                margin: 0 auto;
-                margin-top: -20px;
-                h1{
-                    font-size: 35px;
-                    font-weight: bold;
-                    color: #fff;
-                }      
-            }
-            .subtitle-pacotes{
-                
-                text-align: center;
-                margin-top: 5px;
-                h2{
-                    font-size: 22px;
-    
-                }
-                h3{
-                    font-size: 16px;
-    
-                }    
-            }
-            .options{
-                text-align: center;
-                margin-top: 1rem;
-                margin-bottom: 10px;
-                font-size: 17px;
-                font-weight: 500;
-                text-transform: uppercase;
-    
-            }
-            .list-options{
-                
-                li{
-                    font-weight: 500;
-                    margin-left: 20px;
-                }
-            }
-            .card-price{
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                margin-top: 1rem;
-                background-color: var(--primary);
+                margin-top: 2rem;
+                margin-bottom: 2rem;    
+                width: 320px;
+                box-shadow: 1px 1px 10px  #a39286 ;
                 border-radius: 0px 0px 10px 10px;
-                color: #fff;
-                .price{          
-                    width: 100px;
+                margin: 5px;
+                position: relative;
+                
+            
+            .cards-pacotes{
+                     
+                .title-pacotes{
+                    background-color: var(--primary);
+                    width: 85%;
                     text-align: center;
-                    border-right: 2px solid black;
-                    p{
-                        font-size: 20px;
-                        font-weight: 600;
-                    }
-                              
-                }
-            }
-            .box-price-total-end-btn{
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                
-                
-                
-                .price-total{
-                    margin: 10px;
-                    .price-before{
-                        text-decoration: line-through;
-                        font-weight: 400;
-                        font-size: 12px;
-                    }
-                    p{
-                        font-weight: 500;
-                        font-size: 15px;
-                    }
-                }
-                .box-btn-pacotes{
-                    
-                    .btn-pacotes{
-                        width: 80px;
-                        height: 35px;
-                        border: none;
-                        background-color: rgb(7, 194, 7);
+                    margin: 0 auto;
+                    margin-top: -20px;
+                    h1{
+                        font-size: 30px;
+                        font-weight: bold;
                         color: #fff;
-                    }
-    
+                    }      
                 }
-               
+                .subtitle-pacotes{
+                    
+                    text-align: center;
+                    margin-top: 5px;
+                    h2{
+                        font-size: 22px;
+        
+                    }
+                    h3{
+                        font-size: 16px;
+        
+                    }    
+                }
+                .options{
+                    text-align: center;
+                    margin-top: 1rem;
+                    margin-bottom: 10px;
+                    font-size: 17px;
+                    font-weight: 500;
+                    text-transform: uppercase;
+        
+                }
+                .list-options{
+                    height: 320px;
+                    
+                    li{
+                        font-weight: 500;
+                        margin-left: 25px;
+                        font-size: 18px;
+                    }
+                }
+                #list-option-last-card{
+                    li{
+                        font-size: 14px;
+
+                    }
+                    
+                }
+                
+                .card-price{
+                    position: absolute;
+                    bottom: 0;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    margin-top: 1rem;
+                    background-color: var(--primary);
+                    border-radius: 0px 0px 10px 10px;
+                    color: #fff;
+                    height: 60px;
+                    width: 100%;
+                    
+                    .price{          
+                        width: 100px;
+                        text-align: center;
+                        border-right: 2px solid black;
+                        p{
+                            font-size: 18px;
+                            font-weight: 600;
+                        }
+                                  
+                    }
+                    #txt-price-monte-o-seu{
+                        font-size: 15px;
+                        padding-right: 10px;
+                    }
+                    
+                }
+                .box-price-total-end-btn{
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    
+                    
+                    
+                    .price-total{
+                        margin: 10px;
+                        .price-before{
+                            text-decoration: line-through;
+                            font-weight: 400;
+                            font-size: 12px;
+                        }
+                        p{
+                            font-weight: 500;
+                            font-size: 15px;
+                            
+                        }
+                        
+                    }
+                    .box-btn-pacotes{
+                        
+                        .btn-pacotes{
+                            width: 80px;
+                            height: 35px;
+                            border: none;
+                            background-color: rgb(7, 194, 7);
+                            
+                            a{
+                                text-decoration: none;
+                                color: #fff;
+                                font-size: 13px;
+                                text-transform: uppercase;
+                                font-weight: bold;
+                            }
+                        }
+                        .btn-pacotes:hover{
+                            background-color: rgb(92, 124, 92);
+                        }
+                        #btn-pacotes-last{
+                            width: 100px;
+                        }
+        
+                    }
+                   
+                }
+                
             }
+            
+           
+            
     
         }
         
@@ -511,105 +556,117 @@ body{
                 width: auto;
                 box-shadow: 1px 1px 6px  #a39286 ;
                 border-radius: 0px 0px 10px 10px;
-                margin: 5px;
-                
-                .title-pacotes{
-                    background-color: var(--primary);
-                    width: 85%;
-                    text-align: center;
-                    margin: 0 auto;
-                    margin-top: -20px;
-                    
-                    h1{
-                        font-size: 28px;
-                        font-weight: bold;
-                        color: #fff;
-                    }      
-                }
-                .subtitle-pacotes{
-                    
-                    text-align: center;
-                    margin-top: 5px;
-                    h2{
-                        font-size: 18px;
-        
-                    }
-                    h3{
-                        font-size: 16px;
-        
-                    }    
-                }
-                .options{
-                    text-align: center;
-                    margin-top: 1rem;
-                    margin-bottom: 10px;
-                    font-size: 17px;
-                    font-weight: 500;
-                    text-transform: uppercase;
-        
-                }
-                .list-options{
-                    
-                    li{
-                        font-weight: 500;
-                        margin-left: 20px;
-                    }
-                }
-                .card-price{
-                    display: flex;
-                    justify-content: space-around;
-                    align-items: center;
-                    margin-top: 1rem;
-                    background-color: var(--primary);
-                    border-radius: 0px 0px 10px 10px;
-                    color: #fff;
-                    .price{          
-                        width: 100px;
+                margin: 10px;
+                .cards-pacotes{
+                    .title-pacotes{
+                        background-color: var(--primary);
+                        width: 90%;
                         text-align: center;
-                        border-right: 2px solid black;
-                        p{
-                            font-size: 20px;
-                            font-weight: 600;
-                        }
-                                  
-                    }
-                }
-                .box-price-total-end-btn{
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    
-                    
-                    
-                    .price-total{
-                        margin: 10px;
-                        .price-before{
-                            text-decoration: line-through;
-                            font-weight: 400;
-                            font-size: 12px;
-                        }
-                        p{
-                            font-weight: 500;
-                            font-size: 15px;
-                        }
-                    }
-                    .box-btn-pacotes{
+                        margin-top: -20px;
                         
-                        .btn-pacotes{
-                            width: 80px;
-                            height: 35px;
-                            border: none;
-                            background-color: rgb(7, 194, 7);
+                        h1{
+                            font-size: 28px;
+                            font-weight: bold;
                             color: #fff;
-                        }
-        
+                        }      
                     }
-                   
-                }
-        
-            }
+                    .subtitle-pacotes{
+                        
+                        text-align: center;
+                        margin-top: 5px;
+                        h2{
+                            font-size: 18px;
             
-        }
+                        }
+                        h3{
+                            font-size: 16px;
+            
+                        }    
+                    }
+                    .options{
+                        text-align: center;
+                        margin-top: 1rem;
+                        margin-bottom: 10px;
+                        font-size: 17px;
+                        font-weight: 500;
+                        text-transform: uppercase;
+            
+                    }
+                    .list-options{
+                        height: 340px;
+                        
+                        li{
+                            font-weight: 500;
+                            margin-left: 25px;
+                            font-size: 18px;
+                        }
+                    }
+                    #list-option-last-card{
+                        li{
+                            font-size: 13px;
+    
+                        }
+                        
+                    }
+                    .card-price{
+                        display: flex;
+                        justify-content: space-around;
+                        align-items: center;
+                        margin-top: 1rem;
+                        background-color: var(--primary);
+                        border-radius: 0px 0px 10px 10px;
+                        color: #fff;
+                        .price{          
+                            width: 100px;
+                            text-align: center;
+                            border-right: 2px solid black;
+                            p{
+                                font-size: 20px;
+                                font-weight: 600;
+                            }
+                                      
+                        }
+                    }
+                    .box-price-total-end-btn{
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        
+                        
+                        
+                        .price-total{
+                            margin: 10px;
+                            .price-before{
+                                text-decoration: line-through;
+                                font-weight: 400;
+                                font-size: 12px;
+                            }
+                            p{
+                                font-weight: 500;
+                                font-size: 15px;
+                            }
+                        }
+                        .box-btn-pacotes{
+                            
+                            .btn-pacotes{
+                                width: 80px;
+                                height: 35px;
+                                border: none;
+                                background-color: rgb(7, 194, 7);
+                                color: #fff;
+                            }
+            
+                        }
+                       
+                    }
+            
+                }
+                
+            }
+
+                }
+                
+                
        
     
     

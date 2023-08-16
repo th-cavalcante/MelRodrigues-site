@@ -187,39 +187,40 @@ body {
 }
 #price-list #container-pacotes {
   display: flex;
-  margin: 2rem;
+  margin: 1.5rem;
 }
 #price-list #container-pacotes #pacotes {
   margin-top: 2rem;
   margin-bottom: 2rem;
-  width: 350px;
+  width: 320px;
   box-shadow: 1px 1px 10px #a39286;
   border-radius: 0px 0px 10px 10px;
   margin: 5px;
+  position: relative;
 }
-#price-list #container-pacotes #pacotes .title-pacotes {
+#price-list #container-pacotes #pacotes .cards-pacotes .title-pacotes {
   background-color: var(--primary);
   width: 85%;
   text-align: center;
   margin: 0 auto;
   margin-top: -20px;
 }
-#price-list #container-pacotes #pacotes .title-pacotes h1 {
-  font-size: 35px;
+#price-list #container-pacotes #pacotes .cards-pacotes .title-pacotes h1 {
+  font-size: 30px;
   font-weight: bold;
   color: #fff;
 }
-#price-list #container-pacotes #pacotes .subtitle-pacotes {
+#price-list #container-pacotes #pacotes .cards-pacotes .subtitle-pacotes {
   text-align: center;
   margin-top: 5px;
 }
-#price-list #container-pacotes #pacotes .subtitle-pacotes h2 {
+#price-list #container-pacotes #pacotes .cards-pacotes .subtitle-pacotes h2 {
   font-size: 22px;
 }
-#price-list #container-pacotes #pacotes .subtitle-pacotes h3 {
+#price-list #container-pacotes #pacotes .cards-pacotes .subtitle-pacotes h3 {
   font-size: 16px;
 }
-#price-list #container-pacotes #pacotes .options {
+#price-list #container-pacotes #pacotes .cards-pacotes .options {
   text-align: center;
   margin-top: 1rem;
   margin-bottom: 10px;
@@ -227,11 +228,20 @@ body {
   font-weight: 500;
   text-transform: uppercase;
 }
-#price-list #container-pacotes #pacotes .list-options li {
-  font-weight: 500;
-  margin-left: 20px;
+#price-list #container-pacotes #pacotes .cards-pacotes .list-options {
+  height: 320px;
 }
-#price-list #container-pacotes #pacotes .card-price {
+#price-list #container-pacotes #pacotes .cards-pacotes .list-options li {
+  font-weight: 500;
+  margin-left: 25px;
+  font-size: 18px;
+}
+#price-list #container-pacotes #pacotes .cards-pacotes #list-option-last-card li {
+  font-size: 14px;
+}
+#price-list #container-pacotes #pacotes .cards-pacotes .card-price {
+  position: absolute;
+  bottom: 0;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -239,39 +249,57 @@ body {
   background-color: var(--primary);
   border-radius: 0px 0px 10px 10px;
   color: #fff;
+  height: 60px;
+  width: 100%;
 }
-#price-list #container-pacotes #pacotes .card-price .price {
+#price-list #container-pacotes #pacotes .cards-pacotes .card-price .price {
   width: 100px;
   text-align: center;
   border-right: 2px solid black;
 }
-#price-list #container-pacotes #pacotes .card-price .price p {
-  font-size: 20px;
+#price-list #container-pacotes #pacotes .cards-pacotes .card-price .price p {
+  font-size: 18px;
   font-weight: 600;
 }
-#price-list #container-pacotes #pacotes .box-price-total-end-btn {
+#price-list #container-pacotes #pacotes .cards-pacotes .card-price #txt-price-monte-o-seu {
+  font-size: 15px;
+  padding-right: 10px;
+}
+#price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 }
-#price-list #container-pacotes #pacotes .box-price-total-end-btn .price-total {
+#price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .price-total {
   margin: 10px;
 }
-#price-list #container-pacotes #pacotes .box-price-total-end-btn .price-total .price-before {
+#price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .price-total .price-before {
   text-decoration: line-through;
   font-weight: 400;
   font-size: 12px;
 }
-#price-list #container-pacotes #pacotes .box-price-total-end-btn .price-total p {
+#price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .price-total p {
   font-weight: 500;
   font-size: 15px;
 }
-#price-list #container-pacotes #pacotes .box-price-total-end-btn .box-btn-pacotes .btn-pacotes {
+#price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .box-btn-pacotes .btn-pacotes {
   width: 80px;
   height: 35px;
   border: none;
   background-color: rgb(7, 194, 7);
+}
+#price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .box-btn-pacotes .btn-pacotes a {
+  text-decoration: none;
   color: #fff;
+  font-size: 13px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+#price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .box-btn-pacotes .btn-pacotes:hover {
+  background-color: rgb(92, 124, 92);
+}
+#price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .box-btn-pacotes #btn-pacotes-last {
+  width: 100px;
 }
 
 @media (max-width: 768px) {
@@ -422,31 +450,30 @@ body {
     width: auto;
     box-shadow: 1px 1px 6px #a39286;
     border-radius: 0px 0px 10px 10px;
-    margin: 5px;
+    margin: 10px;
   }
-  #price-list #container-pacotes #pacotes .title-pacotes {
+  #price-list #container-pacotes #pacotes .cards-pacotes .title-pacotes {
     background-color: var(--primary);
-    width: 85%;
+    width: 90%;
     text-align: center;
-    margin: 0 auto;
     margin-top: -20px;
   }
-  #price-list #container-pacotes #pacotes .title-pacotes h1 {
+  #price-list #container-pacotes #pacotes .cards-pacotes .title-pacotes h1 {
     font-size: 28px;
     font-weight: bold;
     color: #fff;
   }
-  #price-list #container-pacotes #pacotes .subtitle-pacotes {
+  #price-list #container-pacotes #pacotes .cards-pacotes .subtitle-pacotes {
     text-align: center;
     margin-top: 5px;
   }
-  #price-list #container-pacotes #pacotes .subtitle-pacotes h2 {
+  #price-list #container-pacotes #pacotes .cards-pacotes .subtitle-pacotes h2 {
     font-size: 18px;
   }
-  #price-list #container-pacotes #pacotes .subtitle-pacotes h3 {
+  #price-list #container-pacotes #pacotes .cards-pacotes .subtitle-pacotes h3 {
     font-size: 16px;
   }
-  #price-list #container-pacotes #pacotes .options {
+  #price-list #container-pacotes #pacotes .cards-pacotes .options {
     text-align: center;
     margin-top: 1rem;
     margin-bottom: 10px;
@@ -454,11 +481,18 @@ body {
     font-weight: 500;
     text-transform: uppercase;
   }
-  #price-list #container-pacotes #pacotes .list-options li {
-    font-weight: 500;
-    margin-left: 20px;
+  #price-list #container-pacotes #pacotes .cards-pacotes .list-options {
+    height: 340px;
   }
-  #price-list #container-pacotes #pacotes .card-price {
+  #price-list #container-pacotes #pacotes .cards-pacotes .list-options li {
+    font-weight: 500;
+    margin-left: 25px;
+    font-size: 18px;
+  }
+  #price-list #container-pacotes #pacotes .cards-pacotes #list-option-last-card li {
+    font-size: 13px;
+  }
+  #price-list #container-pacotes #pacotes .cards-pacotes .card-price {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -467,33 +501,33 @@ body {
     border-radius: 0px 0px 10px 10px;
     color: #fff;
   }
-  #price-list #container-pacotes #pacotes .card-price .price {
+  #price-list #container-pacotes #pacotes .cards-pacotes .card-price .price {
     width: 100px;
     text-align: center;
     border-right: 2px solid black;
   }
-  #price-list #container-pacotes #pacotes .card-price .price p {
+  #price-list #container-pacotes #pacotes .cards-pacotes .card-price .price p {
     font-size: 20px;
     font-weight: 600;
   }
-  #price-list #container-pacotes #pacotes .box-price-total-end-btn {
+  #price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  #price-list #container-pacotes #pacotes .box-price-total-end-btn .price-total {
+  #price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .price-total {
     margin: 10px;
   }
-  #price-list #container-pacotes #pacotes .box-price-total-end-btn .price-total .price-before {
+  #price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .price-total .price-before {
     text-decoration: line-through;
     font-weight: 400;
     font-size: 12px;
   }
-  #price-list #container-pacotes #pacotes .box-price-total-end-btn .price-total p {
+  #price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .price-total p {
     font-weight: 500;
     font-size: 15px;
   }
-  #price-list #container-pacotes #pacotes .box-price-total-end-btn .box-btn-pacotes .btn-pacotes {
+  #price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .box-btn-pacotes .btn-pacotes {
     width: 80px;
     height: 35px;
     border: none;
