@@ -292,11 +292,7 @@ input::placeholder{
         
     }
    
-    h1{
-        font-size: 14px;
-        text-align: center;
-        color:var(--tertiary);
-    }
+   
     #dados-pessoais{
         label{
             display: block;
@@ -307,7 +303,7 @@ input::placeholder{
             
         } 
         input{
-            height: 35px;
+            height: 40px;
         } 
     }
     
@@ -345,10 +341,10 @@ input::placeholder{
            
         }
         input{
-            height: 35px;
+            height: 40px;
         }
         #label-cep{
-            margin-top: 2rem;
+            margin-top: 3rem;
         }
        
     }
@@ -357,7 +353,7 @@ input::placeholder{
         h2{
             font-size: 20px;
             margin-bottom: 2rem;
-            color: #fff;
+            color: var(--color-text-tertiary);
         }
         .container-questions{
             margin-top: 2rem;
