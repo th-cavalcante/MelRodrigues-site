@@ -528,10 +528,10 @@ body {
   #price-list #container-pacotes #pacotes .cards-pacotes .card-price .price {
     width: 120px;
     text-align: center;
-    border-right: 2px solid black;
+    border-right: 2px solid #fff;
   }
   #price-list #container-pacotes #pacotes .cards-pacotes .card-price .price p {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 600;
   }
   #price-list #container-pacotes #pacotes .cards-pacotes .card-price #txt-price-monte-o-seu {
@@ -553,7 +553,7 @@ body {
   }
   #price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .price-total p {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 16px;
   }
   #price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .box-btn-pacotes .btn-pacotes {
     width: 80px;
