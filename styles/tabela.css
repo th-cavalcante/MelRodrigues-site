@@ -446,7 +446,7 @@ body {
   }
   #price-list #container-pacotes {
     flex-direction: column;
-    margin: auto;
+    margin: 5px;
   }
   #price-list #container-pacotes #pacotes {
     margin-top: 2rem;
