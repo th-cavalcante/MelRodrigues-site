@@ -108,19 +108,19 @@ hr{
                     color: var(--tertiary);
                 }
                 #area-cliente{
-                  
-                 
-        
                     border: none;
                     outline: none;
                     color: var(--color-text-tertiary);
                     font-weight: 600;
                     cursor: pointer;
                     option{
-                        color: var(--color-text-tertiary);
+                        color: var(--color-text-tertiary);         
                     }
                 }
                 
+            }
+            #icons-redes{
+                display: none;
             }
             
             
@@ -670,18 +670,27 @@ footer{
                     option{
                         font-weight: 500;
                         background: none;
+                        
                     }
                 }
+                
                
                      
             }
-            
-
+            #icons-redes{
+                display: block;
+                margin-top: 50px;
+                a{
+                    margin: 10px;
+                    
+                }
+            }
             &.open{
                right: 0;
                 
-              }
+            }
           }
+          
 
           
         }

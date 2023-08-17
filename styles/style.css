@@ -97,6 +97,9 @@ hr {
 #header #menu #nav-list .nav-menu #area-cliente option {
   color: var(--color-text-tertiary);
 }
+#header #menu #nav-list #icons-redes {
+  display: none;
+}
 
 #hamburguer {
   display: none;
@@ -528,6 +531,13 @@ footer #my-propagand #btn-propagand:hover {
   #header #menu #nav-list .nav-menu #area-cliente option {
     font-weight: 500;
     background: none;
+  }
+  #header #menu #nav-list #icons-redes {
+    display: block;
+    margin-top: 50px;
+  }
+  #header #menu #nav-list #icons-redes a {
+    margin: 10px;
   }
   #header #menu #nav-list.open {
     right: 0;
