@@ -16,7 +16,7 @@
 }
 
 body {
-  background-color: #fff;
+  background-color: white;
   background-size: cover;
   background-position: center;
 }
@@ -29,28 +29,31 @@ form {
   border-radius: 5px;
   box-shadow: 1px 1px 7px var(--primary);
   margin-bottom: 2rem;
-  background-color: rgb(29, 31, 43);
+  background-color: rgb(255, 255, 255);
 }
 
 #title {
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
-  color: #fff;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  margin-bottom: 3rem;
 }
 
 #dados-pessoais label {
   display: block;
   font-weight: 500;
-  color: #fff;
+  color: var(--color-text-secondary);
+  font-size: 15px;
 }
 #dados-pessoais input {
-  height: 30px;
+  height: 35px;
   outline: none;
-  border: 1px solid rgb(192, 183, 183);
+  border: 1.5px solid rgb(221, 215, 215);
   border-radius: 3px;
 }
 #dados-pessoais input:focus {
-  border: 1.5px solid rgb(144, 144, 248);
+  border: 1.5px solid var(--primary);
   border-radius: 3px;
 }
 #dados-pessoais #name {
@@ -63,33 +66,35 @@ form {
 
 #genero {
   margin-top: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-weight: 500;
 }
 #genero p {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 1rem;
-  color: #fff;
+  color: var(--color-text-secondary);
 }
 #genero label {
-  color: #fff;
+  color: var(--color-text-secondary);
+  font-size: 15px;
 }
 
 #adress label {
   display: block;
   font-weight: 500;
   margin-top: 12px;
-  color: #fff;
+  color: var(--color-text-secondary);
+  font-size: 15px;
 }
 #adress input {
-  height: 30px;
+  height: 35px;
   outline: none;
   border: 1px solid rgb(192, 183, 183);
   border-radius: 3px;
 }
 #adress input:focus {
-  border: 1.5px solid rgb(144, 144, 248);
+  border: 1.5px solid var(--primary);
   border-radius: 3px;
 }
 #adress #rua {
@@ -110,7 +115,8 @@ form {
 #questions h2 {
   font-size: 20px;
   margin-bottom: 2rem;
-  color: #fff;
+  color: var(--color-text-secondary);
+  text-align: center;
 }
 #questions .container-questions {
   margin-top: 2rem;
@@ -118,11 +124,11 @@ form {
 #questions .container-questions p {
   font-weight: 500;
   margin-bottom: 10px;
-  color: #fff;
+  color: var(--color-text-secondary);
 }
 #questions .container-questions label {
   font-weight: 400;
-  color: var(--color-text);
+  color: var(--color-text-secondary);
 }
 #questions .container-questions #container-img-cor-pele {
   display: flex;
@@ -138,7 +144,6 @@ form {
 #questions #observation {
   margin-top: 2rem;
   font-weight: 500;
-  color: #fff;
 }
 #questions #observation #campo-observation {
   width: 500px;
@@ -150,18 +155,20 @@ form {
 }
 #container-btn #btn-form {
   width: 40%;
-  height: 30px;
+  height: 35px;
   cursor: pointer;
   border: none;
-  background-color: var(--tertiary);
+  background-color: var(--secondary);
+  border: 1px solid black;
   font-weight: 500;
   text-transform: uppercase;
   font-size: 15px;
-  color: #fff;
+  color: var(--color-text-secondary);
   border-radius: 2px;
 }
 #container-btn #btn-form:hover {
-  background-color: #b07055;
+  background-color: #817771;
+  color: #fff;
 }
 
 input::-moz-placeholder {

@@ -15,9 +15,10 @@
     font-family: 'montserrat';
 }
 body{
-    background-color: #fff;
+    background-color: #ffff;
     background-size: cover;
     background-position: center;
+    
 }
 
 form{   
@@ -28,31 +29,35 @@ form{
     border-radius: 5px;
     box-shadow: 1px 1px 7px var(--primary);
     margin-bottom: 2rem;
-    background-color: rgb(29,31,43);
+    background-color: rgb(255, 255, 255);
+    
     
     
 }
 #title{
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
-    color: #fff;
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    margin-bottom: 3rem;
 }
 #dados-pessoais{
     label{
         display: block;
         font-weight: 500;
-        color: #fff;      
+        color:var(--color-text-secondary); 
+        font-size: 15px;     
     }
    
    
     input{
-        height: 30px;
+        height: 35px;
         outline: none;
-        border: 1px solid rgb(192, 183, 183);
+        border: 1.5px solid rgb(221, 215, 215);
         border-radius: 3px;
     }
     input:focus{
-        border: 1.5px solid rgb(144, 144, 248);
+        border: 1.5px solid var(--primary);
         border-radius: 3px;
     }
     
@@ -69,16 +74,18 @@ form{
 
 #genero{  
     margin-top: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     font-weight: 500;
     p{
         font-size: 16px;
         font-weight: 600;
         margin-bottom: 1rem;
-        color: #fff;
+        color:var(--color-text-secondary);
+        
     }
     label{
-        color: #fff;
+        color: var(--color-text-secondary);
+        font-size: 15px;
     }
    
 }
@@ -88,16 +95,17 @@ form{
         display: block;
         font-weight: 500;
         margin-top: 12px;
-        color: #fff;
+        color:var(--color-text-secondary);
+        font-size: 15px;
     }
     input{
-        height: 30px;
+        height: 35px;
         outline: none;
         border: 1px solid rgb(192, 183, 183);
         border-radius: 3px;
     }
     input:focus{
-        border: 1.5px solid rgb(144, 144, 248);
+        border: 1.5px solid var(--primary);
         border-radius: 3px;
     } 
     #rua{
@@ -126,7 +134,8 @@ form{
     h2{
         font-size: 20px;
         margin-bottom: 2rem;
-        color: #fff;
+        color: var(--color-text-secondary);
+        text-align: center;
     }
     .container-questions{
         margin-top: 2rem;
@@ -134,11 +143,11 @@ form{
         p{
             font-weight: 500;
             margin-bottom: 10px;
-            color: #fff;
+            color: var(--color-text-secondary);
         }
         label{
             font-weight: 400;
-            color: var(--color-text);
+            color: var(--color-text-secondary);
         }
         #container-img-cor-pele{
             display: flex;
@@ -165,7 +174,6 @@ form{
     #observation{
         margin-top: 2rem;
         font-weight: 500;
-        color: #fff;
         #campo-observation{
             width: 500px;
             outline: none;
@@ -177,18 +185,20 @@ form{
     margin-top: 1rem;
     #btn-form{
         width: 40%;
-        height: 30px;
+        height: 35px;
         cursor: pointer;
         border: none;
-        background-color: var(--tertiary);
+        background-color: var(--secondary);
+        border: 1px solid black;
         font-weight: 500;
         text-transform: uppercase;
         font-size: 15px;
-        color: #fff;
+        color: var(--color-text-secondary);
         border-radius: 2px;
     }
     #btn-form:hover{
-        background-color: #b07055;
+        background-color: #817771;
+        color: #fff;
 
     }
 }
