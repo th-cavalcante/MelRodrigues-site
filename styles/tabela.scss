@@ -552,15 +552,17 @@ body{
 
         #container-pacotes{
             flex-direction: column;
-            margin: none;
+            margin: auto;
             #pacotes{
                 margin-top: 2rem;
                 margin-bottom: 2rem;    
-                width: 100%;
+                width: 90%;
                 box-shadow: 1px 1px 6px  #a39286 ;
                 border-radius: 0px 0px 10px 10px;
-                margin: 10px;
+                margin: 15px;
+                
                 .cards-pacotes{
+                    
                     .title-pacotes{
                         background-color: var(--primary);
                         width: 90%;
