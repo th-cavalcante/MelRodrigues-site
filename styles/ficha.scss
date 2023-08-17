@@ -144,16 +144,25 @@ form{
             font-weight: 500;
             margin-bottom: 10px;
             color: var(--color-text-secondary);
+            border: 1px solid rgb(226, 220, 220);
+            padding: 10px;
+            
         }
         label{
-            font-weight: 400;
+            font-weight: bold;
             color: var(--color-text-secondary);
+            margin: 10px;
+            
         }
         #container-img-cor-pele{
             display: flex;
             justify-content: center;
             align-items: center;
             .card-img-cor-pele{
+                border: 1px solid rgb(226, 218, 218);
+                margin: 5px;
+                border-radius: 4px;
+                
                
                 .img-cor-pele{
                     height: 150px;                
@@ -161,6 +170,8 @@ form{
                 }
                 p{
                     font-size: 11px;
+                   
+                   
                     
                     
                     
