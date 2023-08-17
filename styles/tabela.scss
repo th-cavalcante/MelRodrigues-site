@@ -291,7 +291,7 @@ body{
                     position: absolute;
                     bottom: 0;
                     display: flex;
-                    justify-content: space-around;
+                    justify-content: center;
                     align-items: center;
                     margin-top: 1rem;
                     background-color: var(--primary);
@@ -301,7 +301,7 @@ body{
                     width: 100%;
                     
                     .price{          
-                        width: 100px;
+                        width: 120px;
                         text-align: center;
                         border-right: 2px solid black;
                         p{
@@ -312,7 +312,7 @@ body{
                     }
                     #txt-price-monte-o-seu{
                         font-size: 15px;
-                        padding-right: 10px;
+                        padding-right: 20px;
                     }
                     
                 }
@@ -357,7 +357,8 @@ body{
                             background-color: rgb(92, 124, 92);
                         }
                         #btn-pacotes-last{
-                            width: 100px;
+                            width: 120px;
+                            margin-left: 10px;
                         }
         
                     }
@@ -494,7 +495,7 @@ body{
             }
             .rodape-card{
                 display: flex;
-                justify-content: space-between;
+                justify-content: center;
                 align-items: center;
                 background-color: var(--primary);
                 border-radius: 0px 0px 10px 10px;
@@ -502,8 +503,8 @@ body{
                 padding-bottom: 5px;
                 color: #fff;
     
-                .preco{        
-                    width: 40%;
+                .price{        
+                    width: 100px;
                     border-right: 2px solid black;
                     text-align: center;
                     .qtdd-parcelas{
@@ -627,15 +628,20 @@ body{
                         }                      
                     }
                     .card-price{
+                       
+                       
                         display: flex;
-                        justify-content: space-around;
+                        justify-content: center;
                         align-items: center;
                         margin-top: 1rem;
                         background-color: var(--primary);
                         border-radius: 0px 0px 10px 10px;
                         color: #fff;
+                        height: 60px;
+                        width: 100%;
+                        
                         .price{          
-                            width: 100px;
+                            width: 120px;
                             text-align: center;
                             border-right: 2px solid black;
                             p{
@@ -644,6 +650,11 @@ body{
                             }
                                       
                         }
+                        #txt-price-monte-o-seu{
+                            font-size: 15px;
+                            padding-right: 20px;
+                        }
+                        
                     }
                     .box-price-total-end-btn{
                         display: flex;
@@ -672,6 +683,10 @@ body{
                                 border: none;
                                 background-color: rgb(7, 194, 7);
                                 color: #fff;
+                            }
+                            #btn-pacotes-last{
+                                width: 120px;
+                                margin-left: 30px;
                             }
             
                         }
