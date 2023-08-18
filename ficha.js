@@ -214,7 +214,8 @@ if (form) {
     // Ao clicar em enviar, o formulário fecha e abre a div de respostas
     form.style.display = 'none';
     respostas.style.display = 'block';
-
+    
+    respostas.scrollIntoView({ behavior: 'smooth', block: 'start' });
     const enviado = true; // Defina o valor de acordo com a sua lógica
 
     if (enviado) {
