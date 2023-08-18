@@ -10,6 +10,38 @@ const bairro = document.getElementById("bairro").value;
 const cidade = document.getElementById("cidade").value;
 const cep = document.getElementById("cep").value;
 
+ isValid = true;
+
+if(!name){
+    alert('Por favor, digite seu nome completo');
+    document.getElementById("name").style.border = '1.5px solid red';   
+}
+if(!date){
+    alert('Por favor, insira sua data de nascimento');
+    document.getElementById("input-date").style.border = '1.5px solid red';
+    isValid = false;}
+
+if(!rg){
+    alert('Por favor, digite os numero do seu RG');
+    document.getElementById("rg").style.border = '1.5px solid red';
+}
+if(!rua){
+    alert('Por favor, digite os nome da sua rua com nº');
+    document.getElementById("rua").style.border = '1.5px solid red';
+}
+if(!bairro){
+    alert('Por favor, digite os nome do seu bairro');
+    document.getElementById("bairro").style.border = '1.5px solid red';
+}
+if(!cidade){
+    alert('Por favor, digite o nome da sua cidade');
+    document.getElementById("cidade").style.border = '1.5px solid red';
+}
+if(!cep){
+    alert('Por favor, digite seu CEP');
+    document.getElementById("cep").style.border = '1.5px solid red';
+}
+
 
 // Trazendo o formulário e a seção de respostas
 const form = document.getElementById('anamnese');
@@ -36,8 +68,13 @@ if (form) {
 
     // Sexo (checked- Radio)
     const generoPrint = document.getElementById('genero-print');
-    const generoSelecionado = document.querySelector("input[name='genero']:checked").value;
-    generoPrint.innerHTML = generoSelecionado;
+    const generoSelecionado = document.querySelector("input[name='genero']:checked");
+    if(generoSelecionado){
+        generoPrint.innerHTML = generoSelecionado;
+    }else{
+        alert('Por favor, selecione seu gênero')
+    }
+   
 
     
 
@@ -59,7 +96,7 @@ if (form) {
 
      //pergunta e resposta 2
     const respSelecionada2 = document.querySelector("input[name='pergunta2']:checked").value;
-    resposta2.innerHTML = respSelecionada2
+        resposta2.innerHTML = respSelecionada2
      //pergunta e resposta 3
     const respSelecionada3 = document.querySelector("input[name='pergunta3']:checked").value;
     resposta3.innerHTML = respSelecionada3
@@ -118,9 +155,26 @@ if (form) {
         callback(false); // Chama o callback com valor false
     }
 
-
+    
    
 }
+}
+
+
+const respostaIds = ['resposta2', 'resposta3', 'resposta4', 'resposta5', 'resposta6', 'resposta7', 'resposta8', 'resposta9','resposta10','resposta11','resposta12','resposta13'];
+function verificationCheckedRadio(){
+     let todasRespondidas = true;
+
+     for (const respostaId of respostaIds){
+        const respostaElement = document.getElementById(respostaId);
+        if(!respostaElement.innerHTML.trim()){
+            todasRespondidas = false;
+           
+        }
+     }
+     if(!todasRespondidas){
+        alert('Existem perguntas no questionário sem resposta!')
+     }
 }
 
 
@@ -146,6 +200,10 @@ function confirmarRespostas() {
         }
     });
 }
+
+
+
+
 
 
 
