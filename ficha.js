@@ -74,6 +74,8 @@ if (form) {
         generoPrint.innerHTML = generoSelecionado.value;
     }else{
         alert('Por favor selecione o gênero')
+        const name = document.getElementById("name");
+        name.scrollIntoView({ behavior: 'smooth' });
     }
     
    
