@@ -22,41 +22,41 @@
             <h1 id="title">Prencha todos os campos abaixo:</h1>
             <div id="dados-pessoais">
                 <label for="name">Nome Completo:</label>
-                <input type="text" id="name" required placeholder="Digite seu nome...">
+                <input type="text" id="name" required placeholder="Digite seu nome..." required>
                 <div id="date">
                     <label  for="date">Data de Nascimento</label>
                     <input type="Date" id="input-date" required>
                 </div>
                   
                 <label for="rg">RG:</label>
-                <input type="text" id="rg"  required placeholder="00.000.000-0">
+                <input type="text" id="rg"  placeholder="00.000.000-0" required >
             </div>
             
     
             <div id="genero">
                 <p>Sexo:</p>
                 <label for="masculino">Masculino</label>
-                <input type="radio" id="Masculino" name="genero" value="Masculino">
+                <input type="radio" id="Masculino" name="genero" value="Masculino" required>
                 <label for="feminino">Feminino</label>
-                <input type="radio" id="feminino" name="genero" value="Feminino">
+                <input type="radio" id="feminino" name="genero" value="Feminino" required>
             </div>
     
             <div id="adress">
                 <label for="adress">Rua e nº</label>
-                <input type="text" id="rua" required placeholder="Digite o nome da rua e nº">
+                <input type="text" id="rua" placeholder="Digite o nome da rua e nº" required >
                
                 <div id="container-input-align">
                     <div class="input-align">
                         <label for="">Bairro</label>
-                        <input type="text" id="bairro" required placeholder="Nome do seu bairro">
+                        <input type="text" id="bairro"  placeholder="Nome do seu bairro" required>
                     </div>
                     <div id="input-align">
                         <label >Cidade</label>
-                        <input type="text" id="cidade" required placeholder="Nome da sua cidade">
+                        <input type="text" id="cidade"  placeholder="Nome da sua cidade" required>
                     </div>
                 </div>
                 <label for="cep" id="label-cep">CEP:</label>
-                <input type="text" id="cep" placeholder="00000-000">       
+                <input type="text" id="cep" placeholder="00000-000" required >       
             </div>
     
             <div id="questions">
@@ -259,51 +259,51 @@
                </div>
 
                <div class="respostas">
-                <p class="pergunta">Pergunta: Você se expõe a luz solar por mais de 15 minutos ao dia?</p>
+                <p class="pergunta">Você se expõe a luz solar por mais de 15 minutos ao dia?</p>
                 <p class="resposta" id="resposta2">Resposta: </p>
             </div>
             <div class="respostas">
-                <p class="pergunta">Pergunta: Quando se expõe a luz solar, faz uso de protetor solar?</p>
+                <p class="pergunta"> Quando se expõe a luz solar, faz uso de protetor solar?</p>
                 <p class="resposta" id="resposta3">Resposta: </p>
             </div>
             <div class="respostas">
-                <p class="pergunta">Pergunta: Possui manchas na pele ?</p>
+                <p class="pergunta">Possui manchas na pele ?</p>
                 <p class="resposta" id="resposta4">Resposta: </p>
             </div>
             <div class="respostas">
-                <p class="pergunta">Pergunta: Faz ou fez algum tratamento a base de ácidos ?</p>
+                <p class="pergunta">Faz ou fez algum tratamento a base de ácidos ?</p>
                 <p class="resposta" id="resposta5">Resposta: </p>
             </div>
             <div class="respostas">
-                <p class="pergunta">Pergunta:Possui algum distúrbio dermatológico?</p>
+                <p class="pergunta">Possui algum distúrbio dermatológico?</p>
                 <p class="resposta" id="resposta6">Resposta: </p>
             </div>
             <div class="respostas">
-                <p class="pergunta">Pergunta: Tem ou teve algum distúrbio hormonal e/ou déficit vitamínico diagnosticado?</p>
+                <p class="pergunta">Tem ou teve algum distúrbio hormonal e/ou déficit vitamínico diagnosticado?</p>
                 <p class="resposta" id="resposta7">Resposta: </p>
             </div>
             <div class="respostas">
-                <p class="pergunta">Pergunta: Possui hirsutismo?</p>
+                <p class="pergunta"> Possui hirsutismo?</p>
                 <p class="resposta" id="resposta8">Resposta: </p>
             </div>
             <div class="respostas">
-                <p class="pergunta">Pergunta: Faz o uso continuo de algum medicamento? (incluindo insulina e os anticoncepcionais hormonais seja oral, injetável, DIU, adesivo)</p>
+                <p class="pergunta">Faz o uso continuo de algum medicamento? (incluindo insulina e os anticoncepcionais hormonais seja oral, injetável, DIU, adesivo)</p>
                 <p class="resposta" id="resposta9">Resposta: </p>
             </div>
             <div class="respostas">
-                <p class="pergunta">Pergunta: Tem alergia a algum medicamento ?</p>
+                <p class="pergunta">Tem alergia a algum medicamento ?</p>
                 <p class="resposta" id="resposta10">Resposta: </p>
             </div>
             <div class="respostas">
-                <p class="pergunta">Pergunta: Tem alergia a metais ou ao frio ?</p>
+                <p class="pergunta">Tem alergia a metais ou ao frio ?</p>
                 <p class="resposta" id="resposta11">Resposta: </p>
             </div>
             <div class="respostas">
-                <p class="pergunta">Pergunta:Possui tatuagens na região de interesse da depilação ?</p>
+                <p class="pergunta">Possui tatuagens na região de interesse da depilação ?</p>
                 <p class="resposta" id="resposta12">Resposta: </p>
             </div>
             <div class="respostas">
-                <p class="pergunta">Pergunta: Está gravida ou amamentando ?</p>
+                <p class="pergunta"> Está gravida ou amamentando ?</p>
                 <p class="resposta" id="resposta13">Resposta: </p>
             </div>
 
@@ -317,7 +317,8 @@
         </div>
 
       
-
+        <p id="msg-confirmation">Confirme se as informações acima estão corretas, e gere o PDF para envio do fomulário.<span>*</span></p>
+        
         <button type="button" onclick="confirmarRespostas()" id="btn-pdf">Gerar PDF</button>
 
 

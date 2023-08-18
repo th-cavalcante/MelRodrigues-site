@@ -189,7 +189,7 @@ input::placeholder {
 }
 
 #respostas {
-  display: none;
+  display: block;
   box-shadow: 1px 1px 10px rgba(181, 175, 175, 0.4);
   width: 60%;
   margin: auto;
@@ -197,12 +197,13 @@ input::placeholder {
   margin-top: 5px;
   font-size: 16px;
   border-radius: 3px;
-  color: #fff;
-  background-color: rgb(29, 31, 43);
+  color: var(--color-text-secondary);
+  background-color: #fff;
 }
 #respostas h1 {
   text-align: center;
   font-size: 25px;
+  margin-bottom: 2rem;
 }
 #respostas h2 {
   font-size: 15px;
@@ -210,7 +211,7 @@ input::placeholder {
   text-align: center;
 }
 #respostas .respostas {
-  color: rgb(242, 113, 113);
+  color: rgb(33, 33, 247);
 }
 #respostas #genero p {
   font-size: 16px;
@@ -219,17 +220,32 @@ input::placeholder {
   color: #fff;
 }
 #respostas #btn-pdf {
-  width: 40%;
-  height: 30px;
-  font-weight: 500;
   border: none;
+  width: 40%;
+  height: 40px;
+  font-weight: 600;
+  background-color: red;
   cursor: pointer;
-  background-color: #b07055;
+  text-transform: uppercase;
   color: #fff;
   border-radius: 2px;
+  font-size: 18px;
+  transition: all 1s;
 }
 #respostas #btn-pdf:hover {
-  background-color: #c68c73;
+  background-color: rgb(139, 2, 2);
+  color: #fff;
+}
+
+#msg-confirmation {
+  font-size: 14px;
+  font-style: italic;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+#msg-confirmation span {
+  color: red;
+  font-family: 100px;
 }
 
 .selected {
@@ -335,7 +351,7 @@ input::placeholder {
   }
   #respostas {
     display: none;
-    box-shadow: 1px 1px 10px rgba(181, 175, 175, 0.4);
+    box-shadow: 1px 1px 10px #fff;
     width: 95%;
     margin: auto;
     padding: 20px;
@@ -350,6 +366,7 @@ input::placeholder {
     font-size: 15px;
     text-transform: uppercase;
     font-weight: bold;
+    margin-bottom: 2rem;
   }
   #respostas h2 {
     font-size: 15px;
