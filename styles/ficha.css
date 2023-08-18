@@ -353,7 +353,7 @@ input::placeholder {
     border-radius: 2px;
   }
   #respostas {
-    display: block;
+    display: none;
     box-shadow: 1px 1px 10px #fff;
     width: 95%;
     margin: auto;
