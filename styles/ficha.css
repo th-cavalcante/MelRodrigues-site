@@ -127,6 +127,11 @@ form {
   color: var(--color-text-secondary);
   padding: 10px;
 }
+#questions .container-questions p span {
+  padding-right: 10px;
+  font-weight: bold;
+  color: rgb(42, 42, 148);
+}
 #questions .container-questions label {
   font-weight: bold;
   color: var(--color-text-secondary);

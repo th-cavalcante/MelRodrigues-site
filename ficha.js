@@ -14,32 +14,32 @@ const cep = document.getElementById("cep").value;
 
 if(!name){
     alert('Por favor, digite seu nome completo');
-    document.getElementById("name").style.border = '1.5px solid red';   
+    document.getElementById("name").style.border = '1px solid red';   
 }
 if(!date){
     alert('Por favor, insira sua data de nascimento');
-    document.getElementById("input-date").style.border = '1.5px solid red';
+    document.getElementById("input-date").style.border = '1px solid red';
     isValid = false;}
 
 if(!rg){
     alert('Por favor, digite os numero do seu RG');
-    document.getElementById("rg").style.border = '1.5px solid red';
+    document.getElementById("rg").style.border = '1px solid red';
 }
 if(!rua){
     alert('Por favor, digite os nome da sua rua com nº');
-    document.getElementById("rua").style.border = '1.5px solid red';
+    document.getElementById("rua").style.border = '1px solid red';
 }
 if(!bairro){
     alert('Por favor, digite os nome do seu bairro');
-    document.getElementById("bairro").style.border = '1.5px solid red';
+    document.getElementById("bairro").style.border = '1px solid red';
 }
 if(!cidade){
     alert('Por favor, digite o nome da sua cidade');
-    document.getElementById("cidade").style.border = '1.5px solid red';
+    document.getElementById("cidade").style.border = '1px solid red';
 }
 if(!cep){
     alert('Por favor, digite seu CEP');
-    document.getElementById("cep").style.border = '1.5px solid red';
+    document.getElementById("cep").style.border = '1px solid red';
 }
 
 
@@ -48,6 +48,7 @@ const form = document.getElementById('anamnese');
 const respostas = document.getElementById('respostas');
 
 if (form) {
+ 
     // Nome, data de nascimento, RG
     const nomePrint = document.getElementById('name-print');
     const datePrint = document.getElementById('date-print');
@@ -70,10 +71,14 @@ if (form) {
     const generoPrint = document.getElementById('genero-print');
     const generoSelecionado = document.querySelector("input[name='genero']:checked");
     if(generoSelecionado){
-        generoPrint.innerHTML = generoSelecionado;
+        generoPrint.innerHTML = generoSelecionado.value;
     }else{
-        alert('Por favor, selecione seu gênero')
+        alert('Por favor selecione o gênero')
     }
+    
+   
+        
+    
    
 
     
@@ -95,41 +100,102 @@ if (form) {
 
 
      //pergunta e resposta 2
-    const respSelecionada2 = document.querySelector("input[name='pergunta2']:checked").value;
-        resposta2.innerHTML = respSelecionada2
-     //pergunta e resposta 3
-    const respSelecionada3 = document.querySelector("input[name='pergunta3']:checked").value;
-    resposta3.innerHTML = respSelecionada3
-    //pergunta e resposta 4
-    const respSelecionada4 = document.querySelector("input[name='pergunta4']:checked").value;
-    resposta4.innerHTML = respSelecionada4
-    //pergunta e resposta 5
-    const respSelecionada5 = document.querySelector("input[name='pergunta5']:checked").value;
-    resposta5.innerHTML = respSelecionada5
-    //pergunta e resposta 6
-    const respSelecionada6 = document.querySelector("input[name='pergunta6']:checked").value;
-    resposta6.innerHTML = respSelecionada6
-    //pergunta e resposta 7
-    const respSelecionada7 = document.querySelector("input[name='pergunta7']:checked").value;
-    resposta7.innerHTML = respSelecionada7
+    const respSelecionada2 = document.querySelector("input[name='pergunta2']:checked");
+    if(respSelecionada2){
+        resposta2.innerHTML = respSelecionada2.value
+    }else{
+        alert('Por favor, responda a pergunta 2 do questionário')
+        return;
+    }
+ 
+    const respSelecionada3 = document.querySelector("input[name='pergunta3']:checked");
+    if(respSelecionada3){
+        resposta3.innerHTML = respSelecionada3.value
+    }else{
+        alert('Por favor, responda a pergunta 3 do questionário')
+        return;
+    }
+
+    const respSelecionada4 = document.querySelector("input[name='pergunta4']:checked");
+    if(respSelecionada4){
+        resposta4.innerHTML = respSelecionada4.value
+    }else{
+        alert('Por favor, responda a pergunta 4 do questionário')
+        return;
+    }
+
+    const respSelecionada5 = document.querySelector("input[name='pergunta5']:checked");
+    if(respSelecionada5){
+        resposta5.innerHTML = respSelecionada5.value
+    }else{
+        alert('Por favor, responda a pergunta 5 do questionário')
+        return;
+    }
+    
+    const respSelecionada6 = document.querySelector("input[name='pergunta6']:checked");
+    if(respSelecionada6){
+        resposta6.innerHTML = respSelecionada6.value
+    }else{
+        alert('Por favor, responda a pergunta 6 do questionário')
+        return;
+    }
+    
+    const respSelecionada7 = document.querySelector("input[name='pergunta7']:checked");
+    if(respSelecionada7){
+        resposta7.innerHTML = respSelecionada7.value
+    }else{
+        alert('Por favor, responda a pergunta 7 do questionário')
+        return;
+    }
     //pergunta e resposta 8
-    const respSelecionada8 = document.querySelector("input[name='pergunta8']:checked").value;
-    resposta8.innerHTML = respSelecionada8
-    //pergunta e resposta 9
-    const respSelecionada9 = document.querySelector("input[name='pergunta9']:checked").value;
-    resposta9.innerHTML = respSelecionada9
-    //pergunta e resposta 10
-    const respSelecionada10 = document.querySelector("input[name='pergunta10']:checked").value;
-    resposta10.innerHTML = respSelecionada10
-    //pergunta e resposta 11
-    const respSelecionada11 = document.querySelector("input[name='pergunta11']:checked").value;
-    resposta11.innerHTML = respSelecionada11
+    const respSelecionada8 = document.querySelector("input[name='pergunta8']:checked");
+    if(respSelecionada8){
+        resposta8.innerHTML = respSelecionada8.value
+    }else{
+        alert('Por favor, responda a pergunta 8 do questionário')
+        return;
+    }
+   
+    const respSelecionada9 = document.querySelector("input[name='pergunta9']:checked");
+    if(respSelecionada9){
+        resposta9.innerHTML = respSelecionada9.value
+    }else{
+        alert('Por favor, responda a pergunta 9 do questionário')
+        return;
+    }
+  
+    const respSelecionada10 = document.querySelector("input[name='pergunta10']:checked");
+    if(respSelecionada10){
+        resposta10.innerHTML = respSelecionada10.value
+    }else{
+        alert('Por favor, responda a pergunta 10 do questionário')
+        return;
+    }
+   
+    const respSelecionada11 = document.querySelector("input[name='pergunta11']:checked");
+    if(respSelecionada11){
+        resposta11.innerHTML = respSelecionada11.value
+    }else{
+        alert('Por favor, responda a pergunta 11 do questionário')
+        return;
+    }
     //pergunta e resposta 12
-    const respSelecionada12 = document.querySelector("input[name='pergunta12']:checked").value;
-    resposta12.innerHTML = respSelecionada12
-    //pergunta e resposta 13
-    const respSelecionada13 = document.querySelector("input[name='pergunta13']:checked").value;
-    resposta13.innerHTML = respSelecionada13
+    const respSelecionada12 = document.querySelector("input[name='pergunta12']:checked");
+    if(respSelecionada12){
+        resposta12.innerHTML = respSelecionada12.value
+    }else{
+        alert('Por favor, responda a pergunta 12 do questionário')
+        return;
+    }
+
+    const respSelecionada13 = document.querySelector("input[name='pergunta13']:checked");
+    if(respSelecionada13){
+        resposta13.innerHTML = respSelecionada13.value
+    }else{
+        alert('Por favor, responda a pergunta 13 do questionário')
+        return;
+    }
+   
 
     //observacoes
     const respObservation = document.getElementById('campo-observation').value;
@@ -158,24 +224,10 @@ if (form) {
     
    
 }
+
 }
 
 
-const respostaIds = ['resposta2', 'resposta3', 'resposta4', 'resposta5', 'resposta6', 'resposta7', 'resposta8', 'resposta9','resposta10','resposta11','resposta12','resposta13'];
-function verificationCheckedRadio(){
-     let todasRespondidas = true;
-
-     for (const respostaId of respostaIds){
-        const respostaElement = document.getElementById(respostaId);
-        if(!respostaElement.innerHTML.trim()){
-            todasRespondidas = false;
-           
-        }
-     }
-     if(!todasRespondidas){
-        alert('Existem perguntas no questionário sem resposta!')
-     }
-}
 
 
 
