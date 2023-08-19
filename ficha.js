@@ -303,3 +303,19 @@ function checkedImg(imgElement) {
         resposta1.appendChild(cloneImg);
     }
 };
+
+function validarCEP(input) {
+    const cep = document.getElementById("cep");
+    // Remove todos os caracteres que não são números
+    const cleanedValue = input.value.replace(/\D/g, '');
+    // Limita o campo a um máximo de 8 dígitos
+    const cepValue = cleanedValue.substring(0, 8);
+
+    // Formata o CEP usando a máscara (opcional)
+    const formattedCEP = cepValue.replace(/(\d{5})(\d{3})/, '$1-$2');
+
+    // Define o valor formatado no campo
+    cep.value = formattedCEP;
+}
+
+
