@@ -28,8 +28,8 @@ if(!date){
     isValid = false;}
    
 
-if(!rg){
-    alert('Por favor, digite os numero do seu RG');
+if(!rg || rg.length < 7){
+    alert('RG inválido, por favor retorne ao campo para corrigir');
     document.getElementById("rg").style.border = '1px solid red';
     backTopo.scrollIntoView({ behavior: 'smooth' }); //voltar ao topo//
     return;
@@ -52,8 +52,8 @@ if(!cidade){
     backTopo.scrollIntoView({ behavior: 'smooth' }); //voltar ao topo//
     return;
 }
-if(!cep){
-    alert('Por favor, digite seu CEP');
+if(!cep || cep.length < 8){
+    alert('CEP inválido, por favor retorne ao campo para corrigir');
     document.getElementById("cep").style.border = '1px solid red';
     backTopo.scrollIntoView({ behavior: 'smooth' }); //voltar ao topo//
     return;
@@ -310,12 +310,11 @@ function validarCEP(input) {
     const cleanedValue = input.value.replace(/\D/g, '');
     // Limita o campo a um máximo de 8 dígitos
     const cepValue = cleanedValue.substring(0, 8);
-
     // Formata o CEP usando a máscara (opcional)
     const formattedCEP = cepValue.replace(/(\d{5})(\d{3})/, '$1-$2');
-
-    // Define o valor formatado no campo
+   // Define o valor formatado no campo
     cep.value = formattedCEP;
+    
 }
 
 
