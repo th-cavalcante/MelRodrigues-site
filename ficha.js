@@ -10,36 +10,53 @@ const bairro = document.getElementById("bairro").value;
 const cidade = document.getElementById("cidade").value;
 const cep = document.getElementById("cep").value;
 
+let backTopo = document.getElementById('title');
+
+
  isValid = true;
 
 if(!name){
     alert('Por favor, digite seu nome completo');
-    document.getElementById("name").style.border = '1px solid red';   
+    document.getElementById("name").style.border = '1px solid red'; 
+    backTopo.scrollIntoView({ behavior: 'smooth' }); //voltar ao topo//
+    return;  
 }
 if(!date){
     alert('Por favor, insira sua data de nascimento');
     document.getElementById("input-date").style.border = '1px solid red';
+    backTopo.scrollIntoView({ behavior: 'smooth' }); //voltar ao topo//
     isValid = false;}
+   
 
 if(!rg){
     alert('Por favor, digite os numero do seu RG');
     document.getElementById("rg").style.border = '1px solid red';
+    backTopo.scrollIntoView({ behavior: 'smooth' }); //voltar ao topo//
+    return;
 }
 if(!rua){
     alert('Por favor, digite os nome da sua rua com nº');
     document.getElementById("rua").style.border = '1px solid red';
+    backTopo.scrollIntoView({ behavior: 'smooth' }); //voltar ao topo//
+    return;
 }
 if(!bairro){
     alert('Por favor, digite os nome do seu bairro');
     document.getElementById("bairro").style.border = '1px solid red';
+    backTopo.scrollIntoView({ behavior: 'smooth' }); //voltar ao topo//
+    return;
 }
 if(!cidade){
     alert('Por favor, digite o nome da sua cidade');
     document.getElementById("cidade").style.border = '1px solid red';
+    backTopo.scrollIntoView({ behavior: 'smooth' }); //voltar ao topo//
+    return;
 }
 if(!cep){
     alert('Por favor, digite seu CEP');
     document.getElementById("cep").style.border = '1px solid red';
+    backTopo.scrollIntoView({ behavior: 'smooth' }); //voltar ao topo//
+    return;
 }
 
 
@@ -74,17 +91,12 @@ if (form) {
         generoPrint.innerHTML = generoSelecionado.value;
     }else{
         alert('Por favor selecione o gênero')
-        const name = document.getElementById("name");
-        name.scrollIntoView({ behavior: 'smooth' });
+        backTopo.scrollIntoView({ behavior: 'smooth' });
+        return;
     }
     
    
         
-    
-   
-
-    
-
     const resposta2 = document.getElementById('resposta2');
     const resposta3 = document.getElementById('resposta3');
     const resposta4 = document.getElementById('resposta4');
@@ -97,10 +109,9 @@ if (form) {
     const resposta11 = document.getElementById('resposta11');
     const resposta12 = document.getElementById('resposta12');
     const resposta13 = document.getElementById('resposta13');
+
+    //topo das questoes para rolagem
   
- 
-
-
      //pergunta e resposta 2
     const respSelecionada2 = document.querySelector("input[name='pergunta2']:checked");
     if(respSelecionada2){

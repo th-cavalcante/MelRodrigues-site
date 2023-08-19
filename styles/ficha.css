@@ -221,6 +221,10 @@ input::placeholder {
 #respostas #genero p {
   font-size: 16px;
 }
+#respostas #genero #genero-print {
+  font-size: 15px;
+  font-weight: 400;
+}
 #respostas #questions .respostas .pergunta {
   color: #fff;
 }
