@@ -303,8 +303,8 @@ function checkedImg(imgElement) {
         cloneImg.removeAttribute('class');
 
       
-        cloneImg.style.width = '60px';
-        cloneImg.style.height = '100px'; // Mantém a proporção original
+        cloneImg.style.width = '40px';
+        cloneImg.style.height = '60px'; // Mantém a proporção original
 
         resposta1.innerHTML = '';
         resposta1.appendChild(cloneImg);
