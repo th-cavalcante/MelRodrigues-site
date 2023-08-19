@@ -95,8 +95,15 @@ if (form) {
         return;
     }
     
+
+    
    
-        
+    let titleQuestion = document.getElementById('title-selected-question');
+    if(!selectedImage){
+        alert('Por favor, selecione uma imagem na pergunta 1')
+        titleQuestion.scrollIntoView({ behavior: 'smooth' });
+        return;
+    }    
     const resposta2 = document.getElementById('resposta2');
     const resposta3 = document.getElementById('resposta3');
     const resposta4 = document.getElementById('resposta4');
