@@ -77,6 +77,11 @@ sr.reveal('#card-text-about-me', {
 
 
 
+function teste(){
+    alert('EU TAMBEM TE AMO')
+}
+
+
 
 
 
