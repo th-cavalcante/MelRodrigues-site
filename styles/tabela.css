@@ -444,13 +444,13 @@ body {
   }
   #price-list #container-pacotes .pacotes .container-pacotes .subtitle-pacotes {
     text-align: center;
-    margin-top: 5px;
+    margin-top: 0px;
   }
   #price-list #container-pacotes .pacotes .container-pacotes .subtitle-pacotes h2 {
-    font-size: 18px;
+    font-size: 20px;
     text-transform: uppercase;
-    padding-top: 20px;
-    max-width: 200px;
+    padding-top: 0px;
+    max-width: 220px;
     margin: 0 auto;
   }
   #price-list #container-pacotes .pacotes .container-pacotes .card-price .price {
@@ -468,7 +468,7 @@ body {
     font-weight: bold;
   }
   #price-list #container-pacotes .pacotes .container-pacotes .card-price .box-btn-pacotes {
-    height: 60px;
+    height: 80px;
     position: absolute;
     bottom: 0;
     left: 50%;
