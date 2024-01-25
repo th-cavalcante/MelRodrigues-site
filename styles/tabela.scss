@@ -219,19 +219,26 @@ body{
     }
 
     #container-pacotes{
-        display: flex;
+
+        display: grid;
+        grid-template-rows: repeat(2, 1fr); 
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 10px;
         margin: 1.5rem;
-        #pacotes{
-                margin-top: 2rem;
+        .pacotes{
+                
                 margin-bottom: 2rem;    
-                width: 320px;
+                width: 280px;
+                height: 300PX;
                 box-shadow: 1px 1px 10px  #a39286 ;
                 border-radius: 0px 0px 10px 10px;
                 margin: 5px;
                 position: relative;
                 
             
-            .cards-pacotes{
+            .container-pacotes{
+                margin-top: 5;
+              
                      
                 .title-pacotes{
                     background-color: var(--primary);
@@ -250,120 +257,51 @@ body{
                     text-align: center;
                     margin-top: 5px;
                     h2{
-                        font-size: 20px;
+                        font-size: 25px;
                         text-transform: uppercase;
                         margin-bottom: 10px;
+                        padding-top: 20px;
         
                     }
-                    h3{
-                        font-size: 16px;
-        
-                    }    
-                }
-                .options{
-                    text-align: center;
-                    margin-top: 1rem;
-                    margin-bottom: 10px;
-                    font-size: 17px;
-                    font-weight: 500;
-                    text-transform: uppercase;
-        
-                }
-                .list-options{
-                    height: 320px;
-                    margin-left: 50px;
                     
-                    li{
-                        font-weight: 500;
-                        margin-left: 25px;
-                        font-size: 18px;
-                    }
+  
                 }
-                #list-pacote4{
-                    li{
-                        font-size: 14px;
 
-                    }
-                    
-                }
-                
                 .card-price{
-                    position: absolute;
-                    bottom: 0;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    margin-top: 1rem;
-                    background-color: var(--primary);
-                    border-radius: 0px 0px 10px 10px;
-                    color: #fff;
-                    height: 60px;
-                    width: 100%;
-                    
-                    .price{          
-                        width: 120px;
+                    .price{
                         text-align: center;
-                        border-right: 2px solid black;
+                        .price-before{
+                            color: red;
+                            font-size: 15px;
+                        }
                         p{
-                            font-size: 18px;
+                            color: #000;
+                            font-size: 30px;
                             font-weight: 600;
                         }
-                                  
-                    }
-                    #txt-price-monte-o-seu{
-                        font-size: 15px;
-                        padding-right: 20px;
-                    }
-                    
-                }
-                .box-price-total-end-btn{
-                    display: flex;
-                    justify-content: space-around;
-                    align-items: center;
-                    
-                    
-                    
-                    .price-total{
-                        margin: 10px;
-                        .price-before{
-                            text-decoration: line-through;
-                            font-weight: 400;
-                            font-size: 12px;
-                        }
-                        p{
-                            font-weight: 500;
-                            font-size: 15px;
-                            
-                        }
-                        
+
                     }
                     .box-btn-pacotes{
-                        
+                        margin-top: 5px;
+                        height: 80px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
                         .btn-pacotes{
-                            width: 80px;
-                            height: 35px;
-                            border: none;
-                            background-color: rgb(7, 194, 7);
-                            
+                            width: 250px;
+                            height: 40px;
                             a{
+                                color: #000;
                                 text-decoration: none;
-                                color: #fff;
-                                font-size: 13px;
-                                text-transform: uppercase;
-                                font-weight: bold;
+                                font-weight: 600;
                             }
                         }
-                        .btn-pacotes:hover{
-                            background-color: rgb(92, 124, 92);
-                        }
-                        #btn-pacotes-last{
-                            width: 120px;
-                            margin-left: 10px;
-                        }
-        
                     }
-                   
+
                 }
+
+
+                    
                 
             }
             
