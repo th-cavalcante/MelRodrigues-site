@@ -186,19 +186,21 @@ body {
   color: #5d5d5d;
 }
 #price-list #container-pacotes {
+  padding-top: 50px;
   display: grid;
   grid-template-rows: repeat(2, 1fr);
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 20px;
   margin: 1.5rem;
 }
 #price-list #container-pacotes .pacotes {
+  position: relative;
   margin-bottom: 2rem;
   width: 280px;
-  height: 300PX;
-  box-shadow: 1px 1px 10px #a39286;
+  height: 270PX;
+  box-shadow: 1px 1px 10px #d4cecd;
   border-radius: 0px 0px 10px 10px;
-  margin: 5px;
+  margin-top: 10px;
   position: relative;
 }
 #price-list #container-pacotes .pacotes .container-pacotes {
@@ -210,9 +212,10 @@ body {
   text-align: center;
   margin: 0 auto;
   margin-top: -20px;
+  border-radius: 10px;
 }
 #price-list #container-pacotes .pacotes .container-pacotes .title-pacotes h1 {
-  font-size: 30px;
+  font-size: 26px;
   font-weight: bold;
   color: #fff;
 }
@@ -221,38 +224,50 @@ body {
   margin-top: 5px;
 }
 #price-list #container-pacotes .pacotes .container-pacotes .subtitle-pacotes h2 {
-  font-size: 25px;
+  font-size: 18px;
   text-transform: uppercase;
-  margin-bottom: 10px;
   padding-top: 20px;
+  max-width: 200px;
+  margin: 0 auto;
 }
 #price-list #container-pacotes .pacotes .container-pacotes .card-price .price {
   text-align: center;
+  padding-top: 25px;
 }
 #price-list #container-pacotes .pacotes .container-pacotes .card-price .price .price-before {
   color: red;
   font-size: 15px;
+  text-decoration: line-through;
 }
 #price-list #container-pacotes .pacotes .container-pacotes .card-price .price p {
-  color: #000;
+  color: #636060;
   font-size: 30px;
-  font-weight: 600;
+  font-weight: bold;
 }
 #price-list #container-pacotes .pacotes .container-pacotes .card-price .box-btn-pacotes {
-  margin-top: 5px;
   height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 #price-list #container-pacotes .pacotes .container-pacotes .card-price .box-btn-pacotes .btn-pacotes {
   width: 250px;
   height: 40px;
+  background-color: #1cbd1c;
+  border: none;
+  border-radius: 3px;
 }
 #price-list #container-pacotes .pacotes .container-pacotes .card-price .box-btn-pacotes .btn-pacotes a {
   color: #000;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 15px;
+  color: white;
+}
+#price-list #container-pacotes .pacotes .container-pacotes .card-price .box-btn-pacotes :hover {
+  background-color: #1DDA1D;
 }
 
 @media (max-width: 768px) {
@@ -394,125 +409,87 @@ body {
     text-transform: uppercase;
   }
   #price-list #container-pacotes {
-    flex-direction: column;
-    margin: 5px;
+    padding-top: 50px;
+    display: grid;
+    grid-template-rows: repeat(1, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+    gap: 5px;
+    width: 95%;
   }
-  #price-list #container-pacotes #pacotes {
-    margin-top: 2rem;
+  #price-list #container-pacotes .pacotes {
+    position: relative;
     margin-bottom: 2rem;
-    width: 90%;
-    box-shadow: 1px 1px 6px #a39286;
+    width: 95%;
+    height: 325px;
+    box-shadow: 1px 1px 10px #d4cecd;
     border-radius: 0px 0px 10px 10px;
-    margin: 15px;
+    margin-top: 10px;
+    position: relative;
   }
-  #price-list #container-pacotes #pacotes .cards-pacotes .title-pacotes {
+  #price-list #container-pacotes .pacotes .container-pacotes {
+    margin-top: 5px;
+  }
+  #price-list #container-pacotes .pacotes .container-pacotes .title-pacotes {
     background-color: var(--primary);
-    width: 90%;
+    width: 85%;
     text-align: center;
+    margin: 0 auto;
     margin-top: -20px;
+    border-radius: 10px;
   }
-  #price-list #container-pacotes #pacotes .cards-pacotes .title-pacotes h1 {
-    font-size: 28px;
+  #price-list #container-pacotes .pacotes .container-pacotes .title-pacotes h1 {
+    font-size: 26px;
     font-weight: bold;
     color: #fff;
   }
-  #price-list #container-pacotes #pacotes .cards-pacotes .subtitle-pacotes {
+  #price-list #container-pacotes .pacotes .container-pacotes .subtitle-pacotes {
     text-align: center;
     margin-top: 5px;
   }
-  #price-list #container-pacotes #pacotes .cards-pacotes .subtitle-pacotes h2 {
-    font-size: 22px;
-    color: #4e4c4c;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes .subtitle-pacotes h3 {
-    font-size: 16px;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes .options {
-    text-align: center;
-    margin-top: 1rem;
-    margin-bottom: 10px;
+  #price-list #container-pacotes .pacotes .container-pacotes .subtitle-pacotes h2 {
     font-size: 18px;
-    font-weight: 500;
     text-transform: uppercase;
+    padding-top: 20px;
+    max-width: 200px;
+    margin: 0 auto;
   }
-  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote1 {
-    font-weight: 500;
-    height: 170px;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote1 li {
-    font-size: 15px;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote2 {
-    font-weight: 500;
-    height: 170px;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote2 li {
-    font-size: 15px;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote3 {
-    font-weight: 500;
-    height: 240px;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote3 li {
-    font-size: 15px;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote4 {
-    font-weight: 500;
-    height: 390px;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes #list-pacote4 li {
-    font-size: 15px;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes .card-price {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1rem;
-    background-color: var(--primary);
-    border-radius: 0px 0px 10px 10px;
-    color: #fff;
-    height: 60px;
-    width: 100%;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes .card-price .price {
-    width: 120px;
+  #price-list #container-pacotes .pacotes .container-pacotes .card-price .price {
     text-align: center;
-    border-right: 2px solid #fff;
+    padding-top: 25px;
   }
-  #price-list #container-pacotes #pacotes .cards-pacotes .card-price .price p {
+  #price-list #container-pacotes .pacotes .container-pacotes .card-price .price .price-before {
+    color: red;
     font-size: 15px;
-    font-weight: 600;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes .card-price #txt-price-monte-o-seu {
-    font-size: 15px;
-    padding-right: 20px;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .price-total {
-    margin: 10px;
-  }
-  #price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .price-total .price-before {
     text-decoration: line-through;
-    font-weight: 400;
-    font-size: 12px;
   }
-  #price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .price-total p {
+  #price-list #container-pacotes .pacotes .container-pacotes .card-price .price p {
+    color: #636060;
+    font-size: 30px;
     font-weight: bold;
-    font-size: 16px;
   }
-  #price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .box-btn-pacotes .btn-pacotes {
-    width: 80px;
-    height: 35px;
+  #price-list #container-pacotes .pacotes .container-pacotes .card-price .box-btn-pacotes {
+    height: 60px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  #price-list #container-pacotes .pacotes .container-pacotes .card-price .box-btn-pacotes .btn-pacotes {
+    width: 90% px;
+    height: 40px;
+    background-color: #1cbd1c;
     border: none;
-    background-color: rgb(7, 194, 7);
-    color: #fff;
+    border-radius: 3px;
   }
-  #price-list #container-pacotes #pacotes .cards-pacotes .box-price-total-end-btn .box-btn-pacotes #btn-pacotes-last {
-    width: 120px;
-    margin-left: 30px;
+  #price-list #container-pacotes .pacotes .container-pacotes .card-price .box-btn-pacotes .btn-pacotes a {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 15px;
+    color: white;
+  }
+  #price-list #container-pacotes .pacotes .container-pacotes .card-price .box-btn-pacotes :hover {
+    background-color: #1DDA1D;
   }
 }/*# sourceMappingURL=tabela.css.map */
