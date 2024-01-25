@@ -316,11 +316,12 @@ button {
 }
 #about-me #container-about-me #card-about-me {
   max-width: 30%;
+  background-color: transparent;
 }
 #about-me #container-about-me #card-about-me img {
   width: 300px;
   height: 300px;
-  border-radius: 40%;
+  border-radius: 50%;
 }
 #about-me #container-about-me #card-text-about-me {
   max-width: 60%;
@@ -786,7 +787,7 @@ footer #my-propagand #btn-propagand:hover {
   #about-me #container-about-me #card-about-me img {
     width: 150px;
     height: 150px;
-    border-radius: 40%;
+    border-radius: 50%;
   }
   #about-me #container-about-me #card-text-about-me {
     max-width: 90%;
