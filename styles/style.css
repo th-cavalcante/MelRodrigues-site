@@ -8,6 +8,8 @@
   --color-text-secondary: #000;
   --color-text-tertiary: #5d5d5d;
   --text: "montserrat";
+  --box-shadow:0 0 3px 1px rgb(0,0,0,0.1);
+  
 }
 
 * {
@@ -36,12 +38,12 @@ hr {
   right: 0;
   z-index: 999;
   height: 80px;
-  background-color: #ffffff;
+  background-color: #fff;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 0 4px 1px rgb(107, 107, 96);
+  box-shadow: var(--box-shadow);
 }
 #header #logo img {
   height: 150px;
