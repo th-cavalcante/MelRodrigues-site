@@ -41,7 +41,7 @@ hr{
     right: 0;
     z-index: 999;
     height: 80px;
-    background-color: #0daa04;
+    background-color: #fff;
     width: 100%;
     display: flex;
     justify-content:space-between;
@@ -498,36 +498,36 @@ button{
 
     #form{
         margin-top: 2rem;
-      
-         
-        form{
-            margin: auto;
-            border: 1px solid var(--tertiary);
-            width: 330px;
+  
+        form{       
+            width: 600px;
             padding: 20px 20px 10px 15px;
-            text-align: left;
-            border-radius: 3px;
+            
             p{
                 font-size: 15px;      
                 margin-bottom: 2rem;
                 text-align: center;
                
             }  
-            label{
-                padding: 2px;
-              
-                   
-               
+            div{
+                text-align: left;
+                label{
+                    padding: 3px;
+                    
+                     
+                }
             }
+            
             input{
                 outline: none;
-                width: 300px;
+                width: 100%;
                 height: 35px;   
                 border-radius: 3px;     
                 border: none;
+                padding: 20px;
             }
             input:focus{
-                border: 1px solid rgb(70, 70, 198);
+                border: 2px solid rgb(70, 228, 3);
             }
             #msg{
                 height: 100px;
@@ -536,19 +536,22 @@ button{
                 outline: none;
                 font-family:'montserrat';
                 letter-spacing: 0.8px;
+                width: 100%;  
+     
             }
             button{
-                margin-top: 1rem;
-                color: var(--tertiary);
+                margin-top: 50px;
+                color: var(--color-text);
                 height: 35px;
                 border: none;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 margin: auto;
-                background-color: #EEDFD4;
+                background-color: var(--tertiary);
                 width: 100%;
                 font-weight: 500;
+                text-transform: uppercase;
             }
                  
     }
@@ -1091,36 +1094,33 @@ footer{
     }
 
     #form{
-        margin-top: 2rem;
-        width: auto;
-      
-         
-        form{
-            margin: auto;
-            border: 1px solid var(--tertiary);
-            width: auto;
-            text-align: left;
-            border-radius: 4px;
-            padding-left: 25px;
-            padding-right: 25px;
-          
-            h3{
-                font-size: 18px;
+        margin-top: 0rem;
+        width: 100%;
+        form{       
+            width: 100%;
+            padding: 20px 20px 10px 15px;         
+            p{
+                font-size: 15px;      
                 margin-bottom: 2rem;
-                text-align: center;
+                text-align: center;          
             }  
-            label{
-                display: block;     
+            div{
+                text-align: left;
+                label{
+                    padding: 3px;               
+                }
             }
+            
             input{
-                border-radius: none;
                 outline: none;
                 width: 100%;
-                height: 35px;   
+                height: 40px;   
+                border-radius: 3px;     
                 border: none;
+                padding: 20px;
             }
             input:focus{
-                border: 1px solid rgb(70, 70, 198);
+                border: 2px solid rgb(70, 228, 3);
             }
             #msg{
                 height: 100px;
@@ -1129,21 +1129,21 @@ footer{
                 outline: none;
                 font-family:'montserrat';
                 letter-spacing: 0.8px;
-                width: 100%;
+                width: 100%;  
+     
             }
             button{
-                margin-top: 1rem;
+                margin-top: 50px;
                 color: var(--color-text);
-                width: 100%;
+                height: 35px;
                 border: none;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 margin: auto;
-                background-image: linear-gradient(180deg, var(--tertiary), var(--color-text-tertiary));
+                background-color: var(--tertiary);
+                width: 100%;
                 font-weight: 500;
-                height: 40px;
-                font-size: 18px;
                 text-transform: uppercase;
             }
                  
