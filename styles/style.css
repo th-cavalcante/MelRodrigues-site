@@ -801,14 +801,14 @@ footer #my-propagand #btn-propagand:hover {
     color: var(--color-text);
   }
   #contact {
-    padding: 10px;
+    padding-top: 10px;
     text-align: center;
     background-color: rgb(29, 31, 43);
     color: #eeffff;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-    width: auto;
+    width: 100%;
   }
   #contact #container-contact {
     align-items: center;
@@ -837,7 +837,7 @@ footer #my-propagand #btn-propagand:hover {
     font-size: 35px;
   }
   #contact #container-contact #box-btn-contact #btn-contact {
-    width: auto;
+    width: 100%;
     height: 40px;
     border: 1px solid var(--tertiary);
     background-color: #fff;
@@ -855,12 +855,11 @@ footer #my-propagand #btn-propagand:hover {
     box-shadow: 1px 1px 5px var(--secondary);
   }
   #contact #form {
-    margin-top: 0rem;
+    margin-top: 2rem;
     width: 100%;
-  }
-  #contact #form form {
-    width: 100%;
-    padding: 20px 20px 10px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   #contact #form form p {
     font-size: 15px;
