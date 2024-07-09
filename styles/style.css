@@ -334,7 +334,7 @@ button {
 }
 
 #contact {
-  padding: 10px;
+  padding: 0px;
   text-align: center;
   background-color: rgb(29, 31, 43);
   color: #eeffff;
@@ -449,25 +449,14 @@ footer #copy {
 }
 footer #my-propagand p {
   font-size: 13px;
+  text-decoration: none;
 }
-footer #my-propagand p span {
+footer #my-propagand p a {
+  text-decoration: none;
+}
+footer #my-propagand p a span {
   color: rgb(77, 243, 0);
   font-weight: 600;
-}
-footer #my-propagand #btn-propagand {
-  background-color: green;
-  border: none;
-  padding: 6px;
-  border-radius: 3px;
-  opacity: 0.9;
-}
-footer #my-propagand #btn-propagand a {
-  color: var(--color-text);
-  text-decoration: none;
-  font-weight: 500;
-}
-footer #my-propagand #btn-propagand:hover {
-  opacity: 1;
 }
 
 #redes {
@@ -861,6 +850,9 @@ footer #my-propagand #btn-propagand:hover {
     justify-content: center;
     align-items: center;
   }
+  #contact #form form {
+    width: 100%;
+  }
   #contact #form form p {
     font-size: 15px;
     margin-bottom: 2rem;
@@ -920,7 +912,10 @@ footer #my-propagand #btn-propagand:hover {
 #my-propagand p {
   font-size: 12px;
 }
-#my-propagand p span {
+#my-propagand p a {
+  text-decoration: none;
+}
+#my-propagand p a span {
   color: rgb(77, 243, 0);
   font-weight: 600;
 }

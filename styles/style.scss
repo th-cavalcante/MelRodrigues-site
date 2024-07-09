@@ -429,7 +429,7 @@ button{
 
 //contatos abaixo://
 #contact{
-    padding: 10px;
+    padding: 0px;
     text-align: center;
     background-color: rgb(29,31,43);
     color: #efff;
@@ -574,28 +574,18 @@ footer{
     #my-propagand{
         p{
             font-size: 13px;
-            
-    
-            span{
-                color:rgb(77, 243, 0);
-                font-weight: 600;
-            }
-        }
-        #btn-propagand{
-            background-color: green;
-            border: none;
-            padding: 6px;
-            border-radius: 3px;
-            opacity: .9;
+            text-decoration: none;
             a{
-                color: var(--color-text);
                 text-decoration: none;
-                font-weight: 500;
+                span{
+                    color:rgb(77, 243, 0);
+                    font-weight: 600;
+                }
+
             }
+                
         }
-        #btn-propagand:hover{
-            opacity: 1;
-        }
+       
     }
     
 }
@@ -1095,11 +1085,12 @@ footer{
 
     #form{
         margin-top: 2rem;
-        width: 100%;
+        width:100%;
         display:flex;
         justify-content: center;
         align-items: center;
-        form{       
+        form{   
+            width: 100%;  
          
             p{
                 font-size: 15px;      
@@ -1171,12 +1162,17 @@ footer{
     max-width: 100%;
     p{
         font-size: 12px;
+        a{
+            text-decoration: none;
+            span{
+                color:rgb(77, 243, 0);
+                font-weight: 600;
+            }
+
+        }
         
 
-        span{
-            color:rgb(77, 243, 0);
-            font-weight: 600;
-        }
+        
     }
     #btn-propagand{
         background-color: green;
