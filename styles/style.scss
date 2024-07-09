@@ -241,8 +241,10 @@ hr{
 
 //Beneficios da depilacao a laser//
 #benefits{
+    
     #card-depoiments{
         display: none;
+        
     }
     h1{
         color: var(--color-text-tertiary);
@@ -251,7 +253,7 @@ hr{
         padding: 3rem;
     }
     #container-benefits{
-        
+     
         display: flex;
         justify-content: space-around;
         .card-benefit{
@@ -312,7 +314,7 @@ hr{
         padding: 20px;
         background-color: #fff;
         border-radius: 15px;
-        box-shadow: 1px 1px 7px rgb(184, 179, 179);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
        
 
     }
@@ -826,7 +828,7 @@ footer{
         padding: 15px;
         height: auto;
         border-radius: 5px;
-        box-shadow: 0 0 4px 1px rgb(204, 204, 196);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
           
     }
    
@@ -849,7 +851,7 @@ footer{
             border: none;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 4px 1px rgb(204, 204, 196);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 90%;
             text-align: center;
             margin-bottom: 30px;
