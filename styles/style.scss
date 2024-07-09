@@ -300,9 +300,6 @@ hr{
         justify-content: space-around;
         align-items: center;
         
-        
-        
-
 
     #carousel{
         width: 45%;     
@@ -326,6 +323,15 @@ hr{
         background-color: #fff;
         border-radius: 15px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .btn-comment-google{
+            background-color: var(--tertiary);
+            height: 40px;
+            color: #fff;
+            font-size: 15px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+        }
        
 
     }

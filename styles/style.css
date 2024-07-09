@@ -257,6 +257,15 @@ hr {
   padding: 3px;
   border-radius: 10px;
 }
+#clinic #container-carrossel #carouselExampleSlidesOnly .btn-comment-google {
+  background-color: var(--tertiary);
+  height: 40px;
+  color: #fff;
+  font-size: 15px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+}
 
 button {
   background-color: #000;
