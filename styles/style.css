@@ -19,7 +19,7 @@
 }
 
 body {
-  background-color: #F6F7F8;
+  background-color: #fff;
 }
 
 #ficha {
@@ -248,8 +248,14 @@ hr {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 #clinic #container-carrossel #carouselExampleSlidesOnly h3 {
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   font-size: 18px;
+}
+#clinic #container-carrossel #carouselExampleSlidesOnly h3 span {
+  background-color: var(--tertiary);
+  color: white;
+  padding: 3px;
+  border-radius: 10px;
 }
 
 button {

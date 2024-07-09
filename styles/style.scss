@@ -18,7 +18,7 @@
     
 }
 body{
-    background-color:#F6F7F8;
+    background-color:#fff;
 }
 
 //--------------------------------------------FICHA
@@ -299,6 +299,9 @@ hr{
         display: flex;
         justify-content: space-around;
         align-items: center;
+        
+        
+        
 
 
     #carousel{
@@ -307,8 +310,16 @@ hr{
     #carouselExampleSlidesOnly{
        
         h3{
-            color: var(--color-text-tertiary);
+            color:var(--color-text-secondary);
             font-size: 18px;
+         
+            span{
+                
+                background-color: var(--tertiary);
+                color: #ffff;
+                padding: 3px;
+                border-radius: 10px;
+            }
         }
         width: 30%;
         padding: 20px;
