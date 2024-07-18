@@ -27,16 +27,18 @@ body{
     z-index: 999; 
     bottom: 10px;
     left: 15px;
+    
    
     display: none;
-    text-align: center;
+    
     cursor: pointer;
 
-    svg{
-        height: 50px;
-        width: 50px;
-    }
-   
+   svg{
+    height: 50px;
+    width: 50px;
+    padding: 6px;
+    text-align: center;
+   }
 }
 
 

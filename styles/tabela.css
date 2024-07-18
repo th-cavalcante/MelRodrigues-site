@@ -30,12 +30,13 @@ body {
   bottom: 10px;
   left: 15px;
   display: none;
-  text-align: center;
   cursor: pointer;
 }
 .seta svg {
   height: 50px;
   width: 50px;
+  padding: 6px;
+  text-align: center;
 }
 
 #price-list #title-tabela {
