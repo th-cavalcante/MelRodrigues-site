@@ -28,10 +28,14 @@ body {
   position: fixed;
   z-index: 999;
   bottom: 10px;
-  left: 10px;
-  padding: 8px;
+  left: 50px;
   display: none;
+  text-align: center;
   cursor: pointer;
+}
+.seta svg {
+  height: 50px;
+  width: 50px;
 }
 
 #price-list #title-tabela {
