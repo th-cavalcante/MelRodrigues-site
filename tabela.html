@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./styles/tabela.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
    <!--Font Awesome para icones-->
-    <script src="https://kit.fontawesome.com/65f22fe718.js" crossorigin="anonymous"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,11 +16,12 @@
 </head>
 <body>
 
-    <div class="seta" onclick="scrollToTop()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2 160 448c0 17.7 14.3 32 32 32s32-14.3 32-32l0-306.7L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></svg> 
+    <!--Icone Scroll -->
+    <div class="box-icon-scroll" onclick="scrollToTop()">
+        <i class="fa-solid fa-arrow-up"></i>
     </div>
-
-
+    
+    
     <section id="price-list">
         <div id="back-price-list">
             <a href="index.html"><button id="btn-back-price-list"><span class="material-symbols-outlined">
@@ -663,27 +664,26 @@
         </div>
     </section>
     
-
-    <script>
-
-        function scrollToTop(){
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-        }
-        function toggleSeta() {
-         const seta = document.querySelector('.seta');
-            if (window.scrollY > 100) { // Define o ponto em que a seta aparece
-                seta.style.display = 'block';
-            } else {
-                seta.style.display = 'none';
-            }
-    }
-
-    // Adiciona o evento de rolagem para chamar a função toggleSeta
-        window.addEventListener('scroll', toggleSeta);
-        
-    </script>
-
+  
     
 </body>
+
+
+<script>
+    function scrollToTop(){
+        window.scrollTo({ top: 0, behavior: 'smooth' });       
+    } 
+
+    window.addEventListener('scroll', function() {
+    const scrollButton = document.querySelector('.box-icon-scroll');
+    if (window.scrollY > 100) {
+        scrollButton.style.display= 'block';
+    } else {
+        scrollButton.style.display= 'none';
+    }
+});
+
+
+</script>
+
 </html>

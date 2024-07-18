@@ -19,24 +19,25 @@ body {
   background-color: #f7f4f2;
 }
 
-.seta {
+.box-icon-scroll {
+  font-size: 35px;
+  background-color: var(--secondary);
   border-radius: 100%;
+  border: 2px solid var(--tertiary);
   height: 50px;
   width: 50px;
-  background-color: var(--secondary);
-  border: 2px solid var(--tertiary);
+  display: none;
+  cursor: pointer;
   position: fixed;
   z-index: 999;
   bottom: 10px;
-  left: 15px;
-  display: none;
-  cursor: pointer;
+  left: 10px;
 }
-.seta svg {
-  height: 50px;
-  width: 50px;
-  padding: 6px;
-  text-align: center;
+.box-icon-scroll i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #price-list #title-tabela {

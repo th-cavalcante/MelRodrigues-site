@@ -17,29 +17,37 @@ body{
     background-color: #f7f4f2;
 }
 
-.seta{
-    border-radius: 100%;
-    height: 50px;
-    width: 50px;
-    background-color: var(--secondary);
-    border: 2px solid var(--tertiary);
-    position: fixed;
-    z-index: 999; 
-    bottom: 10px;
-    left: 15px;
-    
-   
-    display: none;
-    
-    cursor: pointer;
 
-   svg{
-    height: 50px;
-    width: 50px;
-    padding: 6px;
-    text-align: center;
+   
+.box-icon-scroll{
+   font-size: 35px;
+   background-color: var(--secondary);
+   border-radius: 100%;
+   border: 2px solid var(--tertiary);
+   height: 50px;
+   width: 50px;
+   display: none;
+
+   cursor: pointer;
+
+   position: fixed;
+   z-index: 999; 
+   bottom: 10px;
+   left: 10px;
+
+   i{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
    }
-}
+
+  
+   }
+  
+
+    
+
 
 
    
