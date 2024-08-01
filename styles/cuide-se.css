@@ -7,6 +7,7 @@
   --color-text-secondary: #000;
   --color-text-tertiary: #5d5d5d;
   --text: "montserrat";
+  --box-shadow: 0px 1px 10px 2px rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -17,7 +18,7 @@
 }
 
 body {
-  background-color: #F6F7F8;
+  background-color: white;
 }
 
 #cuide-se h1 {
@@ -33,7 +34,7 @@ body {
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 10px;
-  box-shadow: 1px 1px 10px rgb(189, 185, 185);
+  box-shadow: var(--box-shadow);
 }
 #cuide-se .container-cuide-se h3 {
   color: rgb(219, 23, 23);

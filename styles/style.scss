@@ -8,7 +8,11 @@
     --color-text-secondary: #000;
     --color-text-tertiary: #5d5d5d;
     --text: 'montserrat';
-    --box-shadow:0 0 3px 1px rgb(0,0,0,0.1);
+    --background-color: #f7f4f2;
+    --color-border:rgb(29,31,43) ;
+    --box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1) ;
+    --color-btn:rgb(49, 194, 49);
+    --border: 1 px solid 
 }
 *{
     margin: 0;
@@ -18,7 +22,7 @@
     
 }
 body{
-    background-color:#fff;
+    background-color: var(--background-color);
 }
 
 //--------------------------------------------FICHA
@@ -41,7 +45,7 @@ hr{
     right: 0;
     z-index: 999;
     height: 80px;
-    background-color: #fff;
+    background-color: var(--background-color);
     width: 100%;
     display: flex;
     justify-content:space-between;
@@ -71,7 +75,7 @@ hr{
                 
                   
                 #btn-menu{
-                    background-color: #fff;
+                    background-color: var(--background-color);
                     padding: 3px 5px 3px 5px;
                     border: 1px solid var(--tertiary);
                     border-radius: 4px;
@@ -85,7 +89,7 @@ hr{
                     }   
                 }
                 #btn-menu:hover{
-                    background-color: #f8f4f4;
+                    background-color: var(--background-color);
         
                 }
                 
@@ -147,7 +151,7 @@ hr{
     background-size: cover;
     height: 550px;
     color: var(--color-text);
-    box-shadow: 0 0 4px 1px rgb(107, 107, 96);
+    box-shadow: var(--box-shadow);
     
     #container-main{
         display: flex;
@@ -179,7 +183,7 @@ hr{
             #btn-main{           
                 width: auto;
                 height: 40px;
-                background-color: rgb(49, 194, 49);
+                background-color: var(--color-btn);
                 border:none;
                 border-radius: 5px;
                 cursor: pointer;
@@ -197,7 +201,7 @@ hr{
                     font-weight: 500;
                 }
             }#btn-main:hover{
-                box-shadow: 0 0 5px 1px #efff;
+                box-shadow: var(--box-shadow);
                 height: 60px;
                 
             }
