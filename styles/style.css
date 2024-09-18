@@ -8,7 +8,7 @@
   --color-text-secondary: #000;
   --color-text-tertiary: #5d5d5d;
   --text: "montserrat";
-  --background-color: #f7f4f2;
+  --background-color: #ffff;
   --color-border:rgb(29,31,43) ;
   --box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1) ;
   --color-btn:rgb(49, 194, 49);
@@ -41,17 +41,19 @@ hr {
   right: 0;
   z-index: 999;
   height: 80px;
-  background-color: var(--background-color);
+  background-color: none;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: var(--box-shadow);
 }
 #header #logo img {
   height: 150px;
   width: 150px;
   border-radius: 50%;
+}
+#header #menu {
+  display: none;
 }
 #header #menu #nav-list {
   display: flex;
@@ -112,10 +114,10 @@ hr {
 
 #main {
   width: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../img/sala3.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url("../img/foto-main.png");
   background-position: center;
   background-size: cover;
-  height: 550px;
+  height: 800px;
   color: var(--color-text);
   box-shadow: var(--box-shadow);
 }
@@ -125,7 +127,7 @@ hr {
   align-items: center;
 }
 #main #container-main #card1-main {
-  margin-top: 30px;
+  margin-top: 180px;
   max-width: 46%;
 }
 #main #container-main #card1-main h1 {
@@ -195,94 +197,20 @@ hr {
   height: 440px;
 }
 
-#benefits #card-depoiments {
-  display: none;
-}
-#benefits h1 {
-  color: var(--color-text-tertiary);
-  text-align: center;
-  font-size: 35px;
-  padding: 3rem;
-}
-#benefits #container-benefits {
-  display: flex;
-  justify-content: space-around;
-}
-#benefits #container-benefits .card-benefit {
-  visibility: hidden;
-  max-width: 30%;
-  text-align: center;
-}
-#benefits #container-benefits .card-benefit h3 {
-  color: var(--tertiary);
-}
-#benefits #container-benefits .card-benefit p {
-  font-size: 18px;
-  font-weight: 500;
-}
-#benefits #container-benefits .card-benefit img {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-}
-
-#clinic h1 {
-  margin-top: 2rem;
-  font-family: var(--text);
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #B65D49;
-  font-size: 2rem;
-  padding: 3rem;
-  color: var(--color-text-tertiary);
-}
-#clinic #container-carrossel {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-#clinic #container-carrossel #carousel {
-  width: 45%;
-}
-#clinic #container-carrossel #carouselExampleSlidesOnly {
-  width: 30%;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-#clinic #container-carrossel #carouselExampleSlidesOnly h3 {
-  color: var(--color-text-secondary);
-  font-size: 18px;
-}
-#clinic #container-carrossel #carouselExampleSlidesOnly h3 span {
-  background-color: var(--tertiary);
-  color: white;
-  padding: 3px;
-  border-radius: 10px;
-}
-#clinic #container-carrossel #carouselExampleSlidesOnly .btn-comment-google {
-  background-color: var(--tertiary);
-  height: 40px;
-  color: #fff;
-  font-size: 15px;
-  border: none;
-  border-radius: 5px;
-  width: 100%;
-}
-
 button {
   background-color: #000;
 }
 
 #questions {
+  display: none;
   height: auto;
   padding-top: 50px;
+  padding-bottom: 30px;
 }
 #questions h1 {
   text-align: center;
   font-size: 40px;
-  font-weight: bold;
+  font-weight: 400;
   color: var(--color-text-tertiary);
 }
 #questions #container-questions {
@@ -321,6 +249,7 @@ button {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../img/sala1.jpg");
   background-position: center;
   background-size: cover;
+  padding-bottom: 20px;
 }
 #about-me h1 {
   font-family: "montserrat";
@@ -339,20 +268,21 @@ button {
   background-color: transparent;
 }
 #about-me #container-about-me #card-about-me img {
-  width: 300px;
+  width: 200px;
   height: 300px;
-  border-radius: 50%;
+  border-radius: 40%;
 }
 #about-me #container-about-me #card-text-about-me {
   max-width: 60%;
 }
 #about-me #container-about-me #card-text-about-me p {
   font-size: 19px;
-  font-weight: 500;
+  font-weight: 300;
   color: var(--color-text);
 }
 
 #contact {
+  display: none;
   padding: 0px;
   text-align: center;
   background-color: rgb(29, 31, 43);
@@ -362,6 +292,7 @@ button {
   align-items: center;
 }
 #contact #container-contact {
+  display: none;
   justify-content: flex-start;
   align-items: center;
 }
@@ -502,7 +433,7 @@ footer #my-propagand p a span {
     display: flex;
     justify-content: space-between;
     width: auto;
-    background-color: #fff;
+    background-color: none;
   }
   #header #logo {
     margin-left: 0px;
@@ -510,6 +441,9 @@ footer #my-propagand p a span {
   #header #logo img {
     height: 110px;
     width: 110px;
+  }
+  #header #menu {
+    background-color: none;
   }
   #header #menu #nav-list {
     width: 250px;
@@ -564,8 +498,11 @@ footer #my-propagand p a span {
     z-index: 999;
   }
   #main {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url("../img/main-smartphone.png");
+    background-position: center;
+    background-size: cover;
     width: auto;
-    height: auto;
+    height: 600px;
     padding: 10px;
   }
   #main #container-main {
@@ -577,8 +514,9 @@ footer #my-propagand p a span {
     max-width: 100%;
   }
   #main #container-main #card1-main h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
+    margin-top: 15rem;
   }
   #main #container-main #card1-main h2 {
     font-size: 1.5rem;
@@ -594,16 +532,16 @@ footer #my-propagand p a span {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: auto;
+    width: 100px;
     height: 40px;
-    background-color: rgb(49, 194, 49);
+    background-color: #fff;
     text-align: center;
-    margin: auto;
     margin-top: 2rem;
     margin-bottom: 2rem;
   }
   #main #container-main #card1-main #btn-main a {
-    font-weight: 600;
+    font-weight: 400;
+    color: #333333;
   }
   #main #container-main #card1-main #txt-adress {
     font-size: 11px;
@@ -648,89 +586,6 @@ footer #my-propagand p a span {
   }
   #main #container-main #card2-main img {
     height: auto;
-  }
-  #benefits {
-    margin-top: 1rem;
-  }
-  #benefits #card-depoiments {
-    display: block;
-    max-width: 90%;
-    margin: auto;
-    padding: 15px;
-    height: auto;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  #benefits #card-depoiments h3 {
-    font-size: 1rem;
-  }
-  #benefits h1 {
-    color: var(--color-text-tertiary);
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    padding: 3rem;
-  }
-  #benefits #container-benefits {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: auto;
-  }
-  #benefits #container-benefits .card-benefit {
-    justify-content: center;
-    align-items: center;
-    border: none;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 90%;
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  #benefits #container-benefits .card-benefit h3 {
-    color: var(--tertiary);
-    font-size: 20px;
-    font-weight: bold;
-  }
-  #benefits #container-benefits .card-benefit p {
-    display: flex;
-    align-items: center;
-    font-size: 17px;
-    font-weight: 500;
-    -webkit-hyphens: auto;
-            hyphens: auto;
-    text-align: justify;
-    line-height: 1.5;
-  }
-  #benefits #container-benefits .card-benefit img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-  }
-  #clinic {
-    width: auto;
-  }
-  #clinic h1 {
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
-    font-size: 1.2rem;
-  }
-  #clinic h1 span {
-    color: var(--tertiary);
-  }
-  #clinic #container-carrossel {
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    width: auto;
-  }
-  #clinic #container-carrossel #carousel {
-    width: 95%;
-  }
-  #clinic #container-carrossel #carouselExampleSlidesOnly {
-    display: none;
   }
   #questions {
     height: auto;
@@ -782,7 +637,7 @@ footer #my-propagand p a span {
     align-items: center;
   }
   #about-me h1 {
-    font-size: 1.5rem;
+    font-size: 18px;
     padding: 1rem;
     margin-bottom: 1rem;
   }
@@ -797,15 +652,15 @@ footer #my-propagand p a span {
   }
   #about-me #container-about-me #card-about-me img {
     width: 150px;
-    height: 150px;
-    border-radius: 50%;
+    height: 220px;
+    border-radius: 40%;
   }
   #about-me #container-about-me #card-text-about-me {
     max-width: 90%;
   }
   #about-me #container-about-me #card-text-about-me p {
     font-size: 17px;
-    font-weight: 500;
+    font-weight: 400;
     color: var(--color-text);
   }
   #contact {

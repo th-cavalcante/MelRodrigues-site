@@ -8,7 +8,7 @@
     --color-text-secondary: #000;
     --color-text-tertiary: #5d5d5d;
     --text: 'montserrat';
-    --background-color: #f7f4f2;
+    --background-color: #ffff;
     --color-border:rgb(29,31,43) ;
     --box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1) ;
     --color-btn:rgb(49, 194, 49);
@@ -39,18 +39,22 @@ hr{
 
 
 #header{
+
+    
+
+
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 999;
     height: 80px;
-    background-color: var(--background-color);
+    background-color: none;
     width: 100%;
     display: flex;
     justify-content:space-between;
     align-items: center;
-    box-shadow: var(--box-shadow);
+   
     #logo{   
         
         img{
@@ -61,7 +65,8 @@ hr{
         }
     }
 
-    #menu{     
+    #menu{   
+        display: none;  
        
         #nav-list{
             display: flex;      
@@ -145,13 +150,14 @@ hr{
 
 #main{
     width: 100%;
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-    url('../img/sala3.jpg');
+    background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)),
+    url('../img/foto-main.png');
     background-position: center;
     background-size: cover;
-    height: 550px;
+    height: 800px;
     color: var(--color-text);
     box-shadow: var(--box-shadow);
+    
     
     #container-main{
         display: flex;
@@ -159,7 +165,7 @@ hr{
         align-items: center;
        
         #card1-main{
-            margin-top: 30px;    
+            margin-top: 180px;    
             max-width: 46%;
             h1{
                 font-size: 3.5rem;
@@ -243,108 +249,7 @@ hr{
 
 }
 
-//Beneficios da depilacao a laser//
-#benefits{
-    
-    #card-depoiments{
-        display: none;
-        
-    }
-    h1{
-        color: var(--color-text-tertiary);
-        text-align: center;
-        font-size: 35px;
-        padding: 3rem;
-    }
-    #container-benefits{
-     
-        display: flex;
-        justify-content: space-around;
-        .card-benefit{
-            visibility: hidden;
-            max-width: 30%;
-            text-align: center;
-            h3{
-                color: var(--tertiary);
 
-            }
-            p{
-                font-size: 18px;
-                font-weight: 500;
-
-            }
-            img{
-                width: 150px;
-                height: 150px;
-                border-radius: 50%;
-
-            }
-        }
-    }
-}
-
-
-//Corrocel//
-
-#clinic{
-    
-    
-    h1{
-        margin-top: 2rem;
-        font-family: var(--text);
-        font-weight: bold;
-        text-transform: uppercase;
-        color: #B65D49;
-        font-size: 2rem;
-        padding: 3rem;
-        color: var(--color-text-tertiary);
-       }
-    #container-carrossel{
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        
-
-    #carousel{
-        width: 45%;     
-    }
-    #carouselExampleSlidesOnly{
-       
-        h3{
-            color:var(--color-text-secondary);
-            font-size: 18px;
-         
-            span{
-                
-                background-color: var(--tertiary);
-                color: #ffff;
-                padding: 3px;
-                border-radius: 10px;
-            }
-        }
-        width: 30%;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        .btn-comment-google{
-            background-color: var(--tertiary);
-            height: 40px;
-            color: #fff;
-            font-size: 15px;
-            border: none;
-            border-radius: 5px;
-            width: 100%;
-        }
-       
-
-    }
-  
-
-    }
-     
-
-}
 button{
     background-color: #000;
 }
@@ -354,12 +259,16 @@ button{
 
 
 #questions{
+    display: none;
+    
+
     height: auto;
     padding-top: 50px;
+    padding-bottom: 30px;
     h1{
         text-align: center;
         font-size: 40px;
-        font-weight: bold;
+        font-weight: 400;
         color: var(--color-text-tertiary);
         
     }
@@ -413,6 +322,7 @@ button{
     url('../img/sala1.jpg');
     background-position: center;
     background-size: cover;
+    padding-bottom: 20px;
     
     h1{
         font-family: 'montserrat';
@@ -429,17 +339,16 @@ button{
             max-width: 30%;
             background-color: transparent;
             img{
-                width: 300px;
-                height: 300px;
-                
-                border-radius: 50%;
+                width: 200px;
+                height: 300px;             
+                border-radius: 40%;
             }
         }
         #card-text-about-me{
             max-width: 60%;
             p{
                 font-size: 19px;
-                font-weight: 500;
+                font-weight: 300;
                 color: var(--color-text);
                 
             }
@@ -452,6 +361,9 @@ button{
 
 //contatos abaixo://
 #contact{
+    display: none;
+
+
     padding: 0px;
     text-align: center;
     background-color: rgb(29,31,43);
@@ -461,6 +373,7 @@ button{
     align-items: center;
      
     #container-contact{
+        display: none;
         justify-content:flex-start;
         align-items: center;
         #title-contact{
@@ -647,7 +560,7 @@ footer{
         display: flex;
         justify-content: space-between;
         width: auto;
-        background-color: #fff;
+        background-color: none;
       
         #logo {
           margin-left: 0px;
@@ -658,6 +571,7 @@ footer{
         }
       
         #menu {
+            background-color: none;
           #nav-list{
             width: 250px;
             position: fixed;
@@ -675,6 +589,7 @@ footer{
            
             
             .nav-menu{
+                
                 margin: 15px;
                 a{
                     font-weight: 500;
@@ -732,8 +647,12 @@ footer{
     
     
     #main{
+        background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)),
+        url('../img/main-smartphone.png');
+        background-position: center;
+        background-size: cover;
         width: auto;
-        height: auto;
+        height: 600px;
         padding: 10px;   
         #container-main{    
             flex-direction: column; 
@@ -743,8 +662,9 @@ footer{
                 max-width: 100%;
                
                 h1{
-                    font-size: 2rem;
+                    font-size: 1.5rem;
                     font-weight: bold;
+                    margin-top: 15rem;
                     
                 }
                 h2{  
@@ -762,16 +682,17 @@ footer{
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    width: auto;     
+                    width: 100px;     
                     height: 40px;
-                    background-color: rgb(49, 194, 49); 
+                    background-color: #fff; 
                     text-align: center; 
-                    margin: auto;
+                    
                     margin-top: 2rem;
                     margin-bottom: 2rem;
                     
                     a{
-                        font-weight: 600;
+                        font-weight: 400;
+                        color: #333333;
                         
                         
                     }
@@ -834,107 +755,7 @@ footer{
     
     }
     //fim secao Main//  
-    
-    //Beneficios da depilacao a laser//
-#benefits{
-    margin-top: 1rem;
-  
-    #card-depoiments{
-        h3{
-            font-size: 1rem;
-        }
-        display: block;
-        max-width: 90%;
-        margin: auto;
-        padding: 15px;
-        height: auto;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          
-    }
-   
-    h1{
-        color: var(--color-text-tertiary);
-        text-align: center;
-        font-size: 22px;
-        font-weight: bold;
-        padding: 3rem;
-    }
-    #container-benefits{
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: auto;
-        .card-benefit{
-            
-            justify-content: center;
-            align-items: center;
-            border: none;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 90%;
-            text-align: center;
-            margin-bottom: 30px;
-            h3{
-                color: var(--tertiary);
-                font-size: 20px;
-                font-weight: bold;
 
-            }
-            p{
-                display: flex;
-                align-items: center;
-                font-size: 17px;
-                font-weight: 500; 
-                hyphens: auto; 
-                text-align: justify;           
-                line-height: 1.5;
-               
-                
-
-            }
-            img{
-                width: 150px;
-                height: 150px;
-                border-radius: 50%;
-
-            }
-        }
-    }
-}
-
-//Fim benefits
-
-//Corrocel//
-
-#clinic{
-    width: auto;
-    h1{
-        display: flex;
-        justify-content: center;
-        margin-top: 1rem;
-        font-size: 1.2rem;
-        
-        span{
-            color: var(--tertiary);
-        }
-     
-       }
-    #container-carrossel{
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-        width: auto;
-
-    #carousel{
-        width: 95%;     
-    }
-    #carouselExampleSlidesOnly{
-        display: none;
-    }
-    }    
-}
 
 //Perguntas Frquentes abaixo: //
 
@@ -1004,7 +825,7 @@ footer{
     justify-content: center;
     align-items: center;
     h1{ 
-        font-size: 1.5rem;   
+        font-size: 18px;   
         padding: 1rem;
         margin-bottom: 1rem;     
     }
@@ -1017,15 +838,15 @@ footer{
             margin-bottom: 1rem;
             img{
                 width: 150px;
-                height: 150px;
-                border-radius: 50%;
+                height: 220px;
+                border-radius: 40%;
             }
         }
         #card-text-about-me{
             max-width: 90%;
             p{
                 font-size: 17px;
-                font-weight: 500;
+                font-weight: 400;
                 color: var(--color-text);
                 
             }
