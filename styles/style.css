@@ -116,7 +116,7 @@ hr {
   background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url("../img/foto-main-04.png");
   background-position: center;
   background-size: cover;
-  height: 650px;
+  height: 500px;
   color: var(--color-text);
   box-shadow: var(--box-shadow);
 }
