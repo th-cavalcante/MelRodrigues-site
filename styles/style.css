@@ -116,7 +116,7 @@ hr {
   background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url("../img/foto-main-04.png");
   background-position: center;
   background-size: cover;
-  height: 500px;
+  height: 600px;
   color: var(--color-text);
   box-shadow: var(--box-shadow);
 }
@@ -503,7 +503,7 @@ footer #my-propagand p a span {
     background-position: center;
     background-size: cover;
     width: auto;
-    height: 800px;
+    height: 700px;
     padding: 10px;
   }
   #main #container-main {
