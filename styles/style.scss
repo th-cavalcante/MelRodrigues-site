@@ -658,7 +658,7 @@ footer{
         background-position: center;
         background-size: cover;
         width: auto;
-        height: 600px;
+        height: 680px;
         padding: 10px;   
         #container-main{    
             flex-direction: column; 
@@ -671,12 +671,15 @@ footer{
                 h1{
                     font-size: 1.5rem;
                     font-weight: bold;
-                    margin-top: 15rem;
+                    margin-top: 18rem;
                     
                 }
                 h2{  
                     font-size: 1.5rem;
-                    font-weight: bold;          
+                    font-weight: bold;
+                    span{
+                        font-size: 3.5rem;
+                    }          
                 }
                 p{
                     font-size: 14px;
@@ -686,7 +689,7 @@ footer{
                    
                 }
                 #btn-main{ 
-                    border-radius: 5px;
+                    border-radius: 2px;
                     width: 100px;     
                     height: 60px;
                     background-color: #fff; 

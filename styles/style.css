@@ -503,7 +503,7 @@ footer #my-propagand p a span {
     background-position: center;
     background-size: cover;
     width: auto;
-    height: 600px;
+    height: 680px;
     padding: 10px;
   }
   #main #container-main {
@@ -518,11 +518,14 @@ footer #my-propagand p a span {
   #main #container-main #card1-main h1 {
     font-size: 1.5rem;
     font-weight: bold;
-    margin-top: 15rem;
+    margin-top: 18rem;
   }
   #main #container-main #card1-main h2 {
     font-size: 1.5rem;
     font-weight: bold;
+  }
+  #main #container-main #card1-main h2 span {
+    font-size: 3.5rem;
   }
   #main #container-main #card1-main p {
     font-size: 14px;
@@ -531,7 +534,7 @@ footer #my-propagand p a span {
     font-weight: 500;
   }
   #main #container-main #card1-main #btn-main {
-    border-radius: 5px;
+    border-radius: 2px;
     width: 100px;
     height: 60px;
     background-color: #fff;
