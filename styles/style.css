@@ -85,7 +85,7 @@ hr {
   font-weight: 400;
   text-decoration: none;
   transition: ease 0.2s all;
-  color: var(--color-text-secondary);
+  color: #fff;
   text-transform: uppercase;
   font-size: 13px;
 }
@@ -109,7 +109,7 @@ hr {
 }
 
 #hamburguer {
-  display: none;
+  display: block;
 }
 
 #main {
@@ -443,6 +443,7 @@ footer #my-propagand p a span {
     width: 110px;
   }
   #header #menu {
+    display: block;
     background-color: none;
   }
   #header #menu #nav-list {
@@ -455,7 +456,7 @@ footer #my-propagand p a span {
     flex-direction: column;
     z-index: 998;
     align-items: center;
-    background-image: linear-gradient(180deg, var(--secondary), #d7bdaa);
+    background-image: linear-gradient(180deg, rgb(12, 12, 12), #1a1919);
     margin: 0;
     padding-top: 80px;
     transition: all 0.3s;
@@ -465,6 +466,7 @@ footer #my-propagand p a span {
   }
   #header #menu #nav-list .nav-menu a {
     font-weight: 500;
+    color: #fff;
   }
   #header #menu #nav-list .nav-menu #area-cliente {
     border: none;
@@ -494,7 +496,7 @@ footer #my-propagand p a span {
     position: fixed; /* Mudamos a posição para fixed */
     top: 25px; /* Ajuste a posição conforme necessário */
     right: 10px; /* Ajuste a posição conforme necessário */
-    color: var(--tertiary);
+    color: #fff;
     z-index: 999;
   }
   #main {
