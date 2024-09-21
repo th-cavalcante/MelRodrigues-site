@@ -19,6 +19,7 @@ function closeOnClickMenu(){
         menu.remove()
     } 
 }
+
 //----------Script area cliente //////
 
 

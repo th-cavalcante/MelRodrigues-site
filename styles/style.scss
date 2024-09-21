@@ -260,7 +260,7 @@ button{
 
 
 #questions{
-    display: none;
+    display: block;
     
 
     height: auto;
@@ -770,10 +770,11 @@ footer{
     padding-top: 50px;
     margin-bottom: 2rem;
     h1{
-        font-size: 1.5rem;
+       
         text-align: center;
-        font-size: 1.7rem;
-        font-weight: bold;
+        font-size: 18px;
+        font-weight: 400;
+        margin-bottom: 30px;
         color: var(--color-text-tertiary);
         
     }
