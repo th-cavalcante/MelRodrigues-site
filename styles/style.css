@@ -499,7 +499,7 @@ footer #my-propagand p a span {
     z-index: 999;
   }
   #main {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url("../img/foto-smartphone-main.png");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url("../img/foto-smartphone-main.png");
     background-position: center;
     background-size: cover;
     width: auto;
