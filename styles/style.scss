@@ -82,14 +82,15 @@ hr{
                 #btn-menu{
                     background-color: var(--background-color);
                     padding: 3px 5px 3px 5px;
-                    border: 1px solid var(--tertiary);
-                    border-radius: 4px;
+                    border: none;
+              
+                    border-radius: 2px;
                     margin-top: -5px;
                     transition: .3s;
                     a{
                         text-decoration: none;
                         text-underline-offset: none;
-                        color: var(--tertiary);
+                        color: var(--color-text-tertiary);
                        
                     }   
                 }
@@ -120,7 +121,7 @@ hr{
                 #area-cliente{
                     border: none;
                     outline: none;
-                    color: var(--color-text-tertiary);
+                    color: #fff;
                     font-weight: 600;
                     cursor: pointer;
                     option{
@@ -583,7 +584,7 @@ footer{
             flex-direction: column;
             z-index: 998;
             align-items: center;
-            background-image: linear-gradient(180deg, rgb(12, 12, 12),#1a1919);
+            background-image: linear-gradient(180deg, #171717,#3b3b3b);
             margin: 0;
             padding-top: 80px;
             transition: all .3s;
@@ -601,7 +602,7 @@ footer{
                 #area-cliente{
                     border: none;
                     outline: none;
-                    color: var(--tertiary);
+                    color: #fff;
                     font-weight: 600;
                     font-size: 14px;
                     background: none;
@@ -661,6 +662,7 @@ footer{
         padding: 10px;   
         #container-main{    
             flex-direction: column; 
+            text-align: center;
             margin-top: 80px;    
             #card1-main{
                 margin-top: 22px;    
@@ -684,19 +686,18 @@ footer{
                    
                 }
                 #btn-main{ 
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                    border-radius: 5px;
                     width: 100px;     
-                    height: 40px;
+                    height: 60px;
                     background-color: #fff; 
-                    text-align: center; 
-                    
+                    text-align: center;                  
                     margin-top: 2rem;
                     margin-bottom: 2rem;
+                   
                     
                     a{
                         font-weight: 400;
+
                         color: #333333;
                         
                         
@@ -705,10 +706,7 @@ footer{
                 }   
                    
                    
-                #txt-adress{
-                    font-size: 11px;
-                    margin: 5px;
-                }
+               
                 #adress{
                     padding: 2px 15px 2px 10px;
                     background: transparent;

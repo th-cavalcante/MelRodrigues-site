@@ -67,15 +67,15 @@ hr {
 #header #menu #nav-list .nav-menu #btn-menu {
   background-color: var(--background-color);
   padding: 3px 5px 3px 5px;
-  border: 1px solid var(--tertiary);
-  border-radius: 4px;
+  border: none;
+  border-radius: 2px;
   margin-top: -5px;
   transition: 0.3s;
 }
 #header #menu #nav-list .nav-menu #btn-menu a {
   text-decoration: none;
   text-underline-offset: none;
-  color: var(--tertiary);
+  color: var(--color-text-tertiary);
 }
 #header #menu #nav-list .nav-menu #btn-menu:hover {
   background-color: var(--background-color);
@@ -97,7 +97,7 @@ hr {
 #header #menu #nav-list .nav-menu #area-cliente {
   border: none;
   outline: none;
-  color: var(--color-text-tertiary);
+  color: #fff;
   font-weight: 600;
   cursor: pointer;
 }
@@ -456,7 +456,7 @@ footer #my-propagand p a span {
     flex-direction: column;
     z-index: 998;
     align-items: center;
-    background-image: linear-gradient(180deg, rgb(12, 12, 12), #1a1919);
+    background-image: linear-gradient(180deg, #171717, #3b3b3b);
     margin: 0;
     padding-top: 80px;
     transition: all 0.3s;
@@ -471,7 +471,7 @@ footer #my-propagand p a span {
   #header #menu #nav-list .nav-menu #area-cliente {
     border: none;
     outline: none;
-    color: var(--tertiary);
+    color: #fff;
     font-weight: 600;
     font-size: 14px;
     background: none;
@@ -509,6 +509,7 @@ footer #my-propagand p a span {
   }
   #main #container-main {
     flex-direction: column;
+    text-align: center;
     margin-top: 80px;
   }
   #main #container-main #card1-main {
@@ -531,11 +532,9 @@ footer #my-propagand p a span {
     font-weight: 500;
   }
   #main #container-main #card1-main #btn-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 5px;
     width: 100px;
-    height: 40px;
+    height: 60px;
     background-color: #fff;
     text-align: center;
     margin-top: 2rem;
@@ -544,10 +543,6 @@ footer #my-propagand p a span {
   #main #container-main #card1-main #btn-main a {
     font-weight: 400;
     color: #333333;
-  }
-  #main #container-main #card1-main #txt-adress {
-    font-size: 11px;
-    margin: 5px;
   }
   #main #container-main #card1-main #adress {
     padding: 2px 15px 2px 10px;
