@@ -108,7 +108,7 @@ hr {
 }
 
 #hamburguer {
-  display: block;
+  display: none;
 }
 
 #main {
@@ -766,7 +766,7 @@ footer #my-propagand p a span {
     justify-content: center;
     align-items: center;
     margin: auto;
-    background-color: var(--tertiary);
+    background-color: rgb(41, 42, 49);
     width: 100%;
     font-weight: 500;
     text-transform: uppercase;

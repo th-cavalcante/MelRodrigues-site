@@ -144,7 +144,7 @@ hr{
 
 //Hamburguer Mobile apagado//
 #hamburguer{
-    display: block;
+    display: none;
 }
 
 
@@ -985,7 +985,7 @@ footer{
                 justify-content: center;
                 align-items: center;
                 margin: auto;
-                background-color: var(--tertiary);
+                 background-color: rgb(41, 42, 49);
                 width: 100%;
                 font-weight: 500;
                 text-transform: uppercase;
