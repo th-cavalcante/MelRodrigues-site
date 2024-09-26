@@ -785,13 +785,13 @@ footer{
           }
        
         .accordion-button:not(.collapsed) {
-            background-color: var(--tertiary); 
+            background-color: var(--secondary); 
             color: #ffffff; 
             
           }
           .accordion-button.collapsed {
             background-color:var(--secondary); 
-            color: #000000; 
+            color: #fff; 
             font-weight: 400;
          
             
