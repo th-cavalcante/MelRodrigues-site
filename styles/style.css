@@ -611,12 +611,15 @@ footer #my-propagand p a span {
     box-shadow: none;
   }
   #questions #accordionFlushExample .accordion-button:not(.collapsed) {
-    background-color: var(--background-color-secondary);
-    color: #ffffff;
+    background-color: #fff;
+    color: #333333;
+    font-weight: 500;
+    border: 1px solid #929090;
+    border-radius: 5px;
   }
   #questions #accordionFlushExample .accordion-button.collapsed {
-    background-color: var(--background-color-secondary);
-    color: #fff;
+    background-color: #fff;
+    color: #333333;
     font-weight: 400;
   }
   #questions #accordionFlushExample .accordion-body {
