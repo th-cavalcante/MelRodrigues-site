@@ -2,8 +2,8 @@
 
 :root{
     --primary: #A88F7F;
-    --secondary: #EEDFD4;
-    --tertiary: #BF7E62;
+    --secondary: rgb(165, 42, 42);
+    --tertiary: rgb(109, 52, 52);
     --color-text: #fff;
     --color-text-secondary: #000;
     --color-text-tertiary: #5d5d5d;
@@ -261,8 +261,6 @@ button{
 
 #questions{
     display: block;
-    
-
     height: auto;
     padding-top: 50px;
     padding-bottom: 30px;
@@ -300,8 +298,8 @@ button{
             
           }
           .accordion-button.collapsed {
-            background-color:var(--secondary); 
-            color: #000000; 
+            background-color:var(--tertiary); 
+            color: #fff; 
             font-weight: 400;
          
             
