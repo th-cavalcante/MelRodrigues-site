@@ -786,17 +786,19 @@ footer{
           }
        
         .accordion-button:not(.collapsed) {
-            background-color: #fff; 
-            color: #333333; 
+            background-color: var(--secondary); 
+            color: #fff; 
             font-weight: 500;
-            border: 1px solid #929090;
-            border-radius: 5px;
+            border: 1px solid var(--secondary);
+            border-radius: 3px;
             
           }
           .accordion-button.collapsed {
             background-color:#fff; 
             color: #333333; 
             font-weight: 400;
+            border: 1px solid var(--secondary);
+            border-radius: 3px;
             
          
             
