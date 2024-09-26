@@ -557,7 +557,7 @@ footer #my-propagand p a span {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border: 1px solid var(--secondary);
+    border: 1px solid var(--background-color-secondary);
     width: auto;
     border-radius: 5px;
     margin: auto;
@@ -779,21 +779,20 @@ footer #my-propagand p a span {
     background-color: rgb(29, 31, 43);
     color: #eeffff;
     padding: 15px;
-    font-size: 13px;
   }
 }
 #my-propagand {
   max-width: 100%;
 }
 #my-propagand p {
-  font-size: 12px;
+  font-size: 9px;
 }
 #my-propagand p a {
   text-decoration: none;
 }
 #my-propagand p a span {
   color: rgb(77, 243, 0);
-  font-weight: 600;
+  font-weight: 400;
 }
 #my-propagand #btn-propagand {
   background-color: green;
