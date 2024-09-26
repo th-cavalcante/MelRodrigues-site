@@ -133,12 +133,12 @@ hr {
 #main #container-main #card1-main h1 {
   font-size: 3.5rem;
   font-weight: bold;
-  color: rgb(165, 42, 42);
+  color: var(--background-color-secondary);
 }
 #main #container-main #card1-main h2 {
   font-size: 24px;
   font-weight: bold;
-  color: rgb(165, 42, 42);
+  color: var(--background-color-secondary);
 }
 #main #container-main #card1-main h2 span {
   font-size: 70px;
@@ -152,7 +152,8 @@ hr {
 #main #container-main #card1-main #btn-main {
   width: auto;
   height: 60px;
-  background-color: rgb(109, 52, 52);
+  width: 300px;
+  background-color: var(--background-color-secondary);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -169,24 +170,24 @@ hr {
   font-weight: 500;
 }
 #main #container-main #card1-main #btn-main:hover {
-  background-color: rgb(165, 42, 42);
+  background-color: rgb(67, 64, 64);
 }
 #main #container-main #card1-main #adress {
   background: transparent;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border: 1px solid rgb(165, 42, 42);
+  border: 1px solid var(--background-color-secondary);
   padding-right: 5px;
   border-radius: 5px;
 }
 #main #container-main #card1-main #adress .material-symbols-outlined {
-  color: rgb(165, 42, 42);
+  color: var(--background-color-secondary);
   font-size: 30px;
 }
 #main #container-main #card1-main #adress a {
   text-decoration: none;
-  color: rgb(165, 42, 42);
+  color: var(--background-color-secondary);
   font-size: 1.1rem;
 }
 #main #container-main #card1-main #adress:hover {
@@ -230,19 +231,22 @@ button {
   width: 380px;
 }
 #questions #accordionFlushExample {
-  max-width: 60%;
+  max-width: 80%;
 }
 #questions #accordionFlushExample .accordion-button:focus {
   box-shadow: none;
 }
 #questions #accordionFlushExample .accordion-button:not(.collapsed) {
-  background-color: var(--tertiary);
+  background-color: var(--background-color-secondary);
   color: #ffffff;
+  border-radius: 3px;
 }
 #questions #accordionFlushExample .accordion-button.collapsed {
-  background-color: var(--tertiary);
-  color: #fff;
+  background-color: none;
+  color: #333333;
   font-weight: 400;
+  border: 1px solid var(--background-color-secondary);
+  border-radius: 3px;
 }
 #questions #accordionFlushExample .accordion-body {
   background-color: #fff;
@@ -364,6 +368,7 @@ button {
   border-radius: 3px;
   border: none;
   padding: 20px;
+  margin-bottom: 20px;
 }
 #contact #form form input:focus {
   border: 2px solid rgb(70, 228, 3);
@@ -611,17 +616,17 @@ footer #my-propagand p a span {
     box-shadow: none;
   }
   #questions #accordionFlushExample .accordion-button:not(.collapsed) {
-    background-color: var(--secondary);
+    background-color: var(--background-color-secondary);
     color: #fff;
     font-weight: 500;
-    border: 1px solid var(--secondary);
+    border: none;
     border-radius: 3px;
   }
   #questions #accordionFlushExample .accordion-button.collapsed {
     background-color: #fff;
     color: #333333;
     font-weight: 400;
-    border: 1px solid var(--secondary);
+    border: 1px solid var(--background-color-secondary);
     border-radius: 3px;
   }
   #questions #accordionFlushExample .accordion-body {
