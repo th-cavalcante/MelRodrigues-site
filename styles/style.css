@@ -48,8 +48,8 @@ hr {
   align-items: center;
 }
 #header #logo img {
-  height: 150px;
-  width: 150px;
+  height: 200px;
+  width: 200px;
   border-radius: 50%;
 }
 #header #menu {
@@ -113,10 +113,10 @@ hr {
 
 #main {
   width: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url("../img/foto-main-04.png");
+  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3)), url("../img/foto-main-04.png");
   background-position: center;
   background-size: cover;
-  height: 600px;
+  height: 750px;
   color: var(--color-text);
   box-shadow: var(--box-shadow);
 }
@@ -132,10 +132,15 @@ hr {
 #main #container-main #card1-main h1 {
   font-size: 3.5rem;
   font-weight: bold;
+  color: rgb(165, 42, 42);
 }
 #main #container-main #card1-main h2 {
-  font-size: 2rem;
+  font-size: 24px;
   font-weight: bold;
+  color: rgb(165, 42, 42);
+}
+#main #container-main #card1-main h2 span {
+  font-size: 70px;
 }
 #main #container-main #card1-main p {
   font-size: 15px;
@@ -145,47 +150,46 @@ hr {
 }
 #main #container-main #card1-main #btn-main {
   width: auto;
-  height: 40px;
-  background-color: var(--color-btn);
+  height: 60px;
+  background-color: rgb(109, 52, 52);
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: 0.4s;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
   margin-bottom: 2rem;
 }
 #main #container-main #card1-main #btn-main a {
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 14px !important;
   color: var(--color-text);
   text-transform: uppercase;
   font-weight: 500;
 }
 #main #container-main #card1-main #btn-main:hover {
-  box-shadow: var(--box-shadow);
-  height: 60px;
+  background-color: rgb(165, 42, 42);
 }
 #main #container-main #card1-main #adress {
   background: transparent;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border: 1px solid #fff;
+  border: 1px solid rgb(165, 42, 42);
   padding-right: 5px;
   border-radius: 5px;
 }
 #main #container-main #card1-main #adress .material-symbols-outlined {
-  color: var(--color-text);
+  color: rgb(165, 42, 42);
   font-size: 30px;
 }
 #main #container-main #card1-main #adress a {
   text-decoration: none;
-  color: var(--color-text);
+  color: rgb(165, 42, 42);
   font-size: 1.1rem;
 }
 #main #container-main #card1-main #adress:hover {
-  border: 1px solid yellowgreen;
+  border: 1px solid rgb(133, 93, 93);
 }
 #main #container-main #card2-main {
   max-width: 35%;
@@ -519,32 +523,27 @@ footer #my-propagand p a span {
     font-size: 1.5rem;
     font-weight: bold;
     margin-top: 18rem;
+    color: #fff;
   }
   #main #container-main #card1-main h2 {
     font-size: 1.5rem;
     font-weight: bold;
+    color: #fff;
   }
   #main #container-main #card1-main h2 span {
     font-size: 3.5rem;
-  }
-  #main #container-main #card1-main p {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    font-weight: 500;
   }
   #main #container-main #card1-main #btn-main {
     border-radius: 2px;
     width: 100px;
     height: 60px;
-    background-color: #fff;
-    text-align: center;
+    background-color: rgb(165, 42, 42);
     margin-top: 2rem;
     margin-bottom: 2rem;
   }
   #main #container-main #card1-main #btn-main a {
     font-weight: 400;
-    color: #333333;
+    color: #fff;
   }
   #main #container-main #card1-main #adress {
     padding: 2px 15px 2px 10px;
@@ -578,13 +577,6 @@ footer #my-propagand p a span {
   }
   #main #container-main #card1-main #btn-main a {
     font-size: 1.2rem;
-  }
-  #main #container-main #card2-main {
-    max-width: 90%;
-    margin-top: 30px;
-  }
-  #main #container-main #card2-main img {
-    height: auto;
   }
   #questions {
     height: auto;
