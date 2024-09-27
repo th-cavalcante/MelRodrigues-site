@@ -668,12 +668,13 @@ footer #my-propagand p a span {
   #contact {
     padding-top: 10px;
     text-align: center;
-    background-color: rgb(29, 31, 43);
-    color: #eeffff;
+    background-color: #fff;
+    color: #333333;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
+    padding-bottom: 30px;
   }
   #contact #container-contact {
     align-items: center;
@@ -747,9 +748,16 @@ footer #my-propagand p a span {
     border-radius: 3px;
     border: none;
     padding: 20px;
+    border: 1px solid rgb(211, 205, 205);
+  }
+  #contact #form form ::-moz-placeholder {
+    font-size: 12px;
+  }
+  #contact #form form ::placeholder {
+    font-size: 12px;
   }
   #contact #form form input:focus {
-    border: 2px solid rgb(70, 228, 3);
+    border: 1px solid rgb(131, 128, 128);
   }
   #contact #form form #msg {
     height: 100px;
@@ -759,6 +767,7 @@ footer #my-propagand p a span {
     font-family: "montserrat";
     letter-spacing: 0.8px;
     width: 100%;
+    border: 1px solid rgb(211, 205, 205);
   }
   #contact #form form button {
     margin-top: 50px;
@@ -771,7 +780,7 @@ footer #my-propagand p a span {
     margin: auto;
     background-color: rgb(41, 42, 49);
     width: 100%;
-    font-weight: 500;
+    font-weight: 400;
     text-transform: uppercase;
   }
   footer {

@@ -862,12 +862,13 @@ footer{
 #contact{
     padding-top: 10px;
     text-align: center;
-    background-color: rgb(29,31,43);
-    color: #efff;
+    background-color:#fff;
+    color: #333333;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
+    padding-bottom: 30px;
      
     #container-contact{
         align-items: center;
@@ -957,9 +958,12 @@ footer{
                 border-radius: 3px;     
                 border: none;
                 padding: 20px;
+                border: 1px solid rgb(211, 205, 205);
+            }::placeholder{
+                font-size: 12px;
             }
             input:focus{
-                border: 2px solid rgb(70, 228, 3);
+                border: 1px solid rgb(131, 128, 128);
             }
             #msg{
                 height: 100px;
@@ -969,6 +973,8 @@ footer{
                 font-family:'montserrat';
                 letter-spacing: 0.8px;
                 width: 100%;  
+                border: 1px solid rgb(211, 205, 205);
+                
      
             }
             button{
@@ -980,9 +986,9 @@ footer{
                 justify-content: center;
                 align-items: center;
                 margin: auto;
-                 background-color: rgb(41, 42, 49);
+                background-color: rgb(41, 42, 49);
                 width: 100%;
-                font-weight: 500;
+                font-weight: 400;
                 text-transform: uppercase;
             }
                  
