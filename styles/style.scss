@@ -335,6 +335,9 @@ button{
         padding: 2rem;
         margin-bottom: 2rem;
         color:var(--color-text);
+        font-size: 24px;
+        text-align: center;
+        font-weight: 400;
     }
     #container-about-me{
         display: flex;
@@ -366,82 +369,21 @@ button{
 
 //contatos abaixo://
 #contact{
-    display: none;
-
-
-    padding: 0px;
     text-align: center;
-    background-color: rgb(29,31,43);
-    color: #efff;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-     
-    #container-contact{
-        display: none;
-        justify-content:flex-start;
-        align-items: center;
-        #title-contact{
-            h1{
-                font-size: 40px;
-                text-transform: uppercase;
-                color: var(--secondary);
-                
-            }
+    background-color: #fff;
+    color: #333333;
 
-        }
-        #card-contact{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            .content-contact{
-               margin: 1rem;
-               text-align: center;
-    
-               h2{
-                font-size: 18px;
-    
-               }
-               p{
-                font-size: 16px;
-    
-               }    
-                .material-symbols-outlined{
-                    font-size: 35px;
-                }
-            }
-        }
-    
-        #box-btn-contact{
-            #btn-contact{
-                width: 400px;
-                height: 40px;
-                border: 1px solid var(--tertiary);
-                background-color: #fff;
-                border-radius: 5px;
-                transition: .3s;
-               
-    
-                a{
-                    text-decoration: none;
-                    color: var(--tertiary);
-                    font-weight: 500;
-                }
-                
-            }
-            #btn-contact:hover{
-               
-                box-shadow: 1px 1px 5px var(--secondary);
-        
-            }
-        }
-    }
 
     #form{
         margin-top: 2rem;
+        padding-bottom: 50px;
+        display: flex;
+        justify-content: center;
+       
+        
   
         form{       
-            width: 600px;
+            width: 50%;
             padding: 20px 20px 10px 15px;
             
             p{
@@ -450,14 +392,6 @@ button{
                 text-align: center;
                
             }  
-            div{
-                text-align: left;
-                label{
-                    padding: 3px;
-                    
-                     
-                }
-            }
             
             input{
                 outline: none;
@@ -467,9 +401,12 @@ button{
                 border: none;
                 padding: 20px;
                 margin-bottom: 20px;
+                border: 1px solid rgb(211, 205, 205);
+            }::placeholder{
+                font-size: 14px;
             }
             input:focus{
-                border: 2px solid rgb(70, 228, 3);
+                border: 1px solid rgb(131, 128, 128);
             }
             #msg{
                 height: 100px;
@@ -478,7 +415,9 @@ button{
                 outline: none;
                 font-family:'montserrat';
                 letter-spacing: 0.8px;
-                width: 100%;  
+                width: 100%; 
+                border: 1px solid rgb(211, 205, 205); 
+                
      
             }
             button{
@@ -490,10 +429,12 @@ button{
                 justify-content: center;
                 align-items: center;
                 margin: auto;
-                background-color: var(--tertiary);
-                width: 100%;
-                font-weight: 500;
+                background-color: #1D1F2B;
+                width: 150px;
+                font-weight: 400;
+                font-size: 14px;
                 text-transform: uppercase;
+                
             }
                  
     }
