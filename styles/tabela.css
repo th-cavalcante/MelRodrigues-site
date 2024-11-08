@@ -1,6 +1,6 @@
 :root {
-  --primary: #A88F7F;
-  --secondary: #EEDFD4;
+  --primary: #000000;
+  --secondary: #000000;
   --tertiary: #BF7E62;
   --color-text: #fff;
   --color-text-secondary: #000;
@@ -52,7 +52,7 @@ body {
 #price-list #title-tabela h1 {
   margin-top: 2rem;
   font-family: "montserrat";
-  color: var(--color-text-tertiary);
+  color: #FFD900;
   font-size: 1.5rem;
   margin-bottom: 2rem;
   text-transform: uppercase;
@@ -64,6 +64,7 @@ body {
 }
 #price-list #title-tabela #formas-pagamento p {
   font-weight: 500;
+  color: #FFD900;
 }
 #price-list #title-tabela #formas-pagamento #bandeiras {
   display: flex;
@@ -183,7 +184,7 @@ body {
 #price-list #container-cards .rodape-card .btn-card .btn {
   width: 120px;
   height: 30px;
-  background-color: rgb(7, 194, 7);
+  background-color: #FFD900;
   border: none;
 }
 #price-list #container-cards .rodape-card .btn-card .btn a {
@@ -193,7 +194,7 @@ body {
   text-transform: uppercase;
 }
 #price-list #container-cards .rodape-card .btn-card .btn:hover {
-  background-color: rgb(29, 218, 29);
+  background-color: #FFD900;
 }
 #price-list #faixa-title-pacotes {
   margin-top: 2rem;
