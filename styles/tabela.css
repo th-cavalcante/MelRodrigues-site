@@ -326,20 +326,20 @@ body {
     height: 200px;
   }
   #price-list .container-tilte-blackfriday .box-title-black-friday #title-black-friday {
-    font-size: 20px;
+    font-size: 18px;
     text-transform: uppercase;
   }
   #price-list .container-tilte-blackfriday .box-title-black-friday #desc-01 {
-    font-size: 18px;
+    font-size: 16px;
   }
   #price-list .container-tilte-blackfriday .box-title-black-friday #desc-02 {
-    font-size: 20px;
+    font-size: 18px;
   }
   #price-list .container-tilte-blackfriday .box-title-black-friday #desc-03 {
-    font-size: 22px;
+    font-size: 20px;
   }
   #price-list .container-tilte-blackfriday .box-title-black-friday #desc-04 {
-    font-size: 24px;
+    font-size: 22px;
   }
   #price-list .container-tilte-blackfriday #img-black-friday-02 {
     display: none;
