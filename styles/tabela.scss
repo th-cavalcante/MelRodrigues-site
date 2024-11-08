@@ -177,12 +177,13 @@ body{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: var(--primary);
+            background-color: #ffff;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.6);
             border-radius: 0px 0px 10px 10px;
             padding-top: 5px;
             padding-bottom: 5px;
             padding-right: 5px;
-            color: #fff;
+            color: var(--primary);
 
             .preco{        
                 width: 40%;
@@ -208,10 +209,12 @@ body{
                     .price-before{
                         font-size: 12px;
                         text-decoration: line-through;
+                        font-weight: 400;
                     }
                     p{
-                        font-size: 15px;
+                        font-size: 22px;
                         padding-right: 5px;
+                        font-weight: 600;
     
                     }
                 }
@@ -404,14 +407,14 @@ body{
             text-align: center;
             
             img{
-                height: 200px    ;
-                text-align: center;
-
+                height: 200px;
             }
+
             .box-title-black-friday{
 
                 #title-black-friday{
-                    font-size: 26px;
+                    font-size: 20px;
+                    text-transform: uppercase;
                     
 
                 }
@@ -424,7 +427,7 @@ body{
 
                 }
                 #desc-03{
-                    font-size: 23px;
+                    font-size: 22px;
 
                 }
 
@@ -456,7 +459,7 @@ body{
             justify-items: center;
              
             .cards{
-                border: 1px solid var(--tertiary);
+                border: 1px solid var(--primary);
                 border-radius: 0px 0px 10px 10px;
                 width: 90%;      
                     
@@ -483,12 +486,11 @@ body{
             .rodape-card{
                 display: flex;
                 justify-content: center;
-                align-items: center;
-                background-color: var(--primary);
+                align-items: center;     
                 border-radius: 0px 0px 10px 10px;
                 padding-top: 5px;
                 padding-bottom: 5px;
-                color: #fff;
+                
     
                 .price{        
                     width: 100px;
@@ -500,6 +502,7 @@ body{
                     }
                     p{
                         font-size: 20px;
+                        
                     }
                 }
                 .btn-card{
