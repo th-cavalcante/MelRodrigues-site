@@ -8,6 +8,7 @@
     --text: 'montserrat';
     --background-color: #f7f4f2;
     --color-border:rgb(29,31,43) ;
+    --background-btn:#E28702;
 }
 *{
     margin: 0;
@@ -57,52 +58,6 @@ body{
 
 #price-list{
   
-    #title-tabela{
-        display: flex;
-        justify-content: space-around;
-        background-color: var(--secondary);
-        margin-bottom: 1rem;
-        margin-top: 1rem;
-        
-
-        h1{
-            margin-top: 2rem;
-            font-family: 'montserrat';
-            color:#FFD900;
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            text-transform: uppercase;
-           }
-           #formas-pagamento{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            p{
-                font-weight: 500;
-                color: #FFD900;
-
-            }
-            #bandeiras{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                
-                img{
-                    margin: 5px;  
-                    height: 20px;      
-                }
-                #master{
-                    height: 50px;
-                }
-                #paypal{
-                    height: 50px;
-                }
-                
-                
-            }
-            
-           }
-    }
        #back-price-list{
         display: flex;
         justify-content: center;
@@ -130,6 +85,47 @@ body{
             text-decoration: none;
         }    
     }
+    .container-tilte-blackfriday{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 30px;
+        background-color: var(--primary);
+        color:#fff;
+        margin-bottom: 30px;
+        margin-top: 15px;
+        background-image: url('/img/fundo-black.jpg');
+        background-size: cover;
+        background-position: center;
+
+
+        img{
+            height: 350px;
+
+        }
+        .box-title-black-friday{
+            text-align: center;
+            #title-black-friday{
+                font-size: 50px;
+                padding-bottom: 15px;
+                color: yellow;
+            }
+            #desc-01{
+                font-size: 25px;
+    
+            }
+            #desc-02{
+                font-size: 30px;
+    
+            }
+            #desc-03{
+                font-size: 35px;
+    
+            }
+
+        }
+        
+    }
     
     #container-cards{    
         max-width: 1200px;
@@ -140,7 +136,7 @@ body{
         grid-row-gap: 20px;
          
         .cards{
-            border: 1px solid var(--tertiary);
+            border: 1px solid var(--color-text-secondary);
             border-radius: 0px 0px 10px 10px;
             
           
@@ -222,7 +218,7 @@ body{
                 .btn{
                     width: 120px;
                     height: 30px;
-                    background-color: #FFD900;
+                    background-color: var(--background-btn);
                     border: none;
                     a{
                         text-decoration: none;
@@ -232,7 +228,7 @@ body{
                     }
                 }
                 .btn:hover{
-                    background-color: #FFD900;
+                    background-color: #f09c1e;
 
                 }
                 
@@ -248,6 +244,7 @@ body{
         display: flex;
         justify-content: center;
         align-items: center;
+       
         h1{
             text-align: center;
             text-transform: uppercase;
@@ -334,7 +331,7 @@ body{
                         .btn-pacotes{
                             width: 250px;
                             height: 40px;
-                            background-color: #1cbd1c;
+                            background-color: var(--background-btn);
                             border: none;
                             border-radius: 3px;
                             
@@ -347,7 +344,7 @@ body{
                                 color: #ffff;
                             }
                         }:hover{
-                            background-color: #1DDA1D;
+                            background-color: #f09f25;
                         }
                     }
 
@@ -374,58 +371,10 @@ body{
 
 @media  (max-width: 768px) {
     #price-list{
-        #title-tabela{
-            flex-direction: column;
-            
-            
-    
-            h1{
-                margin-top: 1rem;
-                font-family: 'montserrat';
-                color:#5d5d5d;
-                font-size: 1.2rem;
-                margin-bottom: 2rem;
-                text-transform: uppercase;
-               }
-               #formas-pagamento{
-                flex-direction: column;
-                
-                p{
-                    font-size: 12px;
-                    font-weight: 500;
-    
-                }
-                #bandeiras{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    
-                    img{
-                        margin: 5px;  
-                        height: 15px;      
-                    }
-                    #master{
-                        height: 50px;
-                    }
-                    #paypal{
-                        height: 50px;
-                    }
-                    
-                    
-                }
-                
-               }
-        }
+        
       
   
-        h1{
-            margin-top: 2rem;
-            font-family: 'montserrat';
-            color: #B65D49;
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            text-transform: uppercase;
-           }
+        
            #back-price-list{
             display: flex;
             justify-content: center;
@@ -449,6 +398,53 @@ body{
                 text-decoration: none;
             }    
         }
+
+        .container-tilte-blackfriday{
+            display: block;
+            text-align: center;
+            
+            img{
+                height: 200px    ;
+                text-align: center;
+
+            }
+            .box-title-black-friday{
+
+                #title-black-friday{
+                    font-size: 26px;
+                    
+
+                }
+                #desc-01{
+                    font-size: 18px;
+
+                }
+                #desc-02{
+                    font-size: 20px;
+
+                }
+                #desc-03{
+                    font-size: 23px;
+
+                }
+
+            }
+            #img-black-friday-02{
+                display: none;
+            }
+        }
+
+        
+
+
+
+
+
+
+
+
+
+
         
         #container-cards{    
             max-width: 768px;
@@ -525,7 +521,7 @@ body{
                     .btn{
                         width: 120px;
                         height: 30px;
-                        background-color: rgb(7, 194, 7);
+                        background-color: var(--background-btn);
                         border: none;
                         a{
                             text-decoration: none;
@@ -619,7 +615,7 @@ body{
                             .btn-pacotes{
                                 width: 90%px;
                                 height: 40px;
-                                background-color: #1cbd1c;
+                                background-color: var(--background-btn);
                                 border: none;
                                 border-radius: 3px;
                                 
@@ -632,7 +628,7 @@ body{
                                     color: #ffff;
                                 }
                             }:hover{
-                                background-color: #1DDA1D;
+                                background-color: #f4a836;
                             }
                         }
     

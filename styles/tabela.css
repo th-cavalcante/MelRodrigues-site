@@ -8,6 +8,7 @@
   --text: "montserrat";
   --background-color: #f7f4f2;
   --color-border:rgb(29,31,43) ;
+  --background-btn:#E28702;
 }
 
 * {
@@ -42,45 +43,6 @@ body {
   transform: translate(-50%, -50%);
 }
 
-#price-list #title-tabela {
-  display: flex;
-  justify-content: space-around;
-  background-color: var(--secondary);
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-}
-#price-list #title-tabela h1 {
-  margin-top: 2rem;
-  font-family: "montserrat";
-  color: #FFD900;
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-  text-transform: uppercase;
-}
-#price-list #title-tabela #formas-pagamento {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#price-list #title-tabela #formas-pagamento p {
-  font-weight: 500;
-  color: #FFD900;
-}
-#price-list #title-tabela #formas-pagamento #bandeiras {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#price-list #title-tabela #formas-pagamento #bandeiras img {
-  margin: 5px;
-  height: 20px;
-}
-#price-list #title-tabela #formas-pagamento #bandeiras #master {
-  height: 50px;
-}
-#price-list #title-tabela #formas-pagamento #bandeiras #paypal {
-  height: 50px;
-}
 #price-list #back-price-list {
   display: flex;
   justify-content: center;
@@ -107,6 +69,39 @@ body {
 #price-list #back-price-list a {
   text-decoration: none;
 }
+#price-list .container-tilte-blackfriday {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 30px;
+  background-color: var(--primary);
+  color: #fff;
+  margin-bottom: 30px;
+  margin-top: 15px;
+  background-image: url("/img/fundo-black.jpg");
+  background-size: cover;
+  background-position: center;
+}
+#price-list .container-tilte-blackfriday img {
+  height: 350px;
+}
+#price-list .container-tilte-blackfriday .box-title-black-friday {
+  text-align: center;
+}
+#price-list .container-tilte-blackfriday .box-title-black-friday #title-black-friday {
+  font-size: 50px;
+  padding-bottom: 15px;
+  color: yellow;
+}
+#price-list .container-tilte-blackfriday .box-title-black-friday #desc-01 {
+  font-size: 25px;
+}
+#price-list .container-tilte-blackfriday .box-title-black-friday #desc-02 {
+  font-size: 30px;
+}
+#price-list .container-tilte-blackfriday .box-title-black-friday #desc-03 {
+  font-size: 35px;
+}
 #price-list #container-cards {
   max-width: 1200px;
   margin: 0 auto;
@@ -116,7 +111,7 @@ body {
   grid-row-gap: 20px;
 }
 #price-list #container-cards .cards {
-  border: 1px solid var(--tertiary);
+  border: 1px solid var(--color-text-secondary);
   border-radius: 0px 0px 10px 10px;
 }
 #price-list #container-cards .cards .body-card {
@@ -184,7 +179,7 @@ body {
 #price-list #container-cards .rodape-card .btn-card .btn {
   width: 120px;
   height: 30px;
-  background-color: #FFD900;
+  background-color: var(--background-btn);
   border: none;
 }
 #price-list #container-cards .rodape-card .btn-card .btn a {
@@ -194,7 +189,7 @@ body {
   text-transform: uppercase;
 }
 #price-list #container-cards .rodape-card .btn-card .btn:hover {
-  background-color: #FFD900;
+  background-color: #f09c1e;
 }
 #price-list #faixa-title-pacotes {
   margin-top: 2rem;
@@ -278,7 +273,7 @@ body {
 #price-list #container-pacotes .pacotes .container-pacotes .card-price .box-btn-pacotes .btn-pacotes {
   width: 250px;
   height: 40px;
-  background-color: #1cbd1c;
+  background-color: var(--background-btn);
   border: none;
   border-radius: 3px;
 }
@@ -291,51 +286,10 @@ body {
   color: white;
 }
 #price-list #container-pacotes .pacotes .container-pacotes .card-price .box-btn-pacotes :hover {
-  background-color: #1DDA1D;
+  background-color: #f09f25;
 }
 
 @media (max-width: 768px) {
-  #price-list #title-tabela {
-    flex-direction: column;
-  }
-  #price-list #title-tabela h1 {
-    margin-top: 1rem;
-    font-family: "montserrat";
-    color: #5d5d5d;
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    text-transform: uppercase;
-  }
-  #price-list #title-tabela #formas-pagamento {
-    flex-direction: column;
-  }
-  #price-list #title-tabela #formas-pagamento p {
-    font-size: 12px;
-    font-weight: 500;
-  }
-  #price-list #title-tabela #formas-pagamento #bandeiras {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  #price-list #title-tabela #formas-pagamento #bandeiras img {
-    margin: 5px;
-    height: 15px;
-  }
-  #price-list #title-tabela #formas-pagamento #bandeiras #master {
-    height: 50px;
-  }
-  #price-list #title-tabela #formas-pagamento #bandeiras #paypal {
-    height: 50px;
-  }
-  #price-list h1 {
-    margin-top: 2rem;
-    font-family: "montserrat";
-    color: #B65D49;
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    text-transform: uppercase;
-  }
   #price-list #back-price-list {
     display: flex;
     justify-content: center;
@@ -357,6 +311,29 @@ body {
   }
   #price-list #back-price-list a {
     text-decoration: none;
+  }
+  #price-list .container-tilte-blackfriday {
+    display: block;
+    text-align: center;
+  }
+  #price-list .container-tilte-blackfriday img {
+    height: 200px;
+    text-align: center;
+  }
+  #price-list .container-tilte-blackfriday .box-title-black-friday #title-black-friday {
+    font-size: 26px;
+  }
+  #price-list .container-tilte-blackfriday .box-title-black-friday #desc-01 {
+    font-size: 18px;
+  }
+  #price-list .container-tilte-blackfriday .box-title-black-friday #desc-02 {
+    font-size: 20px;
+  }
+  #price-list .container-tilte-blackfriday .box-title-black-friday #desc-03 {
+    font-size: 23px;
+  }
+  #price-list .container-tilte-blackfriday #img-black-friday-02 {
+    display: none;
   }
   #price-list #container-cards {
     max-width: 768px;
@@ -423,7 +400,7 @@ body {
   #price-list #container-cards .rodape-card .btn-card .btn {
     width: 120px;
     height: 30px;
-    background-color: rgb(7, 194, 7);
+    background-color: var(--background-btn);
     border: none;
   }
   #price-list #container-cards .rodape-card .btn-card .btn a {
@@ -501,7 +478,7 @@ body {
   #price-list #container-pacotes .pacotes .container-pacotes .card-price .box-btn-pacotes .btn-pacotes {
     width: 90% px;
     height: 40px;
-    background-color: #1cbd1c;
+    background-color: var(--background-btn);
     border: none;
     border-radius: 3px;
   }
@@ -514,6 +491,6 @@ body {
     color: white;
   }
   #price-list #container-pacotes .pacotes .container-pacotes .card-price .box-btn-pacotes :hover {
-    background-color: #1DDA1D;
+    background-color: #f4a836;
   }
 }/*# sourceMappingURL=tabela.css.map */
