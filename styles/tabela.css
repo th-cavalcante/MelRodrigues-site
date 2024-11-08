@@ -102,6 +102,9 @@ body {
 #price-list .container-tilte-blackfriday .box-title-black-friday #desc-03 {
   font-size: 35px;
 }
+#price-list .container-tilte-blackfriday .box-title-black-friday #desc-04 {
+  font-size: 40px;
+}
 #price-list #container-cards {
   max-width: 1200px;
   margin: 0 auto;
@@ -334,6 +337,9 @@ body {
   }
   #price-list .container-tilte-blackfriday .box-title-black-friday #desc-03 {
     font-size: 22px;
+  }
+  #price-list .container-tilte-blackfriday .box-title-black-friday #desc-04 {
+    font-size: 24px;
   }
   #price-list .container-tilte-blackfriday #img-black-friday-02 {
     display: none;
