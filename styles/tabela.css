@@ -69,42 +69,6 @@ body {
 #price-list #back-price-list a {
   text-decoration: none;
 }
-#price-list .container-tilte-blackfriday {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 30px;
-  background-color: var(--primary);
-  color: #fff;
-  margin-bottom: 30px;
-  margin-top: 15px;
-  background-image: url("/img/fundo-black.jpg");
-  background-size: cover;
-  background-position: center;
-}
-#price-list .container-tilte-blackfriday img {
-  height: 350px;
-}
-#price-list .container-tilte-blackfriday .box-title-black-friday {
-  text-align: center;
-}
-#price-list .container-tilte-blackfriday .box-title-black-friday #title-black-friday {
-  font-size: 50px;
-  padding-bottom: 15px;
-  color: yellow;
-}
-#price-list .container-tilte-blackfriday .box-title-black-friday #desc-01 {
-  font-size: 25px;
-}
-#price-list .container-tilte-blackfriday .box-title-black-friday #desc-02 {
-  font-size: 30px;
-}
-#price-list .container-tilte-blackfriday .box-title-black-friday #desc-03 {
-  font-size: 35px;
-}
-#price-list .container-tilte-blackfriday .box-title-black-friday #desc-04 {
-  font-size: 40px;
-}
 #price-list #container-cards {
   max-width: 1200px;
   margin: 0 auto;
@@ -112,6 +76,7 @@ body {
   grid-template-columns: auto auto auto auto;
   grid-column-gap: 10px;
   grid-row-gap: 20px;
+  padding-top: 30px;
 }
 #price-list #container-cards .cards {
   border: 1px solid var(--color-text-secondary);
@@ -185,7 +150,7 @@ body {
 #price-list #container-cards .rodape-card .btn-card .btn {
   width: 120px;
   height: 30px;
-  background-color: var(--background-btn);
+  background-color: var(--tertiary);
   border: none;
 }
 #price-list #container-cards .rodape-card .btn-card .btn a {
@@ -199,7 +164,7 @@ body {
 }
 #price-list #faixa-title-pacotes {
   margin-top: 2rem;
-  background-color: #EEDFD4;
+  background-color: red;
   height: 70px;
   display: flex;
   justify-content: center;
@@ -233,7 +198,7 @@ body {
   margin-top: 5;
 }
 #price-list #container-pacotes .pacotes .container-pacotes .title-pacotes {
-  background-color: var(--primary);
+  background-color: var(--color-text-tertiary);
   width: 85%;
   text-align: center;
   margin: 0 auto;
