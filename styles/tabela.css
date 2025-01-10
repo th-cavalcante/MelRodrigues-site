@@ -128,8 +128,8 @@ body {
   font-size: 16px;
 }
 #price-list #container-cards .rodape-card .preco p {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 300;
 }
 #price-list #container-cards .rodape-card .btn-card {
   width: 60%;
