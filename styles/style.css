@@ -411,6 +411,9 @@ footer #my-propagand p a span {
     height: 110px;
     width: 110px;
   }
+  #header #logo a button {
+    display: none;
+  }
   #header #menu {
     display: block;
     background-color: none;

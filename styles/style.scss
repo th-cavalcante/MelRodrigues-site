@@ -60,6 +60,7 @@ hr{
             width: 200px;  
             border-radius: 50%;        
         }
+        
     }
 
     #menu{   
@@ -514,6 +515,11 @@ footer{
           img {
             height: 110px;
             width: 110px;
+          }
+          a{
+            button{
+                display: none;
+            }
           }
         }
       
