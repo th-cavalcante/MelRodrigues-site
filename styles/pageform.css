@@ -5,7 +5,7 @@
   --color-text: #fff;
   --color-text-secondary: #000;
   --color-text-tertiary: #5d5d5d;
-  --text: "montserrat";
+  --text: 'montserrat';
 }
 
 body {

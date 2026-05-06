@@ -7,7 +7,7 @@
   --color-text: #fff;
   --color-text-secondary: #000;
   --color-text-tertiary: #5d5d5d;
-  --text: "montserrat";
+  --text: 'montserrat';
   --background-color: #ffff;
   --background-color-secondary:rgb(29,31,43);
   --color-border:rgb(29,31,43) ;
@@ -132,14 +132,15 @@ hr {
   max-width: 46%;
 }
 #main #container-main #card1-main h1 {
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: bold;
   color: var(--background-color-secondary);
 }
 #main #container-main #card1-main h2 {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   color: var(--background-color-secondary);
+  padding-bottom: 20px;
 }
 #main #container-main #card1-main h2 span {
   font-size: 70px;
@@ -499,9 +500,10 @@ footer #my-propagand p a span {
     color: #fff;
   }
   #main #container-main #card1-main h2 {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     color: #fff;
+    padding-bottom: 5px;
   }
   #main #container-main #card1-main h2 span {
     font-size: 2.5rem;
