@@ -71,7 +71,7 @@ const ClientsView = ({ clients, setClients }) => {
     return () => {
       cancelled = true;
     };
-  }, [selectedClientId]);
+  }, [selectedClientId, setClients]);
 
   const handleObsChange = (sessionId) => (e) => {
     const { value } = e.target;
