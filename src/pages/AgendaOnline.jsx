@@ -7,6 +7,7 @@ import {
   getBookedTimes,
   createPublicBooking,
   createPublicPatient,
+  getBookingPaymentStatus,
 } from '../lib/bookings';
 import { submitAnamnese } from '../lib/patients';
 import { createMpPreference } from '../lib/mercadopago';
@@ -113,6 +114,7 @@ const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => 
   const [paymentProcessing, setPaymentProcessing] = useState(false);
   const [pendingBookingId, setPendingBookingId] = useState(mpReturn?.bookingId || null);
   const [returnedSummary, setReturnedSummary] = useState(null);
+  const [liveStatus, setLiveStatus] = useState(mpReturn?.status || null);
 
   const needsIdentity = !initialPatientId;
 
@@ -149,6 +151,31 @@ const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => 
       console.error('Erro ao ler resumo do agendamento:', err);
     }
   }, [mpReturn]);
+
+  // Pix não aprova na hora: o Mercado Pago devolve o navegador pro site com
+  // status "pending" assim que o QR é gerado. A confirmação real chega
+  // minutos depois via webhook, então reconsultamos o agendamento até virar
+  // "Pago" (ou o usuário sair da tela).
+  useEffect(() => {
+    if (liveStatus !== 'pending' || !pendingBookingId) return undefined;
+    let cancelled = false;
+
+    const check = async () => {
+      try {
+        const result = await getBookingPaymentStatus(pendingBookingId);
+        if (cancelled || !result) return;
+        if (result.payment_status === 'Pago') setLiveStatus('approved');
+      } catch (err) {
+        console.error('Erro ao verificar status do pagamento:', err);
+      }
+    };
+
+    const interval = setInterval(check, 4000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [liveStatus, pendingBookingId]);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -671,13 +698,13 @@ const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => 
 
         {step === 5 && (
           <div className="agenda-online-success">
-            <div className="agenda-online-success-icon">{mpReturn?.status === 'pending' ? '⏳' : '✓'}</div>
+            <div className="agenda-online-success-icon">{liveStatus === 'pending' ? '⏳' : '✓'}</div>
             <h1 className="agenda-online-step-title">
-              {mpReturn?.status === 'pending' ? 'Pagamento em processamento' : 'Agendamento confirmado!'}
+              {liveStatus === 'pending' ? 'Pagamento em processamento' : 'Agendamento confirmado!'}
             </h1>
             <p className="agenda-online-success-text">
-              {mpReturn?.status === 'pending'
-                ? 'Recebemos sua reserva e estamos aguardando a confirmação do pagamento. Avisaremos assim que estiver tudo certo.'
+              {liveStatus === 'pending'
+                ? 'Recebemos sua reserva e estamos aguardando a confirmação do pagamento. Esta página vai atualizar sozinha assim que o Pix cair.'
                 : 'Guarde os detalhes abaixo. Chegue com 10 minutos de antecedência para o seu atendimento.'}
             </p>
 

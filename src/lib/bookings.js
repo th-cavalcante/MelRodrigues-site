@@ -75,6 +75,15 @@ export const createPublicPatient = async ({ name, phone }) => {
   return data;
 };
 
+/** RPC — tela de sucesso da Agenda Online reconsulta o status real do
+ * pagamento (Pix não aprova na hora; a confirmação chega minutos depois
+ * via webhook). */
+export const getBookingPaymentStatus = async (bookingId) => {
+  const { data, error } = await supabase.rpc('get_booking_payment_status', { p_booking_id: bookingId });
+  if (error) throw error;
+  return data && data[0] ? data[0] : null;
+};
+
 /** RPC — página pública de agendamento busca o nome do paciente pro "Olá, ...". */
 export const getPatientNameForBooking = async (patientId) => {
   const { data, error } = await supabase.rpc('get_patient_name', { p_patient_id: patientId });
