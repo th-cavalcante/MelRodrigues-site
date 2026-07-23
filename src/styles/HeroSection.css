@@ -206,8 +206,7 @@
   }
 
   .hero-letter {
-    font-size: 340px;
-    right: -60px;
+    display: none;
   }
 
   .hero-buttons {
