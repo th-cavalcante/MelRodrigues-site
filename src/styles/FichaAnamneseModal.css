@@ -1,0 +1,290 @@
+/* =================================
+   FICHA ANAMNESE MODAL STYLES
+   ================================= */
+
+@keyframes fichaFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fichaPopIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.ficha-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: oklch(20% 0.01 85 / 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 24px;
+  animation: fichaFadeIn 0.2s ease;
+}
+
+.ficha-modal {
+  position: relative;
+  background: #fff;
+  max-width: 720px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 48px 44px;
+  animation: fichaPopIn 0.22s ease;
+}
+
+.ficha-modal-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  margin-top: -24px;
+  margin-right: -20px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  color: oklch(55% 0.01 85);
+  cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+}
+
+.ficha-modal-close:hover {
+  color: var(--primary-color);
+}
+
+.ficha-modal-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.ficha-modal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 34px;
+  margin: 16px 0 14px;
+}
+
+.ficha-modal-subtitle {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text-body);
+  font-weight: 300;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.ficha-modal-body {
+  padding-top: 24px;
+  border-top: 1px solid oklch(90% 0.01 85);
+}
+
+.ficha-modal-clinical-header {
+  text-align: center;
+  padding: 40px 0 32px;
+  border-top: 1px solid oklch(90% 0.01 85);
+}
+
+.ficha-modal-clinical-header h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 26px;
+  margin: 0;
+}
+
+/* FIELDS (shared with Ficha) */
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+/* RADIO */
+.radio-group {
+  display: flex;
+  gap: 32px;
+  margin-top: 10px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  color: oklch(30% 0.015 85);
+}
+
+.radio-input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+  margin: 0;
+}
+
+/* QUESTIONS */
+.question-block {
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+}
+
+.question-block.has-border {
+  border-bottom: 1px solid oklch(92% 0.005 85);
+}
+
+.question-block:first-of-type {
+  margin-bottom: 44px;
+}
+
+.question-label {
+  font-size: 15.5px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: oklch(26% 0.015 85);
+}
+
+.question-num {
+  color: var(--primary-color);
+}
+
+.question-block .radio-group {
+  margin-top: 12px;
+}
+
+/* FOTOTIPO */
+.fototipo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.fototipo-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 10px;
+  background: transparent;
+  border: 1px solid var(--border-subtle-2);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+}
+
+.fototipo-card.selected {
+  background: oklch(96% 0.02 85);
+  border: 1.5px solid var(--primary-color);
+}
+
+.fototipo-kicker {
+  font-size: 11.5px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.fototipo-swatch {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  border: 1px solid oklch(85% 0.01 85 / 0.6);
+}
+
+.fototipo-desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-body);
+  text-align: center;
+}
+
+/* SAVE BUTTON */
+.save-button {
+  display: block;
+  width: 100%;
+  margin-top: 46px;
+  padding: 18px;
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 13.5px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: 'Manrope', sans-serif;
+}
+
+/* SELFIE STEP */
+.ficha-modal-narrow {
+  max-width: 480px;
+  text-align: center;
+}
+
+.ficha-selfie-body {
+  padding-top: 24px;
+  border-top: 1px solid oklch(90% 0.01 85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.ficha-selfie-preview {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle-2);
+}
+
+.ficha-selfie-btn {
+  position: relative;
+  width: auto;
+  min-width: 220px;
+  margin-top: 0;
+  cursor: pointer;
+}
+
+.ficha-selfie-btn.disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.ficha-selfie-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* WELCOME STEP */
+.ficha-welcome-step {
+  padding: 20px 0;
+}
+
+.ficha-welcome-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 900px) {
+  .ficha-modal {
+    padding: 32px 22px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .field-row > div {
+    margin-bottom: 28px;
+  }
+}

@@ -1,0 +1,141 @@
+/* =================================
+   DEPOIMENTOS SECTION STYLES
+   ================================= */
+
+.depoimentos {
+  padding: 150px 56px;
+}
+
+.depoimentos-container {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.depoimentos-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+.depoimentos-stars {
+  color: var(--primary-color);
+  letter-spacing: 2px;
+  font-size: 15px;
+}
+
+/* MARQUEE — continuous, uninterrupted scroll (no stop/start steps) */
+@keyframes depoimentosMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.depoimentos-marquee {
+  overflow: hidden;
+  width: 100%;
+  margin-top: 20px;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+}
+
+.depoimentos-track {
+  display: flex;
+  width: max-content;
+  animation: depoimentosMarquee 46s linear infinite;
+}
+
+.depoimentos-marquee:hover .depoimentos-track {
+  animation-play-state: paused;
+}
+
+.depoimentos-slide {
+  flex: 0 0 auto;
+  width: min(380px, 82vw);
+  box-sizing: border-box;
+  padding: 0 16px;
+}
+
+.depoimento-card {
+  height: 100%;
+  padding: 40px 34px;
+  background: var(--bg-cream-alt);
+  border: 1px solid var(--border-subtle-2);
+}
+
+.depoimento-quote-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  color: var(--primary-color);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.depoimento-stars {
+  color: var(--primary-color);
+  font-size: 13px;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+
+.depoimento-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  font-style: italic;
+  line-height: 1.6;
+  margin: 0 0 26px;
+  color: oklch(28% 0.015 85);
+}
+
+.depoimento-name {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.depoimento-meta {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+/* GOOGLE LINK */
+.depoimentos-google-link {
+  display: block;
+  text-align: center;
+  margin-top: 40px;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: var(--primary-color);
+}
+
+.depoimentos-google-link:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 900px) {
+  .depoimentos {
+    padding: 90px 24px;
+  }
+
+  .depoimentos-slide {
+    padding: 0 8px;
+  }
+
+  .depoimentos-track {
+    animation-duration: 32s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .depoimentos-track {
+    animation: none;
+  }
+}

@@ -1,0 +1,379 @@
+/* =================================
+   LOCAÇÃO HAKON 4D PAGE STYLES
+   ================================= */
+
+.locacao-page {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-cream);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* HERO */
+.locacao-hero {
+  position: relative;
+  padding: 90px 56px 100px;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.locacao-hero-letter {
+  position: absolute;
+  right: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 460px;
+  line-height: 1;
+  font-weight: 300;
+  color: oklch(88% 0.02 85 / 0.35);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.locacao-hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.locacao-hero-eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.locacao-hero-line {
+  width: 40px;
+  height: 1px;
+  background: var(--primary-color);
+}
+
+.locacao-hero-eyebrow {
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: oklch(45% 0.01 85);
+}
+
+.locacao-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 58px;
+  line-height: 1.12;
+  margin: 0;
+}
+
+.locacao-accent {
+  color: var(--primary-color);
+}
+
+.locacao-subtitle {
+  font-size: 17.5px;
+  line-height: 1.75;
+  color: var(--text-body);
+  font-weight: 300;
+  margin: 26px 0 0;
+  max-width: 460px;
+}
+
+.locacao-shipping {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  font-size: 14px;
+  color: oklch(35% 0.012 85);
+}
+
+.locacao-shipping-dot {
+  color: var(--primary-color);
+  font-size: 16px;
+}
+
+.locacao-hero-actions {
+  display: flex;
+  gap: 18px;
+  margin-top: 42px;
+  flex-wrap: wrap;
+}
+
+.locacao-btn-primary {
+  display: inline-block;
+  padding: 17px 32px;
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 13px;
+  letter-spacing: 1px;
+  border-radius: 2px;
+}
+
+.locacao-btn-primary:hover {
+  opacity: 0.88;
+}
+
+.locacao-btn-outline {
+  display: inline-block;
+  padding: 17px 32px;
+  border: 1px solid oklch(60% 0.01 85);
+  font-size: 13px;
+  letter-spacing: 1px;
+  border-radius: 2px;
+}
+
+.locacao-btn-outline:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.locacao-hero-image {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.locacao-hero-image img {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  border-radius: 8px;
+  filter: drop-shadow(0 30px 50px oklch(20% 0.01 85 / 0.18));
+}
+
+.locacao-video-wrap {
+  position: relative;
+  display: inline-block;
+  max-width: 380px;
+}
+
+.locacao-video-wrap video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+  object-fit: cover;
+  border-radius: 8px;
+  filter: drop-shadow(0 30px 50px oklch(20% 0.01 85 / 0.18));
+}
+
+.locacao-video-sound-btn {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border-radius: 50%;
+  background: oklch(20% 0.01 85 / 0.55);
+  backdrop-filter: blur(4px);
+  border: 1px solid oklch(100% 0 0 / 0.25);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.locacao-video-sound-btn:hover {
+  background: oklch(20% 0.01 85 / 0.75);
+}
+
+/* INCLUSOS */
+.locacao-inclusos {
+  padding: 20px 56px 110px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.locacao-inclusos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid oklch(85% 0.01 85);
+  border-left: 1px solid oklch(85% 0.01 85);
+}
+
+.locacao-inclusos-item {
+  padding: 30px 32px;
+  border-right: 1px solid oklch(85% 0.01 85);
+  border-bottom: 1px solid oklch(85% 0.01 85);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.locacao-check {
+  color: var(--primary-color);
+  font-size: 20px;
+}
+
+.locacao-inclusos-label {
+  font-size: 15.5px;
+  font-weight: 500;
+}
+
+/* VALORES */
+.locacao-valores {
+  padding: 100px 56px 130px;
+  background: oklch(99.2% 0.003 85);
+  border-top: 1px solid oklch(88% 0.01 85);
+}
+
+.locacao-valores .section-header {
+  max-width: 560px;
+}
+
+.locacao-valores-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 42px;
+  margin: 20px 0 0;
+}
+
+.locacao-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.locacao-pricing-card {
+  background: #fff;
+  border: 1px solid oklch(88% 0.01 85);
+  padding: 40px 32px;
+  text-align: center;
+}
+
+.locacao-pricing-label {
+  font-size: 12.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: oklch(50% 0.01 85);
+}
+
+.locacao-pricing-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 46px;
+  color: var(--primary-color);
+  margin: 14px 0 6px;
+}
+
+.locacao-pricing-note {
+  font-size: 13.5px;
+  color: oklch(45% 0.01 85);
+}
+
+/* CTA / RESERVA */
+.locacao-cta {
+  background: var(--bg-dark);
+  padding: 110px 56px;
+  text-align: center;
+}
+
+.locacao-cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 42px;
+  color: oklch(96% 0.006 85);
+  margin: 20px 0 20px;
+}
+
+.locacao-cta-subtitle {
+  font-size: 15.5px;
+  color: oklch(72% 0.01 85);
+  font-weight: 300;
+  max-width: 480px;
+  margin: 0 auto 40px;
+}
+
+.locacao-cta-btn {
+  padding: 18px 40px;
+}
+
+/* FOOTER */
+.locacao-footer {
+  background: var(--bg-dark);
+  color: oklch(60% 0.012 85);
+  padding: 36px 56px;
+  text-align: center;
+  font-size: 12.5px;
+  border-top: 1px solid oklch(30% 0.012 85);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .locacao-hero {
+    grid-template-columns: 1fr;
+    padding: 50px 24px 70px;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .locacao-hero-eyebrow-row {
+    justify-content: center;
+  }
+
+  .locacao-hero-actions {
+    justify-content: center;
+  }
+
+  .locacao-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .locacao-shipping {
+    justify-content: center;
+  }
+
+  .locacao-hero-letter {
+    display: none;
+  }
+
+  .locacao-hero-image {
+    order: -1;
+  }
+
+  .locacao-title {
+    font-size: 42px;
+  }
+
+  .locacao-inclusos {
+    padding: 20px 24px 70px;
+  }
+
+  .locacao-valores {
+    padding: 70px 24px 90px;
+  }
+
+  .locacao-cta {
+    padding: 70px 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .locacao-inclusos-grid,
+  .locacao-pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .locacao-hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .locacao-btn-primary,
+  .locacao-btn-outline {
+    text-align: center;
+  }
+}

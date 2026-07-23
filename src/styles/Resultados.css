@@ -1,0 +1,58 @@
+/* =================================
+   RESULTADOS SECTION STYLES
+   ================================= */
+
+.resultados {
+  padding: 150px 56px;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.resultados .section-title {
+  margin: 20px 0 70px;
+}
+
+.resultados-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.resultado-item {
+  padding: 0 30px;
+}
+
+.resultado-item.has-border {
+  border-right: 1px solid var(--border-subtle-2);
+}
+
+.resultado-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  color: var(--primary-color);
+}
+
+.resultado-label {
+  font-size: 14px;
+  color: var(--text-body);
+  margin-top: 10px;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 900px) {
+  .resultados {
+    padding: 90px 24px;
+  }
+
+  .resultados-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .resultado-item.has-border {
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle-2);
+    padding-bottom: 40px;
+  }
+}

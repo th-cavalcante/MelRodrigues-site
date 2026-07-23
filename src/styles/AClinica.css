@@ -1,0 +1,34 @@
+/* =================================
+   A CLÍNICA SECTION STYLES
+   ================================= */
+
+.a-clinica {
+  padding: 100px 56px;
+  background: var(--bg-cream-alt);
+  border-top: 1px solid var(--border-subtle-2);
+}
+
+.a-clinica-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.a-clinica-photo {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle-2);
+}
+
+.a-clinica-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .a-clinica {
+    padding: 60px 24px;
+  }
+}

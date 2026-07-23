@@ -1,0 +1,58 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Sidebar from '../components/admin/Sidebar';
+import AccessDenied from '../components/admin/AccessDenied';
+import DashboardView from '../components/admin/DashboardView';
+import SiteManagerView from '../components/admin/SiteManagerView';
+import ClientsView from '../components/admin/ClientsView';
+import AgendaView from '../components/admin/AgendaView';
+import FinanceiroView from '../components/admin/FinanceiroView';
+import CadastroPacienteView from '../components/admin/CadastroPacienteView';
+import SettingsView from '../components/admin/SettingsView';
+import { useAuth } from '../context/AuthContext';
+import { listPatients } from '../lib/patients';
+import '../styles/AdminPanel.css';
+
+const AdminPanel = () => {
+  const [tab, setTab] = useState('dashboard');
+  const [clients, setClients] = useState([]);
+  const { user, loading, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) return;
+    listPatients()
+      .then(setClients)
+      .catch((err) => console.error('Erro ao carregar pacientes:', err));
+  }, [user]);
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/admin/login');
+  };
+
+  if (loading) {
+    return null;
+  }
+
+  if (!user) {
+    return <AccessDenied />;
+  }
+
+  return (
+    <div className="admin-panel">
+      <Sidebar tab={tab} onSelectTab={setTab} onLogout={handleLogout} userEmail={user.email} />
+      <main className="admin-main">
+        {tab === 'dashboard' && <DashboardView />}
+        {tab === 'site' && <SiteManagerView />}
+        {tab === 'clients' && <ClientsView clients={clients} setClients={setClients} />}
+        {tab === 'agenda' && <AgendaView clients={clients} />}
+        {tab === 'financeiro' && <FinanceiroView />}
+        {tab === 'cadastro' && <CadastroPacienteView onPatientCreated={() => listPatients().then(setClients)} />}
+        {tab === 'settings' && <SettingsView />}
+      </main>
+    </div>
+  );
+};
+
+export default AdminPanel;

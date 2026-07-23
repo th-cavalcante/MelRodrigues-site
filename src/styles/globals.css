@@ -1,0 +1,161 @@
+/* =================================
+   ESTILOS GLOBAIS
+   ================================= */
+
+:root {
+  /* Cores Principais */
+  --primary-color: #B08D57;
+  --accent-color: #B08D57;
+  --bg-cream: oklch(97.5% 0.006 85);
+  --bg-cream-alt: oklch(99.2% 0.003 85);
+  --border-subtle: oklch(85% 0.01 85);
+  --border-subtle-2: oklch(88% 0.01 85);
+  --text-dark: oklch(22% 0.015 85);
+  --text-body: oklch(38% 0.012 85);
+  --text-muted: oklch(45% 0.01 85);
+  --bg-dark: oklch(20% 0.012 85);
+  --text-light: oklch(92% 0.008 85);
+
+  /* Sombras */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  /* Transições */
+  --transition: all 0.3s ease-in-out;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: 'Manrope', sans-serif;
+  transition: var(--transition);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+/* Scrollbar customizada */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dark);
+}
+
+/* Section heading pattern shared across sections */
+.section-eyebrow {
+  display: block;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--primary-color);
+}
+
+.section-title {
+  font-weight: 400;
+  font-size: 44px;
+  margin: 20px 0 0;
+  color: var(--text-dark);
+}
+
+.section-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 76px;
+}
+
+@media (max-width: 600px) {
+  .section-title {
+    font-size: 32px;
+  }
+}
+
+/* Form field pattern shared across forms */
+.field-wrap {
+  margin-bottom: 28px;
+}
+
+.field-wrap-last {
+  margin-top: 8px;
+}
+
+.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 9px;
+  color: oklch(28% 0.015 85);
+}
+
+.field-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 14.5px;
+  border: 1px solid oklch(82% 0.01 85);
+  border-radius: 2px;
+  background: oklch(99% 0.003 85);
+  color: var(--text-dark);
+  outline: none;
+  font-family: 'Manrope', sans-serif;
+}
+
+.field-input:focus {
+  border-color: var(--primary-color);
+}
+
+.field-input::placeholder {
+  color: oklch(65% 0.01 85);
+}
+
+.field-textarea {
+  resize: vertical;
+}

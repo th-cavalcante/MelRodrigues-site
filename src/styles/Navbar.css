@@ -1,0 +1,128 @@
+/* =================================
+   NAVBAR STYLES
+   ================================= */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: oklch(97.5% 0.006 85 / 0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid oklch(85% 0.01 85 / 0.6);
+}
+
+.navbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 22px 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo */
+.navbar-logo img {
+  display: block;
+  height: 64px;
+  width: auto;
+}
+
+/* Navigation Menu */
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 36px;
+  align-items: center;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text-dark);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+}
+
+.nav-link-login {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  z-index: 1001;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 2px;
+  background-color: var(--text-dark);
+  border-radius: 5px;
+  transition: var(--transition);
+}
+
+/* Mobile Styles */
+@media (max-width: 900px) {
+  .navbar-container {
+    padding: 18px 24px;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .hamburger.active span:nth-child(1) {
+    transform: rotate(-45deg) translate(-6px, 6px);
+  }
+
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active span:nth-child(3) {
+    transform: rotate(45deg) translate(-6px, -6px);
+  }
+
+  .nav-menu {
+    position: fixed;
+    left: -100%;
+    top: 73px;
+    flex-direction: column;
+    background: oklch(97.5% 0.006 85 / 0.98);
+    width: 100%;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: var(--shadow-md);
+    padding: 2rem 0;
+    gap: 1.5rem;
+  }
+
+  .nav-menu.active {
+    left: 0;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 0.75rem 0;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .navbar-logo img {
+    height: 48px;
+  }
+}

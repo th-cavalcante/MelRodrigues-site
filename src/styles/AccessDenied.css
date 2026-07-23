@@ -1,0 +1,58 @@
+/* =================================
+   ACCESS DENIED STYLES
+   ================================= */
+
+.access-denied-page {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.access-denied-card {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid var(--border-subtle-2);
+  padding: 56px 44px;
+}
+
+.access-denied-icon {
+  font-size: 34px;
+  display: block;
+  margin-bottom: 14px;
+}
+
+.access-denied-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 34px;
+  margin: 16px 0 12px;
+}
+
+.access-denied-text {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text-body);
+  font-weight: 300;
+  margin-bottom: 30px;
+}
+
+.access-denied-button {
+  display: inline-block;
+  padding: 15px 28px;
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 13px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  border-radius: 2px;
+}
+
+.access-denied-button:hover {
+  opacity: 0.88;
+}

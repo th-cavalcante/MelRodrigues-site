@@ -1,0 +1,66 @@
+/* =================================
+   SOBRE SECTION STYLES
+   ================================= */
+
+.sobre {
+  padding: 140px 56px;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 90px;
+  align-items: center;
+}
+
+.sobre-text .section-title {
+  margin: 20px 0 26px;
+}
+
+.sobre-paragraph {
+  font-size: 16.5px;
+  line-height: 1.85;
+  color: var(--text-body);
+  font-weight: 300;
+}
+
+.sobre-paragraph + .sobre-paragraph {
+  margin-top: 16px;
+}
+
+.sobre-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--border-subtle);
+  border-left: 1px solid var(--border-subtle);
+}
+
+.sobre-stat {
+  padding: 34px 24px;
+  border-right: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sobre-stat-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 46px;
+  color: var(--primary-color);
+}
+
+.sobre-stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .sobre {
+    grid-template-columns: 1fr;
+    gap: 50px;
+    padding: 90px 24px;
+  }
+
+  .sobre-stats {
+    grid-template-columns: 1fr;
+  }
+}
