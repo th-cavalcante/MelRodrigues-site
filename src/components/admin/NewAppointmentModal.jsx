@@ -12,6 +12,7 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [time, setTime] = useState('09:00');
   const [services, setServices] = useState(Array(SERVICE_SLOTS).fill(''));
+  const [discount, setDiscount] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [laserServices, setLaserServices] = useState([]);
@@ -39,9 +40,16 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
     setServices((s) => s.map((v, i) => (i === index ? e.target.value : v)));
   };
 
+  const selectedServices = services.filter(Boolean);
+  const subtotal = selectedServices.reduce((sum, name) => {
+    const found = laserServices.find((s) => s.name === name);
+    return sum + (found ? Number(found.price) : 0);
+  }, 0);
+  const discountValue = Number(discount) || 0;
+  const total = Math.max(subtotal - discountValue, 0);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const selectedServices = services.filter(Boolean);
     if (!selectedPatient || selectedServices.length === 0) {
       setError('Selecione a cliente e ao menos um serviço.');
       return;
@@ -49,10 +57,6 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
     setError('');
     setSaving(true);
     try {
-      const valor = selectedServices.reduce((sum, name) => {
-        const found = laserServices.find((s) => s.name === name);
-        return sum + (found ? Number(found.price) : 0);
-      }, 0);
       await createBooking({
         patient: selectedPatient,
         room: DEFAULT_ROOM,
@@ -60,7 +64,7 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
         bookingDate,
         bookingTime: time,
         service: selectedServices.join(', '),
-        valor,
+        valor: total,
       });
       onCreated();
     } catch (err) {
@@ -121,6 +125,30 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
                 ))}
               </select>
             ))}
+          </div>
+        </div>
+
+        <div className="admin-agenda-valor-summary">
+          <div className="admin-agenda-valor-row">
+            <span>Valor dos procedimentos</span>
+            <strong>R$ {subtotal.toFixed(2).replace('.', ',')}</strong>
+          </div>
+          <div className="admin-agenda-valor-row admin-agenda-valor-discount-row">
+            <label htmlFor="apt-discount">Desconto (R$)</label>
+            <input
+              id="apt-discount"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="0,00"
+              value={discount}
+              onChange={(e) => setDiscount(e.target.value)}
+              className="field-input admin-agenda-discount-input"
+            />
+          </div>
+          <div className="admin-agenda-valor-row admin-agenda-valor-total-row">
+            <span>Total</span>
+            <strong>R$ {total.toFixed(2).replace('.', ',')}</strong>
           </div>
         </div>
 

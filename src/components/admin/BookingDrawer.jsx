@@ -109,6 +109,28 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
           </a>
         )}
 
+        <div className="admin-agenda-drawer-section-title">Data e Horário</div>
+        <div className="admin-cadastro-row admin-agenda-datetime-row">
+          <div>
+            <label className="admin-small-label">Data</label>
+            <input
+              type="date"
+              value={booking.booking_date}
+              onChange={(e) => onUpdate({ booking_date: e.target.value })}
+              className="field-input"
+            />
+          </div>
+          <div>
+            <label className="admin-small-label">Horário</label>
+            <input
+              type="time"
+              value={(booking.booking_time || '').slice(0, 5)}
+              onChange={(e) => onUpdate({ booking_time: e.target.value })}
+              className="field-input"
+            />
+          </div>
+        </div>
+
         <div className="admin-agenda-drawer-section-title">Status de Documentação</div>
         <div className="admin-agenda-docs-badges">
           <div className={`admin-agenda-doc-badge ${anamneseOk ? 'admin-agenda-doc-badge-ok' : ''}`}>

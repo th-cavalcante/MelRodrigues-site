@@ -109,6 +109,8 @@ const AgendaView = ({ clients }) => {
       setBookings((bs) => bs.map((b) => (b.id === bookingId ? updated : b)));
     } catch (err) {
       console.error('Erro ao atualizar agendamento:', err);
+      const isSlotConflict = err?.code === '23505';
+      window.alert(isSlotConflict ? 'Já existe um agendamento nesse horário.' : 'Não foi possível salvar essa alteração.');
     }
   };
 
