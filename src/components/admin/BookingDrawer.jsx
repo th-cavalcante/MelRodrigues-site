@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { getPatientAttendanceStats } from '../../lib/bookings';
+import { fetchLaserServices } from '../../lib/services';
 import { STATUS_OPTIONS, PAYMENT_STATUS_OPTIONS, PAYMENT_METHOD_OPTIONS, buildWhatsAppLink } from '../../lib/agendaConstants';
 
-const area = (service) => {
-  const idx = service.indexOf(' — ');
-  return idx === -1 ? '—' : service.slice(idx + 3);
+const SERVICE_SLOTS = 10;
+
+const toServiceSlots = (service) => {
+  const parts = (service || '').split(',').map((s) => s.trim()).filter(Boolean);
+  return Array.from({ length: SERVICE_SLOTS }, (_, i) => parts[i] || '');
 };
 
-const BookingDrawer = ({ booking, patient, onUpdate, onClose }) => {
+const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
   const [fields, setFields] = useState({
     joules: booking.joules || '',
     ms: booking.ms || '',
@@ -15,6 +18,9 @@ const BookingDrawer = ({ booking, patient, onUpdate, onClose }) => {
     notes: booking.notes || '',
   });
   const [stats, setStats] = useState(null);
+  const [laserServices, setLaserServices] = useState([]);
+  const [editingServices, setEditingServices] = useState(false);
+  const [serviceSlots, setServiceSlots] = useState(() => toServiceSlots(booking.service));
 
   useEffect(() => {
     setFields({
@@ -23,7 +29,9 @@ const BookingDrawer = ({ booking, patient, onUpdate, onClose }) => {
       passadas: booking.passadas || '',
       notes: booking.notes || '',
     });
-  }, [booking.id, booking.joules, booking.ms, booking.passadas, booking.notes]);
+    setServiceSlots(toServiceSlots(booking.service));
+    setEditingServices(false);
+  }, [booking.id, booking.joules, booking.ms, booking.passadas, booking.notes, booking.service]);
 
   useEffect(() => {
     let cancelled = false;
@@ -37,12 +45,37 @@ const BookingDrawer = ({ booking, patient, onUpdate, onClose }) => {
     };
   }, [booking.patient_id]);
 
+  useEffect(() => {
+    fetchLaserServices().then(setLaserServices).catch((err) => console.error('Erro ao carregar tabela de preço:', err));
+  }, []);
+
   const handleLocalChange = (key) => (e) => {
     setFields((f) => ({ ...f, [key]: e.target.value }));
   };
 
   const handleBlurPersist = (key) => () => {
     onUpdate({ [key]: fields[key] });
+  };
+
+  const handleServiceSlotChange = (index) => (e) => {
+    setServiceSlots((s) => s.map((v, i) => (i === index ? e.target.value : v)));
+  };
+
+  const selectedServices = serviceSlots.filter(Boolean);
+
+  const handleSaveServices = () => {
+    const valor = selectedServices.reduce((sum, name) => {
+      const found = laserServices.find((s) => s.name === name);
+      return sum + (found ? Number(found.price) : 0);
+    }, 0);
+    onUpdate({ service: selectedServices.join(', '), valor });
+    setEditingServices(false);
+  };
+
+  const handleDelete = () => {
+    if (window.confirm('Tem certeza que deseja excluir este agendamento?')) {
+      onDelete();
+    }
   };
 
   const anamneseOk = !!(patient && patient.status !== 'pending');
@@ -92,9 +125,42 @@ const BookingDrawer = ({ booking, patient, onUpdate, onClose }) => {
           </div>
         )}
 
-        <div className="admin-agenda-drawer-section-title">Detalhes da Sessão</div>
-        <div className="admin-agenda-drawer-detail-row"><span>Serviço:</span> <strong>{booking.service}</strong></div>
-        <div className="admin-agenda-drawer-detail-row"><span>Área tratada:</span> <strong>{area(booking.service)}</strong></div>
+        <div className="admin-agenda-drawer-section-title-row">
+          <div className="admin-agenda-drawer-section-title">Detalhes da Sessão</div>
+          {!editingServices && (
+            <button type="button" onClick={() => setEditingServices(true)} className="admin-agenda-edit-services-btn">
+              ✎ Editar serviços
+            </button>
+          )}
+        </div>
+
+        {!editingServices && (
+          <div className="admin-agenda-drawer-detail-row"><span>Serviço:</span> <strong>{booking.service}</strong></div>
+        )}
+
+        {editingServices && (
+          <div className="admin-agenda-services-edit">
+            <div className="admin-agenda-services-grid">
+              {serviceSlots.map((value, i) => (
+                <select key={i} value={value} onChange={handleServiceSlotChange(i)} className="field-input">
+                  <option value="">{i === 0 ? 'Selecione a região' : 'Região adicional (opcional)'}</option>
+                  {laserServices.map((s) => (
+                    <option key={s.id} value={s.name}>{s.name}</option>
+                  ))}
+                </select>
+              ))}
+            </div>
+            <div className="admin-agenda-services-edit-actions">
+              <button type="button" onClick={() => { setServiceSlots(toServiceSlots(booking.service)); setEditingServices(false); }} className="admin-agenda-modal-cancel">
+                CANCELAR
+              </button>
+              <button type="button" onClick={handleSaveServices} disabled={selectedServices.length === 0} className="admin-open-client-btn">
+                SALVAR SERVIÇOS
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="admin-agenda-drawer-detail-row"><span>Equipamento:</span> <strong>{booking.equipment || '—'}</strong></div>
         <div className="admin-agenda-drawer-detail-row"><span>Sessão nº:</span> <strong>{booking.session_num ?? '—'}</strong></div>
         <div className="admin-agenda-drawer-grid3">
@@ -177,6 +243,10 @@ const BookingDrawer = ({ booking, patient, onUpdate, onClose }) => {
             <option key={s.value} value={s.value}>{s.label}</option>
           ))}
         </select>
+
+        <button type="button" onClick={handleDelete} className="admin-delete-btn admin-agenda-drawer-delete-btn">
+          Excluir Agendamento
+        </button>
       </div>
     </>
   );

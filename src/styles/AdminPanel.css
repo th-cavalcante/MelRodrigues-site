@@ -1586,6 +1586,48 @@
   margin-top: 26px;
 }
 
+.admin-agenda-drawer-section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-agenda-edit-services-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.admin-agenda-edit-services-btn:hover {
+  color: var(--primary-color);
+}
+
+.admin-agenda-services-edit {
+  margin-bottom: 12px;
+}
+
+.admin-agenda-services-edit-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.admin-agenda-services-edit-actions .admin-agenda-modal-cancel,
+.admin-agenda-services-edit-actions .admin-open-client-btn {
+  flex: 1;
+  text-align: center;
+}
+
+.admin-agenda-drawer-delete-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 26px;
+}
+
 .admin-agenda-docs-badges {
   display: grid;
   grid-template-columns: 1fr 1fr;

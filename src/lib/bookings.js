@@ -55,6 +55,11 @@ export const updateBooking = async (bookingId, fields) => {
   return data;
 };
 
+export const deleteBooking = async (bookingId) => {
+  const { error } = await supabase.from('bookings').delete().eq('id', bookingId);
+  if (error) throw error;
+};
+
 export const getPatientAttendanceStats = async (patientId) => {
   const { data, error } = await supabase.from('bookings').select('status').eq('patient_id', patientId);
   if (error) throw error;

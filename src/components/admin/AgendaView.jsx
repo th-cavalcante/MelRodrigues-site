@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import BookingDrawer from './BookingDrawer';
 import NewAppointmentModal from './NewAppointmentModal';
-import { listBookings, updateBooking } from '../../lib/bookings';
+import { listBookings, updateBooking, deleteBooking } from '../../lib/bookings';
 import { ROOMS, STATUS_OPTIONS, BLOCKED_SLOTS, toISODate } from '../../lib/agendaConstants';
 
 const VIEW_MODES = [
@@ -115,6 +115,16 @@ const AgendaView = ({ clients }) => {
   const handleCreated = () => {
     setShowNewApt(false);
     refetch();
+  };
+
+  const handleDelete = async (bookingId) => {
+    try {
+      await deleteBooking(bookingId);
+      setBookings((bs) => bs.filter((b) => b.id !== bookingId));
+      setActiveBookingId(null);
+    } catch (err) {
+      console.error('Erro ao excluir agendamento:', err);
+    }
   };
 
   const dateLabel = baseDate.toLocaleDateString('pt-BR', {
@@ -423,6 +433,7 @@ const AgendaView = ({ clients }) => {
           booking={activeBooking}
           patient={clients.find((c) => c.id === activeBooking.patient_id)}
           onUpdate={(fields) => handleFieldUpdate(activeBooking.id, fields)}
+          onDelete={() => handleDelete(activeBooking.id)}
           onClose={() => setActiveBookingId(null)}
         />
       )}
