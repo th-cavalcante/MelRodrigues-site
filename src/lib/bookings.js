@@ -16,7 +16,7 @@ export const listBookings = async ({ from, to }) => {
   return data;
 };
 
-export const createBooking = async ({ patient, room, professional, bookingDate, bookingTime, service }) => {
+export const createBooking = async ({ patient, room, professional, bookingDate, bookingTime, service, valor }) => {
   const existing = await supabase.from('bookings').select('id').eq('patient_id', patient.id);
   if (existing.error) throw existing.error;
   const sessionNum = (existing.data ? existing.data.length : 0) + 1;
@@ -34,7 +34,7 @@ export const createBooking = async ({ patient, room, professional, bookingDate, 
       service,
       equipment: room.includes('Laser') ? 'Hakon 4D' : '—',
       session_num: sessionNum,
-      valor: await priceForService(service),
+      valor,
       health_alert: healthAlert,
       health_reason: healthReason,
     })

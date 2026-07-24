@@ -1680,6 +1680,12 @@
   text-align: center;
 }
 
+.admin-agenda-services-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+}
+
 .admin-agenda-search-wrap {
   position: relative;
 }

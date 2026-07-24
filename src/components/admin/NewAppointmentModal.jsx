@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { createBooking } from '../../lib/bookings';
 import { fetchLaserServices } from '../../lib/services';
-import { ROOMS, PROFESSIONALS } from '../../lib/agendaConstants';
+import { PROFESSIONALS } from '../../lib/agendaConstants';
+
+const DEFAULT_ROOM = 'Sala Laser Hakon 4D';
+const SERVICE_SLOTS = 10;
 
 const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
   const [search, setSearch] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [time, setTime] = useState('09:00');
-  const [service, setService] = useState('');
-  const [room, setRoom] = useState('Sala de Avaliação');
+  const [services, setServices] = useState(Array(SERVICE_SLOTS).fill(''));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [laserServices, setLaserServices] = useState([]);
@@ -33,22 +35,32 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
     setSearchFocused(true);
   };
 
+  const handleServiceChange = (index) => (e) => {
+    setServices((s) => s.map((v, i) => (i === index ? e.target.value : v)));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!selectedPatient || !service) {
-      setError('Selecione a cliente e o serviço.');
+    const selectedServices = services.filter(Boolean);
+    if (!selectedPatient || selectedServices.length === 0) {
+      setError('Selecione a cliente e ao menos um serviço.');
       return;
     }
     setError('');
     setSaving(true);
     try {
+      const valor = selectedServices.reduce((sum, name) => {
+        const found = laserServices.find((s) => s.name === name);
+        return sum + (found ? Number(found.price) : 0);
+      }, 0);
       await createBooking({
         patient: selectedPatient,
-        room,
+        room: DEFAULT_ROOM,
         professional: PROFESSIONALS[0],
         bookingDate,
         bookingTime: time,
-        service,
+        service: selectedServices.join(', '),
+        valor,
       });
       onCreated();
     } catch (err) {
@@ -88,29 +100,28 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
           )}
         </div>
 
-        <div className="admin-cadastro-row">
-          <div className="field-wrap">
-            <label className="field-label">Horário</label>
-            <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="field-input" />
-          </div>
-          <div className="field-wrap">
-            <label className="field-label">Sala</label>
-            <select value={room} onChange={(e) => setRoom(e.target.value)} className="field-input">
-              {ROOMS.map((r) => (
-                <option key={r} value={r}>{r}</option>
-              ))}
-            </select>
-          </div>
+        <div className="field-wrap">
+          <label className="field-label">Horário</label>
+          <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="field-input" />
         </div>
 
         <div className="field-wrap">
           <label className="field-label">Serviço</label>
-          <select value={service} onChange={(e) => setService(e.target.value)} className="field-input">
-            <option value="">Selecione a região</option>
-            {laserServices.map((s) => (
-              <option key={s.id} value={s.name}>{s.name}</option>
+          <div className="admin-agenda-services-grid">
+            {services.map((value, i) => (
+              <select
+                key={i}
+                value={value}
+                onChange={handleServiceChange(i)}
+                className="field-input"
+              >
+                <option value="">{i === 0 ? 'Selecione a região' : 'Região adicional (opcional)'}</option>
+                {laserServices.map((s) => (
+                  <option key={s.id} value={s.name}>{s.name}</option>
+                ))}
+              </select>
             ))}
-          </select>
+          </div>
         </div>
 
         {error && <div className="admin-login-error">{error}</div>}
