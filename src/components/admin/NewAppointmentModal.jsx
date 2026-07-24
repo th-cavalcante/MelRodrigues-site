@@ -10,6 +10,7 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
   const [search, setSearch] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [date, setDate] = useState(bookingDate);
   const [time, setTime] = useState('09:00');
   const [services, setServices] = useState(Array(SERVICE_SLOTS).fill(''));
   const [discount, setDiscount] = useState('');
@@ -57,16 +58,16 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
     setError('');
     setSaving(true);
     try {
-      await createBooking({
+      const created = await createBooking({
         patient: selectedPatient,
         room: DEFAULT_ROOM,
         professional: PROFESSIONALS[0],
-        bookingDate,
+        bookingDate: date,
         bookingTime: time,
         service: selectedServices.join(', '),
         valor: total,
       });
-      onCreated();
+      onCreated(created);
     } catch (err) {
       console.error('Erro ao criar agendamento:', err);
       setError(`Não foi possível salvar o agendamento: ${err.message || 'erro desconhecido'}`);
@@ -102,6 +103,11 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
               )}
             </div>
           )}
+        </div>
+
+        <div className="field-wrap">
+          <label className="field-label">Dia</label>
+          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="field-input" />
         </div>
 
         <div className="field-wrap">

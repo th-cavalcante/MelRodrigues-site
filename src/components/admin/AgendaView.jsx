@@ -114,8 +114,16 @@ const AgendaView = ({ clients }) => {
     }
   };
 
-  const handleCreated = () => {
+  const handleCreated = (booking) => {
     setShowNewApt(false);
+    if (booking?.booking_date) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const target = new Date(`${booking.booking_date}T00:00:00`);
+      const diffDays = Math.round((target - today) / 86400000);
+      setAgendaView('dia');
+      setAgendaOffset(diffDays);
+    }
     refetch();
   };
 
