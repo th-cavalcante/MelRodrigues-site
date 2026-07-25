@@ -1699,6 +1699,13 @@
   text-align: center;
 }
 
+.admin-agenda-save-notes-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+}
+
 .admin-agenda-drawer-delete-btn {
   display: block;
   width: 100%;
@@ -1746,12 +1753,6 @@
   color: var(--text-muted);
 }
 
-.admin-agenda-drawer-grid3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 4px 0 26px;
-}
 
 .admin-agenda-financeiro-row {
   display: flex;

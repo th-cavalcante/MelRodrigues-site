@@ -12,26 +12,19 @@ const toServiceSlots = (service) => {
 
 const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
   const [fields, setFields] = useState({
-    joules: booking.joules || '',
-    ms: booking.ms || '',
-    passadas: booking.passadas || '',
     notes: booking.notes || '',
   });
+  const [notesSaved, setNotesSaved] = useState(false);
   const [stats, setStats] = useState(null);
   const [laserServices, setLaserServices] = useState([]);
   const [editingServices, setEditingServices] = useState(false);
   const [serviceSlots, setServiceSlots] = useState(() => toServiceSlots(booking.service));
 
   useEffect(() => {
-    setFields({
-      joules: booking.joules || '',
-      ms: booking.ms || '',
-      passadas: booking.passadas || '',
-      notes: booking.notes || '',
-    });
+    setFields({ notes: booking.notes || '' });
     setServiceSlots(toServiceSlots(booking.service));
     setEditingServices(false);
-  }, [booking.id, booking.joules, booking.ms, booking.passadas, booking.notes, booking.service]);
+  }, [booking.id, booking.notes, booking.service]);
 
   useEffect(() => {
     let cancelled = false;
@@ -51,10 +44,13 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
 
   const handleLocalChange = (key) => (e) => {
     setFields((f) => ({ ...f, [key]: e.target.value }));
+    setNotesSaved(false);
   };
 
-  const handleBlurPersist = (key) => () => {
-    onUpdate({ [key]: fields[key] });
+  const handleSaveNotes = () => {
+    onUpdate({ notes: fields.notes });
+    setNotesSaved(true);
+    setTimeout(() => setNotesSaved(false), 2000);
   };
 
   const handleServiceSlotChange = (index) => (e) => {
@@ -185,38 +181,6 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
 
         <div className="admin-agenda-drawer-detail-row"><span>Equipamento:</span> <strong>{booking.equipment || '—'}</strong></div>
         <div className="admin-agenda-drawer-detail-row"><span>Sessão nº:</span> <strong>{booking.session_num ?? '—'}</strong></div>
-        <div className="admin-agenda-drawer-grid3">
-          <div>
-            <label className="admin-small-label">Joules</label>
-            <input
-              type="text"
-              value={fields.joules}
-              onChange={handleLocalChange('joules')}
-              onBlur={handleBlurPersist('joules')}
-              className="field-input"
-            />
-          </div>
-          <div>
-            <label className="admin-small-label">Milissegundos</label>
-            <input
-              type="text"
-              value={fields.ms}
-              onChange={handleLocalChange('ms')}
-              onBlur={handleBlurPersist('ms')}
-              className="field-input"
-            />
-          </div>
-          <div>
-            <label className="admin-small-label">Passadas</label>
-            <input
-              type="text"
-              value={fields.passadas}
-              onChange={handleLocalChange('passadas')}
-              onBlur={handleBlurPersist('passadas')}
-              className="field-input"
-            />
-          </div>
-        </div>
 
         <div className="admin-agenda-drawer-section-title">Financeiro</div>
         <div className="admin-agenda-financeiro-row">
@@ -250,10 +214,12 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
           rows="3"
           value={fields.notes}
           onChange={handleLocalChange('notes')}
-          onBlur={handleBlurPersist('notes')}
           placeholder="Ex: cliente sensível na região, usar resfriamento máximo..."
           className="field-input field-textarea"
         />
+        <button type="button" onClick={handleSaveNotes} className="admin-open-client-btn admin-agenda-save-notes-btn">
+          {notesSaved ? 'Salvo ✓' : 'SALVAR NOTAS'}
+        </button>
 
         <div className="admin-agenda-drawer-section-title admin-agenda-drawer-section-title-spaced">Status do Agendamento</div>
         <select
