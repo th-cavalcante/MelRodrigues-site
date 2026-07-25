@@ -186,6 +186,11 @@ const AgendaView = ({ clients }) => {
           </span>
         </div>
         <div className="admin-agenda-booking-service">{b.service}</div>
+        {b.notes && (
+          <div className="admin-agenda-booking-notes">
+            <strong>Observações:</strong> {b.notes}
+          </div>
+        )}
         <span className="admin-agenda-status-pill" style={{ color: meta.color, borderColor: meta.color }}>
           {meta.label}
         </span>

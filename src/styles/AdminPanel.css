@@ -1324,6 +1324,18 @@
   white-space: nowrap;
 }
 
+.admin-agenda-booking-notes {
+  font-size: 11px;
+  color: oklch(52% 0.01 85);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.admin-agenda-booking-notes strong {
+  color: oklch(42% 0.012 85);
+  font-weight: 600;
+}
+
 .admin-agenda-sidebar {
   display: flex;
   flex-direction: column;
