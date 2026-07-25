@@ -9,6 +9,7 @@ import {
   createPublicPatient,
   getBookingPaymentStatus,
 } from '../lib/bookings';
+import { getPublicBlockedSlots, getPublicBlockedDays } from '../lib/blockedSlots';
 import { submitAnamnese } from '../lib/patients';
 import { createMpPreference } from '../lib/mercadopago';
 import '../styles/AgendaOnline.css';
@@ -110,6 +111,8 @@ const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => 
   const [selectedDayOffset, setSelectedDayOffset] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [bookedTimes, setBookedTimes] = useState([]);
+  const [dynamicBlockedTimes, setDynamicBlockedTimes] = useState([]);
+  const [blockedDays, setBlockedDays] = useState([]);
   const [error, setError] = useState('');
   const [paymentProcessing, setPaymentProcessing] = useState(false);
   const [pendingBookingId, setPendingBookingId] = useState(mpReturn?.bookingId || null);
@@ -186,6 +189,9 @@ const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => 
     getBookedTimes(date)
       .then(setBookedTimes)
       .catch((err) => console.error('Erro ao carregar horários ocupados:', err));
+    getPublicBlockedSlots(date)
+      .then((rows) => setDynamicBlockedTimes(rows.map((r) => r.blocked_time).filter(Boolean).map((t) => t.slice(0, 5))))
+      .catch((err) => console.error('Erro ao carregar horários bloqueados:', err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDayOffset]);
 
@@ -193,15 +199,23 @@ const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => 
   const weekEnd = addDays(weekStart, 6);
   const weekLabel = `${weekStart.getDate()} — ${weekEnd.getDate()} de ${weekEnd.toLocaleDateString('pt-BR', { month: 'long' })}`;
 
+  useEffect(() => {
+    getPublicBlockedDays(toISODate(weekStart), toISODate(weekEnd))
+      .then(setBlockedDays)
+      .catch((err) => console.error('Erro ao carregar dias bloqueados:', err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [weekOffset]);
+
   const dayOptions = WEEKDAY_LABELS.map((wd, i) => {
     const d = addDays(weekStart, i);
     const dayOffset = Math.round((d - today) / 86400000);
     const isPast = dayOffset < 0;
     const isSunday = i === 0;
-    return { weekday: wd, num: d.getDate(), dayOffset, disabled: isPast || isSunday };
+    const isBlocked = blockedDays.includes(toISODate(d));
+    return { weekday: wd, num: d.getDate(), dayOffset, disabled: isPast || isSunday || isBlocked };
   });
 
-  const blockedTimesForDay = BLOCKED_SLOTS.map((bl) => bl.time);
+  const blockedTimesForDay = [...BLOCKED_SLOTS.map((bl) => bl.time), ...dynamicBlockedTimes];
   const timeOptions = ALL_TIMES.filter((t) => !blockedTimesForDay.includes(t) && !bookedTimes.includes(t));
 
   let selectedDateTimeLabel = '';

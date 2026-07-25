@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import BookingDrawer from './BookingDrawer';
 import NewAppointmentModal from './NewAppointmentModal';
+import BlockSlotModal from './BlockSlotModal';
 import { listBookings, updateBooking, deleteBooking } from '../../lib/bookings';
+import { listBlockedSlots, deleteBlockedSlot } from '../../lib/blockedSlots';
 import { ROOMS, STATUS_OPTIONS, BLOCKED_SLOTS, toISODate } from '../../lib/agendaConstants';
 
 const VIEW_MODES = [
@@ -53,8 +55,10 @@ const AgendaView = ({ clients }) => {
   const [agendaOffset, setAgendaOffset] = useState(0);
   const [filters, setFilters] = useState({ room: 'Todas', status: 'Todos' });
   const [bookings, setBookings] = useState([]);
+  const [blockedSlots, setBlockedSlots] = useState([]);
   const [activeBookingId, setActiveBookingId] = useState(null);
   const [showNewApt, setShowNewApt] = useState(false);
+  const [showBlockModal, setShowBlockModal] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
 
   const handleCopyAgendaLink = async () => {
@@ -90,6 +94,9 @@ const AgendaView = ({ clients }) => {
     listBookings({ from, to })
       .then(setBookings)
       .catch((err) => console.error('Erro ao carregar agenda:', err));
+    listBlockedSlots({ from, to })
+      .then(setBlockedSlots)
+      .catch((err) => console.error('Erro ao carregar bloqueios:', err));
   }, [getVisibleRange]);
 
   useEffect(() => {
@@ -137,6 +144,21 @@ const AgendaView = ({ clients }) => {
     }
   };
 
+  const handleBlockCreated = (block) => {
+    setShowBlockModal(false);
+    setBlockedSlots((bs) => [...bs, block]);
+  };
+
+  const handleUnblock = async (blockId) => {
+    if (!window.confirm('Remover esse bloqueio?')) return;
+    try {
+      await deleteBlockedSlot(blockId);
+      setBlockedSlots((bs) => bs.filter((b) => b.id !== blockId));
+    } catch (err) {
+      console.error('Erro ao remover bloqueio:', err);
+    }
+  };
+
   const dateLabel = baseDate.toLocaleDateString('pt-BR', {
     weekday: 'long',
     day: '2-digit',
@@ -171,27 +193,53 @@ const AgendaView = ({ clients }) => {
     );
   };
 
+  const dayBlockedSlots = blockedSlots.filter((bs) => bs.blocked_date === todayISO);
+  const wholeDayBlock = dayBlockedSlots.find((bs) => !bs.blocked_time);
+
   const renderDiaView = () => (
     <div className="admin-agenda-day-grid">
-      <div className="admin-card admin-agenda-timegrid">
-        {TIME_ROWS.map((time) => {
-          const booking = dayBookings.find((b) => bookingTimeLabel(b) === time);
-          const blocked = BLOCKED_SLOTS.find(
-            (bl) => bl.time === time && (bl.matchAll || filters.room === bl.room)
-          );
-          return (
-            <div key={time} className="admin-agenda-time-row">
-              <div className="admin-agenda-time-label">{time}</div>
-              <div className="admin-agenda-time-cell">
-                {booking ? (
-                  renderBookingCard(booking)
-                ) : blocked && !booking ? (
-                  <div className="admin-agenda-blocked">{blocked.label}</div>
-                ) : null}
+      <div className="admin-agenda-timegrid-col">
+        {wholeDayBlock && (
+          <div className="admin-agenda-day-blocked-banner">
+            <span>🚫 Este dia está bloqueado{wholeDayBlock.reason ? `: ${wholeDayBlock.reason}` : ''}</span>
+            <button type="button" onClick={() => handleUnblock(wholeDayBlock.id)} className="admin-agenda-unblock-btn">
+              Remover bloqueio
+            </button>
+          </div>
+        )}
+
+        <div className="admin-card admin-agenda-timegrid">
+          {TIME_ROWS.map((time) => {
+            const booking = dayBookings.find((b) => bookingTimeLabel(b) === time);
+            const blocked = BLOCKED_SLOTS.find(
+              (bl) => bl.time === time && (bl.matchAll || filters.room === bl.room)
+            );
+            const dynamicBlock = dayBlockedSlots.find(
+              (bs) => bs.blocked_time && bs.blocked_time.slice(0, 5) === time
+            );
+            return (
+              <div key={time} className="admin-agenda-time-row">
+                <div className="admin-agenda-time-label">{time}</div>
+                <div className="admin-agenda-time-cell">
+                  {booking ? (
+                    renderBookingCard(booking)
+                  ) : dynamicBlock ? (
+                    <button
+                      type="button"
+                      onClick={() => handleUnblock(dynamicBlock.id)}
+                      className="admin-agenda-blocked admin-agenda-blocked-dynamic"
+                      title="Clique para remover o bloqueio"
+                    >
+                      🚫 {dynamicBlock.reason || 'Bloqueado'}
+                    </button>
+                  ) : blocked ? (
+                    <div className="admin-agenda-blocked">{blocked.label}</div>
+                  ) : null}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
       <div className="admin-agenda-sidebar">
@@ -245,6 +293,7 @@ const AgendaView = ({ clients }) => {
           const dOffset = Math.round((d - todayZero) / 86400000);
           const bookingsForDay = bookings.filter((b) => b.booking_date === iso && matchesFilters(b));
           const isSelected = iso === todayISO;
+          const dayBlocked = blockedSlots.some((bs) => bs.blocked_date === iso && !bs.blocked_time);
           return (
             <button
               key={wd + i}
@@ -253,14 +302,15 @@ const AgendaView = ({ clients }) => {
                 setAgendaOffset(dOffset);
                 setAgendaView('dia');
               }}
-              className={`admin-agenda-week-day ${isSelected ? 'admin-agenda-week-day-active' : ''}`}
+              className={`admin-agenda-week-day ${isSelected ? 'admin-agenda-week-day-active' : ''} ${dayBlocked ? 'admin-agenda-week-day-blocked' : ''}`}
             >
               <div className="admin-agenda-week-day-header">
                 <div className="admin-agenda-week-day-name">{wd}</div>
                 <div className="admin-agenda-week-day-num">{d.getDate()}</div>
               </div>
               <div className="admin-agenda-week-day-body">
-                {bookingsForDay.slice(0, 3).map((b) => (
+                {dayBlocked && <div className="admin-agenda-week-empty">🚫 Bloqueado</div>}
+                {!dayBlocked && bookingsForDay.slice(0, 3).map((b) => (
                   <div
                     key={b.id}
                     className="admin-agenda-week-chip"
@@ -269,7 +319,7 @@ const AgendaView = ({ clients }) => {
                     {bookingTimeLabel(b)} · {b.patients ? b.patients.name : '—'}
                   </div>
                 ))}
-                {bookingsForDay.length === 0 && (
+                {!dayBlocked && bookingsForDay.length === 0 && (
                   <div className="admin-agenda-week-empty">Sem agendamentos</div>
                 )}
               </div>
@@ -291,8 +341,9 @@ const AgendaView = ({ clients }) => {
       const inMonth = cellDate.getMonth() === baseDate.getMonth();
       const iso = toISODate(cellDate);
       const hasBookings = bookings.some((b) => b.booking_date === iso && matchesFilters(b));
+      const dayBlocked = blockedSlots.some((bs) => bs.blocked_date === iso && !bs.blocked_time);
       const cellOffset = Math.round((cellDate - todayZero) / 86400000);
-      cells.push({ cellDate, inMonth, iso, hasBookings, cellOffset });
+      cells.push({ cellDate, inMonth, iso, hasBookings, dayBlocked, cellOffset });
     }
     return (
       <div className="admin-card admin-agenda-month">
@@ -311,10 +362,10 @@ const AgendaView = ({ clients }) => {
                 setAgendaOffset(c.cellOffset);
                 setAgendaView('dia');
               }}
-              className={`admin-agenda-month-cell ${c.iso === todayISO ? 'admin-agenda-month-cell-active' : ''}`}
+              className={`admin-agenda-month-cell ${c.iso === todayISO ? 'admin-agenda-month-cell-active' : ''} ${c.dayBlocked ? 'admin-agenda-week-day-blocked' : ''}`}
               style={{ visibility: c.inMonth ? 'visible' : 'hidden' }}
             >
-              <span className="admin-agenda-month-num">{c.cellDate.getDate()}</span>
+              <span className="admin-agenda-month-num">{c.cellDate.getDate()} {c.dayBlocked && '🚫'}</span>
               {c.hasBookings && <span className="admin-agenda-month-dot" />}
             </button>
           ))}
@@ -390,6 +441,9 @@ const AgendaView = ({ clients }) => {
           <button type="button" onClick={handleCopyAgendaLink} className="admin-open-client-btn">
             {linkCopied ? 'Copiado ✓' : '🔗 Copiar Link de Agenda'}
           </button>
+          <button type="button" onClick={() => setShowBlockModal(true)} className="admin-open-client-btn">
+            🚫 Bloquear Horário
+          </button>
         </div>
       </div>
 
@@ -454,6 +508,14 @@ const AgendaView = ({ clients }) => {
           bookingDate={todayISO}
           onClose={() => setShowNewApt(false)}
           onCreated={handleCreated}
+        />
+      )}
+
+      {showBlockModal && (
+        <BlockSlotModal
+          initialDate={todayISO}
+          onClose={() => setShowBlockModal(false)}
+          onCreated={handleBlockCreated}
         />
       )}
     </div>
