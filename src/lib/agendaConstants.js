@@ -11,7 +11,7 @@ export const STATUS_OPTIONS = [
   { value: 'cancelado', label: 'Cancelado', color: '#9B9B9B' },
 ];
 
-export const PAYMENT_STATUS_OPTIONS = ['Pago', 'Pendente', 'Faturado no plano'];
+export const PAYMENT_STATUS_OPTIONS = ['Pago Sinal 50%', 'Pago', 'Pendente'];
 
 export const PAYMENT_METHOD_OPTIONS = [
   { value: 'Cartão', label: 'Cartão de Crédito', icon: '💳' },

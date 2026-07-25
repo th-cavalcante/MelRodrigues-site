@@ -53,9 +53,11 @@ serve(async (req) => {
     const cardTypeMap = { credit_card: 'Cartão', debit_card: 'Cartão', ticket: 'Boleto' };
     const paymentMethod = payment.payment_method_id === 'pix' ? 'Pix' : cardTypeMap[payment.payment_type_id] || null;
 
+    // A Agenda Online só cobra o sinal de 50% — nunca o valor cheio — então
+    // um pagamento aprovado por aqui sempre vira "Pago Sinal 50%", nunca "Pago".
     const updates = {
       mp_payment_id: String(payment.id),
-      payment_status: payment.status === 'approved' ? 'Pago' : 'Pendente',
+      payment_status: payment.status === 'approved' ? 'Pago Sinal 50%' : 'Pendente',
       payment_method: paymentMethod,
     };
     if (payment.status === 'approved') {

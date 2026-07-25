@@ -3,10 +3,23 @@ import { toISODate } from './agendaConstants';
 
 const num = (v) => (v == null ? 0 : Number(v));
 
-/** Busca os agendamentos do período + os pendentes de pagamento (de qualquer
- * data, já que "a receber"/"em atraso" não é limitado ao período em tela) e
- * agrega tudo em JS — mesmo padrão de agregação client-side já usado em
- * getPatientAttendanceStats(). */
+/** Quanto já entrou de fato num agendamento: o valor cheio se está "Pago",
+ * metade se está "Pago Sinal 50%" (a Agenda Online só cobra o sinal), ou
+ * zero se ainda não pagou nada. */
+const collectedAmount = (b) => {
+  if (b.payment_status === 'Pago') return num(b.valor);
+  if (b.payment_status === 'Pago Sinal 50%') return num(b.valor) / 2;
+  return 0;
+};
+
+/** Quanto ainda falta receber: o valor cheio se está "Pendente", só a
+ * outra metade se já pagou o sinal de 50%. */
+const owedAmount = (b) => (b.payment_status === 'Pago Sinal 50%' ? num(b.valor) / 2 : num(b.valor));
+
+/** Busca os agendamentos do período + os que ainda têm saldo a receber (de
+ * qualquer data, já que "a receber"/"em atraso" não é limitado ao período em
+ * tela) e agrega tudo em JS — mesmo padrão de agregação client-side já usado
+ * em getPatientAttendanceStats(). */
 export const getFinancialData = async ({ from, to }) => {
   const [periodResult, pendingResult] = await Promise.all([
     supabase
@@ -17,8 +30,8 @@ export const getFinancialData = async ({ from, to }) => {
       .neq('status', 'cancelado'),
     supabase
       .from('bookings')
-      .select('id, valor, booking_date')
-      .eq('payment_status', 'Pendente')
+      .select('id, valor, booking_date, payment_status')
+      .in('payment_status', ['Pendente', 'Pago Sinal 50%'])
       .neq('status', 'cancelado'),
   ]);
 
@@ -26,9 +39,9 @@ export const getFinancialData = async ({ from, to }) => {
   if (pendingResult.error) throw pendingResult.error;
 
   const periodBookings = periodResult.data;
-  const paid = periodBookings.filter((b) => b.payment_status === 'Pago');
+  const paid = periodBookings.filter((b) => b.payment_status === 'Pago' || b.payment_status === 'Pago Sinal 50%');
 
-  const faturamentoTotal = paid.reduce((sum, b) => sum + num(b.valor), 0);
+  const faturamentoTotal = paid.reduce((sum, b) => sum + collectedAmount(b), 0);
   const clientesUnicos = new Set(paid.map((b) => b.patient_id)).size;
   const ticketMedio = clientesUnicos ? faturamentoTotal / clientesUnicos : 0;
   const sessoesRealizadas = periodBookings.filter((b) => b.status === 'concluido').length;
@@ -36,7 +49,7 @@ export const getFinancialData = async ({ from, to }) => {
 
   const byDay = {};
   paid.forEach((b) => {
-    byDay[b.booking_date] = (byDay[b.booking_date] || 0) + num(b.valor);
+    byDay[b.booking_date] = (byDay[b.booking_date] || 0) + collectedAmount(b);
   });
   const dailyEntries = Object.entries(byDay)
     .sort(([a], [b]) => a.localeCompare(b))
@@ -45,7 +58,7 @@ export const getFinancialData = async ({ from, to }) => {
   const byMethod = {};
   paid.forEach((b) => {
     const key = b.payment_method || 'Não informado';
-    byMethod[key] = (byMethod[key] || 0) + num(b.valor);
+    byMethod[key] = (byMethod[key] || 0) + collectedAmount(b);
   });
   const paymentMethods = Object.entries(byMethod)
     .sort(([, a], [, b]) => b - a)
@@ -53,7 +66,7 @@ export const getFinancialData = async ({ from, to }) => {
 
   const byService = {};
   paid.forEach((b) => {
-    byService[b.service] = (byService[b.service] || 0) + num(b.valor);
+    byService[b.service] = (byService[b.service] || 0) + collectedAmount(b);
   });
   const topServices = Object.entries(byService)
     .sort(([, a], [, b]) => b - a)
@@ -64,15 +77,16 @@ export const getFinancialData = async ({ from, to }) => {
   const pending = pendingResult.data;
   const receivables = pending
     .filter((b) => b.booking_date >= today)
-    .reduce((sum, b) => sum + num(b.valor), 0);
+    .reduce((sum, b) => sum + owedAmount(b), 0);
   const overdue = pending
     .filter((b) => b.booking_date < today)
-    .reduce((sum, b) => sum + num(b.valor), 0);
+    .reduce((sum, b) => sum + owedAmount(b), 0);
 
   const recentPayments = paid
     .slice()
     .sort((a, b) => `${b.booking_date}${b.booking_time}`.localeCompare(`${a.booking_date}${a.booking_time}`))
-    .slice(0, 10);
+    .slice(0, 10)
+    .map((b) => ({ ...b, valor: collectedAmount(b) }));
 
   return {
     faturamentoTotal,
