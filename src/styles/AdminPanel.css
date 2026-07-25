@@ -1260,13 +1260,25 @@
   white-space: nowrap;
 }
 
-.admin-agenda-block-wholeday {
+.admin-agenda-block-modes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-agenda-block-mode {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 13.5px;
-  margin-bottom: 18px;
   cursor: pointer;
+}
+
+.admin-agenda-block-slot {
+  border: 1px solid oklch(88% 0.01 85);
+  border-radius: 2px;
+  padding: 8px 10px;
+  font-size: 13px;
 }
 
 .admin-agenda-booking-card {

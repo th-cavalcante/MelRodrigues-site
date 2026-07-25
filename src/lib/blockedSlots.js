@@ -22,6 +22,16 @@ export const createBlockedSlot = async ({ date, time, reason }) => {
   return data;
 };
 
+/** Bloqueia vários horários de uma vez (ex: todos os horários da manhã),
+ * um registro por horário — cada um pode ser desbloqueado individualmente
+ * depois. */
+export const createBlockedSlots = async ({ date, times, reason }) => {
+  const rows = times.map((time) => ({ blocked_date: date, blocked_time: time, reason: reason || null }));
+  const { data, error } = await supabase.from('blocked_slots').insert(rows).select();
+  if (error) throw error;
+  return data;
+};
+
 export const deleteBlockedSlot = async (id) => {
   const { error } = await supabase.from('blocked_slots').delete().eq('id', id);
   if (error) throw error;

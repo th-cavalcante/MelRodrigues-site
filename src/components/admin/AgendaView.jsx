@@ -144,9 +144,9 @@ const AgendaView = ({ clients }) => {
     }
   };
 
-  const handleBlockCreated = (block) => {
+  const handleBlockCreated = (createdBlocks) => {
     setShowBlockModal(false);
-    setBlockedSlots((bs) => [...bs, block]);
+    setBlockedSlots((bs) => [...bs, ...createdBlocks]);
   };
 
   const handleUnblock = async (blockId) => {

@@ -1,25 +1,67 @@
-import React, { useState } from 'react';
-import { createBlockedSlot } from '../../lib/blockedSlots';
+import React, { useRef, useState } from 'react';
+import { createBlockedSlot, createBlockedSlots } from '../../lib/blockedSlots';
+
+const buildSlots = (startMins, endMinsExclusive) => {
+  const rows = [];
+  for (let mins = startMins; mins < endMinsExclusive; mins += 30) {
+    const h = String(Math.floor(mins / 60)).padStart(2, '0');
+    const m = String(mins % 60).padStart(2, '0');
+    rows.push(`${h}:${m}`);
+  }
+  return rows;
+};
+
+const MANHA_SLOTS = buildSlots(8 * 60, 12 * 60);
+const TARDE_SLOTS = buildSlots(12 * 60, 19 * 60);
+const CUSTOM_SLOTS = buildSlots(8 * 60, 21 * 60);
+
+const MODES = [
+  { key: 'inteiro', label: 'Dia inteiro (08:00 às 19:00)' },
+  { key: 'manha', label: 'Manhã (08:00 às 12:00)' },
+  { key: 'tarde', label: 'Tarde (12:00 às 19:00)' },
+  { key: 'personalizado', label: 'Personalizado' },
+];
 
 const BlockSlotModal = ({ initialDate, onClose, onCreated }) => {
   const [date, setDate] = useState(initialDate);
-  const [wholeDay, setWholeDay] = useState(true);
-  const [time, setTime] = useState('09:00');
+  const [mode, setMode] = useState('inteiro');
+  const [customTimes, setCustomTimes] = useState([]);
   const [reason, setReason] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const submittingRef = useRef(false);
+
+  const toggleCustomTime = (time) => {
+    setCustomTimes((ts) => (ts.includes(time) ? ts.filter((t) => t !== time) : [...ts, time]));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (submittingRef.current) return;
+    if (mode === 'personalizado' && customTimes.length === 0) {
+      setError('Selecione ao menos um horário.');
+      return;
+    }
+    submittingRef.current = true;
     setError('');
     setSaving(true);
     try {
-      const created = await createBlockedSlot({ date, time: wholeDay ? null : time, reason });
+      let created;
+      if (mode === 'inteiro') {
+        created = [await createBlockedSlot({ date, time: null, reason })];
+      } else if (mode === 'manha') {
+        created = await createBlockedSlots({ date, times: MANHA_SLOTS, reason });
+      } else if (mode === 'tarde') {
+        created = await createBlockedSlots({ date, times: TARDE_SLOTS, reason });
+      } else {
+        created = await createBlockedSlots({ date, times: customTimes, reason });
+      }
       onCreated(created);
     } catch (err) {
       console.error('Erro ao bloquear horário:', err);
       setError(`Não foi possível bloquear: ${err.message || 'erro desconhecido'}`);
     } finally {
+      submittingRef.current = false;
       setSaving(false);
     }
   };
@@ -34,15 +76,33 @@ const BlockSlotModal = ({ initialDate, onClose, onCreated }) => {
           <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="field-input" />
         </div>
 
-        <label className="admin-agenda-block-wholeday">
-          <input type="checkbox" checked={wholeDay} onChange={(e) => setWholeDay(e.target.checked)} />
-          Bloquear o dia inteiro
-        </label>
+        <div className="field-wrap">
+          <label className="field-label">Horário</label>
+          <div className="admin-agenda-block-modes">
+            {MODES.map((m) => (
+              <label key={m.key} className="admin-agenda-block-mode">
+                <input
+                  type="radio"
+                  name="block-mode"
+                  checked={mode === m.key}
+                  onChange={() => setMode(m.key)}
+                />
+                {m.label}
+              </label>
+            ))}
+          </div>
+        </div>
 
-        {!wholeDay && (
+        {mode === 'personalizado' && (
           <div className="field-wrap">
-            <label className="field-label">Horário</label>
-            <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="field-input" />
+            <div className="admin-agenda-services-grid">
+              {CUSTOM_SLOTS.map((t) => (
+                <label key={t} className="admin-agenda-block-mode admin-agenda-block-slot">
+                  <input type="checkbox" checked={customTimes.includes(t)} onChange={() => toggleCustomTime(t)} />
+                  {t}
+                </label>
+              ))}
+            </div>
           </div>
         )}
 
