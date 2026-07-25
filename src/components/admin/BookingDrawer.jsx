@@ -10,21 +10,26 @@ const toServiceSlots = (service) => {
   return Array.from({ length: SERVICE_SLOTS }, (_, i) => parts[i] || '');
 };
 
+const buildDraft = (booking) => ({
+  date: booking.booking_date,
+  time: (booking.booking_time || '').slice(0, 5),
+  serviceSlots: toServiceSlots(booking.service),
+  paymentStatus: booking.payment_status,
+  paymentMethod: booking.payment_method || '',
+  notes: booking.notes || '',
+  status: booking.status,
+});
+
 const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
-  const [fields, setFields] = useState({
-    notes: booking.notes || '',
-  });
-  const [notesSaved, setNotesSaved] = useState(false);
+  const [draft, setDraft] = useState(() => buildDraft(booking));
+  const [saved, setSaved] = useState(false);
   const [stats, setStats] = useState(null);
   const [laserServices, setLaserServices] = useState([]);
-  const [editingServices, setEditingServices] = useState(false);
-  const [serviceSlots, setServiceSlots] = useState(() => toServiceSlots(booking.service));
 
   useEffect(() => {
-    setFields({ notes: booking.notes || '' });
-    setServiceSlots(toServiceSlots(booking.service));
-    setEditingServices(false);
-  }, [booking.id, booking.notes, booking.service]);
+    setDraft(buildDraft(booking));
+    setSaved(false);
+  }, [booking]);
 
   useEffect(() => {
     let cancelled = false;
@@ -42,30 +47,15 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
     fetchLaserServices().then(setLaserServices).catch((err) => console.error('Erro ao carregar tabela de preço:', err));
   }, []);
 
-  const handleLocalChange = (key) => (e) => {
-    setFields((f) => ({ ...f, [key]: e.target.value }));
-    setNotesSaved(false);
-  };
-
-  const handleSaveNotes = () => {
-    onUpdate({ notes: fields.notes });
-    setNotesSaved(true);
-    setTimeout(() => setNotesSaved(false), 2000);
+  const setField = (key) => (e) => {
+    setDraft((d) => ({ ...d, [key]: e.target.value }));
+    setSaved(false);
   };
 
   const handleServiceSlotChange = (index) => (e) => {
-    setServiceSlots((s) => s.map((v, i) => (i === index ? e.target.value : v)));
-  };
-
-  const selectedServices = serviceSlots.filter(Boolean);
-
-  const handleSaveServices = () => {
-    const valor = selectedServices.reduce((sum, name) => {
-      const found = laserServices.find((s) => s.name === name);
-      return sum + (found ? Number(found.price) : 0);
-    }, 0);
-    onUpdate({ service: selectedServices.join(', '), valor });
-    setEditingServices(false);
+    const value = e.target.value;
+    setDraft((d) => ({ ...d, serviceSlots: d.serviceSlots.map((v, i) => (i === index ? value : v)) }));
+    setSaved(false);
   };
 
   const handleDelete = () => {
@@ -74,12 +64,33 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
     }
   };
 
+  const selectedServices = draft.serviceSlots.filter(Boolean);
+  const liveValor = selectedServices.reduce((sum, name) => {
+    const found = laserServices.find((s) => s.name === name);
+    return sum + (found ? Number(found.price) : 0);
+  }, 0);
+
+  const handleSaveAll = () => {
+    onUpdate({
+      booking_date: draft.date,
+      booking_time: draft.time,
+      service: selectedServices.join(', '),
+      valor: liveValor,
+      payment_status: draft.paymentStatus,
+      payment_method: draft.paymentMethod || null,
+      notes: draft.notes,
+      status: draft.status,
+    });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
   const anamneseOk = !!(patient && patient.status !== 'pending');
   const contratoOk = !!(patient && patient.hasContrato);
   const clientName = booking.patients ? booking.patients.name : patient ? patient.name : '—';
   const phone = booking.patients ? booking.patients.phone : patient ? patient.phone : null;
   const whatsappLink = buildWhatsAppLink(phone, `Olá ${clientName || ''}, confirmando seu horário na MR Laser.`);
-  const valorLabel = booking.valor ? `R$ ${Number(booking.valor).toFixed(2).replace('.', ',')}` : 'Incluso no pacote';
+  const valorLabel = liveValor ? `R$ ${liveValor.toFixed(2).replace('.', ',')}` : 'Incluso no pacote';
 
   return (
     <>
@@ -109,21 +120,11 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
         <div className="admin-cadastro-row admin-agenda-datetime-row">
           <div>
             <label className="admin-small-label">Data</label>
-            <input
-              type="date"
-              value={booking.booking_date}
-              onChange={(e) => onUpdate({ booking_date: e.target.value })}
-              className="field-input"
-            />
+            <input type="date" value={draft.date} onChange={setField('date')} className="field-input" />
           </div>
           <div>
             <label className="admin-small-label">Horário</label>
-            <input
-              type="time"
-              value={(booking.booking_time || '').slice(0, 5)}
-              onChange={(e) => onUpdate({ booking_time: e.target.value })}
-              className="field-input"
-            />
+            <input type="time" value={draft.time} onChange={setField('time')} className="field-input" />
           </div>
         </div>
 
@@ -143,41 +144,19 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
           </div>
         )}
 
-        <div className="admin-agenda-drawer-section-title-row">
-          <div className="admin-agenda-drawer-section-title">Detalhes da Sessão</div>
-          {!editingServices && (
-            <button type="button" onClick={() => setEditingServices(true)} className="admin-agenda-edit-services-btn">
-              ✎ Editar serviços
-            </button>
-          )}
-        </div>
-
-        {!editingServices && (
-          <div className="admin-agenda-drawer-detail-row"><span>Serviço:</span> <strong>{booking.service}</strong></div>
-        )}
-
-        {editingServices && (
-          <div className="admin-agenda-services-edit">
-            <div className="admin-agenda-services-grid">
-              {serviceSlots.map((value, i) => (
-                <select key={i} value={value} onChange={handleServiceSlotChange(i)} className="field-input">
-                  <option value="">{i === 0 ? 'Selecione a região' : 'Região adicional (opcional)'}</option>
-                  {laserServices.map((s) => (
-                    <option key={s.id} value={s.name}>{s.name}</option>
-                  ))}
-                </select>
-              ))}
-            </div>
-            <div className="admin-agenda-services-edit-actions">
-              <button type="button" onClick={() => { setServiceSlots(toServiceSlots(booking.service)); setEditingServices(false); }} className="admin-agenda-modal-cancel">
-                CANCELAR
-              </button>
-              <button type="button" onClick={handleSaveServices} disabled={selectedServices.length === 0} className="admin-open-client-btn">
-                SALVAR SERVIÇOS
-              </button>
-            </div>
+        <div className="admin-agenda-drawer-section-title">Detalhes da Sessão</div>
+        <div className="field-wrap">
+          <div className="admin-agenda-services-grid">
+            {draft.serviceSlots.map((value, i) => (
+              <select key={i} value={value} onChange={handleServiceSlotChange(i)} className="field-input">
+                <option value="">{i === 0 ? 'Selecione a região' : 'Região adicional (opcional)'}</option>
+                {laserServices.map((s) => (
+                  <option key={s.id} value={s.name}>{s.name}</option>
+                ))}
+              </select>
+            ))}
           </div>
-        )}
+        </div>
 
         <div className="admin-agenda-drawer-detail-row"><span>Equipamento:</span> <strong>{booking.equipment || '—'}</strong></div>
         <div className="admin-agenda-drawer-detail-row"><span>Sessão nº:</span> <strong>{booking.session_num ?? '—'}</strong></div>
@@ -185,11 +164,7 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
         <div className="admin-agenda-drawer-section-title">Financeiro</div>
         <div className="admin-agenda-financeiro-row">
           <div className="admin-agenda-valor">{valorLabel}</div>
-          <select
-            value={booking.payment_status}
-            onChange={(e) => onUpdate({ payment_status: e.target.value })}
-            className="field-input admin-agenda-filter-select"
-          >
+          <select value={draft.paymentStatus} onChange={setField('paymentStatus')} className="field-input admin-agenda-filter-select">
             {PAYMENT_STATUS_OPTIONS.map((p) => (
               <option key={p} value={p}>{p}</option>
             ))}
@@ -197,11 +172,7 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
         </div>
         <div className="admin-agenda-payment-method-field">
           <label className="admin-small-label">Forma de Pagamento</label>
-          <select
-            value={booking.payment_method || ''}
-            onChange={(e) => onUpdate({ payment_method: e.target.value || null })}
-            className="field-input"
-          >
+          <select value={draft.paymentMethod} onChange={setField('paymentMethod')} className="field-input">
             <option value="">Não informado</option>
             {PAYMENT_METHOD_OPTIONS.map((m) => (
               <option key={m.value} value={m.value}>{m.icon} {m.label}</option>
@@ -212,25 +183,22 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
         <div className="admin-agenda-drawer-section-title">Notas Internas</div>
         <textarea
           rows="3"
-          value={fields.notes}
-          onChange={handleLocalChange('notes')}
+          value={draft.notes}
+          onChange={setField('notes')}
           placeholder="Ex: cliente sensível na região, usar resfriamento máximo..."
           className="field-input field-textarea"
         />
-        <button type="button" onClick={handleSaveNotes} className="admin-open-client-btn admin-agenda-save-notes-btn">
-          {notesSaved ? 'Salvo ✓' : 'SALVAR NOTAS'}
-        </button>
 
         <div className="admin-agenda-drawer-section-title admin-agenda-drawer-section-title-spaced">Status do Agendamento</div>
-        <select
-          value={booking.status}
-          onChange={(e) => onUpdate({ status: e.target.value })}
-          className="field-input"
-        >
+        <select value={draft.status} onChange={setField('status')} className="field-input">
           {STATUS_OPTIONS.map((s) => (
             <option key={s.value} value={s.value}>{s.label}</option>
           ))}
         </select>
+
+        <button type="button" onClick={handleSaveAll} className="admin-open-client-btn admin-agenda-save-all-btn">
+          {saved ? 'ALTERAÇÕES SALVAS ✓' : 'SALVAR ALTERAÇÕES'}
+        </button>
 
         <button type="button" onClick={handleDelete} className="admin-delete-btn admin-agenda-drawer-delete-btn">
           Excluir Agendamento
