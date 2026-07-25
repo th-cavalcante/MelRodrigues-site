@@ -22,13 +22,11 @@ const buildDraft = (booking) => ({
 
 const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
   const [draft, setDraft] = useState(() => buildDraft(booking));
-  const [saved, setSaved] = useState(false);
   const [stats, setStats] = useState(null);
   const [laserServices, setLaserServices] = useState([]);
 
   useEffect(() => {
     setDraft(buildDraft(booking));
-    setSaved(false);
   }, [booking]);
 
   useEffect(() => {
@@ -49,13 +47,11 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
 
   const setField = (key) => (e) => {
     setDraft((d) => ({ ...d, [key]: e.target.value }));
-    setSaved(false);
   };
 
   const handleServiceSlotChange = (index) => (e) => {
     const value = e.target.value;
     setDraft((d) => ({ ...d, serviceSlots: d.serviceSlots.map((v, i) => (i === index ? value : v)) }));
-    setSaved(false);
   };
 
   const handleDelete = () => {
@@ -81,8 +77,7 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
       notes: draft.notes,
       status: draft.status,
     });
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    onClose();
   };
 
   const anamneseOk = !!(patient && patient.status !== 'pending');
@@ -197,7 +192,7 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
         </select>
 
         <button type="button" onClick={handleSaveAll} className="admin-open-client-btn admin-agenda-save-all-btn">
-          {saved ? 'ALTERAÇÕES SALVAS ✓' : 'SALVAR ALTERAÇÕES'}
+          SALVAR ALTERAÇÕES
         </button>
 
         <button type="button" onClick={handleDelete} className="admin-delete-btn admin-agenda-drawer-delete-btn">
