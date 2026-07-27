@@ -4,7 +4,7 @@ import NewAppointmentModal from './NewAppointmentModal';
 import BlockSlotModal from './BlockSlotModal';
 import { listBookings, updateBooking, deleteBooking } from '../../lib/bookings';
 import { listBlockedSlots, deleteBlockedSlot } from '../../lib/blockedSlots';
-import { ROOMS, STATUS_OPTIONS, BLOCKED_SLOTS, toISODate } from '../../lib/agendaConstants';
+import { STATUS_OPTIONS, BLOCKED_SLOTS, toISODate } from '../../lib/agendaConstants';
 
 const VIEW_MODES = [
   { key: 'dia', label: 'Dia' },
@@ -40,6 +40,8 @@ const addDays = (date, n) => {
 
 const statusMeta = (status) => STATUS_OPTIONS.find((s) => s.value === status) || STATUS_OPTIONS[0];
 
+const FILTER_STATUS_OPTIONS = STATUS_OPTIONS.filter((s) => s.value === 'confirmado' || s.value === 'pendente');
+
 const bookingTimeLabel = (booking) => (booking.booking_time || '').slice(0, 5);
 
 const docsIcon = (patient) => {
@@ -53,7 +55,8 @@ const docsIcon = (patient) => {
 const AgendaView = ({ clients }) => {
   const [agendaView, setAgendaView] = useState('dia');
   const [agendaOffset, setAgendaOffset] = useState(0);
-  const [filters, setFilters] = useState({ room: 'Todas', status: 'Todos' });
+  const [filters, setFilters] = useState({ status: 'Todos' });
+  const [blockModalTime, setBlockModalTime] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [blockedSlots, setBlockedSlots] = useState([]);
   const [activeBookingId, setActiveBookingId] = useState(null);
@@ -105,8 +108,7 @@ const AgendaView = ({ clients }) => {
   }, [agendaView, agendaOffset]);
 
   const matchesFilters = (b) =>
-    (filters.room === 'Todas' || b.room === filters.room) &&
-    (filters.status === 'Todos' || statusMeta(b.status).label === filters.status);
+    filters.status === 'Todos' || statusMeta(b.status).label === filters.status;
 
   const activeBooking = bookings.find((b) => b.id === activeBookingId) || null;
 
@@ -146,7 +148,13 @@ const AgendaView = ({ clients }) => {
 
   const handleBlockCreated = (createdBlocks) => {
     setShowBlockModal(false);
+    setBlockModalTime(null);
     setBlockedSlots((bs) => [...bs, ...createdBlocks]);
+  };
+
+  const openBlockModalForSlot = (time) => {
+    setBlockModalTime(time);
+    setShowBlockModal(true);
   };
 
   const handleUnblock = async (blockId) => {
@@ -216,9 +224,7 @@ const AgendaView = ({ clients }) => {
         <div className="admin-card admin-agenda-timegrid">
           {TIME_ROWS.map((time) => {
             const booking = dayBookings.find((b) => bookingTimeLabel(b) === time);
-            const blocked = BLOCKED_SLOTS.find(
-              (bl) => bl.time === time && (bl.matchAll || filters.room === bl.room)
-            );
+            const blocked = BLOCKED_SLOTS.find((bl) => bl.time === time && bl.matchAll);
             const dynamicBlock = dayBlockedSlots.find(
               (bs) => bs.blocked_time && bs.blocked_time.slice(0, 5) === time
             );
@@ -239,7 +245,16 @@ const AgendaView = ({ clients }) => {
                     </button>
                   ) : blocked ? (
                     <div className="admin-agenda-blocked">{blocked.label}</div>
-                  ) : null}
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => openBlockModalForSlot(time)}
+                      className="admin-agenda-empty-slot"
+                      title="Bloquear este horário"
+                    >
+                      + Bloquear
+                    </button>
+                  )}
                 </div>
               </div>
             );
@@ -446,43 +461,33 @@ const AgendaView = ({ clients }) => {
           <button type="button" onClick={handleCopyAgendaLink} className="admin-open-client-btn">
             {linkCopied ? 'Copiado ✓' : '🔗 Copiar Link de Agenda'}
           </button>
-          <button type="button" onClick={() => setShowBlockModal(true)} className="admin-open-client-btn">
+          <button type="button" onClick={() => { setBlockModalTime(null); setShowBlockModal(true); }} className="admin-open-client-btn">
             🚫 Bloquear Horário
           </button>
         </div>
       </div>
 
       <div className="admin-card admin-agenda-datenav">
-        <button type="button" onClick={() => setAgendaOffset((o) => o - 1)} className="admin-agenda-nav-btn">
+        <button type="button" onClick={() => setAgendaOffset((o) => o - 1)} className="admin-agenda-nav-btn admin-agenda-nav-prev">
           ‹
         </button>
-        <div className="admin-agenda-date-label">{dateLabel}</div>
-        <button type="button" onClick={() => setAgendaOffset((o) => o + 1)} className="admin-agenda-nav-btn">
+        <button type="button" onClick={() => setAgendaOffset((o) => o + 1)} className="admin-agenda-nav-btn admin-agenda-nav-next">
           ›
         </button>
-        <button type="button" onClick={() => setAgendaOffset(0)} className="admin-open-client-btn">
+        <div className="admin-agenda-date-label">{dateLabel}</div>
+        <button type="button" onClick={() => setAgendaOffset(0)} className="admin-open-client-btn admin-agenda-today-btn">
           HOJE
         </button>
       </div>
 
       <div className="admin-agenda-filters">
         <select
-          value={filters.room}
-          onChange={(e) => setFilters((f) => ({ ...f, room: e.target.value }))}
-          className="field-input admin-agenda-filter-select"
-        >
-          <option value="Todas">Todas as salas</option>
-          {ROOMS.map((r) => (
-            <option key={r} value={r}>{r}</option>
-          ))}
-        </select>
-        <select
           value={filters.status}
           onChange={(e) => setFilters((f) => ({ ...f, status: e.target.value }))}
           className="field-input admin-agenda-filter-select"
         >
           <option value="Todos">Todos os status</option>
-          {STATUS_OPTIONS.map((s) => (
+          {FILTER_STATUS_OPTIONS.map((s) => (
             <option key={s.value} value={s.label}>{s.label}</option>
           ))}
         </select>
@@ -519,7 +524,8 @@ const AgendaView = ({ clients }) => {
       {showBlockModal && (
         <BlockSlotModal
           initialDate={todayISO}
-          onClose={() => setShowBlockModal(false)}
+          initialTime={blockModalTime}
+          onClose={() => { setShowBlockModal(false); setBlockModalTime(null); }}
           onCreated={handleBlockCreated}
         />
       )}

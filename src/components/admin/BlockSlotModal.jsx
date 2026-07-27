@@ -13,7 +13,7 @@ const buildSlots = (startMins, endMinsExclusive) => {
 
 const MANHA_SLOTS = buildSlots(8 * 60, 12 * 60);
 const TARDE_SLOTS = buildSlots(12 * 60, 19 * 60);
-const CUSTOM_SLOTS = buildSlots(8 * 60, 21 * 60);
+const CUSTOM_SLOTS = buildSlots(8 * 60, 21 * 60 + 30);
 
 const MODES = [
   { key: 'inteiro', label: 'Dia inteiro (08:00 às 19:00)' },
@@ -22,10 +22,10 @@ const MODES = [
   { key: 'personalizado', label: 'Personalizado' },
 ];
 
-const BlockSlotModal = ({ initialDate, onClose, onCreated }) => {
+const BlockSlotModal = ({ initialDate, initialTime, onClose, onCreated }) => {
   const [date, setDate] = useState(initialDate);
-  const [mode, setMode] = useState('inteiro');
-  const [customTimes, setCustomTimes] = useState([]);
+  const [mode, setMode] = useState(initialTime ? 'personalizado' : 'inteiro');
+  const [customTimes, setCustomTimes] = useState(initialTime ? [initialTime] : []);
   const [reason, setReason] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');

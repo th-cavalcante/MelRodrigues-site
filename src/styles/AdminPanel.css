@@ -1230,6 +1230,26 @@
   color: oklch(50% 0.15 25);
 }
 
+.admin-agenda-empty-slot {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed transparent;
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-family: 'Manrope', sans-serif;
+  color: oklch(80% 0.006 85);
+}
+
+.admin-agenda-empty-slot:hover,
+.admin-agenda-empty-slot:focus-visible {
+  border-color: var(--border-subtle-2);
+  color: oklch(55% 0.01 85);
+}
+
 .admin-agenda-timegrid-col {
   display: flex;
   flex-direction: column;
@@ -1897,6 +1917,23 @@
 
   .admin-agenda-drawer {
     width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .admin-agenda-datenav {
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .admin-agenda-date-label {
+    min-width: 0;
+    flex: 1 1 auto;
+    text-align: left;
+  }
+
+  .admin-agenda-today-btn {
+    margin-left: auto;
   }
 }
 
