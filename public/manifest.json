@@ -1,0 +1,13 @@
+{
+  "short_name": "MR Laser Admin",
+  "name": "MR Laser - Painel Administrativo",
+  "icons": [
+    { "src": "images/logo.png", "sizes": "500x500", "type": "image/png", "purpose": "any" }
+  ],
+  "start_url": "/admin/dashboard",
+  "scope": "/admin/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#B08D57",
+  "background_color": "#FAF6EF"
+}
