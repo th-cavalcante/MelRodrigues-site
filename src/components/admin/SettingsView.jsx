@@ -1,4 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import {
+  isBiometricAvailable,
+  isBiometricEnabled,
+  registerBiometric,
+  disableBiometric,
+} from '../../lib/biometric';
 
 const initialClinicSettings = {
   name: 'MR Laser',
@@ -15,8 +22,17 @@ const togglesMeta = [
 const initialToggles = { email: true, sms: false, whatsapp: true };
 
 const SettingsView = () => {
+  const { user } = useAuth();
   const [clinic, setClinic] = useState(initialClinicSettings);
   const [toggles, setToggles] = useState(initialToggles);
+  const [bioSupported, setBioSupported] = useState(false);
+  const [bioEnabled, setBioEnabled] = useState(isBiometricEnabled());
+  const [bioBusy, setBioBusy] = useState(false);
+  const [bioError, setBioError] = useState('');
+
+  useEffect(() => {
+    isBiometricAvailable().then(setBioSupported);
+  }, []);
 
   const setClinicField = (field) => (e) => {
     setClinic((c) => ({ ...c, [field]: e.target.value }));
@@ -24,6 +40,25 @@ const SettingsView = () => {
 
   const toggleSetting = (key) => {
     setToggles((t) => ({ ...t, [key]: !t[key] }));
+  };
+
+  const handleToggleBiometric = async () => {
+    setBioError('');
+    if (bioEnabled) {
+      disableBiometric();
+      setBioEnabled(false);
+      return;
+    }
+    setBioBusy(true);
+    try {
+      await registerBiometric(user?.email);
+      setBioEnabled(true);
+    } catch (err) {
+      console.error('Erro ao ativar biometria:', err);
+      setBioError('Não foi possível ativar. Verifique se este aparelho tem digital ou Face ID configurado.');
+    } finally {
+      setBioBusy(false);
+    }
   };
 
   return (
@@ -83,6 +118,28 @@ const SettingsView = () => {
           </div>
         ))}
       </div>
+
+      {bioSupported && (
+        <div className="admin-card">
+          <h3 className="admin-card-title admin-card-title-tight">Segurança</h3>
+          <div className="admin-toggle-row">
+            <div>
+              <div className="admin-toggle-label">Desbloqueio por Digital / Face ID</div>
+              <div className="admin-toggle-desc">Exige biometria pra abrir o painel neste aparelho</div>
+            </div>
+            <button
+              type="button"
+              onClick={handleToggleBiometric}
+              disabled={bioBusy}
+              className={`admin-toggle-track ${bioEnabled ? 'on' : ''}`}
+              aria-pressed={bioEnabled}
+            >
+              <span className="admin-toggle-thumb"></span>
+            </button>
+          </div>
+          {bioError && <div className="admin-login-error">{bioError}</div>}
+        </div>
+      )}
     </div>
   );
 };

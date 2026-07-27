@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/admin/Sidebar';
 import AccessDenied from '../components/admin/AccessDenied';
+import BiometricLock from '../components/admin/BiometricLock';
 import DashboardView from '../components/admin/DashboardView';
 import SiteManagerView from '../components/admin/SiteManagerView';
 import ClientsView from '../components/admin/ClientsView';
@@ -11,11 +12,13 @@ import CadastroPacienteView from '../components/admin/CadastroPacienteView';
 import SettingsView from '../components/admin/SettingsView';
 import { useAuth } from '../context/AuthContext';
 import { listPatients } from '../lib/patients';
+import { isBiometricEnabled, isUnlockedThisSession, markUnlockedThisSession, clearUnlockedSession } from '../lib/biometric';
 import '../styles/AdminPanel.css';
 
 const AdminPanel = () => {
   const [tab, setTab] = useState('dashboard');
   const [clients, setClients] = useState([]);
+  const [unlocked, setUnlocked] = useState(() => !isBiometricEnabled() || isUnlockedThisSession());
   const { user, loading, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -28,6 +31,7 @@ const AdminPanel = () => {
 
   const handleLogout = async () => {
     await signOut();
+    clearUnlockedSession();
     navigate('/admin/login');
   };
 
@@ -37,6 +41,17 @@ const AdminPanel = () => {
 
   if (!user) {
     return <AccessDenied />;
+  }
+
+  if (!unlocked) {
+    return (
+      <BiometricLock
+        onUnlock={() => {
+          markUnlockedThisSession();
+          setUnlocked(true);
+        }}
+      />
+    );
   }
 
   return (
