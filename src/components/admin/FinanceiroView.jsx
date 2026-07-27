@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { getFinancialData } from '../../lib/finance';
-import { toISODate, PAYMENT_METHOD_OPTIONS } from '../../lib/agendaConstants';
+import { toISODate, PAYMENT_METHOD_OPTIONS, buildWhatsAppLink } from '../../lib/agendaConstants';
 
 const PERIODS = [
   { key: 'mes', label: 'Este Mês' },
@@ -20,6 +20,15 @@ const METHOD_ICONS = PAYMENT_METHOD_OPTIONS.reduce((acc, m) => ({ ...acc, [m.val
 
 const formatMoney = (v) =>
   `R$ ${(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+/** Mensagem de confirmação pronta pra recepção mandar com 1 clique — sem
+ * API paga, sem automação: só um link wa.me com o texto já preenchido. */
+const buildConfirmationMessage = (p) => {
+  const dateLabel = `${p.booking_date.slice(8, 10)}/${p.booking_date.slice(5, 7)}`;
+  const timeLabel = (p.booking_time || '').slice(0, 5);
+  const name = p.patients ? p.patients.name : '';
+  return `Olá ${name}! Seu pagamento foi confirmado ✅ Seu agendamento na MR Laser está marcado para ${dateLabel} às ${timeLabel}. Qualquer dúvida, estamos à disposição!`;
+};
 
 const addDays = (date, n) => {
   const d = new Date(date);
@@ -203,20 +212,40 @@ const FinanceiroView = () => {
           <div>Serviço</div>
           <div></div>
           <div className="admin-fin-table-value-col">Valor</div>
+          <div></div>
         </div>
-        {data.recentPayments.map((p) => (
-          <div key={p.id} className="admin-fin-table-row">
-            <div className="admin-fin-table-date">
-              {p.booking_date.slice(8, 10)}/{p.booking_date.slice(5, 7)} · {(p.booking_time || '').slice(0, 5)}
+        {data.recentPayments.map((p) => {
+          const phone = p.patients ? p.patients.phone : null;
+          const waLink = buildWhatsAppLink(phone, buildConfirmationMessage(p));
+          return (
+            <div key={p.id} className="admin-fin-table-row">
+              <div className="admin-fin-table-date">
+                {p.booking_date.slice(8, 10)}/{p.booking_date.slice(5, 7)} · {(p.booking_time || '').slice(0, 5)}
+              </div>
+              <div className="admin-fin-table-client">{p.patients ? p.patients.name : '—'}</div>
+              <div className="admin-fin-table-service">{p.service}</div>
+              <div className="admin-fin-table-icon" title={p.payment_method || 'Não informado'}>
+                {METHOD_ICONS[p.payment_method] || '❔'}
+              </div>
+              <div className="admin-fin-table-value-col admin-fin-table-value">{formatMoney(p.valor)}</div>
+              {waLink ? (
+                <a
+                  href={waLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="admin-fin-table-whatsapp"
+                  title="Enviar confirmação via WhatsApp"
+                >
+                  💬
+                </a>
+              ) : (
+                <span className="admin-fin-table-whatsapp admin-fin-table-whatsapp-disabled" title="Paciente sem telefone cadastrado">
+                  💬
+                </span>
+              )}
             </div>
-            <div className="admin-fin-table-client">{p.patients ? p.patients.name : '—'}</div>
-            <div className="admin-fin-table-service">{p.service}</div>
-            <div className="admin-fin-table-icon" title={p.payment_method || 'Não informado'}>
-              {METHOD_ICONS[p.payment_method] || '❔'}
-            </div>
-            <div className="admin-fin-table-value-col admin-fin-table-value">{formatMoney(p.valor)}</div>
-          </div>
-        ))}
+          );
+        })}
         {data.recentPayments.length === 0 && (
           <div className="admin-sessions-empty">Nenhuma entrada paga neste período.</div>
         )}

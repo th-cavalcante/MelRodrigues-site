@@ -39,7 +39,7 @@ export const getFinancialData = async ({ from, to }) => {
     // isso essa busca não é limitada ao período selecionado no dashboard.
     supabase
       .from('bookings')
-      .select('id, service, valor, payment_status, payment_method, booking_date, booking_time, patients(name)')
+      .select('id, service, valor, payment_status, payment_method, booking_date, booking_time, patients(name, phone)')
       .in('payment_status', ['Pago', 'Pago Sinal 50%'])
       .neq('status', 'cancelado')
       .order('created_at', { ascending: false })

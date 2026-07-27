@@ -2246,13 +2246,25 @@
 
 .admin-fin-table-row {
   display: grid;
-  grid-template-columns: 90px 1.4fr 1.6fr 34px 100px;
+  grid-template-columns: 90px 1.4fr 1.6fr 34px 100px 34px;
   width: 100%;
   align-items: center;
   padding: 14px 28px;
   border-top: 1px solid oklch(93% 0.006 85);
   font-size: 12.5px;
   gap: 6px;
+}
+
+.admin-fin-table-whatsapp {
+  display: block;
+  text-align: center;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.admin-fin-table-whatsapp-disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
 }
 
 .admin-fin-table-header {
@@ -2374,6 +2386,12 @@
     grid-column: 1;
     grid-row: 3;
     white-space: normal;
+  }
+
+  .admin-fin-table-whatsapp {
+    grid-column: 2;
+    grid-row: 3;
+    text-align: right;
   }
 
   .admin-fin-table-header {
