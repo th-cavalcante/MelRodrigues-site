@@ -20,11 +20,10 @@ export const PAYMENT_METHOD_OPTIONS = [
   { value: 'Boleto', label: 'Boleto', icon: '📄' },
 ];
 
-/** Horários bloqueados na grade da visão Dia — almoço vale pra todas as
- * salas, manutenção do laser só pra sala do Hakon 4D. */
+/** Horários bloqueados na grade da visão Dia — manutenção do laser só pra
+ * sala do Hakon 4D. Sem horário fixo de almoço: usar "Bloquear Horário"
+ * pra bloquear o horário do dia que for necessário. */
 export const BLOCKED_SLOTS = [
-  { time: '12:00', matchAll: true, label: 'Almoço' },
-  { time: '12:30', matchAll: true, label: 'Almoço' },
   { time: '16:00', room: 'Sala Laser Hakon 4D', label: 'Manutenção do Laser' },
 ];
 
