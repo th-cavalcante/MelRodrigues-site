@@ -100,12 +100,14 @@ const AdminLogin = () => {
         </div>
 
         {mode === 'login' && (
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleLogin} autoComplete="on">
             <div className="field-wrap">
               <label className="field-label" htmlFor="login-email">E-mail</label>
               <input
                 id="login-email"
+                name="email"
                 type="email"
+                autoComplete="username"
                 placeholder="seu@email.com"
                 value={form.email}
                 onChange={handleField('email')}
@@ -118,7 +120,9 @@ const AdminLogin = () => {
               <div className="password-field">
                 <input
                   id="login-password"
+                  name="password"
                   type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
                   placeholder="Digite sua senha"
                   value={form.password}
                   onChange={handleField('password')}
