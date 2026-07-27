@@ -24,10 +24,14 @@ const AdminPanel = () => {
 
   useEffect(() => {
     if (!user) return;
+    // Refaz a busca sempre que entrar nessas abas — pacientes se
+    // cadastram sozinhos pela Agenda Online a qualquer momento, então a
+    // lista carregada só no login fica desatualizada rapidinho.
+    if (!['clients', 'agenda', 'dashboard'].includes(tab)) return;
     listPatients()
       .then(setClients)
       .catch((err) => console.error('Erro ao carregar pacientes:', err));
-  }, [user]);
+  }, [user, tab]);
 
   const handleLogout = async () => {
     await signOut();

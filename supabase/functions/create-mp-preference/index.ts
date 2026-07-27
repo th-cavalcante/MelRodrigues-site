@@ -7,6 +7,7 @@
 // Deploy: supabase functions deploy create-mp-preference
 
 import { serve } from 'https://deno.land/std@0.190.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -37,6 +38,23 @@ serve(async (req) => {
       });
     }
 
+    // O antifraude do Mercado Pago recusa cartão com muita frequência quando
+    // a preferência não identifica o pagador (nome/CPF) — Pix não sofre com
+    // isso porque a autenticação já acontece no banco do próprio pagador.
+    // Buscamos os dados do paciente do agendamento pra reduzir essas recusas.
+    const supabaseAdmin = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+    const { data: booking } = await supabaseAdmin
+      .from('bookings')
+      .select('patients(name, cpf)')
+      .eq('id', bookingId)
+      .maybeSingle();
+    const patient = booking?.patients;
+    const cpfDigits = (patient?.cpf || '').replace(/\D/g, '');
+    const nameParts = (patient?.name || '').trim().split(/\s+/).filter(Boolean);
+
     const preference = {
       items: [
         {
@@ -46,6 +64,13 @@ serve(async (req) => {
           currency_id: 'BRL',
         },
       ],
+      ...(nameParts.length > 0 && {
+        payer: {
+          first_name: nameParts[0],
+          last_name: nameParts.slice(1).join(' ') || nameParts[0],
+          ...(cpfDigits.length === 11 && { identification: { type: 'CPF', number: cpfDigits } }),
+        },
+      }),
       external_reference: bookingId,
       back_urls: {
         success: `${siteUrl}/cliente/agendar?mp_booking=${bookingId}&mp_status=approved`,

@@ -167,7 +167,7 @@ const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => 
       try {
         const result = await getBookingPaymentStatus(pendingBookingId);
         if (cancelled || !result) return;
-        if (result.payment_status === 'Pago') setLiveStatus('approved');
+        if (result.payment_status === 'Pago' || result.payment_status === 'Pago Sinal 50%') setLiveStatus('approved');
       } catch (err) {
         console.error('Erro ao verificar status do pagamento:', err);
       }
