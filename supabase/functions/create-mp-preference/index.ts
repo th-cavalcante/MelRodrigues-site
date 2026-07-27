@@ -59,6 +59,9 @@ serve(async (req) => {
       items: [
         {
           title: description || 'Sinal de agendamento — MR Laser',
+          // Recomendação do próprio Mercado Pago: description ajuda o
+          // mecanismo antifraude a validar o pagamento e reduz recusas.
+          description: description || 'Sinal de agendamento — MR Laser',
           quantity: 1,
           unit_price: Number(amount),
           currency_id: 'BRL',
