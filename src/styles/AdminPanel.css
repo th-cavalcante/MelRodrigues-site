@@ -1898,6 +1898,79 @@
   text-align: center;
 }
 
+/* Variante "sheet": modal com cabeçalho fixo (título + X) e rodapé fixo
+ * (Cancelar/Salvar), só o corpo rola — usada no Novo Agendamento pra não
+ * perder os botões de ação quando o formulário fica comprido no mobile. */
+.admin-agenda-modal-sheet {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.admin-agenda-modal-sheet .admin-agenda-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 30px 38px 0;
+  flex-shrink: 0;
+}
+
+.admin-agenda-modal-sheet .admin-agenda-modal-title {
+  margin: 0;
+  text-align: left;
+}
+
+.admin-agenda-modal-close {
+  background: none;
+  border: none;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  color: oklch(45% 0.012 85);
+  padding: 2px 6px;
+}
+
+.admin-agenda-modal-sheet .admin-agenda-modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px 38px 24px;
+}
+
+.admin-agenda-modal-sheet .admin-agenda-modal-actions {
+  padding: 18px 38px 30px;
+  border-top: 1px solid oklch(93% 0.006 85);
+  flex-shrink: 0;
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .admin-agenda-modal-overlay {
+    padding: 0;
+  }
+
+  .admin-agenda-modal-sheet {
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+  }
+
+  .admin-agenda-modal-sheet .admin-agenda-modal-header,
+  .admin-agenda-modal-sheet .admin-agenda-modal-body,
+  .admin-agenda-modal-sheet .admin-agenda-modal-actions {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .admin-agenda-services-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 1024px) {
   .admin-agenda-day-grid {
     grid-template-columns: 1fr;

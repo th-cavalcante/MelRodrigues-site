@@ -78,87 +78,94 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
 
   return (
     <div className="admin-agenda-modal-overlay">
-      <form className="admin-agenda-modal" onSubmit={handleSubmit}>
-        <h2 className="admin-agenda-modal-title">Novo Agendamento</h2>
-
-        <div className="field-wrap admin-agenda-search-wrap">
-          <label className="field-label">Nome da Cliente</label>
-          <input
-            type="text"
-            placeholder="Buscar pelo nome completo..."
-            value={search}
-            onChange={handleSearchChange}
-            onFocus={() => setSearchFocused(true)}
-            className="field-input"
-          />
-          {searchFocused && (
-            <div className="admin-agenda-search-results">
-              {results.map((c) => (
-                <button key={c.id} type="button" onClick={() => handleSelectClient(c)} className="admin-agenda-search-result">
-                  {c.name || 'Sem nome'}
-                </button>
-              ))}
-              {results.length === 0 && (
-                <div className="admin-agenda-search-empty">Nenhuma cliente encontrada na ficha de anamnese.</div>
-              )}
-            </div>
-          )}
+      <form className="admin-agenda-modal admin-agenda-modal-sheet" onSubmit={handleSubmit}>
+        <div className="admin-agenda-modal-header">
+          <h2 className="admin-agenda-modal-title">Novo Agendamento</h2>
+          <button type="button" onClick={onClose} className="admin-agenda-modal-close" aria-label="Fechar">
+            ×
+          </button>
         </div>
 
-        <div className="field-wrap">
-          <label className="field-label">Dia</label>
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="field-input" />
-        </div>
-
-        <div className="field-wrap">
-          <label className="field-label">Horário</label>
-          <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="field-input" />
-        </div>
-
-        <div className="field-wrap">
-          <label className="field-label">Serviço</label>
-          <div className="admin-agenda-services-grid">
-            {services.map((value, i) => (
-              <select
-                key={i}
-                value={value}
-                onChange={handleServiceChange(i)}
-                className="field-input"
-              >
-                <option value="">{i === 0 ? 'Selecione a região' : 'Região adicional (opcional)'}</option>
-                {laserServices.map((s) => (
-                  <option key={s.id} value={s.name}>{s.name}</option>
-                ))}
-              </select>
-            ))}
-          </div>
-        </div>
-
-        <div className="admin-agenda-valor-summary">
-          <div className="admin-agenda-valor-row">
-            <span>Valor dos procedimentos</span>
-            <strong>R$ {subtotal.toFixed(2).replace('.', ',')}</strong>
-          </div>
-          <div className="admin-agenda-valor-row admin-agenda-valor-discount-row">
-            <label htmlFor="apt-discount">Desconto (R$)</label>
+        <div className="admin-agenda-modal-body">
+          <div className="field-wrap admin-agenda-search-wrap">
+            <label className="field-label">Nome da Cliente</label>
             <input
-              id="apt-discount"
-              type="number"
-              min="0"
-              step="0.01"
-              placeholder="0,00"
-              value={discount}
-              onChange={(e) => setDiscount(e.target.value)}
-              className="field-input admin-agenda-discount-input"
+              type="text"
+              placeholder="Buscar pelo nome completo..."
+              value={search}
+              onChange={handleSearchChange}
+              onFocus={() => setSearchFocused(true)}
+              className="field-input"
             />
+            {searchFocused && (
+              <div className="admin-agenda-search-results">
+                {results.map((c) => (
+                  <button key={c.id} type="button" onClick={() => handleSelectClient(c)} className="admin-agenda-search-result">
+                    {c.name || 'Sem nome'}
+                  </button>
+                ))}
+                {results.length === 0 && (
+                  <div className="admin-agenda-search-empty">Nenhuma cliente encontrada na ficha de anamnese.</div>
+                )}
+              </div>
+            )}
           </div>
-          <div className="admin-agenda-valor-row admin-agenda-valor-total-row">
-            <span>Total</span>
-            <strong>R$ {total.toFixed(2).replace('.', ',')}</strong>
-          </div>
-        </div>
 
-        {error && <div className="admin-login-error">{error}</div>}
+          <div className="field-wrap">
+            <label className="field-label">Dia</label>
+            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="field-input" />
+          </div>
+
+          <div className="field-wrap">
+            <label className="field-label">Horário</label>
+            <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="field-input" />
+          </div>
+
+          <div className="field-wrap">
+            <label className="field-label">Serviço</label>
+            <div className="admin-agenda-services-grid">
+              {services.map((value, i) => (
+                <select
+                  key={i}
+                  value={value}
+                  onChange={handleServiceChange(i)}
+                  className="field-input"
+                >
+                  <option value="">{i === 0 ? 'Selecione a região' : 'Região adicional (opcional)'}</option>
+                  {laserServices.map((s) => (
+                    <option key={s.id} value={s.name}>{s.name}</option>
+                  ))}
+                </select>
+              ))}
+            </div>
+          </div>
+
+          <div className="admin-agenda-valor-summary">
+            <div className="admin-agenda-valor-row">
+              <span>Valor dos procedimentos</span>
+              <strong>R$ {subtotal.toFixed(2).replace('.', ',')}</strong>
+            </div>
+            <div className="admin-agenda-valor-row admin-agenda-valor-discount-row">
+              <label htmlFor="apt-discount">Desconto (R$)</label>
+              <input
+                id="apt-discount"
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="0,00"
+                value={discount}
+                onChange={(e) => setDiscount(e.target.value)}
+                className="field-input admin-agenda-discount-input"
+              />
+            </div>
+            <div className="admin-agenda-valor-row admin-agenda-valor-total-row">
+              <span>Total</span>
+              <strong>R$ {total.toFixed(2).replace('.', ',')}</strong>
+            </div>
+          </div>
+
+          {error && <div className="admin-login-error">{error}</div>}
+        </div>
 
         <div className="admin-agenda-modal-actions">
           <button type="button" onClick={onClose} className="admin-agenda-modal-cancel">
