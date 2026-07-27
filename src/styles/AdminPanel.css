@@ -1046,16 +1046,50 @@
   }
 
   .admin-clients-row {
-    grid-template-columns: 1.6fr 0.5fr 1fr;
+    grid-template-columns: 1.7fr 0.5fr 0.9fr;
+    column-gap: 8px;
     row-gap: 10px;
+    padding: 16px 16px;
   }
 
   .admin-clients-row > *:last-child {
     grid-column: 1 / -1;
   }
 
+  .admin-clients-row-header {
+    padding: 12px 16px;
+    font-size: 9.5px;
+    letter-spacing: 0.3px;
+  }
+
   .admin-clients-row-header > *:last-child {
     display: none;
+  }
+
+  .admin-client-name-cell {
+    gap: 8px;
+    min-width: 0;
+    font-size: 13px;
+  }
+
+  .admin-client-name-cell span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .admin-client-initial {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .admin-clients-cell {
+    font-size: 12.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .admin-documents-grid {
@@ -2281,9 +2315,65 @@
     grid-template-columns: 1fr;
   }
 
+  .admin-fin-service-row {
+    grid-template-columns: 20px 1fr auto;
+    grid-template-areas:
+      "rank label value"
+      "track track track";
+    row-gap: 6px;
+    column-gap: 8px;
+  }
+
+  .admin-fin-service-rank {
+    grid-area: rank;
+  }
+
+  .admin-fin-service-label {
+    grid-area: label;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  .admin-fin-service-value {
+    grid-area: value;
+  }
+
+  .admin-fin-service-track {
+    grid-area: track;
+  }
+
   .admin-fin-table-row {
-    grid-template-columns: 1fr 1fr;
-    row-gap: 4px;
+    grid-template-columns: 1fr auto;
+    row-gap: 2px;
+    padding: 12px 16px;
+  }
+
+  .admin-fin-table-client {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .admin-fin-table-value-col.admin-fin-table-value {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .admin-fin-table-date {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .admin-fin-table-icon {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: right;
+  }
+
+  .admin-fin-table-service {
+    grid-column: 1;
+    grid-row: 3;
+    white-space: normal;
   }
 
   .admin-fin-table-header {

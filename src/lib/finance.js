@@ -21,7 +21,7 @@ const owedAmount = (b) => (b.payment_status === 'Pago Sinal 50%' ? num(b.valor) 
  * tela) e agrega tudo em JS — mesmo padrão de agregação client-side já usado
  * em getPatientAttendanceStats(). */
 export const getFinancialData = async ({ from, to }) => {
-  const [periodResult, pendingResult] = await Promise.all([
+  const [periodResult, pendingResult, recentResult] = await Promise.all([
     supabase
       .from('bookings')
       .select('id, patient_id, service, valor, payment_status, payment_method, booking_date, booking_time, status, patients(name)')
@@ -33,10 +33,22 @@ export const getFinancialData = async ({ from, to }) => {
       .select('id, valor, booking_date, payment_status')
       .in('payment_status', ['Pendente', 'Pago Sinal 50%'])
       .neq('status', 'cancelado'),
+    // "Últimas Entradas" mostra os pagamentos mais recentes de verdade —
+    // por criação do agendamento, não pela data do atendimento (que pode
+    // ser futura, ex: sinal pago hoje pra uma sessão semana que vem), por
+    // isso essa busca não é limitada ao período selecionado no dashboard.
+    supabase
+      .from('bookings')
+      .select('id, service, valor, payment_status, payment_method, booking_date, booking_time, patients(name)')
+      .in('payment_status', ['Pago', 'Pago Sinal 50%'])
+      .neq('status', 'cancelado')
+      .order('created_at', { ascending: false })
+      .limit(10),
   ]);
 
   if (periodResult.error) throw periodResult.error;
   if (pendingResult.error) throw pendingResult.error;
+  if (recentResult.error) throw recentResult.error;
 
   const periodBookings = periodResult.data;
   const paid = periodBookings.filter((b) => b.payment_status === 'Pago' || b.payment_status === 'Pago Sinal 50%');
@@ -82,11 +94,7 @@ export const getFinancialData = async ({ from, to }) => {
     .filter((b) => b.booking_date < today)
     .reduce((sum, b) => sum + owedAmount(b), 0);
 
-  const recentPayments = paid
-    .slice()
-    .sort((a, b) => `${b.booking_date}${b.booking_time}`.localeCompare(`${a.booking_date}${a.booking_time}`))
-    .slice(0, 10)
-    .map((b) => ({ ...b, valor: collectedAmount(b) }));
+  const recentPayments = recentResult.data.map((b) => ({ ...b, valor: collectedAmount(b) }));
 
   return {
     faturamentoTotal,
