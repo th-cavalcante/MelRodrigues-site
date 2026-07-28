@@ -4,8 +4,9 @@ import FichaAnamneseModal from './FichaAnamneseModal';
 import { downloadFichaPdf } from './fichaPdf';
 import { downloadDocPdf } from './docPdf';
 import { docsMeta } from './documentTemplates';
-import { getPatientForDocs, submitSignature } from '../../lib/patients';
+import { getPatientForDocs, submitSignature, uploadPatientSelfie } from '../../lib/patients';
 import '../../styles/ClienteDocumentos.css';
+import '../../styles/FichaAnamneseModal.css';
 
 const todayLabel = new Date().toLocaleDateString('pt-BR');
 
@@ -24,6 +25,10 @@ const DocumentosOnboarding = ({ patientId, clientName, onAnamneseSaved, onDocSig
   const [hasSignature, setHasSignature] = useState(false);
   const [signError, setSignError] = useState('');
   const [signing, setSigning] = useState(false);
+  const [postSignStep, setPostSignStep] = useState(null); // null | 'selfie' | 'welcome'
+  const [selfiePreview, setSelfiePreview] = useState(null);
+  const [selfieUploading, setSelfieUploading] = useState(false);
+  const [selfieError, setSelfieError] = useState('');
   const signatureRef = useRef(null);
 
   useEffect(() => {
@@ -64,14 +69,18 @@ const DocumentosOnboarding = ({ patientId, clientName, onAnamneseSaved, onDocSig
     setSignError('');
     try {
       await submitSignature(patientId, activeDocKey, dataUrl, displayName);
+      const updatedSigned = { ...signed, [activeDocKey]: true };
       setSignatures((s) => ({ ...s, [activeDocKey]: dataUrl }));
-      setSigned((s) => ({ ...s, [activeDocKey]: true }));
+      setSigned(updatedSigned);
       if (onDocSigned) {
         onDocSigned(activeDocKey, { fileName: `${activeDocKey}-assinatura.png`, url: dataUrl });
       }
       setActiveDocKey(null);
       setAgreed(false);
       setHasSignature(false);
+      if (updatedSigned.contrato && updatedSigned.termo) {
+        setPostSignStep('selfie');
+      }
     } catch (err) {
       console.error('Erro ao assinar documento:', err);
       setSignError('Não foi possível registrar a assinatura. Tente novamente.');
@@ -80,11 +89,75 @@ const DocumentosOnboarding = ({ patientId, clientName, onAnamneseSaved, onDocSig
     }
   };
 
+  const handleSelfieSelected = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    setSelfiePreview(URL.createObjectURL(file));
+    setSelfieUploading(true);
+    setSelfieError('');
+    try {
+      await uploadPatientSelfie(patientId, file);
+      setPostSignStep('welcome');
+    } catch (err) {
+      console.error('Erro ao enviar selfie:', err);
+      setSelfieError('Não foi possível enviar a foto. Tente novamente.');
+    } finally {
+      setSelfieUploading(false);
+    }
+  };
+
   const activeMeta = activeDocKey ? docsMeta[activeDocKey] : null;
   const activeBody = activeMeta ? activeMeta.buildBody(anamnese) : null;
 
   if (hideFicha && loadingAnamnese) {
     return <p className="cliente-subtitle">Carregando seus dados...</p>;
+  }
+
+  if (postSignStep === 'selfie') {
+    return (
+      <div className="ficha-modal-overlay">
+        <div className="ficha-modal ficha-modal-narrow">
+          <div className="ficha-modal-header">
+            <span className="section-eyebrow">Quase lá</span>
+            <h2 className="ficha-modal-title">Tire uma selfie</h2>
+            <p className="ficha-modal-subtitle">
+              Para concluir a assinatura dos seus documentos, precisamos de
+              uma foto do seu rosto.
+            </p>
+          </div>
+
+          <div className="ficha-selfie-body">
+            {selfiePreview && (
+              <img src={selfiePreview} alt="" className="ficha-selfie-preview" />
+            )}
+            <label className={`save-button ficha-selfie-btn ${selfieUploading ? 'disabled' : ''}`}>
+              {selfieUploading ? 'ENVIANDO...' : selfiePreview ? 'TIRAR OUTRA FOTO' : 'TIRAR FOTO'}
+              <input
+                type="file"
+                accept="image/*"
+                capture="user"
+                onChange={handleSelfieSelected}
+                disabled={selfieUploading}
+                className="ficha-selfie-input"
+              />
+            </label>
+            {selfieError && <div className="admin-login-error">{selfieError}</div>}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (postSignStep === 'welcome') {
+    return (
+      <div className="ficha-modal-overlay">
+        <div className="ficha-modal ficha-modal-narrow ficha-welcome-step">
+          <div className="ficha-welcome-icon">🎉</div>
+          <h2 className="ficha-modal-title">Tudo certo!</h2>
+          <p className="ficha-modal-subtitle">Seus documentos foram assinados com sucesso. Obrigado!</p>
+        </div>
+      </div>
+    );
   }
 
   return (

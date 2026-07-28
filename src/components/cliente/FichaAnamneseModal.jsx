@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { submitAnamnese, uploadPatientSelfie } from '../../lib/patients';
+import { submitAnamnese } from '../../lib/patients';
 import { ANAMNESE_FOTOTIPOS, ANAMNESE_QUESTIONS } from '../../lib/agendaConstants';
 import '../../styles/FichaAnamneseModal.css';
 
@@ -26,9 +26,6 @@ const FichaAnamneseModal = ({ patientId, initialData, onClose, onSaved }) => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [step, setStep] = useState('form');
-  const [selfiePreview, setSelfiePreview] = useState(null);
-  const [selfieUploading, setSelfieUploading] = useState(false);
-  const [selfieError, setSelfieError] = useState('');
 
   const handleField = (key) => (e) => {
     const { value } = e.target;
@@ -50,7 +47,8 @@ const FichaAnamneseModal = ({ patientId, initialData, onClose, onSaved }) => {
     try {
       await submitAnamnese(patientId, data);
       onSaved(data);
-      setStep('selfie');
+      setStep('welcome');
+      setTimeout(() => onClose(), 2500);
     } catch (err) {
       console.error('Erro ao salvar ficha:', err);
       setError(`Não foi possível salvar a ficha: ${err.message || 'erro desconhecido'}`);
@@ -58,59 +56,6 @@ const FichaAnamneseModal = ({ patientId, initialData, onClose, onSaved }) => {
       setSaving(false);
     }
   };
-
-  const handleSelfieSelected = async (e) => {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-    setSelfiePreview(URL.createObjectURL(file));
-    setSelfieUploading(true);
-    setSelfieError('');
-    try {
-      await uploadPatientSelfie(patientId, file);
-      setStep('welcome');
-      setTimeout(() => onClose(), 2500);
-    } catch (err) {
-      console.error('Erro ao enviar selfie:', err);
-      setSelfieError('Não foi possível enviar a foto. Tente novamente.');
-    } finally {
-      setSelfieUploading(false);
-    }
-  };
-
-  if (step === 'selfie') {
-    return (
-      <div className="ficha-modal-overlay">
-        <div className="ficha-modal ficha-modal-narrow">
-          <div className="ficha-modal-header">
-            <span className="section-eyebrow">Quase lá</span>
-            <h2 className="ficha-modal-title">Tire uma selfie</h2>
-            <p className="ficha-modal-subtitle">
-              Precisamos de uma foto do seu rosto para concluir seu cadastro
-              na clínica.
-            </p>
-          </div>
-
-          <div className="ficha-selfie-body">
-            {selfiePreview && (
-              <img src={selfiePreview} alt="" className="ficha-selfie-preview" />
-            )}
-            <label className={`save-button ficha-selfie-btn ${selfieUploading ? 'disabled' : ''}`}>
-              {selfieUploading ? 'ENVIANDO...' : selfiePreview ? 'TIRAR OUTRA FOTO' : 'TIRAR FOTO'}
-              <input
-                type="file"
-                accept="image/*"
-                capture="user"
-                onChange={handleSelfieSelected}
-                disabled={selfieUploading}
-                className="ficha-selfie-input"
-              />
-            </label>
-            {selfieError && <div className="admin-login-error">{selfieError}</div>}
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   if (step === 'welcome') {
     return (
