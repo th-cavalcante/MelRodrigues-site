@@ -3,11 +3,11 @@ import { getPatientAttendanceStats } from '../../lib/bookings';
 import { fetchLaserServices } from '../../lib/services';
 import { STATUS_OPTIONS, PAYMENT_STATUS_OPTIONS, PAYMENT_METHOD_OPTIONS, COMPLEMENTARY_SERVICE_OPTIONS, buildWhatsAppLink } from '../../lib/agendaConstants';
 
-const SERVICE_SLOTS = 10;
+const MAX_SERVICE_SLOTS = 10;
 
 const toServiceSlots = (service) => {
   const parts = (service || '').split(',').map((s) => s.trim()).filter(Boolean);
-  return Array.from({ length: SERVICE_SLOTS }, (_, i) => parts[i] || '');
+  return parts.length > 0 ? parts : [''];
 };
 
 const buildDraft = (booking) => ({
@@ -65,6 +65,10 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
       }, 0);
       return { ...d, serviceSlots: newSlots, valor: String(newTotal) };
     });
+  };
+
+  const addServiceSlot = () => {
+    setDraft((d) => (d.serviceSlots.length < MAX_SERVICE_SLOTS ? { ...d, serviceSlots: [...d.serviceSlots, ''] } : d));
   };
 
   const handleDelete = () => {
@@ -161,6 +165,11 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
               </select>
             ))}
           </div>
+          {draft.serviceSlots[draft.serviceSlots.length - 1] && draft.serviceSlots.length < MAX_SERVICE_SLOTS && (
+            <button type="button" onClick={addServiceSlot} className="admin-appt-add-btn">
+              + Adicionar serviço
+            </button>
+          )}
         </div>
 
         <div className="field-wrap">
@@ -173,7 +182,6 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
           </select>
         </div>
 
-        <div className="admin-agenda-drawer-detail-row"><span>Equipamento:</span> <strong>{booking.equipment || '—'}</strong></div>
         <div className="admin-agenda-drawer-detail-row"><span>Sessão nº:</span> <strong>{booking.session_num ?? '—'}</strong></div>
 
         <div className="admin-agenda-drawer-section-title">Financeiro</div>
