@@ -20,6 +20,8 @@ export const PAYMENT_METHOD_OPTIONS = [
   { value: 'Boleto', label: 'Boleto', icon: '📄' },
 ];
 
+export const COMPLEMENTARY_SERVICE_OPTIONS = ['Limpeza de Pele', 'Drenagem Linfática'];
+
 /** Horários bloqueados na grade da visão Dia — manutenção do laser só pra
  * sala do Hakon 4D. Sem horário fixo de almoço: usar "Bloquear Horário"
  * pra bloquear o horário do dia que for necessário. */

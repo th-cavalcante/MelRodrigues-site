@@ -32,6 +32,7 @@ const ClientsView = ({ clients, setClients }) => {
   const [showAssinaturaLink, setShowAssinaturaLink] = useState(false);
   const [assinaturaLinkCopied, setAssinaturaLinkCopied] = useState(false);
   const [copiedSessionId, setCopiedSessionId] = useState(null);
+  const [savedSessionId, setSavedSessionId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [fichaLinkCopied, setFichaLinkCopied] = useState(false);
 
@@ -82,6 +83,16 @@ const ClientsView = ({ clients, setClients }) => {
     updateSessionObs(sessionId, e.target.value).catch((err) =>
       console.error('Erro ao salvar observação:', err)
     );
+  };
+
+  const handleSaveSessao = (sessionId, obs) => async () => {
+    try {
+      await updateSessionObs(sessionId, obs);
+      setSavedSessionId(sessionId);
+      setTimeout(() => setSavedSessionId((id) => (id === sessionId ? null : id)), 2000);
+    } catch (err) {
+      console.error('Erro ao salvar sessão:', err);
+    }
   };
 
   const handleCopyFichaLink = async (fichaUrl) => {
@@ -339,6 +350,11 @@ const ClientsView = ({ clients, setClients }) => {
                     Excluir Sessão
                   </button>
                 </div>
+                {sess.service && (
+                  <div className="admin-session-service">
+                    <strong>Regiões:</strong> {sess.service}
+                  </div>
+                )}
                 <div className="admin-session-body">
                   <div>
                     <label className="admin-small-label">
@@ -388,6 +404,14 @@ const ClientsView = ({ clients, setClients }) => {
                     </div>
                   </div>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={handleSaveSessao(sess.id, sess.obs || '')}
+                  className="admin-open-client-btn admin-session-save-btn"
+                >
+                  {savedSessionId === sess.id ? 'Sessão Salva ✓' : 'Salvar Sessão'}
+                </button>
 
                 <div className="admin-document-test-row">
                   {sess.confirmed_at ? (

@@ -212,6 +212,10 @@
   color: oklch(45% 0.09 150);
 }
 
+.admin-today-card {
+  margin-bottom: 24px;
+}
+
 /* DASHBOARD GRID */
 .admin-dashboard-grid {
   display: grid;
@@ -825,6 +829,19 @@
 .admin-session-date {
   font-size: 13px;
   color: oklch(48% 0.01 85);
+}
+
+.admin-session-service {
+  font-size: 13px;
+  color: oklch(40% 0.012 85);
+  margin-bottom: 16px;
+}
+
+.admin-session-save-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 18px;
 }
 
 .admin-session-body {
@@ -1650,13 +1667,22 @@
 }
 
 .admin-agenda-drawer-close {
-  background: none;
-  border: none;
-  font-size: 20px;
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid oklch(82% 0.01 85);
+  border-radius: 4px;
+  font-size: 17px;
+  line-height: 1;
   cursor: pointer;
-  color: var(--text-muted);
-  margin-bottom: 20px;
-  padding: 0;
+  color: oklch(35% 0.012 85);
+  z-index: 2;
 }
 
 .admin-agenda-drawer-header {
@@ -1664,6 +1690,7 @@
   align-items: center;
   gap: 16px;
   margin-bottom: 24px;
+  padding-right: 44px;
 }
 
 .admin-agenda-drawer-avatar {

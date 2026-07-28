@@ -33,6 +33,17 @@ const DashboardView = () => {
             ))}
           </div>
 
+          <div className="admin-card admin-today-card">
+            <h3 className="admin-card-title">Agendados Hoje</h3>
+            {stats.todayBookings.length === 0 && <p className="admin-sessions-empty">Nenhum agendamento para hoje.</p>}
+            {stats.todayBookings.map((b, i) => (
+              <div key={i} className="admin-upcoming-row">
+                <div className="admin-upcoming-name">{b.name}</div>
+                <div className="admin-upcoming-meta">{b.time} · {b.service}</div>
+              </div>
+            ))}
+          </div>
+
           <div className="admin-dashboard-grid">
             <div className="admin-card">
               <h3 className="admin-card-title">Atividade Recente</h3>

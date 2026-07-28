@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getPatientAttendanceStats } from '../../lib/bookings';
 import { fetchLaserServices } from '../../lib/services';
-import { STATUS_OPTIONS, PAYMENT_STATUS_OPTIONS, PAYMENT_METHOD_OPTIONS, buildWhatsAppLink } from '../../lib/agendaConstants';
+import { STATUS_OPTIONS, PAYMENT_STATUS_OPTIONS, PAYMENT_METHOD_OPTIONS, COMPLEMENTARY_SERVICE_OPTIONS, buildWhatsAppLink } from '../../lib/agendaConstants';
 
 const SERVICE_SLOTS = 10;
 
@@ -15,6 +15,7 @@ const buildDraft = (booking) => ({
   time: (booking.booking_time || '').slice(0, 5),
   serviceSlots: toServiceSlots(booking.service),
   valor: booking.valor != null ? String(booking.valor) : '',
+  complementaryService: booking.complementary_service || '',
   paymentStatus: booking.payment_status,
   paymentMethod: booking.payment_method || '',
   notes: booking.notes || '',
@@ -79,6 +80,7 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
       booking_date: draft.date,
       booking_time: draft.time,
       service: selectedServices.join(', '),
+      complementary_service: draft.complementaryService || null,
       valor: Number(draft.valor) || 0,
       payment_status: draft.paymentStatus,
       payment_method: draft.paymentMethod || null,
@@ -159,6 +161,16 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
               </select>
             ))}
           </div>
+        </div>
+
+        <div className="field-wrap">
+          <label className="admin-small-label">Serviço Complementar</label>
+          <select value={draft.complementaryService} onChange={setField('complementaryService')} className="field-input">
+            <option value="">Nenhum</option>
+            {COMPLEMENTARY_SERVICE_OPTIONS.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
         </div>
 
         <div className="admin-agenda-drawer-detail-row"><span>Equipamento:</span> <strong>{booking.equipment || '—'}</strong></div>

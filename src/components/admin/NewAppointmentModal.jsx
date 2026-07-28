@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createBooking } from '../../lib/bookings';
 import { createPatient } from '../../lib/patients';
 import { fetchLaserServices } from '../../lib/services';
-import { PROFESSIONALS } from '../../lib/agendaConstants';
+import { PROFESSIONALS, COMPLEMENTARY_SERVICE_OPTIONS } from '../../lib/agendaConstants';
 
 const DEFAULT_ROOM = 'Sala Laser Hakon 4D';
 const SERVICE_SLOTS = 10;
@@ -14,6 +14,7 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
   const [date, setDate] = useState(bookingDate);
   const [time, setTime] = useState('09:00');
   const [services, setServices] = useState(Array(SERVICE_SLOTS).fill(''));
+  const [complementaryService, setComplementaryService] = useState('');
   const [discount, setDiscount] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -75,6 +76,7 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
         bookingDate: date,
         bookingTime: time,
         service: selectedServices.join(', '),
+        complementaryService,
         valor: total,
       });
       onCreated(created);
@@ -136,7 +138,7 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
           </div>
 
           <div className="field-wrap">
-            <label className="field-label">Serviço</label>
+            <label className="field-label">Serviços de Depilação a Laser</label>
             <div className="admin-agenda-services-grid">
               {services.map((value, i) => (
                 <select
@@ -152,6 +154,20 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
                 </select>
               ))}
             </div>
+          </div>
+
+          <div className="field-wrap">
+            <label className="field-label">Serviços complementares</label>
+            <select
+              value={complementaryService}
+              onChange={(e) => setComplementaryService(e.target.value)}
+              className="field-input"
+            >
+              <option value="">Nenhum</option>
+              {COMPLEMENTARY_SERVICE_OPTIONS.map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
           </div>
 
           <div className="admin-agenda-valor-summary">

@@ -44,13 +44,6 @@ const formatWhen = (bookingDate, bookingTime) => {
   return `${weekday}, ${time}`;
 };
 
-const dayTrend = (current, previous) => {
-  const diff = current - previous;
-  if (diff === 0) return { trend: 'Igual a ontem', positive: true };
-  const sign = diff > 0 ? '+' : '';
-  return { trend: `${sign}${diff} vs. ontem`, positive: diff >= 0 };
-};
-
 const monthPercentTrend = (current, previous) => {
   if (previous === 0) {
     return { trend: current > 0 ? `${current} este mês` : 'Sem dados do mês anterior', positive: current >= 0 };
@@ -73,6 +66,7 @@ export const getDashboardStats = async () => {
 
   const [
     windowBookings,
+    todayBookingsResult,
     recentBookings,
     upcomingBookings,
     recentSignatures,
@@ -83,6 +77,12 @@ export const getDashboardStats = async () => {
     financeLastMonth,
   ] = await Promise.all([
     supabase.from('bookings').select('booking_date, status').gte('booking_date', yesterday).lte('booking_date', in7Days),
+    supabase
+      .from('bookings')
+      .select('booking_time, service, patients(name)')
+      .eq('booking_date', today)
+      .neq('status', 'cancelado')
+      .order('booking_time', { ascending: true }),
     supabase.from('bookings').select('created_at, service, patients(name)').order('created_at', { ascending: false }).limit(5),
     supabase
       .from('bookings')
@@ -106,6 +106,7 @@ export const getDashboardStats = async () => {
   ]);
 
   if (windowBookings.error) throw windowBookings.error;
+  if (todayBookingsResult.error) throw todayBookingsResult.error;
   if (recentBookings.error) throw recentBookings.error;
   if (upcomingBookings.error) throw upcomingBookings.error;
   if (recentSignatures.error) throw recentSignatures.error;
@@ -114,12 +115,15 @@ export const getDashboardStats = async () => {
   if (patientsLastMonth.error) throw patientsLastMonth.error;
 
   const activeBookings = windowBookings.data.filter((b) => b.status !== 'cancelado');
-  const sessoesHoje = activeBookings.filter((b) => b.booking_date === today).length;
-  const sessoesOntem = activeBookings.filter((b) => b.booking_date === yesterday).length;
   const proximos7Dias = activeBookings.filter((b) => b.booking_date >= today).length;
 
+  const todayBookings = todayBookingsResult.data.map((b) => ({
+    name: b.patients?.name || 'Paciente',
+    time: formatTime(b.booking_time),
+    service: b.service,
+  }));
+
   const metrics = [
-    { label: 'Sessões Hoje', value: String(sessoesHoje), ...dayTrend(sessoesHoje, sessoesOntem) },
     {
       label: 'Novos Clientes (mês)',
       value: String(patientsThisMonth.count || 0),
@@ -160,5 +164,5 @@ export const getDashboardStats = async () => {
     service: b.service,
   }));
 
-  return { metrics, activity, upcoming };
+  return { metrics, activity, upcoming, todayBookings };
 };
