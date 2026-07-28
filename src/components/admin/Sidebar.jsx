@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
+import { IconGrid, IconCalendar, IconUser, IconChart, IconMonitor, IconGear, IconSun, IconMoon } from './Icons';
 
 const navConfig = [
-  { key: 'dashboard', label: 'Dashboard', icon: '📊' },
-  { key: 'site', label: 'Gerenciar Site', icon: '💻' },
-  { key: 'clients', label: 'Clientes e Sessões', icon: '👥' },
-  { key: 'agenda', label: 'Agenda', icon: '🗓️' },
-  { key: 'financeiro', label: 'Financeiro', icon: '💰' },
-  { key: 'cadastro', label: 'Cadastro Paciente', icon: '📝' },
-  { key: 'settings', label: 'Configurações', icon: '⚙️' },
+  { key: 'dashboard', label: 'Dashboard', Icon: IconGrid },
+  { key: 'agenda', label: 'Agenda', Icon: IconCalendar },
+  { key: 'clients', label: 'Clientes', Icon: IconUser },
+  { key: 'financeiro', label: 'Financeiro', Icon: IconChart },
+  { key: 'site', label: 'Gerenciar Site', Icon: IconMonitor },
+  { key: 'settings', label: 'Configurações', Icon: IconGear },
 ];
 
 const ADMIN_DISPLAY_NAMES = {
   'contato@melrodrigues.com.br': 'Mel Rodrigues',
 };
 
-const Sidebar = ({ tab, onSelectTab, onLogout, userEmail }) => {
+const Sidebar = ({ tab, onSelectTab, onLogout, userEmail, theme, onToggleTheme }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const displayName = ADMIN_DISPLAY_NAMES[userEmail] || 'Admin';
 
@@ -67,11 +67,16 @@ const Sidebar = ({ tab, onSelectTab, onLogout, userEmail }) => {
               onClick={() => handleSelect(item.key)}
               className={`admin-sidebar-item ${tab === item.key ? 'active' : ''}`}
             >
-              <span className="admin-sidebar-icon">{item.icon}</span>
+              <span className="admin-sidebar-icon"><item.Icon /></span>
               <span>{item.label}</span>
             </button>
           ))}
         </nav>
+
+        <button type="button" className="admin-theme-toggle" onClick={onToggleTheme} aria-label="Alternar tema">
+          {theme === 'dark' ? <IconSun /> : <IconMoon />}
+          <span>{theme === 'dark' ? 'Modo claro' : 'Modo escuro'}</span>
+        </button>
 
         <div className="admin-sidebar-footer">
           Logado como <strong>{displayName}</strong>

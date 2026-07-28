@@ -1,26 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/admin/Sidebar';
+import MobileShell from '../components/admin/MobileShell';
 import AccessDenied from '../components/admin/AccessDenied';
 import BiometricLock from '../components/admin/BiometricLock';
 import DashboardView from '../components/admin/DashboardView';
+import MobileHome from '../components/admin/MobileHome';
 import SiteManagerView from '../components/admin/SiteManagerView';
 import ClientsView from '../components/admin/ClientsView';
 import AgendaView from '../components/admin/AgendaView';
+import NewAppointmentModal from '../components/admin/NewAppointmentModal';
 import FinanceiroView from '../components/admin/FinanceiroView';
-import CadastroPacienteView from '../components/admin/CadastroPacienteView';
 import SettingsView from '../components/admin/SettingsView';
 import { useAuth } from '../context/AuthContext';
 import { listPatients } from '../lib/patients';
+import { toISODate } from '../lib/agendaConstants';
 import { isBiometricEnabled, isUnlockedThisSession, markUnlockedThisSession, clearUnlockedSession } from '../lib/biometric';
+import { useIsMobile } from '../hooks/useIsMobile';
 import '../styles/AdminPanel.css';
 
 const AdminPanel = () => {
   const [tab, setTab] = useState('dashboard');
   const [clients, setClients] = useState([]);
   const [unlocked, setUnlocked] = useState(() => !isBiometricEnabled() || isUnlockedThisSession());
+  const [theme, setTheme] = useState(() => localStorage.getItem('mrlaser_admin_theme') || 'light');
+  const [showQuickNewAppt, setShowQuickNewAppt] = useState(false);
   const { user, loading, signOut } = useAuth();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
+
+  const toggleTheme = () => {
+    setTheme((t) => {
+      const next = t === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('mrlaser_admin_theme', next);
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -58,18 +73,59 @@ const AdminPanel = () => {
     );
   }
 
+  const views = (
+    <>
+      {tab === 'dashboard' && (isMobile ? <MobileHome userEmail={user.email} /> : <DashboardView />)}
+      {tab === 'site' && <SiteManagerView />}
+      {tab === 'clients' && <ClientsView clients={clients} setClients={setClients} />}
+      {tab === 'agenda' && <AgendaView clients={clients} setClients={setClients} />}
+      {tab === 'financeiro' && <FinanceiroView />}
+      {tab === 'settings' && <SettingsView />}
+    </>
+  );
+
+  const quickNewAppt = showQuickNewAppt && (
+    <NewAppointmentModal
+      clients={clients}
+      setClients={setClients}
+      bookingDate={toISODate(new Date())}
+      onClose={() => setShowQuickNewAppt(false)}
+      onCreated={() => {
+        setShowQuickNewAppt(false);
+        setTab('agenda');
+      }}
+    />
+  );
+
+  if (isMobile) {
+    return (
+      <div className="admin-panel" data-theme={theme}>
+        <MobileShell
+          tab={tab}
+          onSelectTab={setTab}
+          onNewAppointment={() => setShowQuickNewAppt(true)}
+          onLogout={handleLogout}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        >
+          {views}
+        </MobileShell>
+        {quickNewAppt}
+      </div>
+    );
+  }
+
   return (
-    <div className="admin-panel">
-      <Sidebar tab={tab} onSelectTab={setTab} onLogout={handleLogout} userEmail={user.email} />
-      <main className="admin-main">
-        {tab === 'dashboard' && <DashboardView />}
-        {tab === 'site' && <SiteManagerView />}
-        {tab === 'clients' && <ClientsView clients={clients} setClients={setClients} />}
-        {tab === 'agenda' && <AgendaView clients={clients} setClients={setClients} />}
-        {tab === 'financeiro' && <FinanceiroView />}
-        {tab === 'cadastro' && <CadastroPacienteView onPatientCreated={() => listPatients().then(setClients)} />}
-        {tab === 'settings' && <SettingsView />}
-      </main>
+    <div className="admin-panel" data-theme={theme}>
+      <Sidebar
+        tab={tab}
+        onSelectTab={setTab}
+        onLogout={handleLogout}
+        userEmail={user.email}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
+      <main className="admin-main">{views}</main>
     </div>
   );
 };

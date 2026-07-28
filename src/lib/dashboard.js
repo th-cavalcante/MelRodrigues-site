@@ -123,6 +123,10 @@ export const getDashboardStats = async () => {
     service: b.service,
   }));
 
+  // Dado já buscado pelo financeThisMonth (dailyEntries) — só filtra o dia
+  // de hoje, sem precisar de outra query pra tela Início do mobile.
+  const receitaHoje = financeThisMonth.dailyEntries.find((d) => d.date === today)?.value || 0;
+
   const metrics = [
     {
       label: 'Novos Clientes (mês)',
@@ -164,5 +168,5 @@ export const getDashboardStats = async () => {
     service: b.service,
   }));
 
-  return { metrics, activity, upcoming, todayBookings };
+  return { metrics, activity, upcoming, todayBookings, receitaHoje };
 };
