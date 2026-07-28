@@ -14,6 +14,19 @@ const formatEndereco = (a) => {
   return endereco;
 };
 
+const formatDataNasc = (nascimento) => {
+  if (!nascimento) return '';
+  const [y, m, d] = nascimento.split('-');
+  if (!y || !m || !d) return '';
+  return `${d}/${m}/${y}`;
+};
+
+const formatSexoLine = (sexo) => {
+  const f = sexo === 'Feminino' ? 'X' : ' ';
+  const m = sexo === 'Masculino' ? 'X' : ' ';
+  return `Sexo: F(${f})  M(${m})  Outro( )`;
+};
+
 export const buildContratoBody = (a) => {
   const nome = (a && a.nome) || '';
   const cpf = (a && a.cpf) || '';
@@ -39,10 +52,49 @@ export const buildContratoBody = (a) => {
 export const buildTermoBody = (a) => {
   const nome = (a && a.nome) || '';
   const cpf = (a && a.cpf) || '';
+  const telefone = (a && a.telefone) || '';
+  const endereco = formatEndereco(a);
+  const dataNasc = formatDataNasc(a && a.nascimento);
+  const sexoLine = formatSexoLine(a && a.sexo);
   const dataExtenso = formatDateExtenso(new Date());
+
   return [
-    `CONTRATANTE: ${nome}, portador(a) do CPF nº ${cpf}.`,
-    'Declaro estar ciente dos riscos, benefícios e cuidados necessários antes e após o procedimento estético a ser realizado, tendo recebido todas as orientações da equipe MR Laser de forma clara e satisfatória.',
+    'TERMO DE CIÊNCIA',
+    [
+      `Nome: ${nome}`,
+      `Data Nasc: ${dataNasc}   ${sexoLine}   Telefone: ${telefone}`,
+      `Endereço: ${endereco}`,
+      `CPF: ${cpf}`,
+    ].join('\n'),
+    'Fui informado sobre as contraindicações do tratamento:',
+    [
+      'Gravidez',
+      'Aparecimento de transtornos imunossupressores',
+      'Infecções ativas na pele como Herpes zoster ou simples',
+      'Varicela ou outras alergias',
+      'Administração de isotretinoína (Roacutan, Tigason, Neotigason) nos últimos 6 meses',
+      'Administração de retinol, ácido retinóico ou outro tratamento com ácido na pele',
+      'Administração de produtos fotossensibilizantes ou aplicação de produtos de auto bronzeamento e clareadores de pelos',
+    ].map((s) => `• ${s}`).join('\n'),
+    'Também me foi explicado sobre os cuidados que devo seguir para o sucesso do tratamento e para evitar os efeitos secundários:',
+    [
+      'Evitar bronzeamento em no mínimo 10 dias antes das sessões de depilação, pois as peles bronzeadas reagem menos eficientemente ao tratamento do que as peles não bronzeadas. Em caso de exposição solar, avisar antes de cada sessão para ajuste dos parâmetros de tratamento.',
+      'Não depilar a região tratada com cera ou arrancar com pinça o pelo, para não prejudicar o tratamento, mas sempre utilizar lâminas de depilação ou cremes depilatórios.',
+      'Evitar fontes de calor e atrito na região.',
+      'Não descolorir os pelos no período de tratamento.',
+      'Evitar o uso de maquiagem sobre o rosto ou desodorante nas axilas, pois esses produtos podem conter substâncias que provocam inflamação na pele quando reagem com a luz do laser.',
+      'Não utilizar cosméticos que contenham ácido glicólico ou ácido retinóico três dias antes do procedimento.',
+    ].map((s) => `• ${s}`).join('\n'),
+    'Dias depois de uma sessão, alguns pelos deverão ir se desprendendo facilmente dos seus folículos e nesse período, é interessante aplicação de gel ou hidratante com ativos calmantes e sempre utilizar protetor solar de no mínimo 30 FPS na área tratada.',
+    'TERMO DE CONSENTIMENTO',
+    [
+      '1. Autorizo a profissional Mel Rodrigues a fazer a realização do procedimento de depilação definitiva por meio de equipamento de laser de diodo.',
+      '2. Declaro estar ciente que: poderá haver alteração da coloração cutânea transitória (hipercromia – manchas escuras, ou hipocromia – manchas brancas), que poderá perdurar durante semanas ou meses e que devo buscar amparo da profissional imediatamente ao perceber este tipo de alteração. O resultado do tratamento poderá não ser permanente devido às alterações hormonais, seja por uso de medicações ou por distúrbios endócrinos como síndrome de ovário policístico, por exemplo, ou uso de medicação que induza a produção de testosterona ou tratamento para queda de pelos e cabelos e que devo relatar caso esse seja meu caso. Todos os pacientes terão ardor, vermelhidão e edema durante a sessão de tratamento e pode perdurar por até 24h após.',
+      '3. Fui esclarecido sobre a duração média entre seis e dez sessões para se obter a depilação permanente de 70 a 90% dos pelos (podendo variar devido a fatores individuais de cada paciente). E nos pelos brancos ou loiros claros o método de laser não tem ação comprovada. Fui orientado a evitar a exposição solar no mínimo 10 dias antes e depois de cada sessão.',
+      '4. Autorizo o registro fotográfico do(s) procedimento(s) e sua exposição em mídias desde que minha identidade seja preservada e tal registro não seja utilizado de forma ofensiva ou pejorativamente.',
+      '5. Declaro que nada omiti em relação à minha saúde e respondi com sinceridade a todos os questionamentos a mim feitos no momento da avaliação.',
+      '6. Assim, afirmo por meio deste documento que todas as minhas dúvidas a respeito do procedimento foram esclarecidas neste ato, tendo-o lido e compreendido antes de assiná-lo.',
+    ].join('\n\n'),
     `São Paulo, ${dataExtenso}.`,
   ].join('\n\n');
 };

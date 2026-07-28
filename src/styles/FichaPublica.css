@@ -427,4 +427,10 @@
     border-radius: 0;
     padding: 28px 20px;
   }
+
+  /* Campo de assinatura um pouco mais alto no celular, pra dar espaço
+   * confortável pra pessoa riscar dentro. */
+  .ficha-publica-page .signature-canvas {
+    height: 170px;
+  }
 }
