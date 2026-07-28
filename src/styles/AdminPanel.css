@@ -2033,13 +2033,25 @@
     gap: 8px;
   }
 
+  /* No mobile as setas ficam juntas antes do texto (evita a '>' quebrar
+   * pra linha separada do texto); no desktop o DOM já vem ‹ texto › HOJE. */
+  .admin-agenda-nav-prev {
+    order: 1;
+  }
+
+  .admin-agenda-nav-next {
+    order: 2;
+  }
+
   .admin-agenda-date-label {
+    order: 3;
     min-width: 0;
     flex: 1 1 auto;
     text-align: left;
   }
 
   .admin-agenda-today-btn {
+    order: 4;
     margin-left: auto;
   }
 }

@@ -490,10 +490,10 @@ const AgendaView = ({ clients, setClients }) => {
         <button type="button" onClick={() => stepAgenda(-1)} className="admin-agenda-nav-btn admin-agenda-nav-prev">
           ‹
         </button>
+        <div className="admin-agenda-date-label">{dateLabel}</div>
         <button type="button" onClick={() => stepAgenda(1)} className="admin-agenda-nav-btn admin-agenda-nav-next">
           ›
         </button>
-        <div className="admin-agenda-date-label">{dateLabel}</div>
         <button type="button" onClick={() => setAgendaOffset(0)} className="admin-open-client-btn admin-agenda-today-btn">
           HOJE
         </button>
