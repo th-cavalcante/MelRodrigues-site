@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { IconEye, IconEyeOff, IconAlertCircle, IconCheckCircle, IconChevronLeft } from '../components/admin/Icons';
 import '../styles/AdminLogin.css';
 
 const mapAuthError = (message) => {
@@ -83,120 +84,139 @@ const AdminLogin = () => {
 
   return (
     <div className="admin-login-page">
-      <div className="admin-login-lines" aria-hidden="true"></div>
-      <div className="admin-login-letter" aria-hidden="true">M</div>
-
       <Link to="/" className="admin-login-back">
         <span>←</span> Voltar ao site
       </Link>
 
-      <div className="admin-login-card">
-        <div className="admin-login-header">
-          <div className="admin-login-logo">
-            <img src="/images/logo.png" alt="MR Laser" />
-          </div>
-          <div className="admin-login-divider"></div>
-          <div className="admin-login-eyebrow">Painel Administrativo</div>
+      <div className="admin-login-wrap">
+        <div className="admin-login-brand">
+          <img src="/images/logo.png" alt="MR Laser" className="admin-login-brand-logo" />
+          <span className="admin-login-brand-tagline">Painel Administrativo</span>
         </div>
 
-        {mode === 'login' && (
-          <form onSubmit={handleLogin} autoComplete="on">
-            <div className="field-wrap">
-              <label className="field-label" htmlFor="login-email">E-mail</label>
-              <input
-                id="login-email"
-                name="email"
-                type="email"
-                autoComplete="username"
-                placeholder="seu@email.com"
-                value={form.email}
-                onChange={handleField('email')}
-                className="field-input"
-              />
-            </div>
-
-            <div className="field-wrap-tight">
-              <label className="field-label" htmlFor="login-password">Senha</label>
-              <div className="password-field">
-                <input
-                  id="login-password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  autoComplete="current-password"
-                  placeholder="Digite sua senha"
-                  value={form.password}
-                  onChange={handleField('password')}
-                  className="field-input"
-                />
-                <button
-                  type="button"
-                  onClick={togglePassword}
-                  className="password-toggle"
-                >
-                  {showPassword ? 'OCULTAR' : 'MOSTRAR'}
-                </button>
+        <div className="admin-login-card">
+          {mode === 'login' && (
+            <>
+              <div className="admin-login-heading">
+                <span className="admin-login-title">Bem-vindo de volta</span>
+                <span className="admin-login-subtitle">Entre com sua conta para continuar</span>
               </div>
-            </div>
 
-            <div className="admin-login-options">
-              <span></span>
-              <a href="#!" className="forgot-link" onClick={(e) => { e.preventDefault(); openForgotPassword(); }}>
-                Esqueci minha senha
-              </a>
-            </div>
+              <form onSubmit={handleLogin} autoComplete="on" className="admin-login-form">
+                <div className="ll-field">
+                  <label className="ll-label" htmlFor="login-email">E-mail</label>
+                  <input
+                    id="login-email"
+                    name="email"
+                    type="email"
+                    autoComplete="username"
+                    placeholder="seu@email.com"
+                    value={form.email}
+                    onChange={handleField('email')}
+                    className="ll-input"
+                  />
+                </div>
 
-            {error && <div className="admin-login-error">{error}</div>}
+                <div className="ll-field">
+                  <div className="ll-label-row">
+                    <label className="ll-label" htmlFor="login-password">Senha</label>
+                    <a href="#!" className="ll-link" onClick={(e) => { e.preventDefault(); openForgotPassword(); }}>
+                      Esqueceu a senha?
+                    </a>
+                  </div>
+                  <div className="ll-password-field">
+                    <input
+                      id="login-password"
+                      name="password"
+                      type={showPassword ? 'text' : 'password'}
+                      autoComplete="current-password"
+                      placeholder="••••••••"
+                      value={form.password}
+                      onChange={handleField('password')}
+                      className="ll-input"
+                    />
+                    <button type="button" onClick={togglePassword} className="ll-eye-toggle" aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}>
+                      {showPassword ? <IconEyeOff /> : <IconEye />}
+                    </button>
+                  </div>
+                </div>
 
-            <button type="submit" className="admin-login-submit" disabled={loading}>
-              {loading ? 'ENTRANDO...' : 'ENTRAR'}
-            </button>
-          </form>
-        )}
+                {error && (
+                  <div className="ll-error">
+                    <IconAlertCircle />
+                    <span>{error}</span>
+                  </div>
+                )}
 
-        {mode === 'forgot' && !forgotSent && (
-          <form onSubmit={handleForgotSubmit}>
-            <p className="admin-login-forgot-hint">
-              Informe o e-mail da sua conta. Vamos enviar um link para você redefinir a senha.
-            </p>
-            <div className="field-wrap">
-              <label className="field-label" htmlFor="forgot-email">E-mail</label>
-              <input
-                id="forgot-email"
-                type="email"
-                placeholder="seu@email.com"
-                value={forgotEmail}
-                onChange={(e) => { setForgotEmail(e.target.value); setError(''); }}
-                className="field-input"
-              />
-            </div>
+                <button type="submit" className="ll-submit" disabled={loading}>
+                  {loading ? <span className="ll-spinner" /> : 'Entrar'}
+                </button>
+              </form>
+            </>
+          )}
 
-            {error && <div className="admin-login-error">{error}</div>}
+          {mode === 'forgot' && !forgotSent && (
+            <>
+              <div className="admin-login-heading">
+                <span className="admin-login-title">Recuperar senha</span>
+                <span className="admin-login-subtitle">Enviaremos um link de redefinição para seu e-mail</span>
+              </div>
 
-            <button type="submit" className="admin-login-submit" disabled={loading}>
-              {loading ? 'ENVIANDO...' : 'ENVIAR LINK DE RECUPERAÇÃO'}
-            </button>
+              <form onSubmit={handleForgotSubmit} className="admin-login-form">
+                <div className="ll-field">
+                  <label className="ll-label" htmlFor="forgot-email">E-mail</label>
+                  <input
+                    id="forgot-email"
+                    type="email"
+                    placeholder="seu@email.com"
+                    value={forgotEmail}
+                    onChange={(e) => { setForgotEmail(e.target.value); setError(''); }}
+                    className="ll-input"
+                  />
+                </div>
 
-            <button type="button" onClick={backToLogin} className="admin-login-back-link">
-              ← Voltar para o login
-            </button>
-          </form>
-        )}
+                {error && (
+                  <div className="ll-error">
+                    <IconAlertCircle />
+                    <span>{error}</span>
+                  </div>
+                )}
 
-        {mode === 'forgot' && forgotSent && (
-          <div>
-            <p className="admin-login-forgot-hint">
-              Enviamos um link de recuperação para <strong>{forgotEmail}</strong>. Verifique sua
-              caixa de entrada (e o spam) e clique no link para escolher uma nova senha.
-            </p>
-            <button type="button" onClick={backToLogin} className="admin-login-submit admin-login-back-btn">
-              VOLTAR PARA O LOGIN
-            </button>
-          </div>
-        )}
+                <button type="submit" className="ll-submit" disabled={loading}>
+                  {loading ? <span className="ll-spinner" /> : 'Enviar link'}
+                </button>
+              </form>
 
-        <div className="admin-login-footer">
-          Acesso restrito à equipe MR Laser.
+              <button type="button" onClick={backToLogin} className="ll-back-btn">
+                <IconChevronLeft size={14} /> Voltar para o login
+              </button>
+            </>
+          )}
+
+          {mode === 'forgot' && forgotSent && (
+            <>
+              <div className="admin-login-heading">
+                <span className="admin-login-title">Recuperar senha</span>
+                <span className="admin-login-subtitle">Enviaremos um link de redefinição para seu e-mail</span>
+              </div>
+
+              <div className="ll-success">
+                <div className="ll-success-icon">
+                  <IconCheckCircle />
+                </div>
+                <span className="ll-success-text">
+                  Link enviado para <strong>{forgotEmail}</strong>. Verifique sua caixa de entrada (e o spam).
+                </span>
+              </div>
+
+              <button type="button" onClick={backToLogin} className="ll-back-btn">
+                <IconChevronLeft size={14} /> Voltar para o login
+              </button>
+            </>
+          )}
         </div>
+
+        <span className="admin-login-footer">Acesso restrito à equipe MR Laser.</span>
       </div>
     </div>
   );
