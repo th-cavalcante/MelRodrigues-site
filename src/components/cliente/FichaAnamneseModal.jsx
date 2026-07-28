@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { submitAnamnese } from '../../lib/patients';
 import { ANAMNESE_FOTOTIPOS, ANAMNESE_QUESTIONS } from '../../lib/agendaConstants';
+import { IconCheckCircle, IconAlertCircle } from '../admin/Icons';
 import '../../styles/FichaAnamneseModal.css';
 
 const initialForm = {
@@ -61,7 +62,9 @@ const FichaAnamneseModal = ({ patientId, initialData, onClose, onSaved }) => {
     return (
       <div className="ficha-modal-overlay">
         <div className="ficha-modal ficha-modal-narrow ficha-welcome-step">
-          <div className="ficha-welcome-icon">🎉</div>
+          <div className="ficha-welcome-icon ficha-welcome-icon-check">
+            <IconCheckCircle size={28} />
+          </div>
           <h2 className="ficha-modal-title">Seja bem-vindo(a) à MR Laser!</h2>
           <p className="ficha-modal-subtitle">Seu cadastro foi concluído com sucesso.</p>
         </div>
@@ -283,7 +286,11 @@ const FichaAnamneseModal = ({ patientId, initialData, onClose, onSaved }) => {
             />
           </div>
 
-          {error && <div className="admin-login-error">{error}</div>}
+          {error && (
+            <div className="admin-login-error">
+              <IconAlertCircle size={14} /> <span>{error}</span>
+            </div>
+          )}
 
           <button
             type="button"

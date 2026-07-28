@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import DocumentosOnboarding from '../components/cliente/DocumentosOnboarding';
 import '../styles/ClienteDocumentos.css';
+import '../styles/FichaPublica.css';
 
 const FichaPublica = () => {
   const [searchParams] = useSearchParams();
@@ -9,7 +10,7 @@ const FichaPublica = () => {
   const patientId = searchParams.get('patient');
 
   return (
-    <div className="cliente-page">
+    <div className="cliente-page ficha-publica-page">
       <nav className="cliente-nav">
         <div className="cliente-logo">
           <img src="/images/logo.png" alt="MR Laser" />

@@ -5,10 +5,37 @@ import { downloadFichaPdf } from './fichaPdf';
 import { downloadDocPdf } from './docPdf';
 import { docsMeta } from './documentTemplates';
 import { getPatientForDocs, submitSignature, uploadPatientSelfie } from '../../lib/patients';
+import { IconCheckCircle, IconAlertCircle } from '../admin/Icons';
 import '../../styles/ClienteDocumentos.css';
 import '../../styles/FichaAnamneseModal.css';
 
 const todayLabel = new Date().toLocaleDateString('pt-BR');
+
+const IconClipboard = ({ size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+    <rect x="5" y="4" width="14" height="17" rx="2" />
+    <path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1" />
+    <line x1="8" y1="10.5" x2="16" y2="10.5" />
+    <line x1="8" y1="14.5" x2="16" y2="14.5" />
+    <line x1="8" y1="18.5" x2="12" y2="18.5" />
+  </svg>
+);
+
+const IconSignature = ({ size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 17c2-3 3.5-1 5-3s1-4 3-4 1 4 3 2 2-3 4-2" />
+    <path d="M3 20.5h18" />
+  </svg>
+);
+
+const IconFileText = ({ size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" />
+    <path d="M15 3v4h4" />
+    <line x1="8" y1="12.5" x2="16" y2="12.5" />
+    <line x1="8" y1="16.5" x2="16" y2="16.5" />
+  </svg>
+);
 
 /**
  * Shared "fill anamnese + sign contrato/termo" flow.
@@ -141,7 +168,11 @@ const DocumentosOnboarding = ({ patientId, clientName, onAnamneseSaved, onDocSig
                 className="ficha-selfie-input"
               />
             </label>
-            {selfieError && <div className="admin-login-error">{selfieError}</div>}
+            {selfieError && (
+              <div className="admin-login-error">
+                <IconAlertCircle size={14} /> <span>{selfieError}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -152,7 +183,9 @@ const DocumentosOnboarding = ({ patientId, clientName, onAnamneseSaved, onDocSig
     return (
       <div className="ficha-modal-overlay">
         <div className="ficha-modal ficha-modal-narrow ficha-welcome-step">
-          <div className="ficha-welcome-icon">🎉</div>
+          <div className="ficha-welcome-icon ficha-welcome-icon-check">
+            <IconCheckCircle size={28} />
+          </div>
           <h2 className="ficha-modal-title">Tudo certo!</h2>
           <p className="ficha-modal-subtitle">Seus documentos foram assinados com sucesso. Obrigado!</p>
         </div>
@@ -165,7 +198,7 @@ const DocumentosOnboarding = ({ patientId, clientName, onAnamneseSaved, onDocSig
       <section className="cliente-docs">
         {!hideFicha && (
           <div className="cliente-doc-card">
-            <div className="cliente-doc-icon">📋</div>
+            <div className="cliente-doc-icon"><IconClipboard /></div>
             <div className="cliente-doc-info">
               <div className="cliente-doc-title">Ficha de Anamnese</div>
               <div className="cliente-doc-status">
@@ -198,7 +231,9 @@ const DocumentosOnboarding = ({ patientId, clientName, onAnamneseSaved, onDocSig
           const blocked = lockDocuments || (!hideFicha && !isAnamnesePreenchida && !isSigned);
           return (
             <div key={key} className={`cliente-doc-card ${lockDocuments && !isSigned ? 'locked' : ''}`}>
-              <div className="cliente-doc-icon">{meta.icon}</div>
+              <div className="cliente-doc-icon">
+                {key === 'contrato' ? <IconSignature /> : <IconFileText />}
+              </div>
               <div className="cliente-doc-info">
                 <div className="cliente-doc-title">{meta.title}</div>
                 <div className="cliente-doc-status">
@@ -306,7 +341,11 @@ const DocumentosOnboarding = ({ patientId, clientName, onAnamneseSaved, onDocSig
               </div>
             </div>
 
-            {signError && <div className="admin-login-error">{signError}</div>}
+            {signError && (
+              <div className="admin-login-error">
+                <IconAlertCircle size={14} /> <span>{signError}</span>
+              </div>
+            )}
 
             <div className="cliente-modal-actions">
               <button type="button" onClick={closeModal} className="cliente-modal-cancel">
