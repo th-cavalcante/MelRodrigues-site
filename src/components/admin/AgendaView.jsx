@@ -38,6 +38,12 @@ const addDays = (date, n) => {
   return d;
 };
 
+const addMonths = (date, n) => {
+  const d = new Date(date);
+  d.setMonth(d.getMonth() + n);
+  return d;
+};
+
 const statusMeta = (status) => STATUS_OPTIONS.find((s) => s.value === status) || STATUS_OPTIONS[0];
 
 const FILTER_STATUS_OPTIONS = STATUS_OPTIONS.filter((s) => s.value === 'confirmado' || s.value === 'pendente');
@@ -157,6 +163,21 @@ const AgendaView = ({ clients }) => {
     setShowBlockModal(true);
   };
 
+  const stepAgenda = (direction) => {
+    if (agendaView === 'semana') {
+      setAgendaOffset((o) => o + direction * 7);
+      return;
+    }
+    if (agendaView === 'mes') {
+      const todayZero = new Date();
+      todayZero.setHours(0, 0, 0, 0);
+      const target = addMonths(baseDate, direction);
+      setAgendaOffset(Math.round((target - todayZero) / 86400000));
+      return;
+    }
+    setAgendaOffset((o) => o + direction);
+  };
+
   const handleUnblock = async (blockId) => {
     if (!window.confirm('Remover esse bloqueio?')) return;
     try {
@@ -167,11 +188,9 @@ const AgendaView = ({ clients }) => {
     }
   };
 
-  const dateLabel = baseDate.toLocaleDateString('pt-BR', {
-    weekday: 'long',
-    day: '2-digit',
-    month: 'long',
-  });
+  const dateLabel = agendaView === 'mes'
+    ? baseDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
+    : baseDate.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
 
   const todayISO = toISODate(baseDate);
   const dayBookings = bookings.filter((b) => b.booking_date === todayISO && matchesFilters(b));
@@ -468,10 +487,10 @@ const AgendaView = ({ clients }) => {
       </div>
 
       <div className="admin-card admin-agenda-datenav">
-        <button type="button" onClick={() => setAgendaOffset((o) => o - 1)} className="admin-agenda-nav-btn admin-agenda-nav-prev">
+        <button type="button" onClick={() => stepAgenda(-1)} className="admin-agenda-nav-btn admin-agenda-nav-prev">
           ‹
         </button>
-        <button type="button" onClick={() => setAgendaOffset((o) => o + 1)} className="admin-agenda-nav-btn admin-agenda-nav-next">
+        <button type="button" onClick={() => stepAgenda(1)} className="admin-agenda-nav-btn admin-agenda-nav-next">
           ›
         </button>
         <div className="admin-agenda-date-label">{dateLabel}</div>
