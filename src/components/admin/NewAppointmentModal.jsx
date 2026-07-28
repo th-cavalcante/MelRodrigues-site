@@ -39,6 +39,12 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
     setSearchFocused(true);
   };
 
+  const handleSearchBlur = () => {
+    // Delay pra dar tempo do clique num resultado da lista registrar antes
+    // de sumir com ela (blur do input dispara antes do click no botão).
+    setTimeout(() => setSearchFocused(false), 150);
+  };
+
   const handleServiceChange = (index) => (e) => {
     setServices((s) => s.map((v, i) => (i === index ? e.target.value : v)));
   };
@@ -107,6 +113,7 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
               value={search}
               onChange={handleSearchChange}
               onFocus={() => setSearchFocused(true)}
+              onBlur={handleSearchBlur}
               className="field-input"
             />
             {searchFocused && (

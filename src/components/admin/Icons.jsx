@@ -139,6 +139,28 @@ export const IconChevronLeft = ({ size = 16 }) => (
   </svg>
 );
 
+export const IconMenu = ({ size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+    <line x1="3.5" y1="6.5" x2="20.5" y2="6.5" />
+    <line x1="3.5" y1="12" x2="20.5" y2="12" />
+    <line x1="3.5" y1="17.5" x2="20.5" y2="17.5" />
+  </svg>
+);
+
+export const IconX = ({ size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+    <line x1="5" y1="5" x2="19" y2="19" />
+    <line x1="19" y1="5" x2="5" y2="19" />
+  </svg>
+);
+
+export const IconBan = ({ size = 17 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+    <circle cx="12" cy="12" r="9" />
+    <line x1="5.8" y1="5.8" x2="18.2" y2="18.2" />
+  </svg>
+);
+
 export const IconLogOut = ({ size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />

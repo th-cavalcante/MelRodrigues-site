@@ -6,6 +6,8 @@ import AccessDenied from '../components/admin/AccessDenied';
 import BiometricLock from '../components/admin/BiometricLock';
 import DashboardView from '../components/admin/DashboardView';
 import MobileHome from '../components/admin/MobileHome';
+import MobileAgenda from '../components/admin/MobileAgenda';
+import MobileBlockedSlots from '../components/admin/MobileBlockedSlots';
 import SiteManagerView from '../components/admin/SiteManagerView';
 import ClientsView from '../components/admin/ClientsView';
 import AgendaView from '../components/admin/AgendaView';
@@ -42,7 +44,7 @@ const AdminPanel = () => {
     // Refaz a busca sempre que entrar nessas abas — pacientes se
     // cadastram sozinhos pela Agenda Online a qualquer momento, então a
     // lista carregada só no login fica desatualizada rapidinho.
-    if (!['clients', 'agenda', 'dashboard'].includes(tab)) return;
+    if (!['clients', 'agenda', 'agenda-completa', 'dashboard'].includes(tab)) return;
     listPatients()
       .then(setClients)
       .catch((err) => console.error('Erro ao carregar pacientes:', err));
@@ -78,7 +80,9 @@ const AdminPanel = () => {
       {tab === 'dashboard' && (isMobile ? <MobileHome userEmail={user.email} /> : <DashboardView />)}
       {tab === 'site' && <SiteManagerView />}
       {tab === 'clients' && <ClientsView clients={clients} setClients={setClients} />}
-      {tab === 'agenda' && <AgendaView clients={clients} setClients={setClients} />}
+      {tab === 'agenda' && (isMobile ? <MobileAgenda /> : <AgendaView clients={clients} setClients={setClients} />)}
+      {tab === 'agenda-completa' && <AgendaView clients={clients} setClients={setClients} />}
+      {tab === 'bloqueios' && <MobileBlockedSlots />}
       {tab === 'financeiro' && <FinanceiroView />}
       {tab === 'settings' && <SettingsView />}
     </>
