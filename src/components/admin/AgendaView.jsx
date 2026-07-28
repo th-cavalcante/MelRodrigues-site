@@ -58,7 +58,7 @@ const docsIcon = (patient) => {
   return '!';
 };
 
-const AgendaView = ({ clients }) => {
+const AgendaView = ({ clients, setClients }) => {
   const [agendaView, setAgendaView] = useState('dia');
   const [agendaOffset, setAgendaOffset] = useState(0);
   const [filters, setFilters] = useState({ status: 'Todos' });
@@ -534,6 +534,7 @@ const AgendaView = ({ clients }) => {
       {showNewApt && (
         <NewAppointmentModal
           clients={clients}
+          setClients={setClients}
           bookingDate={todayISO}
           onClose={() => setShowNewApt(false)}
           onCreated={handleCreated}

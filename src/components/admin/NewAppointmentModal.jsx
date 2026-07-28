@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { createBooking } from '../../lib/bookings';
+import { createPatient } from '../../lib/patients';
 import { fetchLaserServices } from '../../lib/services';
 import { PROFESSIONALS } from '../../lib/agendaConstants';
 
 const DEFAULT_ROOM = 'Sala Laser Hakon 4D';
 const SERVICE_SLOTS = 10;
 
-const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
+const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCreated }) => {
   const [search, setSearch] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
@@ -51,15 +52,24 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!selectedPatient || selectedServices.length === 0) {
-      setError('Selecione a cliente e ao menos um serviço.');
+    const name = search.trim();
+    if (!name || selectedServices.length === 0) {
+      setError('Preencha o nome da cliente e selecione ao menos um serviço.');
       return;
     }
     setError('');
     setSaving(true);
     try {
+      // Se não veio de um clique na lista (cliente já cadastrada), o nome
+      // digitado vira um cadastro novo — mesma função rápida de "Cadastro
+      // Paciente", só com o nome preenchido.
+      let patient = selectedPatient;
+      if (!patient) {
+        patient = await createPatient({ nome: name });
+        if (setClients) setClients((cs) => [patient, ...cs]);
+      }
       const created = await createBooking({
-        patient: selectedPatient,
+        patient,
         room: DEFAULT_ROOM,
         professional: PROFESSIONALS[0],
         bookingDate: date,
@@ -91,7 +101,7 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
             <label className="field-label">Nome da Cliente</label>
             <input
               type="text"
-              placeholder="Buscar pelo nome completo..."
+              placeholder="Buscar ou digitar nome de uma nova cliente..."
               value={search}
               onChange={handleSearchChange}
               onFocus={() => setSearchFocused(true)}
@@ -105,7 +115,11 @@ const NewAppointmentModal = ({ clients, bookingDate, onClose, onCreated }) => {
                   </button>
                 ))}
                 {results.length === 0 && (
-                  <div className="admin-agenda-search-empty">Nenhuma cliente encontrada na ficha de anamnese.</div>
+                  <div className="admin-agenda-search-empty">
+                    {search.trim()
+                      ? `Nenhuma cliente encontrada. "${search.trim()}" será cadastrada como nova paciente.`
+                      : 'Digite o nome pra buscar ou cadastrar uma nova cliente.'}
+                  </div>
                 )}
               </div>
             )}

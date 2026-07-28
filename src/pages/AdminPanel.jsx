@@ -65,7 +65,7 @@ const AdminPanel = () => {
         {tab === 'dashboard' && <DashboardView />}
         {tab === 'site' && <SiteManagerView />}
         {tab === 'clients' && <ClientsView clients={clients} setClients={setClients} />}
-        {tab === 'agenda' && <AgendaView clients={clients} />}
+        {tab === 'agenda' && <AgendaView clients={clients} setClients={setClients} />}
         {tab === 'financeiro' && <FinanceiroView />}
         {tab === 'cadastro' && <CadastroPacienteView onPatientCreated={() => listPatients().then(setClients)} />}
         {tab === 'settings' && <SettingsView />}
