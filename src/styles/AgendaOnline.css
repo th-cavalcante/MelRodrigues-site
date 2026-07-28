@@ -1,5 +1,8 @@
 /* =================================
    AGENDA ONLINE (agendamento público)
+   Visual "Teagá" — mesmas fontes/cores/ícones do painel admin,
+   escopado só nesta página (o resto do site público mantém o
+   creme/dourado).
    ================================= */
 
 @keyframes agendaOnlineSlideUp {
@@ -12,18 +15,87 @@
   to { opacity: 1; transform: scale(1); }
 }
 
+.agenda-online-page.cliente-page {
+  --ao-bg: oklch(97% 0.006 260);
+  --ao-card: oklch(100% 0 0 / 0.9);
+  --ao-card-soft: oklch(98% 0.003 260);
+  --ao-border: oklch(0% 0 0 / 0.07);
+  --ao-input-bg: oklch(96% 0.006 260);
+  --ao-input-border: oklch(0% 0 0 / 0.1);
+  --ao-text: oklch(16% 0.012 260);
+  --ao-text2: oklch(34% 0.012 260);
+  --ao-text3: oklch(48% 0.012 260);
+  --ao-text4: oklch(62% 0.012 260);
+  --ao-accent: oklch(65% 0.19 255);
+  --ao-accent2: oklch(60% 0.19 285);
+  --ao-accent-gradient: linear-gradient(135deg, var(--ao-accent), var(--ao-accent2));
+  --ao-success: oklch(70% 0.17 155);
+  --ao-danger: oklch(68% 0.19 25);
+  --ao-muted-btn: oklch(90% 0.008 260);
+
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 0%, oklch(93% 0.02 285), transparent 45%),
+    radial-gradient(circle at 90% 90%, oklch(93% 0.02 255), transparent 45%),
+    var(--ao-bg);
+  color: var(--ao-text);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Marca (logo + nome) */
+.agenda-online-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 32px 20px 0;
+  text-align: center;
+}
+
+.agenda-online-brand-logo {
+  height: 40px;
+  width: auto;
+  margin-bottom: 6px;
+}
+
+.agenda-online-brand-text {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.agenda-online-brand-name {
+  color: var(--ao-accent);
+}
+
+.agenda-online-brand-tag {
+  color: var(--ao-text3);
+  font-weight: 600;
+}
+
+.agenda-online-brand-greeting {
+  font-size: 12.5px;
+  color: var(--ao-text3);
+}
+
+.agenda-online-brand-greeting strong {
+  color: var(--ao-text);
+}
+
 .agenda-online-content {
-  max-width: 760px;
+  max-width: 560px;
   margin: 0 auto;
-  padding: 60px 32px 120px;
+  padding: 24px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
 }
 
 .agenda-online-stepper {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin-bottom: 54px;
+  gap: 0;
 }
 
 .agenda-online-step-circle {
@@ -33,27 +105,42 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  font-weight: 600;
-  background: oklch(93% 0.006 85);
-  color: oklch(55% 0.01 85);
+  font-size: 12px;
+  font-weight: 700;
+  flex: none;
+  background: var(--ao-input-bg);
+  color: var(--ao-text4);
+  border: 2px solid transparent;
 }
 
 .agenda-online-step-circle.active {
   background: #fff;
-  color: var(--primary-color);
-  border: 1.5px solid var(--primary-color);
+  color: var(--ao-accent);
+  border-color: var(--ao-accent);
 }
 
 .agenda-online-step-circle.done {
-  background: var(--primary-color);
+  background: var(--ao-accent-gradient);
   color: #fff;
 }
 
 .agenda-online-step-line {
-  width: 28px;
-  height: 1px;
-  background: oklch(85% 0.01 85);
+  width: 26px;
+  height: 2px;
+  background: oklch(88% 0.008 260);
+}
+
+.agenda-online-step-line.done {
+  background: var(--ao-accent);
+}
+
+.agenda-online-card {
+  background: var(--ao-card);
+  border: 1px solid var(--ao-border);
+  border-radius: 20px;
+  padding: 32px 28px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 50px -24px oklch(0% 0 0 / 0.14);
 }
 
 .agenda-online-step {
@@ -62,27 +149,45 @@
 
 .agenda-online-step-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .agenda-online-step-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 400;
-  font-size: 34px;
-  margin: 16px 0 0;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--ao-text);
+  margin: 0;
 }
 
 .agenda-online-step-subtitle {
-  font-size: 14.5px;
-  color: var(--text-muted);
-  margin-top: 10px;
+  font-size: 13px;
+  color: var(--ao-text3);
+  margin: 0;
+}
+
+.agenda-online-service-tag {
+  font: 600 13px 'Inter', sans-serif;
+  color: var(--ao-accent);
+  margin: 0;
+}
+
+.agenda-online-page .section-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: var(--ao-accent);
 }
 
 /* Passo 1 — Serviço */
 .agenda-online-service-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
 .agenda-online-service-card {
@@ -90,44 +195,57 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 22px 26px;
-  background: #fff;
-  border: 1px solid var(--border-subtle-2);
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--ao-card-soft);
+  border: 1px solid var(--ao-border);
+  border-radius: 14px;
   cursor: pointer;
   text-align: left;
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .agenda-online-service-card:hover,
 .agenda-online-service-card.selected {
-  border-color: var(--primary-color);
+  border-color: var(--ao-accent);
 }
 
 .agenda-online-service-info {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
+  min-width: 0;
 }
 
 .agenda-online-service-icon {
-  font-size: 26px;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--ao-accent-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .agenda-online-service-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 500;
-  font-size: 19px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ao-text);
 }
 
 .agenda-online-service-price {
-  font-size: 13px;
-  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ao-text3);
   margin-top: 2px;
 }
 
 .agenda-online-service-arrow {
-  color: var(--primary-color);
-  font-size: 18px;
+  flex: none;
+  color: var(--ao-accent);
+  display: flex;
 }
 
 /* Passo 2 — Data e horário */
@@ -135,231 +253,283 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .agenda-online-nav-btn {
   width: 34px;
   height: 34px;
-  border: 1px solid var(--border-subtle-2);
-  background: #fff;
-  border-radius: 4px;
+  border-radius: 9px;
+  background: var(--ao-input-bg);
+  border: 1px solid var(--ao-input-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-size: 15px;
+  color: var(--ao-text2);
 }
 
 .agenda-online-nav-btn:hover {
-  border-color: var(--primary-color);
-  color: var(--primary-color);
+  border-color: var(--ao-accent);
+  color: var(--ao-accent);
 }
 
 .agenda-online-week-label {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 19px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--ao-text2);
   text-transform: capitalize;
 }
 
 .agenda-online-day-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-  margin-bottom: 34px;
+  gap: 6px;
+  margin-bottom: 22px;
 }
 
 .agenda-online-day-card {
-  padding: 14px 4px;
-  text-align: center;
-  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 4px;
+  border-radius: 11px;
   cursor: pointer;
-  border: 1px solid var(--border-subtle-2);
-  background: #fff;
-  color: oklch(25% 0.015 85);
-  font-family: 'Manrope', sans-serif;
+  border: 1px solid var(--ao-border);
+  background: var(--ao-card-soft);
+  color: var(--ao-text);
+  font-family: 'Inter', sans-serif;
 }
 
 .agenda-online-day-card:disabled {
   cursor: default;
-  opacity: 0.55;
-  background: oklch(95% 0.006 85);
-  color: oklch(70% 0.01 85);
+  color: var(--ao-text4);
+  background: var(--ao-input-bg);
 }
 
 .agenda-online-day-card.selected {
-  border: 1.5px solid var(--primary-color);
-  background: oklch(97% 0.02 85);
+  border-color: transparent;
+  background: var(--ao-accent-gradient);
+  color: #fff;
 }
 
 .agenda-online-day-weekday {
-  font-size: 10.5px;
+  font-size: 9.5px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  opacity: 0.7;
+  letter-spacing: 0.4px;
+  font-weight: 700;
+  opacity: 0.75;
 }
 
 .agenda-online-day-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 20px;
-  margin-top: 4px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  margin-top: 2px;
 }
 
 .agenda-online-times-label {
   margin-bottom: 8px;
+  font: 700 12px 'Inter', sans-serif;
+  color: var(--ao-text2);
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .agenda-online-time-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 8px;
 }
 
 .agenda-online-time-btn {
-  padding: 12px;
+  padding: 11px 4px;
   text-align: center;
-  font-size: 13.5px;
-  border-radius: 3px;
+  font-size: 12.5px;
+  font-weight: 700;
+  border-radius: 9px;
   cursor: pointer;
-  border: 1px solid var(--border-subtle-2);
-  background: #fff;
-  color: oklch(30% 0.012 85);
-  font-family: 'Manrope', sans-serif;
+  border: 1px solid var(--ao-border);
+  background: var(--ao-card-soft);
+  color: var(--ao-text);
+  font-family: 'Inter', sans-serif;
 }
 
 .agenda-online-time-btn.selected {
-  border: 1.5px solid var(--primary-color);
-  background: var(--primary-color);
+  border-color: transparent;
+  background: var(--ao-accent-gradient);
   color: #fff;
 }
 
 .agenda-online-no-times {
   grid-column: 1 / -1;
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--ao-text3);
   text-align: center;
   padding: 16px 0;
 }
 
-/* Passo 3 — Confirmar */
+/* Resumo (Passo 4 e 5) */
 .agenda-online-summary-card {
-  background: #fff;
-  border: 1px solid var(--border-subtle-2);
-  padding: 30px 34px;
-  margin-bottom: 26px;
+  background: var(--ao-card-soft);
+  border: 1px solid var(--ao-border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .agenda-online-summary-row {
   display: flex;
   justify-content: space-between;
-  padding: 14px 0;
-  border-bottom: 1px solid oklch(93% 0.006 85);
-  font-size: 14px;
+  gap: 12px;
+  font-size: 12.5px;
 }
 
 .agenda-online-summary-row span {
-  color: var(--text-muted);
+  color: var(--ao-text3);
+}
+
+.agenda-online-summary-row strong {
+  color: var(--ao-text);
+  text-align: right;
+  font-weight: 700;
 }
 
 .agenda-online-summary-row-last {
   border-bottom: none;
 }
 
-.agenda-online-summary-price {
-  color: var(--primary-color);
-}
-
 /* Passo 4 — Pagamento (Mercado Pago) */
 .agenda-online-mp-panel {
-  background: #fff;
-  border: 1px solid var(--border-subtle-2);
-  padding: 30px 32px;
-  margin: 26px 0 10px;
+  background: var(--ao-card-soft);
+  border: 1px solid var(--ao-border);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 0 0 10px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .agenda-online-mp-methods {
-  font-size: 14px;
-  font-weight: 600;
-  color: oklch(35% 0.012 85);
-  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ao-text2);
+}
+
+.agenda-online-mp-methods span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .agenda-online-security-note {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 14px;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--ao-text3);
 }
 
 .agenda-online-payment-pending-banner {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: oklch(96% 0.02 85);
-  color: oklch(35% 0.06 85);
-  padding: 14px 18px;
-  border-radius: 3px;
-  font-size: 13px;
-  margin-bottom: 26px;
+  background: oklch(78% 0.14 85 / 0.18);
+  color: oklch(38% 0.11 85);
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 500;
+  margin-bottom: 20px;
 }
 
 .agenda-online-payment-error-banner {
-  background: oklch(94% 0.05 25);
-  color: oklch(40% 0.15 25);
+  background: oklch(68% 0.19 25 / 0.12);
+  color: oklch(45% 0.16 25);
 }
 
 /* Ações (botões voltar/continuar) */
 .agenda-online-actions {
   display: flex;
-  gap: 14px;
-  margin-top: 44px;
+  gap: 10px;
+  margin-top: 24px;
 }
 
 .agenda-online-actions-center {
   justify-content: center;
+  flex-wrap: wrap;
+}
+
+.agenda-online-actions-center .agenda-online-btn-primary,
+.agenda-online-actions-center .agenda-online-btn-secondary {
+  flex: none;
 }
 
 .agenda-online-btn-secondary {
-  flex: 1;
-  padding: 15px;
-  background: transparent;
-  border: 1px solid oklch(75% 0.01 85);
-  color: oklch(35% 0.012 85);
-  font-size: 13px;
-  letter-spacing: 0.5px;
-  border-radius: 2px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 20px;
+  background: var(--ao-input-bg);
+  border: 1px solid var(--ao-input-border);
+  color: var(--ao-text);
+  font-size: 13.5px;
+  font-weight: 700;
+  border-radius: 11px;
   cursor: pointer;
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Inter', sans-serif;
   text-align: center;
+  text-decoration: none;
 }
 
 .agenda-online-btn-secondary:hover {
-  border-color: var(--primary-color);
-  color: var(--primary-color);
+  border-color: var(--ao-accent);
+  color: var(--ao-accent);
 }
 
 .agenda-online-btn-primary {
-  flex: 1.4;
-  padding: 15px;
-  background: var(--primary-color);
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px;
+  background: var(--ao-accent-gradient);
   color: #fff;
-  font-size: 13px;
-  letter-spacing: 0.8px;
-  font-weight: 600;
+  font-size: 13.5px;
+  font-weight: 700;
   border: none;
-  border-radius: 2px;
+  border-radius: 11px;
   cursor: pointer;
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Inter', sans-serif;
   text-align: center;
+  text-decoration: none;
+  box-shadow: 0 6px 18px -6px oklch(60% 0.19 265 / 0.45);
 }
 
 .agenda-online-btn-primary:hover:not(:disabled) {
-  opacity: 0.88;
+  opacity: 0.92;
 }
 
 .agenda-online-btn-primary:disabled {
-  opacity: 0.5;
+  background: var(--ao-muted-btn);
+  color: var(--ao-text4);
+  box-shadow: none;
   cursor: not-allowed;
 }
 
@@ -367,51 +537,172 @@
   flex: 1.4;
 }
 
-/* Passo 4 — Sucesso */
+/* Passo 5 — Sucesso */
 .agenda-online-success {
   text-align: center;
   animation: agendaOnlinePopIn 0.35s ease;
-  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 0;
 }
 
 .agenda-online-success-icon {
-  width: 78px;
-  height: 78px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  background: oklch(95% 0.05 150);
-  color: oklch(40% 0.1 150);
+  background: oklch(70% 0.17 155 / 0.16);
+  color: var(--ao-success);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 34px;
-  margin: 0 auto 30px;
+}
+
+.agenda-online-success-icon.pending {
+  background: oklch(78% 0.14 85 / 0.2);
+  color: oklch(50% 0.13 85);
 }
 
 .agenda-online-success-text {
-  font-size: 15.5px;
-  color: oklch(40% 0.012 85);
-  font-weight: 300;
-  max-width: 440px;
-  margin: 0 auto 34px;
-  line-height: 1.7;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ao-text3);
+  max-width: 380px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 .agenda-online-success-card {
-  max-width: 400px;
-  margin: 0 auto 40px;
+  width: 100%;
   text-align: left;
+  margin-bottom: 0;
 }
 
 .agenda-online-download-btn {
   display: inline-flex;
   width: auto;
-  padding: 15px 30px;
-  margin-bottom: 30px;
+}
+
+/* Campos de formulário (Ficha de Anamnese) — escopados só aqui, sem
+ * afetar o mesmo formulário usado em /cliente/ficha (que continua com a
+ * identidade creme/dourada do site público). */
+.agenda-online-page .field-wrap {
+  margin-bottom: 16px;
+}
+
+.agenda-online-page .field-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--ao-text2);
+  margin-bottom: 6px;
+}
+
+.agenda-online-page .field-input {
+  background: var(--ao-input-bg);
+  border: 1px solid var(--ao-input-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: var(--ao-text);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 13.5px;
+}
+
+.agenda-online-page .field-input:focus {
+  outline: none;
+  border-color: var(--ao-accent);
+  box-shadow: 0 0 0 3px oklch(65% 0.19 255 / 0.15);
+}
+
+.agenda-online-page .field-input::placeholder {
+  color: var(--ao-text4);
+}
+
+.agenda-online-page .radio-label {
+  color: var(--ao-text2);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.agenda-online-page .radio-input {
+  accent-color: var(--ao-accent);
+}
+
+.agenda-online-page .ficha-modal-body {
+  border-top-color: var(--ao-border);
+  padding-top: 20px;
+}
+
+.agenda-online-page .ficha-modal-clinical-header {
+  border-top-color: var(--ao-border);
+  padding: 28px 0 22px;
+}
+
+.agenda-online-page .ficha-modal-clinical-header h3 {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--ao-text);
+}
+
+.agenda-online-page .question-block.has-border {
+  border-bottom-color: var(--ao-border);
+}
+
+.agenda-online-page .question-label {
+  color: var(--ao-text2);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+}
+
+.agenda-online-page .question-num {
+  color: var(--ao-accent);
+}
+
+.agenda-online-page .fototipo-card {
+  border: 1px solid var(--ao-border);
+  border-radius: 12px;
+  background: var(--ao-card-soft);
+  font-family: 'Inter', sans-serif;
+}
+
+.agenda-online-page .fototipo-card.selected {
+  border-color: var(--ao-accent);
+  background: oklch(65% 0.19 255 / 0.08);
+}
+
+.agenda-online-page .fototipo-kicker,
+.agenda-online-page .fototipo-desc {
+  color: var(--ao-text3);
+}
+
+.agenda-online-page .admin-login-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: oklch(68% 0.19 25 / 0.1);
+  color: oklch(52% 0.17 25);
+  border: 1px solid oklch(68% 0.19 25 / 0.3);
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+.agenda-online-page .admin-login-error svg {
+  flex: none;
 }
 
 @media (max-width: 640px) {
   .agenda-online-content {
-    padding: 40px 20px 90px;
+    padding: 20px 16px 50px;
+  }
+
+  .agenda-online-card {
+    padding: 24px 18px;
+    border-radius: 16px;
   }
 
   .agenda-online-time-grid {
@@ -419,6 +710,6 @@
   }
 
   .agenda-online-day-grid {
-    gap: 5px;
+    gap: 4px;
   }
 }

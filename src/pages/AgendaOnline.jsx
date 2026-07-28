@@ -12,8 +12,50 @@ import {
 import { getPublicBlockedSlots, getPublicBlockedDays } from '../lib/blockedSlots';
 import { submitAnamnese } from '../lib/patients';
 import { createMpPreference } from '../lib/mercadopago';
+import { IconCheckCircle, IconAlertCircle, IconChevronLeft, IconChevronRight } from '../components/admin/Icons';
 import '../styles/AgendaOnline.css';
 import '../styles/FichaAnamneseModal.css';
+
+const IconGem = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 3 4 9l8 12 8-12-8-6Z" />
+  </svg>
+);
+
+const IconCreditCard = ({ size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+    <line x1="2.5" y1="10" x2="21.5" y2="10" />
+  </svg>
+);
+
+const IconZap = ({ size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12.5 2 4 14h6.5L11 22l8.5-12H13l-.5-8Z" />
+  </svg>
+);
+
+const IconLock = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+    <rect x="4.5" y="10.5" width="15" height="10" rx="2.2" />
+    <path d="M7.5 10.5V7a4.5 4.5 0 0 1 9 0v3.5" />
+  </svg>
+);
+
+const IconDownload = ({ size = 15 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 3v12" />
+    <path d="M7 10.5 12 15.5 17 10.5" />
+    <path d="M4.5 19.5h15" />
+  </svg>
+);
+
+const IconHourglass = ({ size = 28 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6 3h12M6 21h12" />
+    <path d="M7 3c0 5 5 6.5 5 9s-5 4-5 9M17 3c0 5-5 6.5-5 9s5 4 5 9" />
+  </svg>
+);
 
 const STEPS = [
   { num: 1, label: 'Serviço' },
@@ -303,16 +345,18 @@ const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => 
 
   return (
     <>
-      <nav className="cliente-nav">
-        <div className="cliente-logo">
-          <img src="/images/logo.png" alt="MR Laser" />
-        </div>
+      <div className="agenda-online-brand">
+        <img src="/images/logo.png" alt="MR Laser" className="agenda-online-brand-logo" />
+        <span className="agenda-online-brand-text">
+          <span className="agenda-online-brand-name">MR Laser</span>
+          <span className="agenda-online-brand-tag"> · agenda online</span>
+        </span>
         {(patientName || fichaForm.nome) && (
-          <div className="cliente-greeting">
+          <span className="agenda-online-brand-greeting">
             Olá, <strong>{patientName || fichaForm.nome}</strong>
-          </div>
+          </span>
         )}
-      </nav>
+      </div>
 
       <div className="agenda-online-content">
         {step < 5 && (
@@ -322,425 +366,444 @@ const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => 
                 <div
                   className={`agenda-online-step-circle ${step > s.num ? 'done' : ''} ${step === s.num ? 'active' : ''}`}
                 >
-                  {step > s.num ? '✓' : s.num}
+                  {step > s.num ? <IconCheckCircle size={13} /> : s.num}
                 </div>
-                {i < 4 && <div className="agenda-online-step-line" />}
+                {i < 4 && <div className={`agenda-online-step-line ${step > s.num ? 'done' : ''}`} />}
               </React.Fragment>
             ))}
           </div>
         )}
 
-        {step === 1 && (
-          <div className="agenda-online-step">
-            <div className="agenda-online-step-header">
-              <span className="section-eyebrow">Passo 1 de 5</span>
-              <h1 className="agenda-online-step-title">Qual tratamento você deseja agendar?</h1>
-            </div>
-            <div className="agenda-online-service-list">
-              {!servicesLoaded && <div className="agenda-online-no-times">Carregando tratamentos...</div>}
-              {servicesLoaded && services.map((s) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => {
-                    setService(s.name);
-                    setStep(2);
-                  }}
-                  className={`agenda-online-service-card ${service === s.name ? 'selected' : ''}`}
-                >
-                  <div className="agenda-online-service-info">
-                    <span className="agenda-online-service-icon">💎</span>
-                    <div>
-                      <div className="agenda-online-service-name">Depilação a Laser — {s.name}</div>
-                      <div className="agenda-online-service-price">a partir de R$ {formatPrice(s.price)}</div>
+        <div className="agenda-online-card">
+          {step === 1 && (
+            <div className="agenda-online-step">
+              <div className="agenda-online-step-header">
+                <span className="section-eyebrow">Passo 1 de 5</span>
+                <h1 className="agenda-online-step-title">Qual tratamento você deseja agendar?</h1>
+              </div>
+              <div className="agenda-online-service-list">
+                {!servicesLoaded && <div className="agenda-online-no-times">Carregando tratamentos...</div>}
+                {servicesLoaded && services.map((s) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => {
+                      setService(s.name);
+                      setStep(2);
+                    }}
+                    className={`agenda-online-service-card ${service === s.name ? 'selected' : ''}`}
+                  >
+                    <div className="agenda-online-service-info">
+                      <span className="agenda-online-service-icon"><IconGem /></span>
+                      <div>
+                        <div className="agenda-online-service-name">Depilação a Laser — {s.name}</div>
+                        <div className="agenda-online-service-price">a partir de R$ {formatPrice(s.price)}</div>
+                      </div>
                     </div>
-                  </div>
-                  <span className="agenda-online-service-arrow">{service === s.name ? '✓' : '›'}</span>
+                    <span className="agenda-online-service-arrow">
+                      {service === s.name ? <IconCheckCircle size={18} /> : <IconChevronRight size={18} />}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div className="agenda-online-step">
+              <div className="agenda-online-step-header">
+                <span className="section-eyebrow">Passo 2 de 5</span>
+                <h1 className="agenda-online-step-title">Escolha o melhor dia e horário</h1>
+                <p className="agenda-online-service-tag">Depilação a Laser — {service}</p>
+              </div>
+
+              <div className="agenda-online-week-nav">
+                <button type="button" onClick={() => setWeekOffset((w) => w - 1)} className="agenda-online-nav-btn">
+                  <IconChevronLeft size={14} />
                 </button>
-              ))}
-            </div>
-          </div>
-        )}
+                <div className="agenda-online-week-label">{weekLabel}</div>
+                <button type="button" onClick={() => setWeekOffset((w) => w + 1)} className="agenda-online-nav-btn">
+                  <IconChevronRight size={14} />
+                </button>
+              </div>
 
-        {step === 2 && (
-          <div className="agenda-online-step">
-            <div className="agenda-online-step-header">
-              <span className="section-eyebrow">Passo 2 de 5</span>
-              <h1 className="agenda-online-step-title">Escolha o melhor dia e horário</h1>
-              <p className="agenda-online-step-subtitle">Depilação a Laser — {service}</p>
-            </div>
+              <div className="agenda-online-day-grid">
+                {dayOptions.map((d) => (
+                  <button
+                    key={d.dayOffset}
+                    type="button"
+                    disabled={d.disabled}
+                    onClick={() => handleSelectDay(d.dayOffset)}
+                    className={`agenda-online-day-card ${selectedDayOffset === d.dayOffset ? 'selected' : ''}`}
+                  >
+                    <div className="agenda-online-day-weekday">{d.weekday}</div>
+                    <div className="agenda-online-day-num">{d.num}</div>
+                  </button>
+                ))}
+              </div>
 
-            <div className="agenda-online-week-nav">
-              <button type="button" onClick={() => setWeekOffset((w) => w - 1)} className="agenda-online-nav-btn">
-                ‹
-              </button>
-              <div className="agenda-online-week-label">{weekLabel}</div>
-              <button type="button" onClick={() => setWeekOffset((w) => w + 1)} className="agenda-online-nav-btn">
-                ›
-              </button>
-            </div>
+              {selectedDayOffset !== null && (
+                <>
+                  <div className="admin-small-label agenda-online-times-label">Horários disponíveis</div>
+                  <div className="agenda-online-time-grid">
+                    {timeOptions.map((t) => (
+                      <button
+                        key={t}
+                        type="button"
+                        onClick={() => setSelectedTime(t)}
+                        className={`agenda-online-time-btn ${selectedTime === t ? 'selected' : ''}`}
+                      >
+                        {t}
+                      </button>
+                    ))}
+                    {timeOptions.length === 0 && (
+                      <div className="agenda-online-no-times">Sem horários livres neste dia. Tente outro dia.</div>
+                    )}
+                  </div>
+                </>
+              )}
 
-            <div className="agenda-online-day-grid">
-              {dayOptions.map((d) => (
+              <div className="agenda-online-actions">
+                <button type="button" onClick={() => setStep(1)} className="agenda-online-btn-secondary">
+                  Voltar
+                </button>
                 <button
-                  key={d.dayOffset}
                   type="button"
-                  disabled={d.disabled}
-                  onClick={() => handleSelectDay(d.dayOffset)}
-                  className={`agenda-online-day-card ${selectedDayOffset === d.dayOffset ? 'selected' : ''}`}
+                  disabled={selectedDayOffset === null || !selectedTime}
+                  onClick={() => setStep(needsIdentity ? 3 : 4)}
+                  className="agenda-online-btn-primary"
                 >
-                  <div className="agenda-online-day-weekday">{d.weekday}</div>
-                  <div className="agenda-online-day-num">{d.num}</div>
+                  Continuar
                 </button>
-              ))}
+              </div>
             </div>
+          )}
 
-            {selectedDayOffset !== null && (
-              <>
-                <div className="admin-small-label agenda-online-times-label">Horários disponíveis</div>
-                <div className="agenda-online-time-grid">
-                  {timeOptions.map((t) => (
-                    <button
-                      key={t}
-                      type="button"
-                      onClick={() => setSelectedTime(t)}
-                      className={`agenda-online-time-btn ${selectedTime === t ? 'selected' : ''}`}
-                    >
-                      {t}
-                    </button>
-                  ))}
-                  {timeOptions.length === 0 && (
-                    <div className="agenda-online-no-times">Sem horários livres neste dia. Tente outro dia.</div>
-                  )}
-                </div>
-              </>
-            )}
-
-            <div className="agenda-online-actions">
-              <button type="button" onClick={() => setStep(1)} className="agenda-online-btn-secondary">
-                VOLTAR
-              </button>
-              <button
-                type="button"
-                disabled={selectedDayOffset === null || !selectedTime}
-                onClick={() => setStep(needsIdentity ? 3 : 4)}
-                className="agenda-online-btn-primary"
-              >
-                CONTINUAR
-              </button>
-            </div>
-          </div>
-        )}
-
-        {step === 3 && (
-          <div className="agenda-online-step">
-            <div className="agenda-online-step-header">
-              <span className="section-eyebrow">Passo 3 de 5</span>
-              <h1 className="agenda-online-step-title">Ficha de Anamnese</h1>
-              <p className="agenda-online-step-subtitle">
-                Preencha seus dados e o questionário clínico antes de reservar o horário.
-              </p>
-            </div>
-
-            <div className="ficha-modal-body">
-              <div className="field-wrap">
-                <label className="field-label" htmlFor="ao-ficha-nome">Nome Completo</label>
-                <input
-                  id="ao-ficha-nome"
-                  type="text"
-                  placeholder="Digite seu nome..."
-                  value={fichaForm.nome}
-                  onChange={handleFichaField('nome')}
-                  className="field-input"
-                />
+          {step === 3 && (
+            <div className="agenda-online-step">
+              <div className="agenda-online-step-header">
+                <span className="section-eyebrow">Passo 3 de 5</span>
+                <h1 className="agenda-online-step-title">Ficha de Anamnese</h1>
+                <p className="agenda-online-step-subtitle">
+                  Preencha seus dados e o questionário clínico antes de reservar o horário.
+                </p>
               </div>
 
-              <div className="field-wrap">
-                <label className="field-label" htmlFor="ao-ficha-nascimento">Data de Nascimento</label>
-                <input
-                  id="ao-ficha-nascimento"
-                  type="date"
-                  value={fichaForm.nascimento}
-                  onChange={handleFichaField('nascimento')}
-                  className="field-input"
-                />
-              </div>
-
-              <div className="field-row">
-                <div>
-                  <label className="field-label" htmlFor="ao-ficha-cpf">CPF</label>
+              <div className="ficha-modal-body">
+                <div className="field-wrap">
+                  <label className="field-label" htmlFor="ao-ficha-nome">Nome Completo</label>
                   <input
-                    id="ao-ficha-cpf"
+                    id="ao-ficha-nome"
                     type="text"
-                    placeholder="000.000.000-00"
-                    value={fichaForm.cpf}
-                    onChange={handleFichaField('cpf')}
+                    placeholder="Digite seu nome..."
+                    value={fichaForm.nome}
+                    onChange={handleFichaField('nome')}
                     className="field-input"
                   />
                 </div>
-                <div>
-                  <label className="field-label" htmlFor="ao-ficha-telefone">Telefone</label>
+
+                <div className="field-wrap">
+                  <label className="field-label" htmlFor="ao-ficha-nascimento">Data de Nascimento</label>
                   <input
-                    id="ao-ficha-telefone"
-                    type="text"
-                    placeholder="(00) 00000-0000"
-                    value={fichaForm.telefone}
-                    onChange={handleFichaField('telefone')}
+                    id="ao-ficha-nascimento"
+                    type="date"
+                    value={fichaForm.nascimento}
+                    onChange={handleFichaField('nascimento')}
                     className="field-input"
                   />
                 </div>
-              </div>
 
-              <div className="field-wrap">
-                <span className="field-label">Sexo</span>
-                <div className="radio-group">
-                  <label className="radio-label">
+                <div className="field-row">
+                  <div>
+                    <label className="field-label" htmlFor="ao-ficha-cpf">CPF</label>
                     <input
-                      type="radio"
-                      name="ao-sexo"
-                      value="Masculino"
-                      checked={fichaForm.sexo === 'Masculino'}
-                      onChange={handleFichaField('sexo')}
-                      className="radio-input"
+                      id="ao-ficha-cpf"
+                      type="text"
+                      placeholder="000.000.000-00"
+                      value={fichaForm.cpf}
+                      onChange={handleFichaField('cpf')}
+                      className="field-input"
                     />
-                    Masculino
-                  </label>
-                  <label className="radio-label">
-                    <input
-                      type="radio"
-                      name="ao-sexo"
-                      value="Feminino"
-                      checked={fichaForm.sexo === 'Feminino'}
-                      onChange={handleFichaField('sexo')}
-                      className="radio-input"
-                    />
-                    Feminino
-                  </label>
-                </div>
-              </div>
-
-              <div className="field-wrap">
-                <label className="field-label" htmlFor="ao-ficha-rua">Rua e nº</label>
-                <input
-                  id="ao-ficha-rua"
-                  type="text"
-                  placeholder="Digite o nome da rua e nº"
-                  value={fichaForm.rua}
-                  onChange={handleFichaField('rua')}
-                  className="field-input"
-                />
-              </div>
-
-              <div className="field-row">
-                <div>
-                  <label className="field-label" htmlFor="ao-ficha-bairro">Bairro</label>
-                  <input
-                    id="ao-ficha-bairro"
-                    type="text"
-                    placeholder="Nome do seu bairro"
-                    value={fichaForm.bairro}
-                    onChange={handleFichaField('bairro')}
-                    className="field-input"
-                  />
-                </div>
-                <div>
-                  <label className="field-label" htmlFor="ao-ficha-cidade">Cidade</label>
-                  <input
-                    id="ao-ficha-cidade"
-                    type="text"
-                    placeholder="Nome da sua cidade"
-                    value={fichaForm.cidade}
-                    onChange={handleFichaField('cidade')}
-                    className="field-input"
-                  />
-                </div>
-              </div>
-
-              <div className="field-wrap field-wrap-last">
-                <label className="field-label" htmlFor="ao-ficha-cep">CEP</label>
-                <input
-                  id="ao-ficha-cep"
-                  type="text"
-                  placeholder="00000-000"
-                  value={fichaForm.cep}
-                  onChange={handleFichaField('cep')}
-                  className="field-input"
-                />
-              </div>
-
-              <div className="ficha-modal-clinical-header">
-                <h3>Questionário Clínico</h3>
-              </div>
-
-              <div className="question-block">
-                <div className="question-label">
-                  <span className="question-num">(1)</span>&nbsp; Qual dessas
-                  condições de exposição solar mais se assemelha ao seu tom de
-                  pele? Selecione a imagem
-                </div>
-                <div className="fototipo-grid">
-                  {ANAMNESE_FOTOTIPOS.map((f) => (
-                    <button
-                      key={f.num}
-                      type="button"
-                      onClick={() => setFichaFototipo(f.num)}
-                      className={`fototipo-card ${fichaFototipo === f.num ? 'selected' : ''}`}
-                    >
-                      <div className="fototipo-kicker">Pigmentação {f.num}</div>
-                      <div className="fototipo-swatch" style={{ background: f.tone }} />
-                      <div className="fototipo-desc">{f.desc}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {ANAMNESE_QUESTIONS.map((q, i) => (
-                <div
-                  key={q.num}
-                  className={`question-block ${i < ANAMNESE_QUESTIONS.length - 1 ? 'has-border' : ''}`}
-                >
-                  <div className="question-label">
-                    <span className="question-num">({q.num})</span>&nbsp; {q.text}
                   </div>
+                  <div>
+                    <label className="field-label" htmlFor="ao-ficha-telefone">Telefone</label>
+                    <input
+                      id="ao-ficha-telefone"
+                      type="text"
+                      placeholder="(00) 00000-0000"
+                      value={fichaForm.telefone}
+                      onChange={handleFichaField('telefone')}
+                      className="field-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="field-wrap">
+                  <span className="field-label">Sexo</span>
                   <div className="radio-group">
                     <label className="radio-label">
                       <input
                         type="radio"
-                        name={`ao-q${q.num}`}
-                        value="Não"
-                        checked={fichaAnswers[q.num] === 'Não'}
-                        onChange={() => handleFichaAnswer(q.num, 'Não')}
+                        name="ao-sexo"
+                        value="Masculino"
+                        checked={fichaForm.sexo === 'Masculino'}
+                        onChange={handleFichaField('sexo')}
                         className="radio-input"
                       />
-                      Não
+                      Masculino
                     </label>
                     <label className="radio-label">
                       <input
                         type="radio"
-                        name={`ao-q${q.num}`}
-                        value="Sim"
-                        checked={fichaAnswers[q.num] === 'Sim'}
-                        onChange={() => handleFichaAnswer(q.num, 'Sim')}
+                        name="ao-sexo"
+                        value="Feminino"
+                        checked={fichaForm.sexo === 'Feminino'}
+                        onChange={handleFichaField('sexo')}
                         className="radio-input"
                       />
-                      Sim
+                      Feminino
                     </label>
                   </div>
                 </div>
-              ))}
 
-              <div className="field-wrap-last">
-                <label className="field-label" htmlFor="ao-ficha-obs">Deseja mais alguma observação?</label>
-                <textarea
-                  id="ao-ficha-obs"
-                  rows="4"
-                  value={fichaForm.obs}
-                  onChange={handleFichaField('obs')}
-                  className="field-input field-textarea"
-                />
+                <div className="field-wrap">
+                  <label className="field-label" htmlFor="ao-ficha-rua">Rua e nº</label>
+                  <input
+                    id="ao-ficha-rua"
+                    type="text"
+                    placeholder="Digite o nome da rua e nº"
+                    value={fichaForm.rua}
+                    onChange={handleFichaField('rua')}
+                    className="field-input"
+                  />
+                </div>
+
+                <div className="field-row">
+                  <div>
+                    <label className="field-label" htmlFor="ao-ficha-bairro">Bairro</label>
+                    <input
+                      id="ao-ficha-bairro"
+                      type="text"
+                      placeholder="Nome do seu bairro"
+                      value={fichaForm.bairro}
+                      onChange={handleFichaField('bairro')}
+                      className="field-input"
+                    />
+                  </div>
+                  <div>
+                    <label className="field-label" htmlFor="ao-ficha-cidade">Cidade</label>
+                    <input
+                      id="ao-ficha-cidade"
+                      type="text"
+                      placeholder="Nome da sua cidade"
+                      value={fichaForm.cidade}
+                      onChange={handleFichaField('cidade')}
+                      className="field-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="field-wrap field-wrap-last">
+                  <label className="field-label" htmlFor="ao-ficha-cep">CEP</label>
+                  <input
+                    id="ao-ficha-cep"
+                    type="text"
+                    placeholder="00000-000"
+                    value={fichaForm.cep}
+                    onChange={handleFichaField('cep')}
+                    className="field-input"
+                  />
+                </div>
+
+                <div className="ficha-modal-clinical-header">
+                  <h3>Questionário Clínico</h3>
+                </div>
+
+                <div className="question-block">
+                  <div className="question-label">
+                    <span className="question-num">(1)</span>&nbsp; Qual dessas
+                    condições de exposição solar mais se assemelha ao seu tom de
+                    pele? Selecione a imagem
+                  </div>
+                  <div className="fototipo-grid">
+                    {ANAMNESE_FOTOTIPOS.map((f) => (
+                      <button
+                        key={f.num}
+                        type="button"
+                        onClick={() => setFichaFototipo(f.num)}
+                        className={`fototipo-card ${fichaFototipo === f.num ? 'selected' : ''}`}
+                      >
+                        <div className="fototipo-kicker">Pigmentação {f.num}</div>
+                        <div className="fototipo-swatch" style={{ background: f.tone }} />
+                        <div className="fototipo-desc">{f.desc}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {ANAMNESE_QUESTIONS.map((q, i) => (
+                  <div
+                    key={q.num}
+                    className={`question-block ${i < ANAMNESE_QUESTIONS.length - 1 ? 'has-border' : ''}`}
+                  >
+                    <div className="question-label">
+                      <span className="question-num">({q.num})</span>&nbsp; {q.text}
+                    </div>
+                    <div className="radio-group">
+                      <label className="radio-label">
+                        <input
+                          type="radio"
+                          name={`ao-q${q.num}`}
+                          value="Não"
+                          checked={fichaAnswers[q.num] === 'Não'}
+                          onChange={() => handleFichaAnswer(q.num, 'Não')}
+                          className="radio-input"
+                        />
+                        Não
+                      </label>
+                      <label className="radio-label">
+                        <input
+                          type="radio"
+                          name={`ao-q${q.num}`}
+                          value="Sim"
+                          checked={fichaAnswers[q.num] === 'Sim'}
+                          onChange={() => handleFichaAnswer(q.num, 'Sim')}
+                          className="radio-input"
+                        />
+                        Sim
+                      </label>
+                    </div>
+                  </div>
+                ))}
+
+                <div className="field-wrap-last">
+                  <label className="field-label" htmlFor="ao-ficha-obs">Deseja mais alguma observação?</label>
+                  <textarea
+                    id="ao-ficha-obs"
+                    rows="4"
+                    value={fichaForm.obs}
+                    onChange={handleFichaField('obs')}
+                    className="field-input field-textarea"
+                  />
+                </div>
+              </div>
+
+              {error && (
+                <div className="admin-login-error">
+                  <IconAlertCircle size={14} /> <span>{error}</span>
+                </div>
+              )}
+
+              <div className="agenda-online-actions">
+                <button type="button" onClick={() => setStep(2)} className="agenda-online-btn-secondary">
+                  Voltar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSubmitFicha}
+                  disabled={fichaSaving || !fichaForm.nome.trim() || !fichaForm.telefone.trim()}
+                  className="agenda-online-btn-primary agenda-online-btn-confirm"
+                >
+                  {fichaSaving ? 'Salvando...' : 'Continuar'}
+                </button>
               </div>
             </div>
+          )}
 
-            {error && <div className="admin-login-error">{error}</div>}
+          {step === 4 && (
+            <div className="agenda-online-step">
+              <div className="agenda-online-step-header">
+                <span className="section-eyebrow">Passo 4 de 5</span>
+                <h1 className="agenda-online-step-title">Pagamento do sinal</h1>
+                <p className="agenda-online-step-subtitle">
+                  Garanta seu horário reservando com um sinal de 50% —{' '}
+                  {depositAmount != null ? `R$ ${depositAmount.toFixed(2).replace('.', ',')}` : 'valor a combinar'}
+                </p>
+              </div>
 
-            <div className="agenda-online-actions">
-              <button type="button" onClick={() => setStep(2)} className="agenda-online-btn-secondary">
-                VOLTAR
-              </button>
-              <button
-                type="button"
-                onClick={handleSubmitFicha}
-                disabled={fichaSaving || !fichaForm.nome.trim() || !fichaForm.telefone.trim()}
-                className="agenda-online-btn-primary agenda-online-btn-confirm"
-              >
-                {fichaSaving ? 'SALVANDO...' : 'CONTINUAR'}
-              </button>
+              {mpReturn?.status === 'failure' && (
+                <div className="agenda-online-payment-pending-banner agenda-online-payment-error-banner">
+                  <IconAlertCircle size={16} /> O pagamento não foi concluído. Você pode tentar novamente abaixo.
+                </div>
+              )}
+
+              <div className="agenda-online-summary-card">
+                <div className="agenda-online-summary-row agenda-online-summary-row-last">
+                  <span>Depilação a Laser — {service}</span>
+                  <strong>{selectedDateTimeLabel}</strong>
+                </div>
+              </div>
+
+              <div className="agenda-online-mp-panel">
+                <div className="agenda-online-mp-methods">
+                  <span><IconCreditCard /> Cartão de Crédito</span>
+                  <span><IconZap /> Pix</span>
+                </div>
+                <p className="agenda-online-step-subtitle">
+                  Você será redirecionado ao ambiente seguro do Mercado Pago para escolher a forma de
+                  pagamento e concluir a reserva do seu sinal.
+                </p>
+                <div className="agenda-online-security-note">
+                  <IconLock /> Seus dados de pagamento são processados diretamente pelo Mercado Pago.
+                </div>
+              </div>
+
+              {error && (
+                <div className="admin-login-error">
+                  <IconAlertCircle size={14} /> <span>{error}</span>
+                </div>
+              )}
+
+              <div className="agenda-online-actions">
+                <button type="button" onClick={() => setStep(needsIdentity ? 3 : 2)} className="agenda-online-btn-secondary">
+                  Voltar
+                </button>
+                <button
+                  type="button"
+                  onClick={handlePayment}
+                  disabled={paymentProcessing}
+                  className="agenda-online-btn-primary agenda-online-btn-confirm"
+                >
+                  {paymentProcessing ? 'Redirecionando...' : 'Pagar com Mercado Pago'}
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {step === 4 && (
-          <div className="agenda-online-step">
-            <div className="agenda-online-step-header">
-              <span className="section-eyebrow">Passo 4 de 5</span>
-              <h1 className="agenda-online-step-title">Pagamento do sinal</h1>
-              <p className="agenda-online-step-subtitle">
-                Garanta seu horário reservando com um sinal de 50% —{' '}
-                {depositAmount != null ? `R$ ${depositAmount.toFixed(2).replace('.', ',')}` : 'valor a combinar'}
+          {step === 5 && (
+            <div className="agenda-online-success">
+              <div className={`agenda-online-success-icon ${liveStatus === 'pending' ? 'pending' : ''}`}>
+                {liveStatus === 'pending' ? <IconHourglass /> : <IconCheckCircle size={28} />}
+              </div>
+              <h1 className="agenda-online-step-title">
+                {liveStatus === 'pending' ? 'Pagamento em processamento' : 'Agendamento confirmado!'}
+              </h1>
+              <p className="agenda-online-success-text">
+                {liveStatus === 'pending'
+                  ? 'Recebemos sua reserva e estamos aguardando a confirmação do pagamento. Esta página vai atualizar sozinha assim que o Pix cair.'
+                  : 'Guarde os detalhes abaixo. Chegue com 10 minutos de antecedência para o seu atendimento.'}
               </p>
-            </div>
 
-            {mpReturn?.status === 'failure' && (
-              <div className="agenda-online-payment-pending-banner agenda-online-payment-error-banner">
-                ✕ O pagamento não foi concluído. Você pode tentar novamente abaixo.
+              <div className="agenda-online-summary-card agenda-online-success-card">
+                <div className="agenda-online-service-name">Depilação a Laser — {displayService}</div>
+                <div className="agenda-online-step-subtitle">{displayDateTimeLabel}</div>
               </div>
-            )}
 
-            <div className="agenda-online-summary-card">
-              <div className="agenda-online-summary-row agenda-online-summary-row-last">
-                <span>Depilação a Laser — {service}</span>
-                <strong>{selectedDateTimeLabel}</strong>
+              <button type="button" onClick={downloadRecommendations} className="agenda-online-btn-secondary agenda-online-download-btn">
+                <IconDownload /> Baixar recomendações pré e pós sessão
+              </button>
+
+              <div className="agenda-online-actions agenda-online-actions-center">
+                <Link to="/" className="agenda-online-btn-primary">
+                  Voltar ao site
+                </Link>
+                <a href="/cliente/agendar" className="agenda-online-btn-secondary">
+                  Novo agendamento
+                </a>
               </div>
             </div>
-
-            <div className="agenda-online-mp-panel">
-              <div className="agenda-online-mp-methods">💳 Cartão de Crédito &nbsp;·&nbsp; ⚡ Pix</div>
-              <p className="agenda-online-step-subtitle">
-                Você será redirecionado ao ambiente seguro do Mercado Pago para escolher a forma de
-                pagamento e concluir a reserva do seu sinal.
-              </p>
-              <div className="agenda-online-security-note">🔒 Seus dados de pagamento são processados diretamente pelo Mercado Pago.</div>
-            </div>
-
-            {error && <div className="admin-login-error">{error}</div>}
-
-            <div className="agenda-online-actions">
-              <button type="button" onClick={() => setStep(needsIdentity ? 3 : 2)} className="agenda-online-btn-secondary">
-                VOLTAR
-              </button>
-              <button
-                type="button"
-                onClick={handlePayment}
-                disabled={paymentProcessing}
-                className="agenda-online-btn-primary agenda-online-btn-confirm"
-              >
-                {paymentProcessing ? 'REDIRECIONANDO...' : 'PAGAR COM MERCADO PAGO'}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {step === 5 && (
-          <div className="agenda-online-success">
-            <div className="agenda-online-success-icon">{liveStatus === 'pending' ? '⏳' : '✓'}</div>
-            <h1 className="agenda-online-step-title">
-              {liveStatus === 'pending' ? 'Pagamento em processamento' : 'Agendamento confirmado!'}
-            </h1>
-            <p className="agenda-online-success-text">
-              {liveStatus === 'pending'
-                ? 'Recebemos sua reserva e estamos aguardando a confirmação do pagamento. Esta página vai atualizar sozinha assim que o Pix cair.'
-                : 'Guarde os detalhes abaixo. Chegue com 10 minutos de antecedência para o seu atendimento.'}
-            </p>
-
-            <div className="agenda-online-summary-card agenda-online-success-card">
-              <div className="agenda-online-service-name">Depilação a Laser — {displayService}</div>
-              <div className="agenda-online-step-subtitle">{displayDateTimeLabel}</div>
-            </div>
-
-            <button type="button" onClick={downloadRecommendations} className="agenda-online-btn-secondary agenda-online-download-btn">
-              ⬇ BAIXAR RECOMENDAÇÕES PRÉ E PÓS SESSÃO
-            </button>
-
-            <div className="agenda-online-actions agenda-online-actions-center">
-              <Link to="/" className="agenda-online-btn-primary">
-                VOLTAR AO SITE
-              </Link>
-              <a href="/cliente/agendar" className="agenda-online-btn-secondary">
-                NOVO AGENDAMENTO
-              </a>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );
