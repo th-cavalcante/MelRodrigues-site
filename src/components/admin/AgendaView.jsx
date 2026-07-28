@@ -5,6 +5,7 @@ import BlockSlotModal from './BlockSlotModal';
 import { listBookings, updateBooking, deleteBooking } from '../../lib/bookings';
 import { listBlockedSlots, deleteBlockedSlot } from '../../lib/blockedSlots';
 import { STATUS_OPTIONS, BLOCKED_SLOTS, toISODate } from '../../lib/agendaConstants';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 const VIEW_MODES = [
   { key: 'dia', label: 'Dia' },
@@ -59,6 +60,7 @@ const docsIcon = (patient) => {
 };
 
 const AgendaView = ({ clients, setClients }) => {
+  const isMobile = useIsMobile();
   const [agendaView, setAgendaView] = useState('dia');
   const [agendaOffset, setAgendaOffset] = useState(0);
   const [filters, setFilters] = useState({ status: 'Todos' });
@@ -480,9 +482,11 @@ const AgendaView = ({ clients, setClients }) => {
           <button type="button" onClick={handleCopyAgendaLink} className="admin-open-client-btn">
             {linkCopied ? 'Copiado ✓' : '🔗 Copiar Link de Agenda'}
           </button>
-          <button type="button" onClick={() => { setBlockModalTime(null); setShowBlockModal(true); }} className="admin-open-client-btn">
-            🚫 Bloquear Horário
-          </button>
+          {!isMobile && (
+            <button type="button" onClick={() => { setBlockModalTime(null); setShowBlockModal(true); }} className="admin-open-client-btn">
+              🚫 Bloquear Horário
+            </button>
+          )}
         </div>
       </div>
 
@@ -499,18 +503,20 @@ const AgendaView = ({ clients, setClients }) => {
         </button>
       </div>
 
-      <div className="admin-agenda-filters">
-        <select
-          value={filters.status}
-          onChange={(e) => setFilters((f) => ({ ...f, status: e.target.value }))}
-          className="field-input admin-agenda-filter-select"
-        >
-          <option value="Todos">Todos os status</option>
-          {FILTER_STATUS_OPTIONS.map((s) => (
-            <option key={s.value} value={s.label}>{s.label}</option>
-          ))}
-        </select>
-      </div>
+      {!isMobile && (
+        <div className="admin-agenda-filters">
+          <select
+            value={filters.status}
+            onChange={(e) => setFilters((f) => ({ ...f, status: e.target.value }))}
+            className="field-input admin-agenda-filter-select"
+          >
+            <option value="Todos">Todos os status</option>
+            {FILTER_STATUS_OPTIONS.map((s) => (
+              <option key={s.value} value={s.label}>{s.label}</option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {agendaView === 'dia' && renderDiaView()}
       {agendaView === 'semana' && renderSemanaView()}

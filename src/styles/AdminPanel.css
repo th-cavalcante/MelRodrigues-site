@@ -2128,9 +2128,21 @@
 }
 
 @media (max-width: 900px) {
-  .admin-agenda-week-grid,
-  .admin-agenda-month-grid {
+  .admin-agenda-week-grid {
     grid-template-columns: repeat(1, 1fr);
+  }
+
+  /* O grid do mês precisa continuar com 7 colunas (senão as células
+   * ocultas dos dias fora do mês, que ainda ocupam espaço no grid,
+   * empurram o dia 1 pra baixo com um vão enorme). Só encolhe as
+   * células pra caber na tela estreita. */
+  .admin-agenda-month-cell {
+    min-height: 44px;
+    padding: 6px;
+  }
+
+  .admin-agenda-month-num {
+    font-size: 12px;
   }
 
   .admin-agenda-list-row {
