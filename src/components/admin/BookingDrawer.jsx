@@ -14,6 +14,7 @@ const buildDraft = (booking) => ({
   date: booking.booking_date,
   time: (booking.booking_time || '').slice(0, 5),
   serviceSlots: toServiceSlots(booking.service),
+  valor: booking.valor != null ? String(booking.valor) : '',
   paymentStatus: booking.payment_status,
   paymentMethod: booking.payment_method || '',
   notes: booking.notes || '',
@@ -49,9 +50,20 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
     setDraft((d) => ({ ...d, [key]: e.target.value }));
   };
 
+  // Recalcula o valor a partir dos serviços só quando o admin de fato troca
+  // um serviço aqui no card — assim o valor com desconto dado na criação do
+  // agendamento (Novo Agendamento) não é apagado só por abrir e salvar o
+  // card sem mexer nos serviços.
   const handleServiceSlotChange = (index) => (e) => {
     const value = e.target.value;
-    setDraft((d) => ({ ...d, serviceSlots: d.serviceSlots.map((v, i) => (i === index ? value : v)) }));
+    setDraft((d) => {
+      const newSlots = d.serviceSlots.map((v, i) => (i === index ? value : v));
+      const newTotal = newSlots.filter(Boolean).reduce((sum, name) => {
+        const found = laserServices.find((s) => s.name === name);
+        return sum + (found ? Number(found.price) : 0);
+      }, 0);
+      return { ...d, serviceSlots: newSlots, valor: String(newTotal) };
+    });
   };
 
   const handleDelete = () => {
@@ -61,17 +73,13 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
   };
 
   const selectedServices = draft.serviceSlots.filter(Boolean);
-  const liveValor = selectedServices.reduce((sum, name) => {
-    const found = laserServices.find((s) => s.name === name);
-    return sum + (found ? Number(found.price) : 0);
-  }, 0);
 
   const handleSaveAll = () => {
     onUpdate({
       booking_date: draft.date,
       booking_time: draft.time,
       service: selectedServices.join(', '),
-      valor: liveValor,
+      valor: Number(draft.valor) || 0,
       payment_status: draft.paymentStatus,
       payment_method: draft.paymentMethod || null,
       notes: draft.notes,
@@ -85,7 +93,7 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
   const clientName = booking.patients ? booking.patients.name : patient ? patient.name : '—';
   const phone = booking.patients ? booking.patients.phone : patient ? patient.phone : null;
   const whatsappLink = buildWhatsAppLink(phone, `Olá ${clientName || ''}, confirmando seu horário na MR Laser.`);
-  const valorLabel = liveValor ? `R$ ${liveValor.toFixed(2).replace('.', ',')}` : 'Incluso no pacote';
+  const valorLabel = draft.valor ? `R$ ${Number(draft.valor).toFixed(2).replace('.', ',')}` : 'Incluso no pacote';
 
   return (
     <>
