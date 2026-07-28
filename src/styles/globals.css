@@ -33,6 +33,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -40,6 +41,7 @@ body {
   background-color: var(--bg-cream);
   color: var(--text-dark);
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 a {

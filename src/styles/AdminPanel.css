@@ -50,10 +50,12 @@
 .admin-panel {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--adm-bg);
   color: var(--adm-text);
   font-family: 'Inter', system-ui, sans-serif;
   display: flex;
+  overflow-x: hidden;
 }
 
 .admin-panel h1, .admin-panel h2, .admin-panel h3, .admin-panel h4 {
@@ -1746,6 +1748,7 @@
   top: 0;
   right: 0;
   height: 100vh;
+  height: 100dvh;
   width: 420px;
   max-width: 92vw;
   background: var(--adm-card);
@@ -1982,6 +1985,139 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px 16px;
+}
+
+.admin-appt-add-btn {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: var(--adm-accent-text);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 12.5px;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.admin-appt-add-btn:hover {
+  text-decoration: underline;
+}
+
+/* Seletor de dia/horário do "Novo Agendamento" — mesmo padrão visual da
+ * Agenda Online pública, só que com dados reais de disponibilidade. */
+.admin-appt-week-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.admin-appt-nav-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--adm-text2);
+  flex: none;
+}
+
+.admin-appt-nav-btn:hover {
+  border-color: var(--adm-accent);
+  color: var(--adm-accent-text);
+}
+
+.admin-appt-week-label {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--adm-text2);
+  text-transform: capitalize;
+}
+
+.admin-appt-day-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 14px;
+}
+
+.admin-appt-day-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 2px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  color: var(--adm-text);
+  font-family: 'Inter', sans-serif;
+  min-width: 0;
+}
+
+.admin-appt-day-card:disabled {
+  cursor: default;
+  color: var(--adm-text4);
+  background: var(--adm-bg2);
+}
+
+.admin-appt-day-card.selected {
+  background: var(--adm-accent-gradient);
+  border-color: transparent;
+  color: #fff;
+}
+
+.admin-appt-day-weekday {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-weight: 700;
+  opacity: 0.75;
+}
+
+.admin-appt-day-num {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.admin-appt-time-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.admin-appt-time-btn {
+  padding: 10px 4px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  border-radius: 9px;
+  cursor: pointer;
+  border: 1px solid var(--adm-border);
+  background: var(--adm-surface);
+  color: var(--adm-text);
+  font-family: 'Inter', sans-serif;
+}
+
+.admin-appt-time-btn.selected {
+  background: var(--adm-accent-gradient);
+  border-color: transparent;
+  color: #fff;
+}
+
+.admin-appt-no-times {
+  grid-column: 1 / -1;
+  font-size: 12.5px;
+  color: var(--adm-text3);
+  text-align: center;
+  padding: 12px 0;
 }
 
 .admin-agenda-search-wrap {
@@ -2553,6 +2689,9 @@
     flex-direction: column;
     width: 100%;
     min-height: 100vh;
+    min-height: 100dvh;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 
   .admin-mobile-shell-topbar {
@@ -2757,6 +2896,14 @@
     border: 1px solid var(--adm-border-soft);
     border-radius: 14px;
     padding: 12px 14px;
+  }
+
+  .admin-mobile-today-row-btn {
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    cursor: pointer;
   }
 
   .admin-mobile-today-info {

@@ -80,7 +80,7 @@ const AdminPanel = () => {
       {tab === 'dashboard' && (isMobile ? <MobileHome userEmail={user.email} /> : <DashboardView />)}
       {tab === 'site' && <SiteManagerView />}
       {tab === 'clients' && <ClientsView clients={clients} setClients={setClients} />}
-      {tab === 'agenda' && (isMobile ? <MobileAgenda /> : <AgendaView clients={clients} setClients={setClients} />)}
+      {tab === 'agenda' && (isMobile ? <MobileAgenda clients={clients} setClients={setClients} /> : <AgendaView clients={clients} setClients={setClients} />)}
       {tab === 'agenda-completa' && <AgendaView clients={clients} setClients={setClients} />}
       {tab === 'bloqueios' && <MobileBlockedSlots />}
       {tab === 'financeiro' && <FinanceiroView />}

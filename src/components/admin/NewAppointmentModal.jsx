@@ -1,20 +1,68 @@
 import React, { useEffect, useState } from 'react';
-import { createBooking } from '../../lib/bookings';
+import { createBooking, getBookedTimes } from '../../lib/bookings';
 import { createPatient } from '../../lib/patients';
 import { fetchLaserServices } from '../../lib/services';
-import { PROFESSIONALS, COMPLEMENTARY_SERVICE_OPTIONS } from '../../lib/agendaConstants';
+import { getPublicBlockedSlots, getPublicBlockedDays } from '../../lib/blockedSlots';
+import { PROFESSIONALS, COMPLEMENTARY_SERVICE_OPTIONS, BLOCKED_SLOTS, toISODate } from '../../lib/agendaConstants';
+import { IconChevronLeft, IconChevronRight } from './Icons';
 
 const DEFAULT_ROOM = 'Sala Laser Hakon 4D';
-const SERVICE_SLOTS = 10;
+const MAX_SERVICE_SLOTS = 10;
+
+const WEEKDAY_LABELS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+const ALL_TIMES = (() => {
+  const rows = [];
+  for (let mins = 8 * 60; mins <= 20 * 60; mins += 30) {
+    const h = String(Math.floor(mins / 60)).padStart(2, '0');
+    const m = String(mins % 60).padStart(2, '0');
+    rows.push(`${h}:${m}`);
+  }
+  return rows;
+})();
+
+const startOfWeek = (date) => {
+  const d = new Date(date);
+  d.setDate(d.getDate() - d.getDay());
+  d.setHours(0, 0, 0, 0);
+  return d;
+};
+
+const addDays = (date, n) => {
+  const d = new Date(date);
+  d.setDate(d.getDate() + n);
+  return d;
+};
+
+const startOfToday = () => {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d;
+};
 
 const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCreated }) => {
   const [search, setSearch] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
-  const [date, setDate] = useState(bookingDate);
-  const [time, setTime] = useState('09:00');
-  const [services, setServices] = useState(Array(SERVICE_SLOTS).fill(''));
-  const [complementaryService, setComplementaryService] = useState('');
+
+  const [today] = useState(startOfToday);
+  const [weekOffset, setWeekOffset] = useState(() => {
+    const raw = bookingDate ? new Date(`${bookingDate}T00:00:00`) : today;
+    const initialDate = raw < today ? today : raw;
+    return Math.round((startOfWeek(initialDate) - startOfWeek(today)) / (7 * 86400000));
+  });
+  const [selectedDayOffset, setSelectedDayOffset] = useState(() => {
+    const raw = bookingDate ? new Date(`${bookingDate}T00:00:00`) : today;
+    const initialDate = raw < today ? today : raw;
+    return Math.round((initialDate - today) / 86400000);
+  });
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [bookedTimes, setBookedTimes] = useState([]);
+  const [dynamicBlockedTimes, setDynamicBlockedTimes] = useState([]);
+  const [blockedDays, setBlockedDays] = useState([]);
+
+  const [services, setServices] = useState(['']);
+  const [complementaryServices, setComplementaryServices] = useState(['']);
   const [discount, setDiscount] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -23,6 +71,46 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
   useEffect(() => {
     fetchLaserServices().then(setLaserServices).catch((err) => console.error('Erro ao carregar tabela de preço:', err));
   }, []);
+
+  const weekStart = startOfWeek(addDays(today, weekOffset * 7));
+  const weekEnd = addDays(weekStart, 6);
+  const weekLabel = `${weekStart.getDate()} — ${weekEnd.getDate()} de ${weekEnd.toLocaleDateString('pt-BR', { month: 'long' })}`;
+
+  useEffect(() => {
+    getPublicBlockedDays(toISODate(weekStart), toISODate(weekEnd))
+      .then(setBlockedDays)
+      .catch((err) => console.error('Erro ao carregar dias bloqueados:', err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [weekOffset]);
+
+  useEffect(() => {
+    if (selectedDayOffset === null) return;
+    const date = toISODate(addDays(today, selectedDayOffset));
+    getBookedTimes(date)
+      .then(setBookedTimes)
+      .catch((err) => console.error('Erro ao carregar horários ocupados:', err));
+    getPublicBlockedSlots(date)
+      .then((rows) => setDynamicBlockedTimes(rows.map((r) => r.blocked_time).filter(Boolean).map((t) => t.slice(0, 5))))
+      .catch((err) => console.error('Erro ao carregar horários bloqueados:', err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDayOffset]);
+
+  const dayOptions = WEEKDAY_LABELS.map((wd, i) => {
+    const d = addDays(weekStart, i);
+    const dayOffset = Math.round((d - today) / 86400000);
+    const isPast = dayOffset < 0;
+    const isSunday = i === 0;
+    const isBlocked = blockedDays.includes(toISODate(d));
+    return { weekday: wd, num: d.getDate(), dayOffset, disabled: isPast || isSunday || isBlocked };
+  });
+
+  const blockedTimesForDay = [...BLOCKED_SLOTS.map((bl) => bl.time), ...dynamicBlockedTimes];
+  const timeOptions = ALL_TIMES.filter((t) => !blockedTimesForDay.includes(t) && !bookedTimes.includes(t));
+
+  const handleSelectDay = (dayOffset) => {
+    setSelectedDayOffset(dayOffset);
+    setSelectedTime(null);
+  };
 
   const searchTerm = search.toLowerCase().trim();
   const results = clients.filter((c) => (c.name || '').toLowerCase().includes(searchTerm));
@@ -49,7 +137,20 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
     setServices((s) => s.map((v, i) => (i === index ? e.target.value : v)));
   };
 
+  const addServiceSlot = () => {
+    setServices((s) => (s.length < MAX_SERVICE_SLOTS ? [...s, ''] : s));
+  };
+
+  const handleComplementaryChange = (index) => (e) => {
+    setComplementaryServices((s) => s.map((v, i) => (i === index ? e.target.value : v)));
+  };
+
+  const addComplementarySlot = () => {
+    setComplementaryServices((s) => (s.length < COMPLEMENTARY_SERVICE_OPTIONS.length ? [...s, ''] : s));
+  };
+
   const selectedServices = services.filter(Boolean);
+  const selectedComplementary = complementaryServices.filter(Boolean);
   const subtotal = selectedServices.reduce((sum, name) => {
     const found = laserServices.find((s) => s.name === name);
     return sum + (found ? Number(found.price) : 0);
@@ -60,8 +161,8 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
   const handleSubmit = async (e) => {
     e.preventDefault();
     const name = search.trim();
-    if (!name || selectedServices.length === 0) {
-      setError('Preencha o nome da cliente e selecione ao menos um serviço.');
+    if (!name || selectedServices.length === 0 || selectedDayOffset === null || !selectedTime) {
+      setError('Preencha o nome da cliente, escolha um dia e horário e selecione ao menos um serviço.');
       return;
     }
     setError('');
@@ -79,10 +180,10 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
         patient,
         room: DEFAULT_ROOM,
         professional: PROFESSIONALS[0],
-        bookingDate: date,
-        bookingTime: time,
+        bookingDate: toISODate(addDays(today, selectedDayOffset)),
+        bookingTime: selectedTime,
         service: selectedServices.join(', '),
-        complementaryService,
+        complementaryService: selectedComplementary.join(', '),
         valor: total,
       });
       onCreated(created);
@@ -135,13 +236,50 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
           </div>
 
           <div className="field-wrap">
-            <label className="field-label">Dia</label>
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="field-input" />
-          </div>
+            <label className="field-label">Dia e horário</label>
 
-          <div className="field-wrap">
-            <label className="field-label">Horário</label>
-            <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="field-input" />
+            <div className="admin-appt-week-nav">
+              <button type="button" onClick={() => setWeekOffset((w) => w - 1)} className="admin-appt-nav-btn" aria-label="Semana anterior">
+                <IconChevronLeft size={14} />
+              </button>
+              <div className="admin-appt-week-label">{weekLabel}</div>
+              <button type="button" onClick={() => setWeekOffset((w) => w + 1)} className="admin-appt-nav-btn" aria-label="Próxima semana">
+                <IconChevronRight size={14} />
+              </button>
+            </div>
+
+            <div className="admin-appt-day-grid">
+              {dayOptions.map((d) => (
+                <button
+                  key={d.dayOffset}
+                  type="button"
+                  disabled={d.disabled}
+                  onClick={() => handleSelectDay(d.dayOffset)}
+                  className={`admin-appt-day-card ${selectedDayOffset === d.dayOffset ? 'selected' : ''}`}
+                >
+                  <span className="admin-appt-day-weekday">{d.weekday}</span>
+                  <span className="admin-appt-day-num">{d.num}</span>
+                </button>
+              ))}
+            </div>
+
+            {selectedDayOffset !== null && (
+              <div className="admin-appt-time-grid">
+                {timeOptions.map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setSelectedTime(t)}
+                    className={`admin-appt-time-btn ${selectedTime === t ? 'selected' : ''}`}
+                  >
+                    {t}
+                  </button>
+                ))}
+                {timeOptions.length === 0 && (
+                  <div className="admin-appt-no-times">Sem horários livres neste dia. Escolha outro dia.</div>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="field-wrap">
@@ -161,20 +299,35 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
                 </select>
               ))}
             </div>
+            {services[services.length - 1] && services.length < MAX_SERVICE_SLOTS && (
+              <button type="button" onClick={addServiceSlot} className="admin-appt-add-btn">
+                + Adicionar serviço
+              </button>
+            )}
           </div>
 
           <div className="field-wrap">
             <label className="field-label">Serviços complementares</label>
-            <select
-              value={complementaryService}
-              onChange={(e) => setComplementaryService(e.target.value)}
-              className="field-input"
-            >
-              <option value="">Nenhum</option>
-              {COMPLEMENTARY_SERVICE_OPTIONS.map((s) => (
-                <option key={s} value={s}>{s}</option>
+            <div className="admin-agenda-services-grid">
+              {complementaryServices.map((value, i) => (
+                <select
+                  key={i}
+                  value={value}
+                  onChange={handleComplementaryChange(i)}
+                  className="field-input"
+                >
+                  <option value="">Nenhum</option>
+                  {COMPLEMENTARY_SERVICE_OPTIONS.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
               ))}
-            </select>
+            </div>
+            {complementaryServices[complementaryServices.length - 1] && complementaryServices.length < COMPLEMENTARY_SERVICE_OPTIONS.length && (
+              <button type="button" onClick={addComplementarySlot} className="admin-appt-add-btn">
+                + Adicionar serviço complementar
+              </button>
+            )}
           </div>
 
           <div className="admin-agenda-valor-summary">

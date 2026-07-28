@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { listBookings } from '../../lib/bookings';
+import BookingDrawer from './BookingDrawer';
+import { listBookings, updateBooking, deleteBooking } from '../../lib/bookings';
 import { STATUS_OPTIONS, toISODate } from '../../lib/agendaConstants';
 
 const WEEKDAY_LABELS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
@@ -27,22 +28,49 @@ const startOfToday = () => {
   return d;
 };
 
-const MobileAgenda = () => {
+const MobileAgenda = ({ clients, setClients }) => {
   const [selected, setSelected] = useState(startOfToday);
   const [bookings, setBookings] = useState([]);
+  const [activeBookingId, setActiveBookingId] = useState(null);
 
   const weekStart = startOfWeek(selected);
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   const selectedISO = toISODate(selected);
   const todayISO = toISODate(startOfToday());
 
-  useEffect(() => {
+  const refetch = () => {
     listBookings({ from: selectedISO, to: selectedISO })
       .then(setBookings)
       .catch((err) => console.error('Erro ao carregar agenda:', err));
+  };
+
+  useEffect(() => {
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedISO]);
 
   const dayBookings = [...bookings].sort((a, b) => bookingTimeLabel(a).localeCompare(bookingTimeLabel(b)));
+  const activeBooking = bookings.find((b) => b.id === activeBookingId) || null;
+
+  const handleUpdate = async (bookingId, fields) => {
+    try {
+      await updateBooking(bookingId, fields);
+      refetch();
+    } catch (err) {
+      console.error('Erro ao atualizar agendamento:', err);
+      window.alert('Não foi possível salvar essa alteração.');
+    }
+  };
+
+  const handleDelete = async (bookingId) => {
+    try {
+      await deleteBooking(bookingId);
+      setActiveBookingId(null);
+      refetch();
+    } catch (err) {
+      console.error('Erro ao excluir agendamento:', err);
+    }
+  };
 
   return (
     <div className="admin-mobile-agenda">
@@ -72,7 +100,12 @@ const MobileAgenda = () => {
         {dayBookings.map((b) => {
           const meta = statusMeta(b.status);
           return (
-            <div key={b.id} className="admin-mobile-today-row">
+            <button
+              key={b.id}
+              type="button"
+              onClick={() => setActiveBookingId(b.id)}
+              className="admin-mobile-today-row admin-mobile-today-row-btn"
+            >
               <div className="admin-mobile-today-info">
                 <span className="admin-mobile-today-name">{b.patients ? b.patients.name : '—'}</span>
                 <span className="admin-mobile-today-service">
@@ -80,10 +113,20 @@ const MobileAgenda = () => {
                 </span>
               </div>
               <span className={`admin-mobile-status-pill status-${b.status}`}>{meta.label}</span>
-            </div>
+            </button>
           );
         })}
       </div>
+
+      {activeBooking && (
+        <BookingDrawer
+          booking={activeBooking}
+          patient={clients.find((c) => c.id === activeBooking.patient_id)}
+          onUpdate={(fields) => handleUpdate(activeBooking.id, fields)}
+          onDelete={() => handleDelete(activeBooking.id)}
+          onClose={() => setActiveBookingId(null)}
+        />
+      )}
     </div>
   );
 };
