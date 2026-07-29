@@ -2,6 +2,11 @@
 -- Nascimento e Sexo pra preencher automaticamente, mas get_patient_for_docs
 -- não retornava essas colunas (só eram usadas no Contrato, que não precisa
 -- delas). Recria a função incluindo birthdate/sex.
+--
+-- Precisa do DROP antes: Postgres não deixa trocar o tipo de retorno (as
+-- colunas OUT) de uma função existente só com CREATE OR REPLACE.
+drop function if exists public.get_patient_for_docs(uuid);
+
 create or replace function public.get_patient_for_docs(p_patient_id uuid)
 returns table (
   name text,
