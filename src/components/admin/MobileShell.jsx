@@ -6,9 +6,8 @@ import {
   IconBan,
   IconChart,
   IconMonitor,
+  IconTag,
   IconGear,
-  IconSun,
-  IconMoon,
 } from './Icons';
 
 const TITLES = {
@@ -19,10 +18,11 @@ const TITLES = {
   clients: 'Clientes',
   financeiro: 'Financeiro',
   site: 'Gerenciar Site',
+  'tabela-preco': 'Tabela de Preço',
   settings: 'Configurações',
 };
 
-const MobileShell = ({ tab, onSelectTab, onNewAppointment, onLogout, theme, onToggleTheme, children }) => {
+const MobileShell = ({ tab, onSelectTab, onNewAppointment, onLogout, children }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const goTo = (key) => {
@@ -72,12 +72,8 @@ const MobileShell = ({ tab, onSelectTab, onNewAppointment, onLogout, theme, onTo
             <button type="button" className="admin-mobile-menu-fullscreen-item" onClick={() => goTo('site')}>
               <IconMonitor /> Gerenciar Site
             </button>
-            <button
-              type="button"
-              className="admin-mobile-menu-fullscreen-item"
-              onClick={() => { setMenuOpen(false); onToggleTheme(); }}
-            >
-              {theme === 'dark' ? <IconSun /> : <IconMoon />} {theme === 'dark' ? 'Modo claro' : 'Modo escuro'}
+            <button type="button" className="admin-mobile-menu-fullscreen-item" onClick={() => goTo('tabela-preco')}>
+              <IconTag /> Tabela de Preço
             </button>
             <button type="button" className="admin-mobile-menu-fullscreen-item" onClick={() => goTo('settings')}>
               <IconGear /> Configurações

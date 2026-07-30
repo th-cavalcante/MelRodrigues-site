@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BookingDrawer from './BookingDrawer';
 import { listBookings, updateBooking, deleteBooking } from '../../lib/bookings';
 import { STATUS_OPTIONS, toISODate } from '../../lib/agendaConstants';
+import { IconChevronLeft, IconChevronRight } from './Icons';
 
 const WEEKDAY_LABELS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
@@ -30,10 +31,13 @@ const startOfToday = () => {
 
 const MobileAgenda = ({ clients, setClients }) => {
   const [selected, setSelected] = useState(startOfToday);
+  const [weekOffset, setWeekOffset] = useState(0);
   const [bookings, setBookings] = useState([]);
   const [activeBookingId, setActiveBookingId] = useState(null);
 
-  const weekStart = startOfWeek(selected);
+  const weekStart = startOfWeek(addDays(startOfToday(), weekOffset * 7));
+  const weekEnd = addDays(weekStart, 6);
+  const weekLabel = `${weekStart.getDate()} — ${weekEnd.getDate()} de ${weekEnd.toLocaleDateString('pt-BR', { month: 'long' })}`;
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   const selectedISO = toISODate(selected);
   const todayISO = toISODate(startOfToday());
@@ -75,6 +79,16 @@ const MobileAgenda = ({ clients, setClients }) => {
   return (
     <div className="admin-mobile-agenda">
       <h1 className="admin-mobile-agenda-title">Agenda</h1>
+
+      <div className="admin-appt-week-nav">
+        <button type="button" onClick={() => setWeekOffset((w) => w - 1)} className="admin-appt-nav-btn" aria-label="Semana anterior">
+          <IconChevronLeft size={14} />
+        </button>
+        <div className="admin-appt-week-label">{weekLabel}</div>
+        <button type="button" onClick={() => setWeekOffset((w) => w + 1)} className="admin-appt-nav-btn" aria-label="Próxima semana">
+          <IconChevronRight size={14} />
+        </button>
+      </div>
 
       <div className="admin-mobile-week-row">
         {weekDays.map((d) => {

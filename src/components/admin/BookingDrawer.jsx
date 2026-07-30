@@ -26,6 +26,8 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
   const [draft, setDraft] = useState(() => buildDraft(booking));
   const [stats, setStats] = useState(null);
   const [laserServices, setLaserServices] = useState([]);
+  const [fichaLinkCopied, setFichaLinkCopied] = useState(false);
+  const [assinaturaLinkCopied, setAssinaturaLinkCopied] = useState(false);
 
   useEffect(() => {
     setDraft(buildDraft(booking));
@@ -74,6 +76,29 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
   const handleDelete = () => {
     if (window.confirm('Tem certeza que deseja excluir este agendamento?')) {
       onDelete();
+    }
+  };
+
+  const fichaUrl = `${window.location.origin}/cliente/ficha?patient=${booking.patient_id}`;
+  const assinaturaUrl = `${window.location.origin}/cliente/ficha?patient=${booking.patient_id}&docs=liberado`;
+
+  const handleCopyFichaLink = async () => {
+    try {
+      await navigator.clipboard.writeText(fichaUrl);
+      setFichaLinkCopied(true);
+      setTimeout(() => setFichaLinkCopied(false), 2000);
+    } catch (err) {
+      console.error('Erro ao copiar link da ficha:', err);
+    }
+  };
+
+  const handleCopyAssinaturaLink = async () => {
+    try {
+      await navigator.clipboard.writeText(assinaturaUrl);
+      setAssinaturaLinkCopied(true);
+      setTimeout(() => setAssinaturaLinkCopied(false), 2000);
+    } catch (err) {
+      console.error('Erro ao copiar link de assinatura:', err);
     }
   };
 
@@ -141,9 +166,15 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
         <div className="admin-agenda-docs-badges">
           <div className={`admin-agenda-doc-badge ${anamneseOk ? 'admin-agenda-doc-badge-ok' : ''}`}>
             📋 Anamnese<br /><strong>{anamneseOk ? 'Preenchida' : 'Pendente'}</strong>
+            <button type="button" onClick={handleCopyFichaLink} className="admin-doc-badge-link-btn">
+              {fichaLinkCopied ? 'Copiado ✓' : 'Enviar Link'}
+            </button>
           </div>
           <div className={`admin-agenda-doc-badge ${contratoOk ? 'admin-agenda-doc-badge-ok' : ''}`}>
             ✍️ Contrato<br /><strong>{contratoOk ? 'Assinado' : 'Pendente'}</strong>
+            <button type="button" onClick={handleCopyAssinaturaLink} className="admin-doc-badge-link-btn">
+              {assinaturaLinkCopied ? 'Copiado ✓' : 'Enviar Link'}
+            </button>
           </div>
         </div>
 

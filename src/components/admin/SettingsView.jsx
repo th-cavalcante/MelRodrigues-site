@@ -21,7 +21,7 @@ const togglesMeta = [
 
 const initialToggles = { email: true, sms: false, whatsapp: true };
 
-const SettingsView = () => {
+const SettingsView = ({ theme, onToggleTheme }) => {
   const { user } = useAuth();
   const [clinic, setClinic] = useState(initialClinicSettings);
   const [toggles, setToggles] = useState(initialToggles);
@@ -96,6 +96,24 @@ const SettingsView = () => {
               className="field-input"
             />
           </div>
+        </div>
+      </div>
+
+      <div className="admin-card">
+        <h3 className="admin-card-title admin-card-title-tight">Aparência</h3>
+        <div className="admin-toggle-row">
+          <div>
+            <div className="admin-toggle-label">Modo escuro</div>
+            <div className="admin-toggle-desc">Usar tema escuro no painel administrativo</div>
+          </div>
+          <button
+            type="button"
+            onClick={onToggleTheme}
+            className={`admin-toggle-track ${theme === 'dark' ? 'on' : ''}`}
+            aria-pressed={theme === 'dark'}
+          >
+            <span className="admin-toggle-thumb"></span>
+          </button>
         </div>
       </div>
 

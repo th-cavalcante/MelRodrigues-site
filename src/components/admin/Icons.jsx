@@ -161,6 +161,13 @@ export const IconBan = ({ size = 17 }) => (
   </svg>
 );
 
+export const IconTag = ({ size = 17 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+    <path d="M12.6 3.5H5.5A2 2 0 0 0 3.5 5.5v7.1a2 2 0 0 0 .59 1.41l9 9a2 2 0 0 0 2.82 0l6.6-6.6a2 2 0 0 0 0-2.82l-9-9a2 2 0 0 0-1.41-.59Z" />
+    <circle cx="8.5" cy="8.5" r="1.6" />
+  </svg>
+);
+
 export const IconLogOut = ({ size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />

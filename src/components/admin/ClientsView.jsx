@@ -117,10 +117,11 @@ const ClientsView = ({ clients, setClients }) => {
   };
 
   const handleDelete = async (clientId) => {
-    if (!window.confirm('Tem certeza que deseja excluir este paciente?')) return;
+    if (!window.confirm('Tem certeza que deseja excluir este paciente? Essa ação não pode ser desfeita.')) return;
     try {
       await deletePatient(clientId);
       setClients((cs) => cs.filter((c) => c.id !== clientId));
+      setSelectedClientId(null);
     } catch (err) {
       console.error('Erro ao excluir paciente:', err);
     }
@@ -440,6 +441,14 @@ const ClientsView = ({ clients, setClients }) => {
             )}
           </div>
         </div>
+
+        <button
+          type="button"
+          onClick={() => handleDelete(selectedClient.id)}
+          className="admin-delete-btn admin-client-delete-btn"
+        >
+          Excluir Paciente
+        </button>
       </div>
     );
   }
@@ -487,13 +496,6 @@ const ClientsView = ({ clients, setClients }) => {
                 className="admin-open-client-btn"
               >
                 Abrir Ficha Completa
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDelete(c.id)}
-                className="admin-delete-btn"
-              >
-                Excluir
               </button>
             </div>
           </div>

@@ -9,6 +9,7 @@ import MobileHome from '../components/admin/MobileHome';
 import MobileAgenda from '../components/admin/MobileAgenda';
 import MobileBlockedSlots from '../components/admin/MobileBlockedSlots';
 import SiteManagerView from '../components/admin/SiteManagerView';
+import TabelaPrecoView from '../components/admin/TabelaPrecoView';
 import ClientsView from '../components/admin/ClientsView';
 import AgendaView from '../components/admin/AgendaView';
 import NewAppointmentModal from '../components/admin/NewAppointmentModal';
@@ -79,12 +80,13 @@ const AdminPanel = () => {
     <>
       {tab === 'dashboard' && (isMobile ? <MobileHome userEmail={user.email} /> : <DashboardView />)}
       {tab === 'site' && <SiteManagerView />}
+      {tab === 'tabela-preco' && <TabelaPrecoView />}
       {tab === 'clients' && <ClientsView clients={clients} setClients={setClients} />}
       {tab === 'agenda' && (isMobile ? <MobileAgenda clients={clients} setClients={setClients} /> : <AgendaView clients={clients} setClients={setClients} />)}
       {tab === 'agenda-completa' && <AgendaView clients={clients} setClients={setClients} />}
       {tab === 'bloqueios' && <MobileBlockedSlots />}
       {tab === 'financeiro' && <FinanceiroView />}
-      {tab === 'settings' && <SettingsView />}
+      {tab === 'settings' && <SettingsView theme={theme} onToggleTheme={toggleTheme} />}
     </>
   );
 
@@ -109,8 +111,6 @@ const AdminPanel = () => {
           onSelectTab={setTab}
           onNewAppointment={() => setShowQuickNewAppt(true)}
           onLogout={handleLogout}
-          theme={theme}
-          onToggleTheme={toggleTheme}
         >
           {views}
         </MobileShell>
@@ -126,8 +126,6 @@ const AdminPanel = () => {
         onSelectTab={setTab}
         onLogout={handleLogout}
         userEmail={user.email}
-        theme={theme}
-        onToggleTheme={toggleTheme}
       />
       <main className="admin-main">{views}</main>
     </div>

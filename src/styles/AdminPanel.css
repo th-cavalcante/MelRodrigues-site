@@ -635,6 +635,14 @@
   font-family: 'Manrope', sans-serif;
 }
 
+.admin-client-delete-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 24px;
+  padding: 13px 18px;
+}
+
 .admin-delete-btn:hover {
   background: oklch(60% 0.15 25);
   color: #fff;
@@ -1162,6 +1170,14 @@
 
   .admin-clients-row > *:last-child {
     grid-column: 1 / -1;
+  }
+
+  .admin-page-title {
+    font-size: 26px;
+  }
+
+  .admin-client-name {
+    font-size: 21px;
   }
 
   .admin-clients-row-header {
@@ -1872,6 +1888,27 @@
   color: oklch(38% 0.09 150);
 }
 
+.admin-doc-badge-link-btn {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  background: none;
+  border: 1px solid currentColor;
+  color: inherit;
+  opacity: 0.85;
+  border-radius: 3px;
+  padding: 5px 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+.admin-doc-badge-link-btn:hover {
+  opacity: 1;
+}
+
 .admin-agenda-health-banner {
   background: oklch(95% 0.04 40);
   border: 1px solid oklch(80% 0.08 40);
@@ -1902,7 +1939,7 @@
 
 .admin-agenda-valor {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 24px;
+  font-size: 17px;
   color: var(--adm-accent);
 }
 

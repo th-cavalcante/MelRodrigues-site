@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IconGrid, IconCalendar, IconUser, IconChart, IconMonitor, IconGear, IconSun, IconMoon } from './Icons';
+import { IconGrid, IconCalendar, IconUser, IconChart, IconMonitor, IconTag, IconGear } from './Icons';
 
 const navConfig = [
   { key: 'dashboard', label: 'Dashboard', Icon: IconGrid },
@@ -7,6 +7,7 @@ const navConfig = [
   { key: 'clients', label: 'Clientes', Icon: IconUser },
   { key: 'financeiro', label: 'Financeiro', Icon: IconChart },
   { key: 'site', label: 'Gerenciar Site', Icon: IconMonitor },
+  { key: 'tabela-preco', label: 'Tabela de Preço', Icon: IconTag },
   { key: 'settings', label: 'Configurações', Icon: IconGear },
 ];
 
@@ -14,7 +15,7 @@ const ADMIN_DISPLAY_NAMES = {
   'contato@melrodrigues.com.br': 'Mel Rodrigues',
 };
 
-const Sidebar = ({ tab, onSelectTab, onLogout, userEmail, theme, onToggleTheme }) => {
+const Sidebar = ({ tab, onSelectTab, onLogout, userEmail }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const displayName = ADMIN_DISPLAY_NAMES[userEmail] || 'Admin';
 
@@ -72,11 +73,6 @@ const Sidebar = ({ tab, onSelectTab, onLogout, userEmail, theme, onToggleTheme }
             </button>
           ))}
         </nav>
-
-        <button type="button" className="admin-theme-toggle" onClick={onToggleTheme} aria-label="Alternar tema">
-          {theme === 'dark' ? <IconSun /> : <IconMoon />}
-          <span>{theme === 'dark' ? 'Modo claro' : 'Modo escuro'}</span>
-        </button>
 
         <div className="admin-sidebar-footer">
           Logado como <strong>{displayName}</strong>
