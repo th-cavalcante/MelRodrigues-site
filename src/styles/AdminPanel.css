@@ -1162,7 +1162,8 @@
   }
 
   .admin-clients-row {
-    grid-template-columns: 1.7fr 0.5fr 0.9fr;
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 0.5fr) minmax(0, 0.9fr);
+    min-width: 0;
     column-gap: 8px;
     row-gap: 10px;
     padding: 16px 16px;
@@ -1170,6 +1171,17 @@
 
   .admin-clients-row > *:last-child {
     grid-column: 1 / -1;
+    min-width: 0;
+  }
+
+  .admin-clients-row-actions {
+    justify-content: stretch;
+  }
+
+  .admin-clients-row-actions .admin-open-client-btn {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
   }
 
   .admin-page-title {
@@ -1210,6 +1222,7 @@
   }
 
   .admin-clients-cell {
+    min-width: 0;
     font-size: 12.5px;
     white-space: nowrap;
     overflow: hidden;
@@ -2319,8 +2332,12 @@
   }
 
   .admin-agenda-list-row {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     row-gap: 6px;
+  }
+
+  .admin-agenda-list-row > * {
+    min-width: 0;
   }
 
   .admin-agenda-drawer {
