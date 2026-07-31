@@ -251,11 +251,9 @@ const TemplateEditModal = ({ template, onClose, onSaved, onDeleted }) => {
         {error && <p className="admin-mkt-wpp-error">{error}</p>}
 
         <div className="admin-mkt-modal-actions">
-          {template.is_custom && (
-            <button type="button" className="admin-mkt-modal-delete-btn" onClick={handleDelete} disabled={deleting}>
-              {deleting ? 'Excluindo…' : 'Excluir'}
-            </button>
-          )}
+          <button type="button" className="admin-mkt-modal-delete-btn" onClick={handleDelete} disabled={deleting}>
+            {deleting ? 'Excluindo…' : 'Excluir'}
+          </button>
           <button type="button" className="admin-mkt-modal-cancel-btn" onClick={onClose}>
             Cancelar
           </button>
