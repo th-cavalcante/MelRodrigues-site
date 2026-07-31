@@ -7,6 +7,7 @@ import {
   IconChart,
   IconMonitor,
   IconTag,
+  IconBolt,
   IconGear,
 } from './Icons';
 
@@ -19,6 +20,7 @@ const TITLES = {
   financeiro: 'Financeiro',
   site: 'Gerenciar Site',
   'tabela-preco': 'Tabela de Preço',
+  marketing: 'Marketing',
   settings: 'Configurações',
 };
 
@@ -74,6 +76,9 @@ const MobileShell = ({ tab, onSelectTab, onNewAppointment, onLogout, children })
             </button>
             <button type="button" className="admin-mobile-menu-fullscreen-item" onClick={() => goTo('tabela-preco')}>
               <IconTag /> Tabela de Preço
+            </button>
+            <button type="button" className="admin-mobile-menu-fullscreen-item" onClick={() => goTo('marketing')}>
+              <IconBolt /> Marketing
             </button>
             <button type="button" className="admin-mobile-menu-fullscreen-item" onClick={() => goTo('settings')}>
               <IconGear /> Configurações

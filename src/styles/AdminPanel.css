@@ -3160,3 +3160,202 @@
     cursor: pointer;
   }
 }
+
+/* ===== Marketing ===== */
+.admin-mkt {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.admin-mkt-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.admin-mkt-section-title {
+  font: 700 14px 'Manrope', sans-serif;
+  color: var(--adm-text);
+}
+
+.admin-mkt-automations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.admin-mkt-automation-card {
+  background: var(--adm-card);
+  border: 1px solid var(--adm-border);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.admin-mkt-automation-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.admin-mkt-channel-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 7px;
+  font: 700 11px 'Inter', sans-serif;
+  white-space: nowrap;
+  flex: none;
+}
+
+.admin-mkt-automation-title {
+  font: 700 13.5px 'Inter', sans-serif;
+  color: var(--adm-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-mkt-automation-desc {
+  font: 500 12px 'Inter', sans-serif;
+  color: var(--adm-text3);
+  line-height: 1.4;
+}
+
+.admin-mkt-new-campaign-btn {
+  background: linear-gradient(135deg, oklch(65% 0.19 255), oklch(60% 0.19 285));
+  border: none;
+  color: white;
+  font: 700 12.5px 'Inter', sans-serif;
+  padding: 10px 16px;
+  border-radius: 9px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.admin-mkt-campaigns-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-mkt-campaign-row {
+  background: var(--adm-card);
+  border: 1px solid var(--adm-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.admin-mkt-campaign-title {
+  flex: 1;
+  min-width: 0;
+  font: 700 13px 'Inter', sans-serif;
+  color: var(--adm-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-mkt-campaign-stat {
+  width: 70px;
+  text-align: center;
+  flex: none;
+}
+
+.admin-mkt-campaign-stat-label {
+  font: 600 10.5px 'Inter', sans-serif;
+  color: var(--adm-text3);
+}
+
+.admin-mkt-campaign-stat-value {
+  font: 700 13px 'Inter', sans-serif;
+  color: var(--adm-text);
+}
+
+.admin-mkt-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 7px;
+  font: 700 11px 'Inter', sans-serif;
+  white-space: nowrap;
+  flex: none;
+}
+
+.admin-mkt-wpp-connected-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 7px;
+  font: 700 11px 'Inter', sans-serif;
+  color: oklch(70% 0.17 155);
+  background: oklch(70% 0.17 155 / 0.14);
+}
+
+.admin-mkt-wpp-card {
+  background: var(--adm-card);
+  border: 1px solid var(--adm-border);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.admin-mkt-wpp-text {
+  font: 500 13px 'Inter', sans-serif;
+  color: var(--adm-text3);
+  line-height: 1.5;
+  max-width: 420px;
+  margin: 0;
+}
+
+.admin-mkt-wpp-qr-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.admin-mkt-wpp-qr-img {
+  width: 220px;
+  height: 220px;
+  border-radius: 12px;
+  border: 1px solid var(--adm-border);
+  background: white;
+  padding: 10px;
+}
+
+.admin-mkt-wpp-error {
+  font: 600 12.5px 'Inter', sans-serif;
+  color: oklch(68% 0.19 25);
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .admin-mkt-automations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-mkt-campaign-row {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .admin-mkt-campaign-title {
+    flex-basis: 100%;
+  }
+}

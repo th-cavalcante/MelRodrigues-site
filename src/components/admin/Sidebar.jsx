@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IconGrid, IconCalendar, IconUser, IconChart, IconMonitor, IconTag, IconGear } from './Icons';
+import { IconGrid, IconCalendar, IconUser, IconChart, IconMonitor, IconTag, IconBolt, IconGear } from './Icons';
 
 const navConfig = [
   { key: 'dashboard', label: 'Dashboard', Icon: IconGrid },
@@ -8,6 +8,7 @@ const navConfig = [
   { key: 'financeiro', label: 'Financeiro', Icon: IconChart },
   { key: 'site', label: 'Gerenciar Site', Icon: IconMonitor },
   { key: 'tabela-preco', label: 'Tabela de Preço', Icon: IconTag },
+  { key: 'marketing', label: 'Marketing', Icon: IconBolt },
   { key: 'settings', label: 'Configurações', Icon: IconGear },
 ];
 

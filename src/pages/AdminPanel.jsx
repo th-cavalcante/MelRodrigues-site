@@ -14,6 +14,7 @@ import ClientsView from '../components/admin/ClientsView';
 import AgendaView from '../components/admin/AgendaView';
 import NewAppointmentModal from '../components/admin/NewAppointmentModal';
 import FinanceiroView from '../components/admin/FinanceiroView';
+import MarketingView from '../components/admin/MarketingView';
 import SettingsView from '../components/admin/SettingsView';
 import { useAuth } from '../context/AuthContext';
 import { listPatients } from '../lib/patients';
@@ -86,6 +87,7 @@ const AdminPanel = () => {
       {tab === 'agenda-completa' && <AgendaView clients={clients} setClients={setClients} />}
       {tab === 'bloqueios' && <MobileBlockedSlots />}
       {tab === 'financeiro' && <FinanceiroView />}
+      {tab === 'marketing' && <MarketingView />}
       {tab === 'settings' && <SettingsView theme={theme} onToggleTheme={toggleTheme} />}
     </>
   );

@@ -168,6 +168,12 @@ export const IconTag = ({ size = 17 }) => (
   </svg>
 );
 
+export const IconBolt = ({ size = 17 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+    <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />
+  </svg>
+);
+
 export const IconLogOut = ({ size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
