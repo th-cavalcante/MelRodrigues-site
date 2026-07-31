@@ -68,7 +68,10 @@ serve(async (req) => {
         .select('booking_date, booking_time, service, patients(name, phone)')
         .eq('id', bookingId)
         .maybeSingle();
-      if (bookingError || !booking) return jsonResponse({ error: 'Agendamento não encontrado.' }, 404);
+      if (bookingError || !booking) {
+        console.error('DIAG bookingId recebido:', JSON.stringify(bookingId), 'bookingError:', JSON.stringify(bookingError));
+        return jsonResponse({ error: 'Agendamento não encontrado.' }, 404);
+      }
 
       const patient = booking.patients;
       phoneDigits = formatPhoneForEvolution(patient?.phone);
