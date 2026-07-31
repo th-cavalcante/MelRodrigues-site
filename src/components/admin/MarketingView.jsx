@@ -58,6 +58,16 @@ const AUTOMATIONS = [
   },
 ];
 
+const PREVIEW_VALUES = {
+  nome: 'Ana Beatriz',
+  servico: 'Design de sobrancelha',
+  data: '15/08',
+  hora: '14:30',
+};
+
+const renderPreview = (text) =>
+  Object.entries(PREVIEW_VALUES).reduce((acc, [key, value]) => acc.replaceAll(`{{${key}}}`, value), text || '');
+
 const TEMPLATE_VARIABLES = {
   booking_confirmed: '{{nome}}, {{data}}, {{hora}}',
   test_reminder: '{{nome}}, {{servico}}, {{data}}, {{hora}}',
@@ -231,6 +241,11 @@ const TemplateEditModal = ({ template, onClose, onSaved }) => {
             onChange={(e) => setDraft(e.target.value)}
             rows={6}
           />
+        </div>
+
+        <div className="admin-mkt-modal-field">
+          <label className="admin-mkt-modal-label">Pré-visualização</label>
+          <div className="admin-mkt-preview-bubble">{renderPreview(draft)}</div>
         </div>
 
         {error && <p className="admin-mkt-wpp-error">{error}</p>}
@@ -414,6 +429,11 @@ const CampaignsSection = ({ birthdayCount }) => {
                 onChange={(e) => setMessage(e.target.value)}
                 rows={4}
               />
+            </div>
+
+            <div className="admin-mkt-modal-field">
+              <label className="admin-mkt-modal-label">Pré-visualização</label>
+              <div className="admin-mkt-preview-bubble">{renderPreview(message)}</div>
             </div>
 
             {error && <p className="admin-mkt-wpp-error">{error}</p>}

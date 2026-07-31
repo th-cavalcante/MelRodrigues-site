@@ -3439,6 +3439,18 @@
   font-family: 'Inter', sans-serif;
 }
 
+.admin-mkt-preview-bubble {
+  background: oklch(88% 0.08 150);
+  color: oklch(22% 0.03 150);
+  border-radius: 12px 12px 12px 2px;
+  padding: 12px 14px;
+  font: 500 13px 'Inter', sans-serif;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 85%;
+}
+
 .admin-mkt-template-edit-btn {
   background: var(--adm-card2);
   border: 1px solid var(--adm-border);
