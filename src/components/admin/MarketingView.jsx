@@ -1,19 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { getWhatsAppStatus, getWhatsAppQrCode } from '../../lib/evolution';
+import { getWhatsAppStatus, getWhatsAppQrCode, sendBirthdayMessage } from '../../lib/evolution';
+import { listPatients } from '../../lib/patients';
+import { fetchCampaigns, createCampaign, triggerCampaignSend } from '../../lib/campaigns';
+import { fetchMessageTemplates, updateMessageTemplate } from '../../lib/messageTemplates';
 
 const CHANNEL_COLOR = 'oklch(70% 0.17 155)';
 const CHANNEL_BG = 'oklch(70% 0.17 155 / 0.14)';
 
 const STATUS_COLORS = {
-  Enviada: { color: 'oklch(70% 0.17 155)', bg: 'oklch(70% 0.17 155 / 0.14)' },
-  Agendada: { color: 'oklch(70% 0.15 240)', bg: 'oklch(70% 0.15 240 / 0.14)' },
+  enviada: { color: 'oklch(70% 0.17 155)', bg: 'oklch(70% 0.17 155 / 0.14)' },
+  enviando: { color: 'oklch(70% 0.15 240)', bg: 'oklch(70% 0.15 240 / 0.14)' },
+  erro: { color: 'oklch(68% 0.19 25)', bg: 'oklch(68% 0.19 25 / 0.14)' },
 };
+
+const STATUS_LABELS = { enviada: 'Enviada', enviando: 'Enviando…', erro: 'Erro' };
 
 const INITIAL_AUTOMATIONS = [
   {
     id: 'au1',
     title: 'Confirmação automática',
-    desc: 'Envia confirmação 24h antes do horário e aguarda resposta da cliente.',
+    desc: 'Envia confirmação por WhatsApp assim que o pagamento do sinal é aprovado.',
     active: true,
   },
   {
@@ -30,17 +36,16 @@ const INITIAL_AUTOMATIONS = [
   },
 ];
 
-const CAMPAIGNS = [
-  {
-    id: 'cp1',
-    title: 'Reative sua beleza — volte com 15% OFF',
-    audience: 'Inativos há 60+ dias',
-    sent: 0,
-    openRate: 0,
-    clickRate: 0,
-    status: 'Agendada',
-  },
-];
+const TEMPLATE_VARIABLES = {
+  booking_confirmed: '{{nome}}, {{data}}, {{hora}}',
+  test_reminder: '{{nome}}, {{servico}}, {{data}}, {{hora}}',
+  birthday: '{{nome}}',
+};
+
+const currentMonthPatients = (patients) => {
+  const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0');
+  return patients.filter((p) => p.birthdate && p.birthdate.slice(5, 7) === currentMonth);
+};
 
 const WhatsAppConnectionCard = () => {
   const [state, setState] = useState('loading');
@@ -136,8 +141,250 @@ const WhatsAppConnectionCard = () => {
   );
 };
 
+const BirthdaysSection = () => {
+  const [patients, setPatients] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [sendState, setSendState] = useState({});
+
+  useEffect(() => {
+    listPatients()
+      .then((all) => setPatients(currentMonthPatients(all)))
+      .catch((err) => console.error('Erro ao buscar aniversariantes:', err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleSend = async (patientId) => {
+    setSendState((prev) => ({ ...prev, [patientId]: 'sending' }));
+    try {
+      await sendBirthdayMessage(patientId);
+      setSendState((prev) => ({ ...prev, [patientId]: 'sent' }));
+    } catch (err) {
+      console.error('Erro ao enviar mensagem de aniversário:', err);
+      setSendState((prev) => ({ ...prev, [patientId]: 'error' }));
+    }
+  };
+
+  return (
+    <div className="admin-mkt-section">
+      <div className="admin-mkt-section-header">
+        <span className="admin-mkt-section-title">Aniversariantes do Mês · {patients.length}</span>
+      </div>
+      {loading ? (
+        <p className="admin-mkt-wpp-text">Carregando…</p>
+      ) : patients.length === 0 ? (
+        <p className="admin-mkt-wpp-text">Nenhum paciente faz aniversário este mês.</p>
+      ) : (
+        <div className="admin-mkt-birthday-list">
+          {patients.map((p) => {
+            const status = sendState[p.id];
+            return (
+              <div key={p.id} className="admin-mkt-birthday-row">
+                <span className="admin-mkt-birthday-name">{p.name || 'Sem nome'}</span>
+                <button
+                  type="button"
+                  className="admin-mkt-birthday-btn"
+                  onClick={() => handleSend(p.id)}
+                  disabled={status === 'sending'}
+                >
+                  {status === 'sending'
+                    ? 'Enviando…'
+                    : status === 'sent'
+                    ? 'Enviado ✓'
+                    : status === 'error'
+                    ? 'Tentar de novo'
+                    : '🎉 Enviar parabéns'}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const CampaignsSection = ({ birthdayCount }) => {
+  const [campaigns, setCampaigns] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
+
+  const loadCampaigns = () => {
+    fetchCampaigns()
+      .then(setCampaigns)
+      .catch((err) => console.error('Erro ao buscar campanhas:', err))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadCampaigns();
+  }, []);
+
+  const handleSubmit = async () => {
+    if (!title.trim() || !message.trim()) {
+      setError('Preencha o título e a mensagem.');
+      return;
+    }
+    setError('');
+    setSending(true);
+    try {
+      const campaign = await createCampaign({
+        title,
+        messageBody: message,
+        audience: 'aniversariantes_mes',
+        targetCount: birthdayCount,
+      });
+      await triggerCampaignSend(campaign.id);
+      setTitle('');
+      setMessage('');
+      setShowForm(false);
+      loadCampaigns();
+    } catch (err) {
+      setError(err.message || 'Não foi possível enviar a campanha.');
+    } finally {
+      setSending(false);
+    }
+  };
+
+  return (
+    <div className="admin-mkt-section admin-mkt-campaigns">
+      <div className="admin-mkt-section-header">
+        <span className="admin-mkt-section-title">Campanhas</span>
+        <button type="button" className="admin-mkt-new-campaign-btn" onClick={() => setShowForm((v) => !v)}>
+          {showForm ? 'Cancelar' : '+ Nova campanha'}
+        </button>
+      </div>
+
+      {showForm && (
+        <div className="admin-mkt-campaign-form">
+          <p className="admin-mkt-wpp-text">
+            Público: <strong>Aniversariantes do mês</strong> ({birthdayCount} paciente(s))
+          </p>
+          <input
+            type="text"
+            className="field-input"
+            placeholder="Título da campanha"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <textarea
+            className="field-input admin-mkt-campaign-textarea"
+            placeholder="Mensagem (use {{nome}} pra personalizar)"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            rows={4}
+          />
+          {error && <p className="admin-mkt-wpp-error">{error}</p>}
+          <button type="button" className="admin-mkt-new-campaign-btn" onClick={handleSubmit} disabled={sending}>
+            {sending ? 'Enviando…' : 'Enviar campanha'}
+          </button>
+        </div>
+      )}
+
+      {!loading && campaigns.length === 0 && !showForm && (
+        <p className="admin-mkt-wpp-text">Nenhuma campanha criada ainda.</p>
+      )}
+
+      <div className="admin-mkt-campaigns-list">
+        {campaigns.map((cp) => {
+          const statusStyle = STATUS_COLORS[cp.status] || STATUS_COLORS.enviando;
+          return (
+            <div key={cp.id} className="admin-mkt-campaign-row">
+              <span className="admin-mkt-channel-badge" style={{ color: CHANNEL_COLOR, background: CHANNEL_BG }}>
+                Aniversariantes
+              </span>
+              <div className="admin-mkt-campaign-title">{cp.title}</div>
+              <div className="admin-mkt-campaign-stat">
+                <div className="admin-mkt-campaign-stat-label">Enviados</div>
+                <div className="admin-mkt-campaign-stat-value">
+                  {cp.sent_count}/{cp.target_count}
+                </div>
+              </div>
+              <span
+                className="admin-mkt-status-badge"
+                style={{ color: statusStyle.color, background: statusStyle.bg }}
+              >
+                {STATUS_LABELS[cp.status] || cp.status}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const MessageTemplatesSection = () => {
+  const [templates, setTemplates] = useState([]);
+  const [drafts, setDrafts] = useState({});
+  const [saving, setSaving] = useState({});
+  const [saved, setSaved] = useState({});
+
+  useEffect(() => {
+    fetchMessageTemplates()
+      .then((data) => {
+        setTemplates(data);
+        setDrafts(Object.fromEntries(data.map((t) => [t.key, t.body])));
+      })
+      .catch((err) => console.error('Erro ao buscar mensagens:', err));
+  }, []);
+
+  const handleSave = async (key) => {
+    setSaving((prev) => ({ ...prev, [key]: true }));
+    try {
+      await updateMessageTemplate(key, drafts[key]);
+      setSaved((prev) => ({ ...prev, [key]: true }));
+      setTimeout(() => setSaved((prev) => ({ ...prev, [key]: false })), 2000);
+    } catch (err) {
+      console.error('Erro ao salvar mensagem:', err);
+    } finally {
+      setSaving((prev) => ({ ...prev, [key]: false }));
+    }
+  };
+
+  return (
+    <div className="admin-mkt-section">
+      <div className="admin-mkt-section-header">
+        <span className="admin-mkt-section-title">Editar Mensagens</span>
+      </div>
+      <div className="admin-mkt-template-list">
+        {templates.map((t) => (
+          <div key={t.key} className="admin-mkt-template-card">
+            <span className="admin-mkt-template-label">{t.label}</span>
+            <span className="admin-mkt-template-vars">Variáveis: {TEMPLATE_VARIABLES[t.key] || '—'}</span>
+            <textarea
+              className="field-input admin-mkt-campaign-textarea"
+              value={drafts[t.key] ?? ''}
+              onChange={(e) => setDrafts((prev) => ({ ...prev, [t.key]: e.target.value }))}
+              rows={4}
+            />
+            <button
+              type="button"
+              className="admin-mkt-birthday-btn"
+              onClick={() => handleSave(t.key)}
+              disabled={saving[t.key]}
+            >
+              {saving[t.key] ? 'Salvando…' : saved[t.key] ? 'Salvo ✓' : 'Salvar'}
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const MarketingView = () => {
   const [automations, setAutomations] = useState(INITIAL_AUTOMATIONS);
+  const [birthdayCount, setBirthdayCount] = useState(0);
+
+  useEffect(() => {
+    listPatients()
+      .then((all) => setBirthdayCount(currentMonthPatients(all).length))
+      .catch(() => {});
+  }, []);
 
   const toggleAutomation = (id) => {
     setAutomations((prev) => prev.map((au) => (au.id === id ? { ...au, active: !au.active } : au)));
@@ -176,45 +423,9 @@ const MarketingView = () => {
         </div>
       </div>
 
-      <div className="admin-mkt-section admin-mkt-campaigns">
-        <div className="admin-mkt-section-header">
-          <span className="admin-mkt-section-title">Campanhas</span>
-          <button type="button" className="admin-mkt-new-campaign-btn" title="Em breve">
-            + Nova campanha
-          </button>
-        </div>
-        <div className="admin-mkt-campaigns-list">
-          {CAMPAIGNS.map((cp) => {
-            const statusStyle = STATUS_COLORS[cp.status] || STATUS_COLORS.Agendada;
-            return (
-              <div key={cp.id} className="admin-mkt-campaign-row">
-                <span className="admin-mkt-channel-badge" style={{ color: CHANNEL_COLOR, background: CHANNEL_BG }}>
-                  {cp.audience}
-                </span>
-                <div className="admin-mkt-campaign-title">{cp.title}</div>
-                <div className="admin-mkt-campaign-stat">
-                  <div className="admin-mkt-campaign-stat-label">Enviados</div>
-                  <div className="admin-mkt-campaign-stat-value">{cp.sent}</div>
-                </div>
-                <div className="admin-mkt-campaign-stat">
-                  <div className="admin-mkt-campaign-stat-label">Abertura</div>
-                  <div className="admin-mkt-campaign-stat-value">{cp.openRate}%</div>
-                </div>
-                <div className="admin-mkt-campaign-stat">
-                  <div className="admin-mkt-campaign-stat-label">Cliques</div>
-                  <div className="admin-mkt-campaign-stat-value">{cp.clickRate}%</div>
-                </div>
-                <span
-                  className="admin-mkt-status-badge"
-                  style={{ color: statusStyle.color, background: statusStyle.bg }}
-                >
-                  {cp.status}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <BirthdaysSection />
+      <CampaignsSection birthdayCount={birthdayCount} />
+      <MessageTemplatesSection />
     </div>
   );
 };

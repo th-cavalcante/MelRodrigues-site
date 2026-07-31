@@ -4,6 +4,7 @@ import './App.css';
 import { AuthProvider } from './context/AuthContext';
 import Home from './pages/Home';
 import TabelaValores from './pages/TabelaValores';
+import CuidadosSessao from './pages/CuidadosSessao';
 import LocacaoHakon from './pages/LocacaoHakon';
 import CursoDepilacao from './pages/CursoDepilacao';
 import AdminLogin from './pages/AdminLogin';
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/valores" element={<TabelaValores />} />
+          <Route path="/recomendacoes" element={<CuidadosSessao />} />
           <Route path="/locacao-hakon" element={<LocacaoHakon />} />
           <Route path="/cursos" element={<CursoDepilacao />} />
           <Route path="/admin/login" element={<AdminLogin />} />

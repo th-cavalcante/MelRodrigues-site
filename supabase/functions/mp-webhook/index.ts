@@ -13,6 +13,7 @@
 
 import { serve } from 'https://deno.land/std@0.190.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { sendWhatsAppText, formatPhoneForEvolution, getTemplate, fillTemplate } from '../_shared/evolution.ts';
 
 serve(async (req) => {
   try {
@@ -71,6 +72,40 @@ serve(async (req) => {
 
     const { error } = await supabaseAdmin.from('bookings').update(updates).eq('id', bookingId);
     if (error) console.error('Erro ao atualizar agendamento a partir do webhook:', error);
+
+    // Manda a confirmação por WhatsApp quando o sinal é aprovado. Isso
+    // nunca pode derrubar a confirmação do pagamento em si — qualquer erro
+    // aqui só é logado, a resposta pro Mercado Pago continua sendo 200.
+    if (!error && payment.status === 'approved') {
+      try {
+        const { data: booking } = await supabaseAdmin
+          .from('bookings')
+          .select('booking_date, booking_time, patients(name, phone)')
+          .eq('id', bookingId)
+          .maybeSingle();
+
+        const patient = booking?.patients;
+        const phoneDigits = formatPhoneForEvolution(patient?.phone);
+        if (phoneDigits) {
+          const [year, month, day] = (booking?.booking_date || '').split('-');
+          const dateLabel = year ? `${day}/${month}` : '';
+          const timeLabel = (booking?.booking_time || '').slice(0, 5);
+          const firstName = (patient?.name || '').trim().split(/\s+/)[0] || '';
+
+          const body = await getTemplate(
+            supabaseAdmin,
+            'booking_confirmed',
+            '{{nome}}! Sua sessão está confirmada para {{data}} às {{hora}}.'
+          );
+          const text = fillTemplate(body, { nome: firstName, data: dateLabel, hora: timeLabel });
+
+          const result = await sendWhatsAppText(phoneDigits, text);
+          if (!result.ok) console.error('Erro ao enviar confirmação por WhatsApp:', result.error);
+        }
+      } catch (whatsappErr) {
+        console.error('Erro inesperado ao enviar confirmação por WhatsApp:', whatsappErr);
+      }
+    }
 
     return new Response('ok', { status: 200 });
   } catch (err) {

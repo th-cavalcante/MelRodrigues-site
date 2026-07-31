@@ -1,6 +1,7 @@
-// Edge Function — envia uma mensagem de WhatsApp pra um paciente de um
-// agendamento específico, via Evolution API (instância própria na VPS).
-// Só pra teste manual disparado pelo admin — sem automação/cron ainda.
+// Edge Function — envia uma mensagem de WhatsApp usando um template
+// editável (tabela message_templates), via Evolution API. Serve dois casos:
+//   { templateKey: 'test_reminder', bookingId }  — lembrete de teste manual
+//   { templateKey: 'birthday', patientId }       — mensagem de aniversário
 //
 // Segredos necessários (já configurados via `supabase secrets set`):
 //   EVOLUTION_API_URL, EVOLUTION_API_KEY, EVOLUTION_INSTANCE_NAME
@@ -11,6 +12,7 @@
 
 import { serve } from 'https://deno.land/std@0.190.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { sendWhatsAppText, formatPhoneForEvolution, getTemplate, fillTemplate } from '../_shared/evolution.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -29,62 +31,74 @@ serve(async (req) => {
   }
 
   try {
-    const { bookingId } = await req.json();
-    if (!bookingId) {
-      return jsonResponse({ error: 'bookingId é obrigatório.' }, 400);
-    }
-
-    const apiUrl = Deno.env.get('EVOLUTION_API_URL');
-    const apiKey = Deno.env.get('EVOLUTION_API_KEY');
-    const instanceName = Deno.env.get('EVOLUTION_INSTANCE_NAME');
-
-    if (!apiUrl || !apiKey || !instanceName) {
-      console.error('Secrets da Evolution API não configurados.');
-      return jsonResponse({ error: 'Integração com WhatsApp temporariamente indisponível.' }, 500);
-    }
+    const { templateKey, bookingId, patientId } = await req.json();
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { data: booking, error: bookingError } = await supabaseAdmin
-      .from('bookings')
-      .select('booking_date, booking_time, service, patients(name, phone)')
-      .eq('id', bookingId)
-      .maybeSingle();
+    let phoneDigits: string | null = null;
+    let text: string;
 
-    if (bookingError || !booking) {
-      return jsonResponse({ error: 'Agendamento não encontrado.' }, 404);
+    if (templateKey === 'birthday') {
+      if (!patientId) return jsonResponse({ error: 'patientId é obrigatório.' }, 400);
+
+      const { data: patient, error: patientError } = await supabaseAdmin
+        .from('patients')
+        .select('name, phone')
+        .eq('id', patientId)
+        .maybeSingle();
+      if (patientError || !patient) return jsonResponse({ error: 'Paciente não encontrado.' }, 404);
+
+      phoneDigits = formatPhoneForEvolution(patient.phone);
+      const firstName = (patient.name || '').trim().split(/\s+/)[0] || '';
+      const body = await getTemplate(
+        supabaseAdmin,
+        'birthday',
+        'Parabéns, {{nome}}! 🎉 A equipe MR Laser deseja um feliz aniversário!'
+      );
+      text = fillTemplate(body, { nome: firstName });
+    } else {
+      // Padrão: lembrete de teste, a partir de um agendamento.
+      if (!bookingId) return jsonResponse({ error: 'bookingId é obrigatório.' }, 400);
+
+      const { data: booking, error: bookingError } = await supabaseAdmin
+        .from('bookings')
+        .select('booking_date, booking_time, service, patients(name, phone)')
+        .eq('id', bookingId)
+        .maybeSingle();
+      if (bookingError || !booking) return jsonResponse({ error: 'Agendamento não encontrado.' }, 404);
+
+      const patient = booking.patients;
+      phoneDigits = formatPhoneForEvolution(patient?.phone);
+
+      const [year, month, day] = (booking.booking_date || '').split('-');
+      const dateLabel = year ? `${day}/${month}` : '';
+      const timeLabel = (booking.booking_time || '').slice(0, 5);
+      const firstName = (patient?.name || '').trim().split(/\s+/)[0] || '';
+
+      const body = await getTemplate(
+        supabaseAdmin,
+        'test_reminder',
+        'Olá {{nome}}! Lembrete: {{servico}} em {{data}} às {{hora}}.'
+      );
+      text = fillTemplate(body, {
+        nome: firstName,
+        servico: booking.service || 'sua sessão',
+        data: dateLabel,
+        hora: timeLabel,
+      });
     }
 
-    const patient = booking.patients;
-    const phoneDigits = (patient?.phone || '').replace(/\D/g, '');
     if (!phoneDigits) {
       return jsonResponse({ error: 'Este paciente não tem telefone cadastrado.' }, 400);
     }
-    const number = phoneDigits.startsWith('55') ? phoneDigits : `55${phoneDigits}`;
 
-    const [year, month, day] = (booking.booking_date || '').split('-');
-    const dateLabel = year ? `${day}/${month}` : '';
-    const timeLabel = (booking.booking_time || '').slice(0, 5);
-    const firstName = (patient?.name || '').trim().split(/\s+/)[0] || '';
-
-    const text =
-      `Olá ${firstName}! Passando pra lembrar do seu horário na MR Laser: ` +
-      `${booking.service || 'sua sessão'} em ${dateLabel} às ${timeLabel}. Te esperamos! 💙\n\n` +
-      `(mensagem de teste)`;
-
-    const res = await fetch(`${apiUrl}/message/sendText/${instanceName}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', apikey: apiKey },
-      body: JSON.stringify({ number, text }),
-    });
-    const data = await res.json();
-
-    if (!res.ok) {
-      console.error('Erro ao enviar mensagem pela Evolution API:', data);
-      return jsonResponse({ error: data?.message || data?.response?.message || 'Não foi possível enviar a mensagem.' }, 502);
+    const result = await sendWhatsAppText(phoneDigits, text);
+    if (!result.ok) {
+      console.error('Erro ao enviar mensagem pela Evolution API:', result.error);
+      return jsonResponse({ error: result.error || 'Não foi possível enviar a mensagem.' }, 502);
     }
 
     return jsonResponse({ success: true });

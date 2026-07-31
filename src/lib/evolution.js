@@ -24,16 +24,14 @@ export const getWhatsAppStatus = () => invokeEvolution('status');
  * escanear. Se já estiver conectado, devolve state:'open' sem QR. */
 export const getWhatsAppQrCode = () => invokeEvolution('qrcode');
 
-/** Dispara manualmente uma mensagem de lembrete de teste pro paciente de um
- * agendamento específico, via WhatsApp já conectado. */
-export const sendTestReminder = async (bookingId) => {
-  const { data, error } = await supabase.functions.invoke('send-whatsapp-message', { body: { bookingId } });
+const invokeSendMessage = async (body) => {
+  const { data, error } = await supabase.functions.invoke('send-whatsapp-message', { body });
   if (error) {
     let message = error.message;
     try {
       if (error.context && typeof error.context.json === 'function') {
-        const body = await error.context.json();
-        if (body?.error) message = body.error;
+        const parsed = await error.context.json();
+        if (parsed?.error) message = parsed.error;
       }
     } catch (parseErr) {
       console.error('Erro ao ler detalhe do erro da Edge Function:', parseErr);
@@ -42,3 +40,10 @@ export const sendTestReminder = async (bookingId) => {
   }
   return data;
 };
+
+/** Dispara manualmente uma mensagem de lembrete de teste pro paciente de um
+ * agendamento específico, via WhatsApp já conectado. */
+export const sendTestReminder = (bookingId) => invokeSendMessage({ templateKey: 'test_reminder', bookingId });
+
+/** Dispara a mensagem de aniversário pra um paciente específico. */
+export const sendBirthdayMessage = (patientId) => invokeSendMessage({ templateKey: 'birthday', patientId });
