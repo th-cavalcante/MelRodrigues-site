@@ -3471,17 +3471,25 @@
 .admin-mkt-template-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
 .admin-mkt-template-card {
   background: var(--adm-card);
   border: 1px solid var(--adm-border);
   border-radius: 14px;
-  padding: 18px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.admin-mkt-template-info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
+  min-width: 0;
 }
 
 .admin-mkt-template-label {
@@ -3489,9 +3497,23 @@
   color: var(--adm-text);
 }
 
-.admin-mkt-template-vars {
-  font: 500 11.5px 'Inter', sans-serif;
+.admin-mkt-template-preview {
+  font: 500 12px 'Inter', sans-serif;
   color: var(--adm-text3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-mkt-template-edit-btn {
+  background: var(--adm-card2);
+  border: 1px solid var(--adm-border);
+  color: var(--adm-text);
+  font: 700 12px 'Inter', sans-serif;
+  padding: 8px 14px;
+  border-radius: 9px;
+  cursor: pointer;
+  flex: none;
 }
 
 @media (max-width: 860px) {
@@ -3510,5 +3532,13 @@
 
   .admin-mkt-birthday-row {
     flex-wrap: wrap;
+  }
+
+  .admin-mkt-template-card {
+    flex-wrap: wrap;
+  }
+
+  .admin-mkt-template-info {
+    flex-basis: 100%;
   }
 }

@@ -351,29 +351,41 @@ const CampaignsSection = ({ birthdayCount }) => {
 
 const MessageTemplatesSection = () => {
   const [templates, setTemplates] = useState([]);
-  const [drafts, setDrafts] = useState({});
-  const [saving, setSaving] = useState({});
-  const [saved, setSaved] = useState({});
+  const [editingKey, setEditingKey] = useState(null);
+  const [draft, setDraft] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchMessageTemplates()
-      .then((data) => {
-        setTemplates(data);
-        setDrafts(Object.fromEntries(data.map((t) => [t.key, t.body])));
-      })
+      .then(setTemplates)
       .catch((err) => console.error('Erro ao buscar mensagens:', err));
   }, []);
 
-  const handleSave = async (key) => {
-    setSaving((prev) => ({ ...prev, [key]: true }));
+  const editingTemplate = templates.find((t) => t.key === editingKey) || null;
+
+  const openEditor = (t) => {
+    setEditingKey(t.key);
+    setDraft(t.body);
+    setError('');
+  };
+
+  const closeEditor = () => {
+    setEditingKey(null);
+    setError('');
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    setError('');
     try {
-      await updateMessageTemplate(key, drafts[key]);
-      setSaved((prev) => ({ ...prev, [key]: true }));
-      setTimeout(() => setSaved((prev) => ({ ...prev, [key]: false })), 2000);
+      await updateMessageTemplate(editingKey, draft);
+      setTemplates((prev) => prev.map((t) => (t.key === editingKey ? { ...t, body: draft } : t)));
+      closeEditor();
     } catch (err) {
-      console.error('Erro ao salvar mensagem:', err);
+      setError(err.message || 'Não foi possível salvar.');
     } finally {
-      setSaving((prev) => ({ ...prev, [key]: false }));
+      setSaving(false);
     }
   };
 
@@ -385,25 +397,52 @@ const MessageTemplatesSection = () => {
       <div className="admin-mkt-template-list">
         {templates.map((t) => (
           <div key={t.key} className="admin-mkt-template-card">
-            <span className="admin-mkt-template-label">{t.label}</span>
-            <span className="admin-mkt-template-vars">Variáveis: {TEMPLATE_VARIABLES[t.key] || '—'}</span>
-            <textarea
-              className="field-input admin-mkt-campaign-textarea"
-              value={drafts[t.key] ?? ''}
-              onChange={(e) => setDrafts((prev) => ({ ...prev, [t.key]: e.target.value }))}
-              rows={4}
-            />
-            <button
-              type="button"
-              className="admin-mkt-birthday-btn"
-              onClick={() => handleSave(t.key)}
-              disabled={saving[t.key]}
-            >
-              {saving[t.key] ? 'Salvando…' : saved[t.key] ? 'Salvo ✓' : 'Salvar'}
+            <div className="admin-mkt-template-info">
+              <span className="admin-mkt-template-label">{t.label}</span>
+              <span className="admin-mkt-template-preview">{t.body}</span>
+            </div>
+            <button type="button" className="admin-mkt-template-edit-btn" onClick={() => openEditor(t)}>
+              Editar
             </button>
           </div>
         ))}
       </div>
+
+      {editingTemplate && (
+        <div className="admin-mkt-modal-overlay" onClick={closeEditor}>
+          <div className="admin-mkt-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-mkt-modal-header">
+              <span className="admin-mkt-modal-title">{editingTemplate.label}</span>
+              <button type="button" className="admin-mkt-modal-close" onClick={closeEditor} aria-label="Fechar">
+                ✕
+              </button>
+            </div>
+
+            <div className="admin-mkt-modal-field">
+              <label className="admin-mkt-modal-label">
+                Variáveis disponíveis: {TEMPLATE_VARIABLES[editingTemplate.key] || '—'}
+              </label>
+              <textarea
+                className="field-input admin-mkt-campaign-textarea"
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                rows={6}
+              />
+            </div>
+
+            {error && <p className="admin-mkt-wpp-error">{error}</p>}
+
+            <div className="admin-mkt-modal-actions">
+              <button type="button" className="admin-mkt-modal-cancel-btn" onClick={closeEditor}>
+                Cancelar
+              </button>
+              <button type="button" className="admin-mkt-new-campaign-btn" onClick={handleSave} disabled={saving}>
+                {saving ? 'Salvando…' : 'Salvar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
