@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { getWhatsAppStatus, getWhatsAppQrCode } from '../../lib/evolution';
+import { getWhatsAppStatus, getWhatsAppQrCode, disconnectWhatsApp } from '../../lib/evolution';
 import { listPatients } from '../../lib/patients';
 import { fetchCampaigns, createCampaign, triggerCampaignSend } from '../../lib/campaigns';
 import { fetchMessageTemplates, updateMessageTemplate } from '../../lib/messageTemplates';
@@ -76,6 +76,7 @@ const WhatsAppConnectionCard = () => {
   const [state, setState] = useState('loading');
   const [qrCode, setQrCode] = useState(null);
   const [connecting, setConnecting] = useState(false);
+  const [disconnecting, setDisconnecting] = useState(false);
   const [error, setError] = useState('');
   const statusIntervalRef = useRef(null);
   const qrRefreshIntervalRef = useRef(null);
@@ -132,6 +133,24 @@ const WhatsAppConnectionCard = () => {
     qrRefreshIntervalRef.current = setInterval(fetchQrCode, 25000);
   };
 
+  const handleDisconnect = async () => {
+    if (!window.confirm('Desconectar o WhatsApp da clínica? As automações param de funcionar até reconectar.')) {
+      return;
+    }
+    setError('');
+    setDisconnecting(true);
+    try {
+      await disconnectWhatsApp();
+      clearTimers();
+      setState('close');
+      setQrCode(null);
+    } catch (err) {
+      setError(err.message || 'Não foi possível desconectar o WhatsApp.');
+    } finally {
+      setDisconnecting(false);
+    }
+  };
+
   return (
     <div className="admin-mkt-section">
       <div className="admin-mkt-section-header">
@@ -140,9 +159,19 @@ const WhatsAppConnectionCard = () => {
       </div>
       <div className="admin-mkt-wpp-card">
         {state === 'open' ? (
-          <p className="admin-mkt-wpp-text">
-            O WhatsApp da clínica está conectado. As automações abaixo já podem enviar mensagens.
-          </p>
+          <>
+            <p className="admin-mkt-wpp-text">
+              O WhatsApp da clínica está conectado. As automações abaixo já podem enviar mensagens.
+            </p>
+            <button
+              type="button"
+              className="admin-mkt-modal-cancel-btn admin-mkt-wpp-disconnect-btn"
+              onClick={handleDisconnect}
+              disabled={disconnecting}
+            >
+              {disconnecting ? 'Desconectando…' : 'Desconectar WhatsApp'}
+            </button>
+          </>
         ) : qrCode ? (
           <div className="admin-mkt-wpp-qr-wrap">
             <img src={qrCode} alt="QR Code do WhatsApp" className="admin-mkt-wpp-qr-img" />

@@ -24,6 +24,10 @@ export const getWhatsAppStatus = () => invokeEvolution('status');
  * escanear. Se já estiver conectado, devolve state:'open' sem QR. */
 export const getWhatsAppQrCode = () => invokeEvolution('qrcode');
 
+/** Desconecta o WhatsApp da clínica (a instância continua existindo,
+ * precisa escanear o QR Code de novo pra reconectar). */
+export const disconnectWhatsApp = () => invokeEvolution('disconnect');
+
 const invokeSendMessage = async (body) => {
   const { data, error } = await supabase.functions.invoke('send-whatsapp-message', { body });
   if (error) {

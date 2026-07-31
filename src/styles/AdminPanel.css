@@ -3420,6 +3420,16 @@
   cursor: pointer;
 }
 
+.admin-mkt-wpp-disconnect-btn {
+  flex: none;
+  align-self: center;
+}
+
+.admin-mkt-wpp-disconnect-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 .admin-mkt-modal-actions .admin-mkt-new-campaign-btn {
   flex: 1;
 }

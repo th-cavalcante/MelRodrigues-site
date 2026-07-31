@@ -88,6 +88,19 @@ serve(async (req) => {
       return jsonResponse({ state: 'connecting', qrcode: data?.base64 || null });
     }
 
+    if (action === 'disconnect') {
+      const res = await fetch(`${apiUrl}/instance/logout/${instanceName}`, {
+        method: 'DELETE',
+        headers: evoHeaders,
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        console.error('Erro ao desconectar WhatsApp na Evolution API:', data);
+        return jsonResponse({ error: 'Não foi possível desconectar o WhatsApp.' }, 502);
+      }
+      return jsonResponse({ state: 'close' });
+    }
+
     return jsonResponse({ error: 'Ação inválida.' }, 400);
   } catch (err) {
     console.error('Erro inesperado em evolution-connect:', err);
