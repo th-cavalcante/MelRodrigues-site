@@ -48,12 +48,16 @@ serve(async (req) => {
     );
     const { data: booking } = await supabaseAdmin
       .from('bookings')
-      .select('patients(name, cpf)')
+      .select('patients(name, cpf, street, cep)')
       .eq('id', bookingId)
       .maybeSingle();
     const patient = booking?.patients;
     const cpfDigits = (patient?.cpf || '').replace(/\D/g, '');
     const nameParts = (patient?.name || '').trim().split(/\s+/).filter(Boolean);
+    const cepDigits = (patient?.cep || '').replace(/\D/g, '');
+    // "street" guarda o texto livre digitado na ficha (ex: "Rua Tal, 61") —
+    // não temos o número em coluna separada, então extraímos do fim da string.
+    const streetNumberMatch = (patient?.street || '').match(/(\d+)\s*$/);
 
     const preference = {
       items: [
@@ -72,6 +76,15 @@ serve(async (req) => {
           first_name: nameParts[0],
           last_name: nameParts.slice(1).join(' ') || nameParts[0],
           ...(cpfDigits.length === 11 && { identification: { type: 'CPF', number: cpfDigits } }),
+          // Recomendação do Mercado Pago: quanto mais dados o "payer" tiver,
+          // melhor a validação antifraude e menor a chance de recusa.
+          ...((patient?.street || cepDigits) && {
+            address: {
+              ...(cepDigits && { zip_code: cepDigits }),
+              ...(patient?.street && { street_name: patient.street }),
+              ...(streetNumberMatch && { street_number: Number(streetNumberMatch[1]) }),
+            },
+          }),
         },
       }),
       external_reference: bookingId,
