@@ -13,7 +13,20 @@ export const createMpPreference = async ({ bookingId, description, amount }) => 
       siteUrl: window.location.origin,
     },
   });
-  if (error) throw error;
+  if (error) {
+    // supabase-js só expõe "Edge Function returned a non-2xx status code"
+    // por padrão — o motivo real vem no corpo da resposta (error.context).
+    let message = error.message;
+    try {
+      if (error.context && typeof error.context.json === 'function') {
+        const body = await error.context.json();
+        if (body?.error) message = body.error;
+      }
+    } catch (parseErr) {
+      console.error('Erro ao ler detalhe do erro da Edge Function:', parseErr);
+    }
+    throw new Error(message);
+  }
   if (!data?.initPoint) throw new Error('Não foi possível iniciar o pagamento.');
   return data.initPoint;
 };

@@ -324,15 +324,28 @@ const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => 
         setPendingBookingId(currentBookingId);
       }
 
+      // Ao voltar do Mercado Pago (pagamento recusado/pendente) a página
+      // recarrega do zero — service/depositAmount somem do estado. Sem
+      // isso, tentar pagar de novo (cartão OU Pix) manda amount:null pra
+      // Edge Function, que recusa o pedido inteiro com "Dados incompletos".
+      const paymentAmount = depositAmount != null ? depositAmount : returnedSummary?.amount;
+      const paymentServiceLabel = service || returnedSummary?.serviceLabel || '';
+
+      if (paymentAmount == null) {
+        setError('Não foi possível recuperar o valor deste agendamento. Volte ao início e refaça o processo.');
+        setPaymentProcessing(false);
+        return;
+      }
+
       sessionStorage.setItem(
         `mp-booking-${currentBookingId}`,
-        JSON.stringify({ serviceLabel: service, dateTimeLabel: selectedDateTimeLabel })
+        JSON.stringify({ serviceLabel: paymentServiceLabel, dateTimeLabel: displayDateTimeLabel, amount: paymentAmount })
       );
 
       const initPoint = await createMpPreference({
         bookingId: currentBookingId,
-        description: `Depilação a Laser — ${service} (sinal)`,
-        amount: depositAmount,
+        description: `Depilação a Laser — ${paymentServiceLabel} (sinal)`,
+        amount: paymentAmount,
       });
 
       window.location.href = initPoint;
