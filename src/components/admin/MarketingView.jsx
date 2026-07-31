@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { getWhatsAppStatus, getWhatsAppQrCode, sendBirthdayMessage } from '../../lib/evolution';
+import { getWhatsAppStatus, getWhatsAppQrCode } from '../../lib/evolution';
 import { listPatients } from '../../lib/patients';
 import { fetchCampaigns, createCampaign, triggerCampaignSend } from '../../lib/campaigns';
 import { fetchMessageTemplates, updateMessageTemplate } from '../../lib/messageTemplates';
@@ -15,24 +15,46 @@ const STATUS_COLORS = {
 
 const STATUS_LABELS = { enviada: 'Enviada', enviando: 'Enviando…', erro: 'Erro' };
 
-const INITIAL_AUTOMATIONS = [
+// Estrutura dos 6 cards igual ao mockup Teagá — cada um ligado a um
+// message_template editável. active/toggle é só visual por enquanto (só a
+// Confirmação automática de fato dispara sozinha, via mp-webhook); os
+// outros ainda não têm gatilho automático implementado.
+const AUTOMATIONS = [
   {
-    id: 'au1',
+    templateKey: 'booking_confirmed',
     title: 'Confirmação automática',
     desc: 'Envia confirmação por WhatsApp assim que o pagamento do sinal é aprovado.',
-    active: true,
+    defaultActive: true,
   },
   {
-    id: 'au2',
+    templateKey: 'test_reminder',
     title: 'Lembrete de agendamento',
-    desc: 'Lembrete 2h antes do horário para reduzir faltas.',
-    active: true,
+    desc: 'Mensagem usada para lembrar a cliente do horário marcado.',
+    defaultActive: true,
   },
   {
-    id: 'au3',
+    templateKey: 'birthday',
+    title: 'Aniversariantes do mês',
+    desc: 'Mensagem de parabéns enviada via campanha para quem faz aniversário no mês.',
+    defaultActive: true,
+  },
+  {
+    templateKey: 'satisfaction_survey',
+    title: 'Pesquisa de satisfação',
+    desc: 'Mensagem para avaliar o atendimento após a sessão.',
+    defaultActive: false,
+  },
+  {
+    templateKey: 'inactive_clients',
     title: 'Clientes inativos',
     desc: 'Mensagem de reengajamento para quem não agenda há 60+ dias.',
-    active: false,
+    defaultActive: false,
+  },
+  {
+    templateKey: 'post_appointment',
+    title: 'Pós-atendimento',
+    desc: 'Dicas de cuidado enviadas no dia seguinte ao procedimento.',
+    defaultActive: false,
   },
 ];
 
@@ -40,6 +62,9 @@ const TEMPLATE_VARIABLES = {
   booking_confirmed: '{{nome}}, {{data}}, {{hora}}',
   test_reminder: '{{nome}}, {{servico}}, {{data}}, {{hora}}',
   birthday: '{{nome}}',
+  satisfaction_survey: '{{nome}}',
+  inactive_clients: '{{nome}}',
+  post_appointment: '{{nome}}',
 };
 
 const currentMonthPatients = (patients) => {
@@ -141,63 +166,123 @@ const WhatsAppConnectionCard = () => {
   );
 };
 
-const BirthdaysSection = () => {
-  const [patients, setPatients] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [sendState, setSendState] = useState({});
+const TemplateEditModal = ({ template, onClose, onSaved }) => {
+  const [draft, setDraft] = useState(template.body);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
-  useEffect(() => {
-    listPatients()
-      .then((all) => setPatients(currentMonthPatients(all)))
-      .catch((err) => console.error('Erro ao buscar aniversariantes:', err))
-      .finally(() => setLoading(false));
-  }, []);
-
-  const handleSend = async (patientId) => {
-    setSendState((prev) => ({ ...prev, [patientId]: 'sending' }));
+  const handleSave = async () => {
+    setSaving(true);
+    setError('');
     try {
-      await sendBirthdayMessage(patientId);
-      setSendState((prev) => ({ ...prev, [patientId]: 'sent' }));
+      await updateMessageTemplate(template.key, draft);
+      onSaved(template.key, draft);
     } catch (err) {
-      console.error('Erro ao enviar mensagem de aniversário:', err);
-      setSendState((prev) => ({ ...prev, [patientId]: 'error' }));
+      setError(err.message || 'Não foi possível salvar.');
+    } finally {
+      setSaving(false);
     }
   };
 
   return (
+    <div className="admin-mkt-modal-overlay" onClick={onClose}>
+      <div className="admin-mkt-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="admin-mkt-modal-header">
+          <span className="admin-mkt-modal-title">{template.label}</span>
+          <button type="button" className="admin-mkt-modal-close" onClick={onClose} aria-label="Fechar">
+            ✕
+          </button>
+        </div>
+
+        <div className="admin-mkt-modal-field">
+          <label className="admin-mkt-modal-label">Variáveis disponíveis: {TEMPLATE_VARIABLES[template.key] || '—'}</label>
+          <textarea
+            className="field-input admin-mkt-campaign-textarea"
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            rows={6}
+          />
+        </div>
+
+        {error && <p className="admin-mkt-wpp-error">{error}</p>}
+
+        <div className="admin-mkt-modal-actions">
+          <button type="button" className="admin-mkt-modal-cancel-btn" onClick={onClose}>
+            Cancelar
+          </button>
+          <button type="button" className="admin-mkt-new-campaign-btn" onClick={handleSave} disabled={saving}>
+            {saving ? 'Salvando…' : 'Salvar mensagem'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const AutomationsSection = () => {
+  const [templates, setTemplates] = useState({});
+  const [activeMap, setActiveMap] = useState(() =>
+    Object.fromEntries(AUTOMATIONS.map((a) => [a.templateKey, a.defaultActive]))
+  );
+  const [editingKey, setEditingKey] = useState(null);
+
+  useEffect(() => {
+    fetchMessageTemplates()
+      .then((data) => setTemplates(Object.fromEntries(data.map((t) => [t.key, t]))))
+      .catch((err) => console.error('Erro ao buscar mensagens:', err));
+  }, []);
+
+  const toggleActive = (key) => {
+    setActiveMap((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const activeCount = Object.values(activeMap).filter(Boolean).length;
+  const editingTemplate = editingKey ? templates[editingKey] : null;
+
+  return (
     <div className="admin-mkt-section">
       <div className="admin-mkt-section-header">
-        <span className="admin-mkt-section-title">Aniversariantes do Mês · {patients.length}</span>
+        <span className="admin-mkt-section-title">Automações · {activeCount} ativas</span>
       </div>
-      {loading ? (
-        <p className="admin-mkt-wpp-text">Carregando…</p>
-      ) : patients.length === 0 ? (
-        <p className="admin-mkt-wpp-text">Nenhum paciente faz aniversário este mês.</p>
-      ) : (
-        <div className="admin-mkt-birthday-list">
-          {patients.map((p) => {
-            const status = sendState[p.id];
-            return (
-              <div key={p.id} className="admin-mkt-birthday-row">
-                <span className="admin-mkt-birthday-name">{p.name || 'Sem nome'}</span>
-                <button
-                  type="button"
-                  className="admin-mkt-birthday-btn"
-                  onClick={() => handleSend(p.id)}
-                  disabled={status === 'sending'}
-                >
-                  {status === 'sending'
-                    ? 'Enviando…'
-                    : status === 'sent'
-                    ? 'Enviado ✓'
-                    : status === 'error'
-                    ? 'Tentar de novo'
-                    : '🎉 Enviar parabéns'}
-                </button>
-              </div>
-            );
-          })}
-        </div>
+      <div className="admin-mkt-automations-grid">
+        {AUTOMATIONS.map((au) => (
+          <div key={au.templateKey} className="admin-mkt-automation-card">
+            <div className="admin-mkt-automation-top">
+              <span className="admin-mkt-channel-badge" style={{ color: CHANNEL_COLOR, background: CHANNEL_BG }}>
+                WhatsApp
+              </span>
+              <button
+                type="button"
+                className={`admin-toggle-track ${activeMap[au.templateKey] ? 'on' : ''}`}
+                onClick={() => toggleActive(au.templateKey)}
+                aria-label={activeMap[au.templateKey] ? 'Desativar automação' : 'Ativar automação'}
+              >
+                <div className="admin-toggle-thumb" />
+              </button>
+            </div>
+            <span className="admin-mkt-automation-title">{au.title}</span>
+            <span className="admin-mkt-automation-desc">{au.desc}</span>
+            <button
+              type="button"
+              className="admin-mkt-template-edit-btn"
+              onClick={() => setEditingKey(au.templateKey)}
+              disabled={!templates[au.templateKey]}
+            >
+              Editar mensagem
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {editingTemplate && (
+        <TemplateEditModal
+          template={editingTemplate}
+          onClose={() => setEditingKey(null)}
+          onSaved={(key, body) => {
+            setTemplates((prev) => ({ ...prev, [key]: { ...prev[key], body } }));
+            setEditingKey(null);
+          }}
+        />
       )}
     </div>
   );
@@ -335,6 +420,14 @@ const CampaignsSection = ({ birthdayCount }) => {
                   {cp.sent_count}/{cp.target_count}
                 </div>
               </div>
+              <div className="admin-mkt-campaign-stat">
+                <div className="admin-mkt-campaign-stat-label">Abertura</div>
+                <div className="admin-mkt-campaign-stat-value">—</div>
+              </div>
+              <div className="admin-mkt-campaign-stat">
+                <div className="admin-mkt-campaign-stat-label">Cliques</div>
+                <div className="admin-mkt-campaign-stat-value">—</div>
+              </div>
               <span
                 className="admin-mkt-status-badge"
                 style={{ color: statusStyle.color, background: statusStyle.bg }}
@@ -349,106 +442,7 @@ const CampaignsSection = ({ birthdayCount }) => {
   );
 };
 
-const MessageTemplatesSection = () => {
-  const [templates, setTemplates] = useState([]);
-  const [editingKey, setEditingKey] = useState(null);
-  const [draft, setDraft] = useState('');
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    fetchMessageTemplates()
-      .then(setTemplates)
-      .catch((err) => console.error('Erro ao buscar mensagens:', err));
-  }, []);
-
-  const editingTemplate = templates.find((t) => t.key === editingKey) || null;
-
-  const openEditor = (t) => {
-    setEditingKey(t.key);
-    setDraft(t.body);
-    setError('');
-  };
-
-  const closeEditor = () => {
-    setEditingKey(null);
-    setError('');
-  };
-
-  const handleSave = async () => {
-    setSaving(true);
-    setError('');
-    try {
-      await updateMessageTemplate(editingKey, draft);
-      setTemplates((prev) => prev.map((t) => (t.key === editingKey ? { ...t, body: draft } : t)));
-      closeEditor();
-    } catch (err) {
-      setError(err.message || 'Não foi possível salvar.');
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  return (
-    <div className="admin-mkt-section">
-      <div className="admin-mkt-section-header">
-        <span className="admin-mkt-section-title">Editar Mensagens</span>
-      </div>
-      <div className="admin-mkt-template-list">
-        {templates.map((t) => (
-          <div key={t.key} className="admin-mkt-template-card">
-            <div className="admin-mkt-template-info">
-              <span className="admin-mkt-template-label">{t.label}</span>
-              <span className="admin-mkt-template-preview">{t.body}</span>
-            </div>
-            <button type="button" className="admin-mkt-template-edit-btn" onClick={() => openEditor(t)}>
-              Editar
-            </button>
-          </div>
-        ))}
-      </div>
-
-      {editingTemplate && (
-        <div className="admin-mkt-modal-overlay" onClick={closeEditor}>
-          <div className="admin-mkt-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="admin-mkt-modal-header">
-              <span className="admin-mkt-modal-title">{editingTemplate.label}</span>
-              <button type="button" className="admin-mkt-modal-close" onClick={closeEditor} aria-label="Fechar">
-                ✕
-              </button>
-            </div>
-
-            <div className="admin-mkt-modal-field">
-              <label className="admin-mkt-modal-label">
-                Variáveis disponíveis: {TEMPLATE_VARIABLES[editingTemplate.key] || '—'}
-              </label>
-              <textarea
-                className="field-input admin-mkt-campaign-textarea"
-                value={draft}
-                onChange={(e) => setDraft(e.target.value)}
-                rows={6}
-              />
-            </div>
-
-            {error && <p className="admin-mkt-wpp-error">{error}</p>}
-
-            <div className="admin-mkt-modal-actions">
-              <button type="button" className="admin-mkt-modal-cancel-btn" onClick={closeEditor}>
-                Cancelar
-              </button>
-              <button type="button" className="admin-mkt-new-campaign-btn" onClick={handleSave} disabled={saving}>
-                {saving ? 'Salvando…' : 'Salvar'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
 const MarketingView = () => {
-  const [automations, setAutomations] = useState(INITIAL_AUTOMATIONS);
   const [birthdayCount, setBirthdayCount] = useState(0);
 
   useEffect(() => {
@@ -457,46 +451,11 @@ const MarketingView = () => {
       .catch(() => {});
   }, []);
 
-  const toggleAutomation = (id) => {
-    setAutomations((prev) => prev.map((au) => (au.id === id ? { ...au, active: !au.active } : au)));
-  };
-
   return (
     <div className="admin-mkt">
       <WhatsAppConnectionCard />
-
-      <div className="admin-mkt-section">
-        <div className="admin-mkt-section-header">
-          <span className="admin-mkt-section-title">
-            Automações · {automations.filter((au) => au.active).length} ativas
-          </span>
-        </div>
-        <div className="admin-mkt-automations-grid">
-          {automations.map((au) => (
-            <div key={au.id} className="admin-mkt-automation-card">
-              <div className="admin-mkt-automation-top">
-                <span className="admin-mkt-channel-badge" style={{ color: CHANNEL_COLOR, background: CHANNEL_BG }}>
-                  WhatsApp
-                </span>
-                <button
-                  type="button"
-                  className={`admin-toggle-track ${au.active ? 'on' : ''}`}
-                  onClick={() => toggleAutomation(au.id)}
-                  aria-label={au.active ? 'Desativar automação' : 'Ativar automação'}
-                >
-                  <div className="admin-toggle-thumb" />
-                </button>
-              </div>
-              <span className="admin-mkt-automation-title">{au.title}</span>
-              <span className="admin-mkt-automation-desc">{au.desc}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <BirthdaysSection />
+      <AutomationsSection />
       <CampaignsSection birthdayCount={birthdayCount} />
-      <MessageTemplatesSection />
     </div>
   );
 };
