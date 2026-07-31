@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getPatientAttendanceStats } from '../../lib/bookings';
 import { fetchLaserServices } from '../../lib/services';
 import { STATUS_OPTIONS, PAYMENT_STATUS_OPTIONS, PAYMENT_METHOD_OPTIONS, COMPLEMENTARY_SERVICE_OPTIONS, buildWhatsAppLink } from '../../lib/agendaConstants';
+import { sendTestReminder } from '../../lib/evolution';
 
 const MAX_SERVICE_SLOTS = 10;
 
@@ -28,6 +29,8 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
   const [laserServices, setLaserServices] = useState([]);
   const [fichaLinkCopied, setFichaLinkCopied] = useState(false);
   const [assinaturaLinkCopied, setAssinaturaLinkCopied] = useState(false);
+  const [reminderState, setReminderState] = useState('idle');
+  const [reminderError, setReminderError] = useState('');
 
   useEffect(() => {
     setDraft(buildDraft(booking));
@@ -76,6 +79,18 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
   const handleDelete = () => {
     if (window.confirm('Tem certeza que deseja excluir este agendamento?')) {
       onDelete();
+    }
+  };
+
+  const handleSendTestReminder = async () => {
+    setReminderState('sending');
+    setReminderError('');
+    try {
+      await sendTestReminder(booking.id);
+      setReminderState('sent');
+    } catch (err) {
+      setReminderError(err.message || 'Não foi possível enviar a mensagem.');
+      setReminderState('error');
     }
   };
 
@@ -148,6 +163,24 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
           <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="admin-open-client-btn admin-agenda-whatsapp-btn">
             💬 Confirmar via WhatsApp
           </a>
+        )}
+
+        {phone && (
+          <div className="admin-agenda-reminder-test">
+            <button
+              type="button"
+              onClick={handleSendTestReminder}
+              disabled={reminderState === 'sending'}
+              className="admin-open-client-btn admin-agenda-whatsapp-btn"
+            >
+              {reminderState === 'sending'
+                ? 'Enviando…'
+                : reminderState === 'sent'
+                ? 'Lembrete enviado ✓'
+                : '🔔 Enviar lembrete de teste'}
+            </button>
+            {reminderState === 'error' && <p className="admin-mkt-wpp-error">{reminderError}</p>}
+          </div>
         )}
 
         <div className="admin-agenda-drawer-section-title">Data e Horário</div>
