@@ -249,42 +249,74 @@ const CampaignsSection = ({ birthdayCount }) => {
     }
   };
 
+  const closeModal = () => {
+    setShowForm(false);
+    setError('');
+  };
+
   return (
     <div className="admin-mkt-section admin-mkt-campaigns">
       <div className="admin-mkt-section-header">
         <span className="admin-mkt-section-title">Campanhas</span>
-        <button type="button" className="admin-mkt-new-campaign-btn" onClick={() => setShowForm((v) => !v)}>
-          {showForm ? 'Cancelar' : '+ Nova campanha'}
+        <button type="button" className="admin-mkt-new-campaign-btn" onClick={() => setShowForm(true)}>
+          + Nova campanha
         </button>
       </div>
 
       {showForm && (
-        <div className="admin-mkt-campaign-form">
-          <p className="admin-mkt-wpp-text">
-            Público: <strong>Aniversariantes do mês</strong> ({birthdayCount} paciente(s))
-          </p>
-          <input
-            type="text"
-            className="field-input"
-            placeholder="Título da campanha"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <textarea
-            className="field-input admin-mkt-campaign-textarea"
-            placeholder="Mensagem (use {{nome}} pra personalizar)"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            rows={4}
-          />
-          {error && <p className="admin-mkt-wpp-error">{error}</p>}
-          <button type="button" className="admin-mkt-new-campaign-btn" onClick={handleSubmit} disabled={sending}>
-            {sending ? 'Enviando…' : 'Enviar campanha'}
-          </button>
+        <div className="admin-mkt-modal-overlay" onClick={closeModal}>
+          <div className="admin-mkt-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-mkt-modal-header">
+              <span className="admin-mkt-modal-title">Nova campanha</span>
+              <button type="button" className="admin-mkt-modal-close" onClick={closeModal} aria-label="Fechar">
+                ✕
+              </button>
+            </div>
+
+            <div className="admin-mkt-modal-field">
+              <label className="admin-mkt-modal-label">Público</label>
+              <p className="admin-mkt-wpp-text">
+                <strong>Aniversariantes do mês</strong> ({birthdayCount} paciente(s))
+              </p>
+            </div>
+
+            <div className="admin-mkt-modal-field">
+              <label className="admin-mkt-modal-label">Título da campanha</label>
+              <input
+                type="text"
+                className="field-input"
+                placeholder="Ex: Presente de aniversário"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+
+            <div className="admin-mkt-modal-field">
+              <label className="admin-mkt-modal-label">Mensagem</label>
+              <textarea
+                className="field-input admin-mkt-campaign-textarea"
+                placeholder="Mensagem (use {{nome}} pra personalizar)"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                rows={4}
+              />
+            </div>
+
+            {error && <p className="admin-mkt-wpp-error">{error}</p>}
+
+            <div className="admin-mkt-modal-actions">
+              <button type="button" className="admin-mkt-modal-cancel-btn" onClick={closeModal}>
+                Cancelar
+              </button>
+              <button type="button" className="admin-mkt-new-campaign-btn" onClick={handleSubmit} disabled={sending}>
+                {sending ? 'Enviando…' : 'Enviar campanha'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
-      {!loading && campaigns.length === 0 && !showForm && (
+      {!loading && campaigns.length === 0 && (
         <p className="admin-mkt-wpp-text">Nenhuma campanha criada ainda.</p>
       )}
 
