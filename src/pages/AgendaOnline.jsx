@@ -42,14 +42,6 @@ const IconLock = ({ size = 14 }) => (
   </svg>
 );
 
-const IconDownload = ({ size = 15 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 3v12" />
-    <path d="M7 10.5 12 15.5 17 10.5" />
-    <path d="M4.5 19.5h15" />
-  </svg>
-);
-
 const IconHourglass = ({ size = 28 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
     <path d="M6 3h12M6 21h12" />
@@ -101,38 +93,6 @@ const addDays = (date, n) => {
   const d = new Date(date);
   d.setDate(d.getDate() + n);
   return d;
-};
-
-const downloadRecommendations = () => {
-  const w = window.open('', '_blank');
-  if (!w) return;
-  w.document.write(`
-    <html><head><title>Recomendações Pré e Pós Sessão — MR Laser</title>
-    <style>
-      body { font-family: Georgia, serif; padding: 60px; color: #2b2620; max-width: 700px; margin: 0 auto; }
-      h1 { font-size: 26px; border-bottom: 2px solid #B08D57; padding-bottom: 14px; }
-      h2 { font-size: 18px; color: #B08D57; margin-top: 34px; }
-      li { margin-bottom: 8px; line-height: 1.6; }
-    </style></head><body>
-    <h1>Recomendações Pré e Pós Sessão — MR Laser</h1>
-    <h2>Antes da sua sessão</h2>
-    <ul>
-      <li>Evite exposição solar direta na área a ser tratada por ao menos 15 dias.</li>
-      <li>Não utilize cremes, óleos ou perfumes na região no dia do procedimento.</li>
-      <li>Compareça com a pele limpa e sem depilação recente (lâmina/cera) nas últimas 2 semanas.</li>
-    </ul>
-    <h2>Depois da sua sessão</h2>
-    <ul>
-      <li>Evite sol e calor intenso na área tratada por 48 horas.</li>
-      <li>Aplique protetor solar diariamente na região.</li>
-      <li>Não utilize produtos ácidos ou esfoliantes na área por 5 dias.</li>
-      <li>Em caso de vermelhidão, aplique compressa fria e evite tocar a região.</li>
-    </ul>
-    <p style="margin-top:40px;font-size:13px;color:#777;">MR Laser · Documento gerado em ${new Date().toLocaleDateString('pt-BR')}</p>
-    </body></html>
-  `);
-  w.document.close();
-  setTimeout(() => w.print(), 300);
 };
 
 const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => {
@@ -225,6 +185,62 @@ const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
+  // Antecedência mínima: não deixa agendar no mesmo dia. Ao carregar a
+  // etapa de data/hora, varre os próximos dias a partir de amanhã e já
+  // deixa pré-selecionado o primeiro que tiver pelo menos um horário livre
+  // (pulando domingo e dias totalmente bloqueados), sem exigir clique.
+  useEffect(() => {
+    if (selectedDayOffset !== null || mpReturn) return;
+    let cancelled = false;
+
+    const findFirstAvailableDay = async () => {
+      const rangeStart = addDays(today, 1);
+      const rangeEnd = addDays(today, 21);
+      let blockedSet = new Set();
+      try {
+        const wideBlocked = await getPublicBlockedDays(toISODate(rangeStart), toISODate(rangeEnd));
+        blockedSet = new Set(wideBlocked);
+      } catch (err) {
+        console.error('Erro ao carregar dias bloqueados:', err);
+      }
+
+      for (let offset = 1; offset <= 21; offset++) {
+        if (cancelled) return;
+        const d = addDays(today, offset);
+        if (d.getDay() === 0) continue; // domingo, clínica fechada
+        const iso = toISODate(d);
+        if (blockedSet.has(iso)) continue;
+
+        let booked = [];
+        let dynBlocked = [];
+        try {
+          [booked, dynBlocked] = await Promise.all([getBookedTimes(iso), getPublicBlockedSlots(iso)]);
+        } catch (err) {
+          console.error('Erro ao verificar disponibilidade do dia', iso, err);
+          continue;
+        }
+        const blockedTimesForDate = [
+          ...BLOCKED_SLOTS.map((bl) => bl.time),
+          ...dynBlocked.map((r) => (r.blocked_time || '').slice(0, 5)),
+        ];
+        const hasSlot = ALL_TIMES.some((t) => !blockedTimesForDate.includes(t) && !booked.includes(t));
+        if (hasSlot) {
+          if (!cancelled) {
+            setWeekOffset(Math.floor((offset + today.getDay()) / 7));
+            setSelectedDayOffset(offset);
+          }
+          return;
+        }
+      }
+    };
+
+    findFirstAvailableDay();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (selectedDayOffset === null) return;
     const date = toISODate(addDays(today, selectedDayOffset));
@@ -251,7 +267,8 @@ const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => 
   const dayOptions = WEEKDAY_LABELS.map((wd, i) => {
     const d = addDays(weekStart, i);
     const dayOffset = Math.round((d - today) / 86400000);
-    const isPast = dayOffset < 0;
+    // Antecedência mínima: não deixa marcar pra hoje, só a partir de amanhã.
+    const isPast = dayOffset <= 0;
     const isSunday = i === 0;
     const isBlocked = blockedDays.includes(toISODate(d));
     return { weekday: wd, num: d.getDate(), dayOffset, disabled: isPast || isSunday || isBlocked };
@@ -801,10 +818,6 @@ const AgendaOnlineContent = ({ initialPatientId, initialService, mpReturn }) => 
                 <div className="agenda-online-service-name">Depilação a Laser — {displayService}</div>
                 <div className="agenda-online-step-subtitle">{displayDateTimeLabel}</div>
               </div>
-
-              <button type="button" onClick={downloadRecommendations} className="agenda-online-btn-secondary agenda-online-download-btn">
-                <IconDownload /> Baixar recomendações pré e pós sessão
-              </button>
 
               <div className="agenda-online-actions agenda-online-actions-center">
                 <Link to="/" className="agenda-online-btn-primary">

@@ -51,3 +51,7 @@ export const sendTestReminder = (bookingId) => invokeSendMessage({ templateKey: 
 
 /** Dispara a mensagem de aniversário pra um paciente específico. */
 export const sendBirthdayMessage = (patientId) => invokeSendMessage({ templateKey: 'birthday', patientId });
+
+/** Manda o link de assinatura de Contrato/Termo pro paciente via WhatsApp. */
+export const sendDocumentSignatureLink = (patientId, link) =>
+  invokeSendMessage({ templateKey: 'document_signature_link', patientId, link });

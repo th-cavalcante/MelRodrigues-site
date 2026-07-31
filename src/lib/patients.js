@@ -46,7 +46,8 @@ export const listPatients = async () => {
       null
     );
     const hasContrato = (p.document_signatures || []).some((d) => d.doc_key === 'contrato');
-    return { ...p, age: calcAge(p.birthdate), lastSession, sessionCount: sessions.length, hasContrato };
+    const hasTermo = (p.document_signatures || []).some((d) => d.doc_key === 'termo');
+    return { ...p, age: calcAge(p.birthdate), lastSession, sessionCount: sessions.length, hasContrato, hasTermo };
   });
 };
 

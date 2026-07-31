@@ -16,6 +16,7 @@ import {
   getSignedPhotoUrls,
   deletePatient,
 } from '../../lib/patients';
+import { sendDocumentSignatureLink } from '../../lib/evolution';
 
 const documentsMeta = [
   { key: 'anamnese', icon: '📋', label: 'Ficha de Anamnese' },
@@ -31,6 +32,9 @@ const ClientsView = ({ clients, setClients }) => {
   const [photoUrls, setPhotoUrls] = useState({});
   const [showAssinaturaLink, setShowAssinaturaLink] = useState(false);
   const [assinaturaLinkCopied, setAssinaturaLinkCopied] = useState(false);
+  const [assinaturaSending, setAssinaturaSending] = useState(false);
+  const [assinaturaSent, setAssinaturaSent] = useState(false);
+  const [assinaturaError, setAssinaturaError] = useState('');
   const [copiedSessionId, setCopiedSessionId] = useState(null);
   const [savedSessionId, setSavedSessionId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,6 +48,8 @@ const ClientsView = ({ clients, setClients }) => {
   useEffect(() => {
     setShowAssinaturaLink(false);
     setAssinaturaLinkCopied(false);
+    setAssinaturaSent(false);
+    setAssinaturaError('');
     setFichaLinkCopied(false);
     if (!selectedClientId) return undefined;
     let cancelled = false;
@@ -286,19 +292,24 @@ const ClientsView = ({ clients, setClients }) => {
                   type="button"
                   onClick={async () => {
                     setShowAssinaturaLink((v) => !v);
+                    setAssinaturaError('');
+                    setAssinaturaSending(true);
                     try {
-                      await navigator.clipboard.writeText(assinaturaUrl);
-                      setAssinaturaLinkCopied(true);
-                      setTimeout(() => setAssinaturaLinkCopied(false), 2000);
+                      await sendDocumentSignatureLink(selectedClient.id, assinaturaUrl);
+                      setAssinaturaSent(true);
                     } catch (err) {
-                      console.error('Erro ao copiar link automaticamente:', err);
+                      setAssinaturaError(err.message || 'Não foi possível enviar a mensagem.');
+                    } finally {
+                      setAssinaturaSending(false);
                     }
                   }}
+                  disabled={assinaturaSending}
                   className="admin-open-client-btn"
                 >
-                  {assinaturaLinkCopied ? 'Copiado ✓' : 'ENVIAR LINK PARA ASSINATURA'}
+                  {assinaturaSending ? 'Enviando…' : assinaturaSent ? 'Enviado ✓' : 'ENVIAR LINK PARA ASSINATURA'}
                 </button>
               </div>
+              {assinaturaError && <p className="admin-mkt-wpp-error">{assinaturaError}</p>}
               {showAssinaturaLink && (
                 <div className="admin-cadastro-linkbox">
                   <span className="admin-cadastro-link-text">{assinaturaUrl}</span>

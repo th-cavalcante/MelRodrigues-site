@@ -1,7 +1,8 @@
 // Edge Function — envia uma mensagem de WhatsApp usando um template
-// editável (tabela message_templates), via Evolution API. Serve dois casos:
-//   { templateKey: 'test_reminder', bookingId }  — lembrete de teste manual
-//   { templateKey: 'birthday', patientId }       — mensagem de aniversário
+// editável (tabela message_templates), via Evolution API. Serve três casos:
+//   { templateKey: 'test_reminder', bookingId }              — lembrete de teste manual
+//   { templateKey: 'birthday', patientId }                   — mensagem de aniversário
+//   { templateKey: 'document_signature_link', patientId, link } — link de assinatura
 //
 // Segredos necessários (já configurados via `supabase secrets set`):
 //   EVOLUTION_API_URL, EVOLUTION_API_KEY, EVOLUTION_INSTANCE_NAME
@@ -31,7 +32,7 @@ serve(async (req) => {
   }
 
   try {
-    const { templateKey, bookingId, patientId } = await req.json();
+    const { templateKey, bookingId, patientId, link } = await req.json();
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -59,6 +60,25 @@ serve(async (req) => {
         'Parabéns, {{nome}}! 🎉 A equipe MR Laser deseja um feliz aniversário!'
       );
       text = fillTemplate(body, { nome: firstName });
+    } else if (templateKey === 'document_signature_link') {
+      if (!patientId) return jsonResponse({ error: 'patientId é obrigatório.' }, 400);
+      if (!link) return jsonResponse({ error: 'link é obrigatório.' }, 400);
+
+      const { data: patient, error: patientError } = await supabaseAdmin
+        .from('patients')
+        .select('name, phone')
+        .eq('id', patientId)
+        .maybeSingle();
+      if (patientError || !patient) return jsonResponse({ error: 'Paciente não encontrado.' }, 404);
+
+      phoneDigits = formatPhoneForEvolution(patient.phone);
+      const firstName = (patient.name || '').trim().split(/\s+/)[0] || '';
+      const body = await getTemplate(
+        supabaseAdmin,
+        'document_signature_link',
+        '{{nome}}, segue o link para assinatura do contrato e termo de consentimento: {{link}}'
+      );
+      text = fillTemplate(body, { nome: firstName, link });
     } else {
       // Padrão: lembrete de teste, a partir de um agendamento.
       if (!bookingId) return jsonResponse({ error: 'bookingId é obrigatório.' }, 400);

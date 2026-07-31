@@ -135,7 +135,7 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
   };
 
   const anamneseOk = !!(patient && patient.status !== 'pending');
-  const contratoOk = !!(patient && patient.hasContrato);
+  const contratoOk = !!(patient && patient.hasContrato && patient.hasTermo);
   const clientName = booking.patients ? booking.patients.name : patient ? patient.name : '—';
   const phone = booking.patients ? booking.patients.phone : patient ? patient.phone : null;
   const whatsappLink = buildWhatsAppLink(phone, `Olá ${clientName || ''}, confirmando seu horário na MR Laser.`);
@@ -199,15 +199,19 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
         <div className="admin-agenda-docs-badges">
           <div className={`admin-agenda-doc-badge ${anamneseOk ? 'admin-agenda-doc-badge-ok' : ''}`}>
             📋 Anamnese<br /><strong>{anamneseOk ? 'Preenchida' : 'Pendente'}</strong>
-            <button type="button" onClick={handleCopyFichaLink} className="admin-doc-badge-link-btn">
-              {fichaLinkCopied ? 'Copiado ✓' : 'Enviar Link'}
-            </button>
+            {!anamneseOk && (
+              <button type="button" onClick={handleCopyFichaLink} className="admin-doc-badge-link-btn">
+                {fichaLinkCopied ? 'Copiado ✓' : 'Enviar Link'}
+              </button>
+            )}
           </div>
           <div className={`admin-agenda-doc-badge ${contratoOk ? 'admin-agenda-doc-badge-ok' : ''}`}>
             ✍️ Contrato<br /><strong>{contratoOk ? 'Assinado' : 'Pendente'}</strong>
-            <button type="button" onClick={handleCopyAssinaturaLink} className="admin-doc-badge-link-btn">
-              {assinaturaLinkCopied ? 'Copiado ✓' : 'Enviar Link'}
-            </button>
+            {!contratoOk && (
+              <button type="button" onClick={handleCopyAssinaturaLink} className="admin-doc-badge-link-btn">
+                {assinaturaLinkCopied ? 'Copiado ✓' : 'Enviar Link'}
+              </button>
+            )}
           </div>
         </div>
 
