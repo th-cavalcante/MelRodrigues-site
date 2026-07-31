@@ -2,7 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { getWhatsAppStatus, getWhatsAppQrCode, disconnectWhatsApp } from '../../lib/evolution';
 import { listPatients } from '../../lib/patients';
 import { fetchCampaigns, createCampaign, triggerCampaignSend } from '../../lib/campaigns';
-import { fetchMessageTemplates, updateMessageTemplate } from '../../lib/messageTemplates';
+import {
+  fetchMessageTemplates,
+  updateAutomation,
+  setAutomationActive,
+  createAutomation,
+  deleteAutomation,
+} from '../../lib/messageTemplates';
 
 const CHANNEL_COLOR = 'oklch(70% 0.17 155)';
 const CHANNEL_BG = 'oklch(70% 0.17 155 / 0.14)';
@@ -14,49 +20,6 @@ const STATUS_COLORS = {
 };
 
 const STATUS_LABELS = { enviada: 'Enviada', enviando: 'Enviando…', erro: 'Erro' };
-
-// Estrutura dos 6 cards igual ao mockup Teagá — cada um ligado a um
-// message_template editável. active/toggle é só visual por enquanto (só a
-// Confirmação automática de fato dispara sozinha, via mp-webhook); os
-// outros ainda não têm gatilho automático implementado.
-const AUTOMATIONS = [
-  {
-    templateKey: 'booking_confirmed',
-    title: 'Confirmação automática',
-    desc: 'Envia confirmação por WhatsApp assim que o pagamento do sinal é aprovado.',
-    defaultActive: true,
-  },
-  {
-    templateKey: 'test_reminder',
-    title: 'Lembrete de agendamento',
-    desc: 'Mensagem usada para lembrar a cliente do horário marcado.',
-    defaultActive: true,
-  },
-  {
-    templateKey: 'birthday',
-    title: 'Aniversariantes do mês',
-    desc: 'Mensagem de parabéns enviada via campanha para quem faz aniversário no mês.',
-    defaultActive: true,
-  },
-  {
-    templateKey: 'satisfaction_survey',
-    title: 'Pesquisa de satisfação',
-    desc: 'Mensagem para avaliar o atendimento após a sessão.',
-    defaultActive: false,
-  },
-  {
-    templateKey: 'inactive_clients',
-    title: 'Clientes inativos',
-    desc: 'Mensagem de reengajamento para quem não agenda há 60+ dias.',
-    defaultActive: false,
-  },
-  {
-    templateKey: 'post_appointment',
-    title: 'Pós-atendimento',
-    desc: 'Dicas de cuidado enviadas no dia seguinte ao procedimento.',
-    defaultActive: false,
-  },
-];
 
 const PREVIEW_VALUES = {
   nome: 'Ana Beatriz',
@@ -76,6 +39,10 @@ const TEMPLATE_VARIABLES = {
   inactive_clients: '{{nome}}',
   post_appointment: '{{nome}}',
 };
+
+const getTemplateVariables = (template) =>
+  TEMPLATE_VARIABLES[template.key] ||
+  (template.hours_before != null ? '{{nome}}, {{servico}}, {{data}}, {{hora}}' : '{{nome}}');
 
 const currentMonthPatients = (patients) => {
   const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0');
@@ -205,17 +172,23 @@ const WhatsAppConnectionCard = () => {
   );
 };
 
-const TemplateEditModal = ({ template, onClose, onSaved }) => {
+const TemplateEditModal = ({ template, onClose, onSaved, onDeleted }) => {
   const [draft, setDraft] = useState(template.body);
+  const [hoursBefore, setHoursBefore] = useState(template.hours_before ?? '');
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState('');
+
+  const isReminder = template.hours_before !== null && template.hours_before !== undefined;
 
   const handleSave = async () => {
     setSaving(true);
     setError('');
     try {
-      await updateMessageTemplate(template.key, draft);
-      onSaved(template.key, draft);
+      const payload = { body: draft };
+      if (isReminder) payload.hoursBefore = Number(hoursBefore) || 1;
+      await updateAutomation(template.key, payload);
+      onSaved(template.key, { body: draft, ...(isReminder ? { hours_before: payload.hoursBefore } : {}) });
     } catch (err) {
       setError(err.message || 'Não foi possível salvar.');
     } finally {
@@ -223,18 +196,45 @@ const TemplateEditModal = ({ template, onClose, onSaved }) => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm('Excluir esta automação? Essa ação não pode ser desfeita.')) return;
+    setDeleting(true);
+    setError('');
+    try {
+      await deleteAutomation(template.key);
+      onDeleted(template.key);
+    } catch (err) {
+      setError(err.message || 'Não foi possível excluir.');
+      setDeleting(false);
+    }
+  };
+
   return (
     <div className="admin-mkt-modal-overlay" onClick={onClose}>
       <div className="admin-mkt-modal" onClick={(e) => e.stopPropagation()}>
         <div className="admin-mkt-modal-header">
-          <span className="admin-mkt-modal-title">{template.label}</span>
+          <span className="admin-mkt-modal-title">Editar mensagem — {template.label}</span>
           <button type="button" className="admin-mkt-modal-close" onClick={onClose} aria-label="Fechar">
             ✕
           </button>
         </div>
 
+        {isReminder && (
+          <div className="admin-mkt-modal-field">
+            <label className="admin-mkt-modal-label">Enviar quantas horas antes do horário</label>
+            <input
+              type="number"
+              min="1"
+              max="72"
+              className="field-input"
+              value={hoursBefore}
+              onChange={(e) => setHoursBefore(e.target.value)}
+            />
+          </div>
+        )}
+
         <div className="admin-mkt-modal-field">
-          <label className="admin-mkt-modal-label">Variáveis disponíveis: {TEMPLATE_VARIABLES[template.key] || '—'}</label>
+          <label className="admin-mkt-modal-label">Variáveis disponíveis: {getTemplateVariables(template)}</label>
           <textarea
             className="field-input admin-mkt-campaign-textarea"
             value={draft}
@@ -251,6 +251,11 @@ const TemplateEditModal = ({ template, onClose, onSaved }) => {
         {error && <p className="admin-mkt-wpp-error">{error}</p>}
 
         <div className="admin-mkt-modal-actions">
+          {template.is_custom && (
+            <button type="button" className="admin-mkt-modal-delete-btn" onClick={handleDelete} disabled={deleting}>
+              {deleting ? 'Excluindo…' : 'Excluir'}
+            </button>
+          )}
           <button type="button" className="admin-mkt-modal-cancel-btn" onClick={onClose}>
             Cancelar
           </button>
@@ -263,68 +268,199 @@ const TemplateEditModal = ({ template, onClose, onSaved }) => {
   );
 };
 
-const AutomationsSection = () => {
-  const [templates, setTemplates] = useState({});
-  const [activeMap, setActiveMap] = useState(() =>
-    Object.fromEntries(AUTOMATIONS.map((a) => [a.templateKey, a.defaultActive]))
+const CreateAutomationModal = ({ onClose, onCreated }) => {
+  const [label, setLabel] = useState('');
+  const [description, setDescription] = useState('');
+  const [hoursBefore, setHoursBefore] = useState('2');
+  const [body, setBody] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleCreate = async () => {
+    if (!label.trim() || !body.trim() || !hoursBefore) {
+      setError('Preencha o nome, as horas antes e a mensagem.');
+      return;
+    }
+    setError('');
+    setSaving(true);
+    try {
+      const automation = await createAutomation({
+        label,
+        description: description || `Lembrete enviado ${hoursBefore}h antes do horário.`,
+        hoursBefore: Number(hoursBefore),
+        body,
+      });
+      onCreated(automation);
+    } catch (err) {
+      setError(err.message || 'Não foi possível criar a automação.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="admin-mkt-modal-overlay" onClick={onClose}>
+      <div className="admin-mkt-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="admin-mkt-modal-header">
+          <span className="admin-mkt-modal-title">Criar nova automação</span>
+          <button type="button" className="admin-mkt-modal-close" onClick={onClose} aria-label="Fechar">
+            ✕
+          </button>
+        </div>
+
+        <p className="admin-mkt-wpp-text">
+          A nova automação envia a mensagem sozinha um número de horas antes do horário do agendamento — o mesmo
+          gatilho do "Lembrete de agendamento".
+        </p>
+
+        <div className="admin-mkt-modal-field">
+          <label className="admin-mkt-modal-label">Nome da automação</label>
+          <input
+            type="text"
+            className="field-input"
+            placeholder="Ex: Lembrete 1 dia antes"
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+          />
+        </div>
+
+        <div className="admin-mkt-modal-field">
+          <label className="admin-mkt-modal-label">Descrição (opcional)</label>
+          <input
+            type="text"
+            className="field-input"
+            placeholder="Ex: Reforço enviado na véspera"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+
+        <div className="admin-mkt-modal-field">
+          <label className="admin-mkt-modal-label">Enviar quantas horas antes do horário</label>
+          <input
+            type="number"
+            min="1"
+            max="72"
+            className="field-input"
+            value={hoursBefore}
+            onChange={(e) => setHoursBefore(e.target.value)}
+          />
+        </div>
+
+        <div className="admin-mkt-modal-field">
+          <label className="admin-mkt-modal-label">
+            Mensagem — variáveis: {'{{nome}}, {{servico}}, {{data}}, {{hora}}'}
+          </label>
+          <textarea
+            className="field-input admin-mkt-campaign-textarea"
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            rows={5}
+          />
+        </div>
+
+        <div className="admin-mkt-modal-field">
+          <label className="admin-mkt-modal-label">Pré-visualização</label>
+          <div className="admin-mkt-preview-bubble">{renderPreview(body)}</div>
+        </div>
+
+        {error && <p className="admin-mkt-wpp-error">{error}</p>}
+
+        <div className="admin-mkt-modal-actions">
+          <button type="button" className="admin-mkt-modal-cancel-btn" onClick={onClose}>
+            Cancelar
+          </button>
+          <button type="button" className="admin-mkt-new-campaign-btn" onClick={handleCreate} disabled={saving}>
+            {saving ? 'Criando…' : 'Criar automação'}
+          </button>
+        </div>
+      </div>
+    </div>
   );
+};
+
+const AutomationsSection = () => {
+  const [automations, setAutomations] = useState([]);
   const [editingKey, setEditingKey] = useState(null);
+  const [showCreate, setShowCreate] = useState(false);
 
   useEffect(() => {
     fetchMessageTemplates()
-      .then((data) => setTemplates(Object.fromEntries(data.map((t) => [t.key, t]))))
-      .catch((err) => console.error('Erro ao buscar mensagens:', err));
+      .then(setAutomations)
+      .catch((err) => console.error('Erro ao buscar automações:', err));
   }, []);
 
-  const toggleActive = (key) => {
-    setActiveMap((prev) => ({ ...prev, [key]: !prev[key] }));
+  const toggleActive = async (automation) => {
+    const next = !automation.active;
+    setAutomations((prev) => prev.map((a) => (a.key === automation.key ? { ...a, active: next } : a)));
+    try {
+      await setAutomationActive(automation.key, next);
+    } catch (err) {
+      console.error('Erro ao atualizar automação:', err);
+      setAutomations((prev) => prev.map((a) => (a.key === automation.key ? { ...a, active: !next } : a)));
+    }
   };
 
-  const activeCount = Object.values(activeMap).filter(Boolean).length;
-  const editingTemplate = editingKey ? templates[editingKey] : null;
+  const activeCount = automations.filter((a) => a.active).length;
+  const editingAutomation = automations.find((a) => a.key === editingKey) || null;
 
   return (
     <div className="admin-mkt-section">
       <div className="admin-mkt-section-header">
         <span className="admin-mkt-section-title">Automações · {activeCount} ativas</span>
+        <button type="button" className="admin-mkt-new-campaign-btn" onClick={() => setShowCreate(true)}>
+          + Criar nova automação
+        </button>
       </div>
       <div className="admin-mkt-automations-grid">
-        {AUTOMATIONS.map((au) => (
-          <div key={au.templateKey} className="admin-mkt-automation-card">
+        {automations.map((au) => (
+          <div key={au.key} className="admin-mkt-automation-card">
             <div className="admin-mkt-automation-top">
               <span className="admin-mkt-channel-badge" style={{ color: CHANNEL_COLOR, background: CHANNEL_BG }}>
                 WhatsApp
               </span>
               <button
                 type="button"
-                className={`admin-toggle-track ${activeMap[au.templateKey] ? 'on' : ''}`}
-                onClick={() => toggleActive(au.templateKey)}
-                aria-label={activeMap[au.templateKey] ? 'Desativar automação' : 'Ativar automação'}
+                className={`admin-toggle-track ${au.active ? 'on' : ''}`}
+                onClick={() => toggleActive(au)}
+                aria-label={au.active ? 'Desativar automação' : 'Ativar automação'}
               >
                 <div className="admin-toggle-thumb" />
               </button>
             </div>
-            <span className="admin-mkt-automation-title">{au.title}</span>
-            <span className="admin-mkt-automation-desc">{au.desc}</span>
-            <button
-              type="button"
-              className="admin-mkt-template-edit-btn"
-              onClick={() => setEditingKey(au.templateKey)}
-              disabled={!templates[au.templateKey]}
-            >
+            <span className="admin-mkt-automation-title">{au.label}</span>
+            <span className="admin-mkt-automation-desc">
+              {au.description}
+              {au.hours_before != null && ` (${au.hours_before}h antes)`}
+            </span>
+            <button type="button" className="admin-mkt-template-edit-btn" onClick={() => setEditingKey(au.key)}>
               Editar mensagem
             </button>
           </div>
         ))}
       </div>
 
-      {editingTemplate && (
+      {editingAutomation && (
         <TemplateEditModal
-          template={editingTemplate}
+          template={editingAutomation}
           onClose={() => setEditingKey(null)}
-          onSaved={(key, body) => {
-            setTemplates((prev) => ({ ...prev, [key]: { ...prev[key], body } }));
+          onSaved={(key, fields) => {
+            setAutomations((prev) => prev.map((a) => (a.key === key ? { ...a, ...fields } : a)));
             setEditingKey(null);
+          }}
+          onDeleted={(key) => {
+            setAutomations((prev) => prev.filter((a) => a.key !== key));
+            setEditingKey(null);
+          }}
+        />
+      )}
+
+      {showCreate && (
+        <CreateAutomationModal
+          onClose={() => setShowCreate(false)}
+          onCreated={(automation) => {
+            setAutomations((prev) => [...prev, automation]);
+            setShowCreate(false);
           }}
         />
       )}

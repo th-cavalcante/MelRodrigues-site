@@ -13,7 +13,7 @@
 
 import { serve } from 'https://deno.land/std@0.190.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { sendWhatsAppText, formatPhoneForEvolution, getTemplate, fillTemplate } from '../_shared/evolution.ts';
+import { sendWhatsAppText, formatPhoneForEvolution, fillTemplate } from '../_shared/evolution.ts';
 
 serve(async (req) => {
   try {
@@ -86,17 +86,20 @@ serve(async (req) => {
 
         const patient = booking?.patients;
         const phoneDigits = formatPhoneForEvolution(patient?.phone);
-        if (phoneDigits) {
+
+        const { data: template } = await supabaseAdmin
+          .from('message_templates')
+          .select('body, active')
+          .eq('key', 'booking_confirmed')
+          .maybeSingle();
+
+        if (phoneDigits && template?.active !== false) {
           const [year, month, day] = (booking?.booking_date || '').split('-');
           const dateLabel = year ? `${day}/${month}` : '';
           const timeLabel = (booking?.booking_time || '').slice(0, 5);
           const firstName = (patient?.name || '').trim().split(/\s+/)[0] || '';
 
-          const body = await getTemplate(
-            supabaseAdmin,
-            'booking_confirmed',
-            '{{nome}}! Sua sessão está confirmada para {{data}} às {{hora}}.'
-          );
+          const body = template?.body || '{{nome}}! Sua sessão está confirmada para {{data}} às {{hora}}.';
           const text = fillTemplate(body, { nome: firstName, data: dateLabel, hora: timeLabel });
 
           const result = await sendWhatsAppText(phoneDigits, text);
