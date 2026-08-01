@@ -55,7 +55,6 @@
   color: var(--adm-text);
   font-family: 'Inter', system-ui, sans-serif;
   display: flex;
-  overflow-x: hidden;
 }
 
 .admin-panel h1, .admin-panel h2, .admin-panel h3, .admin-panel h4 {
