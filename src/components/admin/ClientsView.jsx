@@ -30,8 +30,6 @@ const ClientsView = ({ clients, setClients }) => {
   const [signatures, setSignatures] = useState({});
   const [photos, setPhotos] = useState([]);
   const [photoUrls, setPhotoUrls] = useState({});
-  const [showAssinaturaLink, setShowAssinaturaLink] = useState(false);
-  const [assinaturaLinkCopied, setAssinaturaLinkCopied] = useState(false);
   const [assinaturaSending, setAssinaturaSending] = useState(false);
   const [assinaturaSent, setAssinaturaSent] = useState(false);
   const [assinaturaError, setAssinaturaError] = useState('');
@@ -46,8 +44,6 @@ const ClientsView = ({ clients, setClients }) => {
   );
 
   useEffect(() => {
-    setShowAssinaturaLink(false);
-    setAssinaturaLinkCopied(false);
     setAssinaturaSent(false);
     setAssinaturaError('');
     setFichaLinkCopied(false);
@@ -291,7 +287,6 @@ const ClientsView = ({ clients, setClients }) => {
                 <button
                   type="button"
                   onClick={async () => {
-                    setShowAssinaturaLink((v) => !v);
                     setAssinaturaError('');
                     setAssinaturaSending(true);
                     try {
@@ -310,31 +305,6 @@ const ClientsView = ({ clients, setClients }) => {
                 </button>
               </div>
               {assinaturaError && <p className="admin-mkt-wpp-error">{assinaturaError}</p>}
-              {showAssinaturaLink && (
-                <div className="admin-cadastro-linkbox">
-                  <span className="admin-cadastro-link-text">{assinaturaUrl}</span>
-                  <div className="admin-cadastro-linkbox-actions">
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        try {
-                          await navigator.clipboard.writeText(assinaturaUrl);
-                          setAssinaturaLinkCopied(true);
-                          setTimeout(() => setAssinaturaLinkCopied(false), 2000);
-                        } catch (err) {
-                          console.error('Erro ao copiar link:', err);
-                        }
-                      }}
-                      className="admin-cadastro-copy-btn"
-                    >
-                      {assinaturaLinkCopied ? 'Copiado ✓' : 'Copiar'}
-                    </button>
-                    <a href={assinaturaUrl} target="_blank" rel="noopener noreferrer" className="admin-cadastro-copy-btn">
-                      Abrir em nova aba
-                    </a>
-                  </div>
-                </div>
-              )}
             </>
           )}
         </div>

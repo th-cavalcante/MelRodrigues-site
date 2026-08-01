@@ -13,7 +13,7 @@ const WEEKDAY_LABELS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
 const ALL_TIMES = (() => {
   const rows = [];
-  for (let mins = 8 * 60; mins <= 20 * 60; mins += 30) {
+  for (let mins = 8 * 60; mins <= 19 * 60; mins += 30) {
     const h = String(Math.floor(mins / 60)).padStart(2, '0');
     const m = String(mins % 60).padStart(2, '0');
     rows.push(`${h}:${m}`);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getPatientAttendanceStats } from '../../lib/bookings';
 import { fetchLaserServices } from '../../lib/services';
 import { STATUS_OPTIONS, PAYMENT_STATUS_OPTIONS, PAYMENT_METHOD_OPTIONS, COMPLEMENTARY_SERVICE_OPTIONS, buildWhatsAppLink } from '../../lib/agendaConstants';
-import { sendTestReminder } from '../../lib/evolution';
+import { sendTestReminder, sendFichaLink, sendDocumentSignatureLink } from '../../lib/evolution';
 
 const MAX_SERVICE_SLOTS = 10;
 
@@ -27,8 +27,10 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
   const [draft, setDraft] = useState(() => buildDraft(booking));
   const [stats, setStats] = useState(null);
   const [laserServices, setLaserServices] = useState([]);
-  const [fichaLinkCopied, setFichaLinkCopied] = useState(false);
-  const [assinaturaLinkCopied, setAssinaturaLinkCopied] = useState(false);
+  const [fichaLinkState, setFichaLinkState] = useState('idle');
+  const [fichaLinkError, setFichaLinkError] = useState('');
+  const [assinaturaLinkState, setAssinaturaLinkState] = useState('idle');
+  const [assinaturaLinkError, setAssinaturaLinkError] = useState('');
   const [reminderState, setReminderState] = useState('idle');
   const [reminderError, setReminderError] = useState('');
 
@@ -97,23 +99,27 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
   const fichaUrl = `${window.location.origin}/cliente/ficha?patient=${booking.patient_id}`;
   const assinaturaUrl = `${window.location.origin}/cliente/ficha?patient=${booking.patient_id}&docs=liberado`;
 
-  const handleCopyFichaLink = async () => {
+  const handleSendFichaLink = async () => {
+    setFichaLinkState('sending');
+    setFichaLinkError('');
     try {
-      await navigator.clipboard.writeText(fichaUrl);
-      setFichaLinkCopied(true);
-      setTimeout(() => setFichaLinkCopied(false), 2000);
+      await sendFichaLink(booking.patient_id, fichaUrl);
+      setFichaLinkState('sent');
     } catch (err) {
-      console.error('Erro ao copiar link da ficha:', err);
+      setFichaLinkError(err.message || 'Não foi possível enviar a mensagem.');
+      setFichaLinkState('error');
     }
   };
 
-  const handleCopyAssinaturaLink = async () => {
+  const handleSendAssinaturaLink = async () => {
+    setAssinaturaLinkState('sending');
+    setAssinaturaLinkError('');
     try {
-      await navigator.clipboard.writeText(assinaturaUrl);
-      setAssinaturaLinkCopied(true);
-      setTimeout(() => setAssinaturaLinkCopied(false), 2000);
+      await sendDocumentSignatureLink(booking.patient_id, assinaturaUrl);
+      setAssinaturaLinkState('sent');
     } catch (err) {
-      console.error('Erro ao copiar link de assinatura:', err);
+      setAssinaturaLinkError(err.message || 'Não foi possível enviar a mensagem.');
+      setAssinaturaLinkState('error');
     }
   };
 
@@ -200,18 +206,38 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
           <div className={`admin-agenda-doc-badge ${anamneseOk ? 'admin-agenda-doc-badge-ok' : ''}`}>
             📋 Anamnese<br /><strong>{anamneseOk ? 'Preenchida' : 'Pendente'}</strong>
             {!anamneseOk && (
-              <button type="button" onClick={handleCopyFichaLink} className="admin-doc-badge-link-btn">
-                {fichaLinkCopied ? 'Copiado ✓' : 'Enviar Link'}
+              <button
+                type="button"
+                onClick={handleSendFichaLink}
+                disabled={fichaLinkState === 'sending'}
+                className="admin-doc-badge-link-btn"
+              >
+                {fichaLinkState === 'sending'
+                  ? 'Enviando…'
+                  : fichaLinkState === 'sent'
+                  ? 'Enviado ✓'
+                  : 'Enviar Link'}
               </button>
             )}
+            {fichaLinkState === 'error' && <p className="admin-mkt-wpp-error">{fichaLinkError}</p>}
           </div>
           <div className={`admin-agenda-doc-badge ${contratoOk ? 'admin-agenda-doc-badge-ok' : ''}`}>
             ✍️ Contrato<br /><strong>{contratoOk ? 'Assinado' : 'Pendente'}</strong>
             {!contratoOk && (
-              <button type="button" onClick={handleCopyAssinaturaLink} className="admin-doc-badge-link-btn">
-                {assinaturaLinkCopied ? 'Copiado ✓' : 'Enviar Link'}
+              <button
+                type="button"
+                onClick={handleSendAssinaturaLink}
+                disabled={assinaturaLinkState === 'sending'}
+                className="admin-doc-badge-link-btn"
+              >
+                {assinaturaLinkState === 'sending'
+                  ? 'Enviando…'
+                  : assinaturaLinkState === 'sent'
+                  ? 'Enviado ✓'
+                  : 'Enviar Link'}
               </button>
             )}
+            {assinaturaLinkState === 'error' && <p className="admin-mkt-wpp-error">{assinaturaLinkError}</p>}
           </div>
         </div>
 

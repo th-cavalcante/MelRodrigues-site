@@ -55,3 +55,7 @@ export const sendBirthdayMessage = (patientId) => invokeSendMessage({ templateKe
 /** Manda o link de assinatura de Contrato/Termo pro paciente via WhatsApp. */
 export const sendDocumentSignatureLink = (patientId, link) =>
   invokeSendMessage({ templateKey: 'document_signature_link', patientId, link });
+
+/** Manda o link da Ficha de Anamnese pro paciente via WhatsApp. */
+export const sendFichaLink = (patientId, link) =>
+  invokeSendMessage({ templateKey: 'ficha_link', patientId, link });

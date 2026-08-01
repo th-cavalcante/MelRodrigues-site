@@ -1,8 +1,9 @@
 // Edge Function — envia uma mensagem de WhatsApp usando um template
-// editável (tabela message_templates), via Evolution API. Serve três casos:
-//   { templateKey: 'test_reminder', bookingId }              — lembrete de teste manual
-//   { templateKey: 'birthday', patientId }                   — mensagem de aniversário
-//   { templateKey: 'document_signature_link', patientId, link } — link de assinatura
+// editável (tabela message_templates), via Evolution API. Serve quatro casos:
+//   { templateKey: 'test_reminder', bookingId }                  — lembrete de teste manual
+//   { templateKey: 'birthday', patientId }                       — mensagem de aniversário
+//   { templateKey: 'document_signature_link', patientId, link }  — link de assinatura
+//   { templateKey: 'ficha_link', patientId, link }                — link da ficha de anamnese
 //
 // Segredos necessários (já configurados via `supabase secrets set`):
 //   EVOLUTION_API_URL, EVOLUTION_API_KEY, EVOLUTION_INSTANCE_NAME
@@ -77,6 +78,25 @@ serve(async (req) => {
         supabaseAdmin,
         'document_signature_link',
         '{{nome}}, segue o link para assinatura do contrato e termo de consentimento: {{link}}'
+      );
+      text = fillTemplate(body, { nome: firstName, link });
+    } else if (templateKey === 'ficha_link') {
+      if (!patientId) return jsonResponse({ error: 'patientId é obrigatório.' }, 400);
+      if (!link) return jsonResponse({ error: 'link é obrigatório.' }, 400);
+
+      const { data: patient, error: patientError } = await supabaseAdmin
+        .from('patients')
+        .select('name, phone')
+        .eq('id', patientId)
+        .maybeSingle();
+      if (patientError || !patient) return jsonResponse({ error: 'Paciente não encontrado.' }, 404);
+
+      phoneDigits = formatPhoneForEvolution(patient.phone);
+      const firstName = (patient.name || '').trim().split(/\s+/)[0] || '';
+      const body = await getTemplate(
+        supabaseAdmin,
+        'ficha_link',
+        '{{nome}}, segue o link para preencher sua ficha de anamnese: {{link}}'
       );
       text = fillTemplate(body, { nome: firstName, link });
     } else {

@@ -22,12 +22,9 @@ export const PAYMENT_METHOD_OPTIONS = [
 
 export const COMPLEMENTARY_SERVICE_OPTIONS = ['Limpeza de Pele', 'Drenagem Linfática'];
 
-/** Horários bloqueados na grade da visão Dia — manutenção do laser só pra
- * sala do Hakon 4D. Sem horário fixo de almoço: usar "Bloquear Horário"
- * pra bloquear o horário do dia que for necessário. */
-export const BLOCKED_SLOTS = [
-  { time: '16:00', room: 'Sala Laser Hakon 4D', label: 'Manutenção do Laser' },
-];
+/** Horários bloqueados na grade da visão Dia — sem bloqueio fixo hoje. Usar
+ * "Bloquear Horário" pra bloquear o horário do dia que for necessário. */
+export const BLOCKED_SLOTS = [];
 
 /** Data local em 'YYYY-MM-DD', nunca usar toISOString() (foto do UTC, não
  * do fuso local — no Brasil isso pode virar o dia errado antes das 3h/0h). */
