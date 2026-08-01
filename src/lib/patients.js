@@ -74,6 +74,11 @@ export const createPatient = async ({ nome, nascimento, telefone }) => {
   return data;
 };
 
+export const updatePatientPhone = async (patientId, telefone) => {
+  const { error } = await supabase.from('patients').update({ phone: telefone }).eq('id', patientId);
+  if (error) throw error;
+};
+
 export const deletePatient = async (patientId) => {
   const { error } = await supabase.from('patients').delete().eq('id', patientId);
   if (error) throw error;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createBooking, getBookedTimes } from '../../lib/bookings';
-import { createPatient } from '../../lib/patients';
+import { createPatient, updatePatientPhone } from '../../lib/patients';
 import { fetchLaserServices } from '../../lib/services';
 import { getPublicBlockedSlots, getPublicBlockedDays } from '../../lib/blockedSlots';
 import { PROFESSIONALS, COMPLEMENTARY_SERVICE_OPTIONS, BLOCKED_SLOTS, toISODate } from '../../lib/agendaConstants';
@@ -44,6 +44,7 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
   const [search, setSearch] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [phone, setPhone] = useState('');
 
   const [today] = useState(startOfToday);
   const [weekOffset, setWeekOffset] = useState(() => {
@@ -118,6 +119,7 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
   const handleSelectClient = (c) => {
     setSelectedPatient(c);
     setSearch(c.name);
+    setPhone(c.phone || '');
     setSearchFocused(false);
   };
 
@@ -171,10 +173,15 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
       // Se não veio de um clique na lista (cliente já cadastrada), o nome
       // digitado vira um cadastro novo — mesma função rápida de "Cadastro
       // Paciente", só com o nome preenchido.
+      const phoneTrimmed = phone.trim();
       let patient = selectedPatient;
       if (!patient) {
-        patient = await createPatient({ nome: name });
+        patient = await createPatient({ nome: name, telefone: phoneTrimmed || null });
         if (setClients) setClients((cs) => [patient, ...cs]);
+      } else if (phoneTrimmed && phoneTrimmed !== (patient.phone || '')) {
+        await updatePatientPhone(patient.id, phoneTrimmed);
+        patient = { ...patient, phone: phoneTrimmed };
+        if (setClients) setClients((cs) => cs.map((c) => (c.id === patient.id ? patient : c)));
       }
       const created = await createBooking({
         patient,
@@ -206,33 +213,47 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
         </div>
 
         <div className="admin-agenda-modal-body">
-          <div className="field-wrap admin-agenda-search-wrap">
-            <label className="field-label">Nome da Cliente</label>
-            <input
-              type="text"
-              placeholder="Buscar ou digitar nome de uma nova cliente..."
-              value={search}
-              onChange={handleSearchChange}
-              onFocus={() => setSearchFocused(true)}
-              onBlur={handleSearchBlur}
-              className="field-input"
-            />
-            {searchFocused && (
-              <div className="admin-agenda-search-results">
-                {results.map((c) => (
-                  <button key={c.id} type="button" onClick={() => handleSelectClient(c)} className="admin-agenda-search-result">
-                    {c.name || 'Sem nome'}
-                  </button>
-                ))}
-                {results.length === 0 && (
-                  <div className="admin-agenda-search-empty">
-                    {search.trim()
-                      ? `Nenhuma cliente encontrada. "${search.trim()}" será cadastrada como nova paciente.`
-                      : 'Digite o nome pra buscar ou cadastrar uma nova cliente.'}
-                  </div>
-                )}
-              </div>
-            )}
+          <div className="field-row">
+            <div className="field-wrap admin-agenda-search-wrap">
+              <label className="field-label">Nome da Cliente</label>
+              <input
+                type="text"
+                placeholder="Buscar ou digitar nome de uma nova cliente..."
+                value={search}
+                onChange={handleSearchChange}
+                onFocus={() => setSearchFocused(true)}
+                onBlur={handleSearchBlur}
+                className="field-input"
+              />
+              {searchFocused && (
+                <div className="admin-agenda-search-results">
+                  {results.map((c) => (
+                    <button key={c.id} type="button" onClick={() => handleSelectClient(c)} className="admin-agenda-search-result">
+                      {c.name || 'Sem nome'}
+                    </button>
+                  ))}
+                  {results.length === 0 && (
+                    <div className="admin-agenda-search-empty">
+                      {search.trim()
+                        ? `Nenhuma cliente encontrada. "${search.trim()}" será cadastrada como nova paciente.`
+                        : 'Digite o nome pra buscar ou cadastrar uma nova cliente.'}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="field-wrap">
+              <label className="field-label" htmlFor="apt-phone">WhatsApp</label>
+              <input
+                id="apt-phone"
+                type="text"
+                placeholder="(00) 00000-0000"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="field-input"
+              />
+            </div>
           </div>
 
           <div className="field-wrap">
