@@ -45,11 +45,6 @@ const Navbar = () => {
           <li className="nav-item">
             <a href="/cursos" target="_blank" rel="noopener noreferrer" className="nav-link" onClick={handleNavClick}>Cursos</a>
           </li>
-          <li className="nav-item">
-            <Link to="/admin/login" className="nav-link nav-link-login" onClick={handleNavClick}>
-              🔒 Login
-            </Link>
-          </li>
         </ul>
       </div>
     </nav>

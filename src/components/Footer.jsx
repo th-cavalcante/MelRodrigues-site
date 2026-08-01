@@ -43,7 +43,7 @@ const Footer = () => {
           <div className="footer-column">
             <div className="footer-heading">Horário</div>
             <div className="footer-links footer-links-static">
-              <span>{content.footer_hours_line1 ?? 'Seg – Sex: 9h às 19h'}</span>
+              <span>{content.footer_hours_line1 ?? 'Seg – Sex: 8h às 19h'}</span>
               <span>{content.footer_hours_line2 ?? 'Sáb: 9h às 15h'}</span>
             </div>
           </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/HeroSection.css';
 import { useSiteContent } from '../context/SiteContentContext';
 
-const WHATSAPP_LINK = 'https://wa.me/5511987654321?text=Olá%20MR%20Laser!%20Gostaria%20de%20agendar%20uma%20avaliação%20gratuita.';
+const WHATSAPP_LINK = 'https://wa.me/5513996753432?text=Olá%20MR%20Laser!%20Gostaria%20de%20agendar%20uma%20avaliação%20gratuita.';
 const MAPS_LINK = 'https://www.google.com/maps/place/MR+LASER+CONCEPT+-+(Depila%C3%A7%C3%A3o+a+Laser,+Cursos+e+Loca%C3%A7%C3%B5es)/@-23.9638198,-46.3850562,17z/data=!3m1!4b1!4m6!3m5!1s0x94ce1d579379aff5:0xaa204b6d027dab84!8m2!3d-23.9638198!4d-46.3850562!16s%2Fg%2F11v19c56_0?entry=ttu&g_ep=EgoyMDI2MDcxNS4wIKXMDSoASAFQAw%3D%3D';
 
 const HeroSection = () => {
