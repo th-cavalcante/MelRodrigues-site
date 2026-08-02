@@ -654,6 +654,31 @@
   border-bottom: none;
 }
 
+.admin-anamnese-linkbox {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.admin-anamnese-link-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: var(--adm-accent-soft);
+  color: var(--adm-accent-text);
+}
+
+.admin-anamnese-link-input {
+  flex: 1;
+  min-width: 220px;
+}
+
 .admin-cadastro-linkbox {
   display: flex;
   align-items: center;

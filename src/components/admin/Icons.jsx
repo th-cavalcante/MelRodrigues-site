@@ -174,6 +174,16 @@ export const IconBolt = ({ size = 17 }) => (
   </svg>
 );
 
+export const IconClipboard = ({ size = 17 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+    <rect x="5" y="4" width="14" height="17" rx="2" />
+    <path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1" />
+    <line x1="8" y1="10.5" x2="16" y2="10.5" />
+    <line x1="8" y1="14.5" x2="16" y2="14.5" />
+    <line x1="8" y1="18.5" x2="12" y2="18.5" />
+  </svg>
+);
+
 export const IconLogOut = ({ size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />

@@ -14,6 +14,7 @@ import ClienteDocumentos from './pages/ClienteDocumentos';
 import FichaPublica from './pages/FichaPublica';
 import ConfirmarSessao from './pages/ConfirmarSessao';
 import AgendaOnline from './pages/AgendaOnline';
+import AnamneseOnline from './pages/AnamneseOnline';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/cliente/ficha" element={<FichaPublica />} />
           <Route path="/cliente/sessao" element={<ConfirmarSessao />} />
           <Route path="/cliente/agendar" element={<AgendaOnline />} />
+          <Route path="/cliente/anamnese" element={<AnamneseOnline />} />
           {/* Rotas futuras serão adicionadas aqui */}
           {/* <Route path="/precos" element={<Precos />} /> */}
           {/* <Route path="/sobre" element={<Sobre />} /> */}
