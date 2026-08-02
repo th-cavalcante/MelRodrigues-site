@@ -306,7 +306,7 @@ const AnamneseOnline = () => {
               <h1 className="agenda-online-step-title">Ficha enviada!</h1>
               <p className="agenda-online-success-text">
                 Recebemos seus dados. Nossa equipe vai avaliar seu questionário e entrar em
-                contato pra confirmar se o tratamento é indicado e agendar sua avaliação.
+                contato para confirmar se o tratamento é indicado e agendar sua sessão.
               </p>
 
               <div className="agenda-online-actions agenda-online-actions-center">
