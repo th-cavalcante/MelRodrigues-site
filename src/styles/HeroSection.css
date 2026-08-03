@@ -84,6 +84,24 @@
   color: var(--text-muted);
 }
 
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 60px;
+  line-height: 1.12;
+  margin: 26px 0 0;
+  color: var(--text-dark);
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-body);
+  max-width: 540px;
+  margin: 30px 0 0;
+  font-weight: 300;
+}
+
 .hero-location-btn {
   display: inline-flex;
   align-items: center;
@@ -120,9 +138,7 @@
 .hero-photo img {
   width: 100%;
   max-width: 420px;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  object-position: top center;
+  height: auto;
   display: block;
 }
 
@@ -166,27 +182,29 @@
     gap: 0;
   }
 
+  .hero-title,
+  .hero-subtitle {
+    display: none;
+  }
+
   .hero-content {
     max-width: 100%;
     position: relative;
     z-index: 1;
+    /* empurra o texto pra região do abdômen na foto (corpo inteiro, ancorada embaixo) */
+    margin-top: 280px;
   }
 
   .hero-photo {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    inset: 0;
     z-index: 0;
-    height: 60%;
+    height: auto;
+    padding-bottom: 20px;
   }
 
   .hero-photo img {
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    object-fit: cover;
-    object-position: top center;
+    max-width: 300px;
     opacity: 0.9;
   }
 

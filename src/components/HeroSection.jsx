@@ -20,6 +20,14 @@ const HeroSection = () => {
             <span>{content.hero_eyebrow ?? 'Sua Clínica de Depilação a Laser em São Vicente'}</span>
           </div>
 
+          <h1 className="hero-title">
+            {content.hero_title ?? 'A ciência da beleza, com a delicadeza que você merece.'}
+          </h1>
+
+          <p className="hero-subtitle">
+            {content.hero_address ?? 'R. Benjamin Constant, 61, Sala 515 - Centro, São Vicente (Helbor Offices)'}
+          </p>
+
           <a
             href={MAPS_LINK}
             target="_blank"
