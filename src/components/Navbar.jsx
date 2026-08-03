@@ -17,7 +17,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-logo">
-          <img src="/images/logo.png" alt="MR Laser" />
+          <img src="/images/logo-header.png" alt="MR Laser" />
         </div>
 
         <div
