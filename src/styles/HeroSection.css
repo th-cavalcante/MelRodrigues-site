@@ -183,7 +183,9 @@
   }
 
   .hero-title,
-  .hero-subtitle {
+  .hero-subtitle,
+  .hero-eyebrow,
+  .hero-location-btn {
     display: none;
   }
 
