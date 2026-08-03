@@ -5,6 +5,13 @@ import { useSiteContent } from '../context/SiteContentContext';
 const WHATSAPP_LINK = 'https://wa.me/5513996753432?text=Olá%20MR%20Laser!%20Gostaria%20de%20agendar%20uma%20avaliação%20gratuita.';
 const MAPS_LINK = 'https://www.google.com/maps/place/MR+LASER+CONCEPT+-+(Depila%C3%A7%C3%A3o+a+Laser,+Cursos+e+Loca%C3%A7%C3%B5es)/@-23.9638198,-46.3850562,17z/data=!3m1!4b1!4m6!3m5!1s0x94ce1d579379aff5:0xaa204b6d027dab84!8m2!3d-23.9638198!4d-46.3850562!16s%2Fg%2F11v19c56_0?entry=ttu&g_ep=EgoyMDI2MDcxNS4wIKXMDSoASAFQAw%3D%3D';
 
+const IconPin = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 21s-7-7.2-7-12a7 7 0 0 1 14 0c0 4.8-7 12-7 12Z" />
+    <circle cx="12" cy="9" r="2.5" />
+  </svg>
+);
+
 const HeroSection = () => {
   const { content } = useSiteContent();
 
@@ -34,7 +41,7 @@ const HeroSection = () => {
             rel="noopener noreferrer"
             className="hero-location-btn"
           >
-            📍 ABRIR LOCALIZAÇÃO
+            <IconPin size={14} /> ABRIR LOCALIZAÇÃO
           </a>
 
           <div className="hero-buttons">
