@@ -10,6 +10,7 @@ import {
   IconBolt,
   IconGear,
   IconClipboard,
+  IconTruck,
 } from './Icons';
 
 const TITLES = {
@@ -19,6 +20,7 @@ const TITLES = {
   bloqueios: 'Bloqueio de Horários',
   clients: 'Clientes',
   anamnese: 'Anamnese',
+  locacoes: 'Locações',
   financeiro: 'Financeiro',
   site: 'Gerenciar Site',
   'tabela-preco': 'Tabela de Preço',
@@ -72,6 +74,9 @@ const MobileShell = ({ tab, onSelectTab, onNewAppointment, onLogout, children })
             </button>
             <button type="button" className="admin-mobile-menu-fullscreen-item" onClick={() => goTo('anamnese')}>
               <IconClipboard /> Anamnese
+            </button>
+            <button type="button" className="admin-mobile-menu-fullscreen-item" onClick={() => goTo('locacoes')}>
+              <IconTruck /> Locações
             </button>
             <button type="button" className="admin-mobile-menu-fullscreen-item" onClick={() => goTo('financeiro')}>
               <IconChart /> Financeiro

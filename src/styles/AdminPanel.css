@@ -902,6 +902,63 @@
   max-width: 420px;
 }
 
+/* LOCAÇÕES */
+.admin-locacoes-save-btn {
+  margin-top: 6px;
+}
+
+.admin-locacoes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.admin-locacoes-card {
+  background: var(--adm-card-soft);
+  border: 1px solid var(--adm-border);
+  padding: 24px 26px;
+}
+
+.admin-locacoes-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.admin-locacoes-fields {
+  margin-bottom: 20px;
+}
+
+.admin-locacoes-contract-row,
+.admin-locacoes-address-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--adm-border-soft);
+}
+
+.admin-locacoes-contract-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-locacoes-address-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13.5px;
+  color: var(--adm-text2);
+  max-width: 420px;
+}
+
 /* SESSIONS TIMELINE */
 .admin-sessions-header-row {
   display: flex;

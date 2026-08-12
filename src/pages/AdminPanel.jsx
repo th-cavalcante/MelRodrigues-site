@@ -12,6 +12,7 @@ import SiteManagerView from '../components/admin/SiteManagerView';
 import TabelaPrecoView from '../components/admin/TabelaPrecoView';
 import ClientsView from '../components/admin/ClientsView';
 import AnamneseLinkView from '../components/admin/AnamneseLinkView';
+import LocacoesView from '../components/admin/LocacoesView';
 import AgendaView from '../components/admin/AgendaView';
 import NewAppointmentModal from '../components/admin/NewAppointmentModal';
 import FinanceiroView from '../components/admin/FinanceiroView';
@@ -85,6 +86,7 @@ const AdminPanel = () => {
       {tab === 'tabela-preco' && <TabelaPrecoView />}
       {tab === 'clients' && <ClientsView clients={clients} setClients={setClients} />}
       {tab === 'anamnese' && <AnamneseLinkView />}
+      {tab === 'locacoes' && <LocacoesView />}
       {tab === 'agenda' && (isMobile ? <MobileAgenda clients={clients} setClients={setClients} /> : <AgendaView clients={clients} setClients={setClients} />)}
       {tab === 'agenda-completa' && <AgendaView clients={clients} setClients={setClients} />}
       {tab === 'bloqueios' && <MobileBlockedSlots />}

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { IconGrid, IconCalendar, IconUser, IconChart, IconMonitor, IconTag, IconBolt, IconGear, IconClipboard } from './Icons';
+import { IconGrid, IconCalendar, IconUser, IconChart, IconMonitor, IconTag, IconBolt, IconGear, IconClipboard, IconTruck } from './Icons';
 
 const navConfig = [
   { key: 'dashboard', label: 'Dashboard', Icon: IconGrid },
   { key: 'agenda', label: 'Agenda', Icon: IconCalendar },
   { key: 'clients', label: 'Clientes', Icon: IconUser },
   { key: 'anamnese', label: 'Anamnese', Icon: IconClipboard },
+  { key: 'locacoes', label: 'Locações', Icon: IconTruck },
   { key: 'financeiro', label: 'Financeiro', Icon: IconChart },
   { key: 'site', label: 'Gerenciar Site', Icon: IconMonitor },
   { key: 'tabela-preco', label: 'Tabela de Preço', Icon: IconTag },

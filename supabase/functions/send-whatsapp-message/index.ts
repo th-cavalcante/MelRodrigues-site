@@ -1,9 +1,11 @@
 // Edge Function — envia uma mensagem de WhatsApp usando um template
-// editável (tabela message_templates), via Evolution API. Serve quatro casos:
+// editável (tabela message_templates), via Evolution API. Serve estes casos:
 //   { templateKey: 'test_reminder', bookingId }                  — lembrete de teste manual
 //   { templateKey: 'birthday', patientId }                       — mensagem de aniversário
 //   { templateKey: 'document_signature_link', patientId, link }  — link de assinatura
 //   { templateKey: 'ficha_link', patientId, link }                — link da ficha de anamnese
+//   { templateKey: 'rental_contract', rentalClientId }            — contrato de locação (Hakon 4D)
+//   { templateKey: 'rental_address', rentalClientId }             — confirmação de endereço (locação)
 //
 // Segredos necessários (já configurados via `supabase secrets set`):
 //   EVOLUTION_API_URL, EVOLUTION_API_KEY, EVOLUTION_INSTANCE_NAME
@@ -33,7 +35,7 @@ serve(async (req) => {
   }
 
   try {
-    const { templateKey, bookingId, patientId, link } = await req.json();
+    const { templateKey, bookingId, patientId, link, rentalClientId } = await req.json();
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -99,6 +101,48 @@ serve(async (req) => {
         '{{nome}}, segue o link para preencher sua ficha de anamnese: {{link}}'
       );
       text = fillTemplate(body, { nome: firstName, link });
+    } else if (templateKey === 'rental_contract') {
+      if (!rentalClientId) return jsonResponse({ error: 'rentalClientId é obrigatório.' }, 400);
+
+      const { data: rc, error: rcError } = await supabaseAdmin
+        .from('rental_clients')
+        .select('name, phone, rental_date, rental_value')
+        .eq('id', rentalClientId)
+        .maybeSingle();
+      if (rcError || !rc) return jsonResponse({ error: 'Cliente de locação não encontrado.' }, 404);
+
+      phoneDigits = formatPhoneForEvolution(rc.phone);
+      const firstName = (rc.name || '').trim().split(/\s+/)[0] || '';
+      const [year, month, day] = (rc.rental_date || '').split('-');
+      const dateLabel = year ? `${day}/${month}/${year}` : 'a combinar';
+      const valorLabel = rc.rental_value != null ? Number(rc.rental_value).toFixed(2).replace('.', ',') : 'a combinar';
+      const body = await getTemplate(
+        supabaseAdmin,
+        'rental_contract',
+        '{{nome}}, segue o contrato de locação do equipamento Hakon 4D — data: {{data}}, valor: R$ {{valor}}. Qualquer dúvida, estou à disposição!'
+      );
+      text = fillTemplate(body, { nome: firstName, data: dateLabel, valor: valorLabel });
+    } else if (templateKey === 'rental_address') {
+      if (!rentalClientId) return jsonResponse({ error: 'rentalClientId é obrigatório.' }, 400);
+
+      const { data: rc, error: rcError } = await supabaseAdmin
+        .from('rental_clients')
+        .select('name, phone, street, neighborhood, city, cep')
+        .eq('id', rentalClientId)
+        .maybeSingle();
+      if (rcError || !rc) return jsonResponse({ error: 'Cliente de locação não encontrado.' }, 404);
+
+      phoneDigits = formatPhoneForEvolution(rc.phone);
+      const firstName = (rc.name || '').trim().split(/\s+/)[0] || '';
+      const enderecoParts = [rc.street, rc.neighborhood, rc.city].filter(Boolean);
+      let endereco = enderecoParts.join(', ');
+      if (rc.cep) endereco += (endereco ? ', ' : '') + `CEP ${rc.cep}`;
+      const body = await getTemplate(
+        supabaseAdmin,
+        'rental_address',
+        '{{nome}}, confirmando o endereço para a locação do equipamento Hakon 4D: {{endereco}}'
+      );
+      text = fillTemplate(body, { nome: firstName, endereco });
     } else {
       // Padrão: lembrete de teste, a partir de um agendamento.
       if (!bookingId) return jsonResponse({ error: 'bookingId é obrigatório.' }, 400);

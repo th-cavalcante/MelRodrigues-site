@@ -184,6 +184,15 @@ export const IconClipboard = ({ size = 17 }) => (
   </svg>
 );
 
+export const IconTruck = ({ size = 17 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+    <rect x="1.5" y="6.5" width="13" height="10" rx="1" />
+    <path d="M14.5 10h4l3.5 3.5V16.5a1 1 0 0 1-1 1h-1.5" />
+    <circle cx="6" cy="18" r="2" />
+    <circle cx="17.5" cy="18" r="2" />
+  </svg>
+);
+
 export const IconLogOut = ({ size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
