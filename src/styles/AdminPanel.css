@@ -1224,6 +1224,13 @@
   text-align: center;
 }
 
+/* o modal de "Nova Locação" abre por cima do painel de detalhe do
+ * cliente (que já está aberto quando esse botão aparece), então precisa
+ * de um z-index maior que o do drawer (1200). */
+.admin-locacoes-booking-modal-overlay {
+  z-index: 1300;
+}
+
 @media (max-width: 640px) {
   .admin-locacoes-drawer {
     max-width: 100%;

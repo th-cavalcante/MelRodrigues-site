@@ -479,7 +479,7 @@ const LocacoesView = () => {
       )}
 
       {showBookingForm && selectedClient && (
-        <div className="admin-agenda-modal-overlay">
+        <div className="admin-agenda-modal-overlay admin-locacoes-booking-modal-overlay">
           <form className="admin-agenda-modal admin-agenda-modal-sheet" onSubmit={handleSubmitBooking}>
             <div className="admin-agenda-modal-header">
               <h2 className="admin-agenda-modal-title">Nova Locação — {selectedClient.name}</h2>
