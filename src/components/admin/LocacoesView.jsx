@@ -10,6 +10,8 @@ import { sendRentalContract, sendRentalAddress } from '../../lib/evolution';
 import { buildRentalContractBody, formatRentalEndereco } from './rentalContract';
 import { downloadDocPdf } from '../cliente/docPdf';
 
+const formatSignedDate = (iso) => (iso ? new Date(iso).toLocaleDateString('pt-BR') : null);
+
 const emptyForm = {
   nome: '', nascimento: '', cpf: '', rua: '', bairro: '', cidade: '', cep: '', email: '', telefone: '',
 };
@@ -72,7 +74,8 @@ const LocacoesView = () => {
     setContractError((m) => ({ ...m, [client.id]: '' }));
     setContractSending(client.id);
     try {
-      await sendRentalContract(client.id);
+      const link = `${window.location.origin}/cliente/locacao?rental=${client.id}`;
+      await sendRentalContract(client.id, link);
       await markRentalContractSent(client.id);
       setClients((cs) => cs.map((c) => (c.id === client.id ? { ...c, contract_sent: true } : c)));
     } catch (err) {
@@ -87,9 +90,9 @@ const LocacoesView = () => {
     downloadDocPdf({
       title: 'Contrato de Locação — Hakon 4D',
       body: buildRentalContractBody(client),
-      signatureDataUrl: null,
-      patientName: client.name,
-      dateLabel: client.contract_sent_at ? new Date(client.contract_sent_at).toLocaleDateString('pt-BR') : null,
+      signatureDataUrl: client.signature?.signature_data_url || null,
+      patientName: client.signature?.client_name_snapshot || client.name,
+      dateLabel: formatSignedDate(client.signature?.signed_at),
     });
   };
 
@@ -232,14 +235,41 @@ const LocacoesView = () => {
                   </div>
                 </div>
 
+                <div className="field-row admin-locacoes-fields">
+                  <div>
+                    <label className="admin-small-label">Horário de Início</label>
+                    <input
+                      type="time"
+                      value={c.rental_start_time ? c.rental_start_time.slice(0, 5) : ''}
+                      onChange={handleFieldChange(c.id, 'rental_start_time')}
+                      onBlur={handleFieldBlur(c.id, 'rental_start_time')}
+                      className="field-input"
+                    />
+                  </div>
+                  <div>
+                    <label className="admin-small-label">Horário de Término</label>
+                    <input
+                      type="time"
+                      value={c.rental_end_time ? c.rental_end_time.slice(0, 5) : ''}
+                      onChange={handleFieldChange(c.id, 'rental_end_time')}
+                      onBlur={handleFieldBlur(c.id, 'rental_end_time')}
+                      className="field-input"
+                    />
+                  </div>
+                </div>
+
                 <div className="admin-locacoes-contract-row">
                   <div className="admin-locacoes-contract-info">
                     <span className="admin-small-label">Contrato</span>
-                    <span className={`admin-document-status ${c.contract_sent ? 'admin-document-status-signed' : ''}`}>
-                      {c.contract_sent ? 'Enviado ✓' : 'Não enviado'}
+                    <span className={`admin-document-status ${c.signature ? 'admin-document-status-signed' : ''}`}>
+                      {c.signature
+                        ? `Assinado por ${c.signature.client_name_snapshot || c.name} em ${formatSignedDate(c.signature.signed_at)} ✓`
+                        : c.contract_sent
+                          ? 'Link enviado, aguardando assinatura'
+                          : 'Não enviado'}
                     </span>
                   </div>
-                  {c.contract_sent ? (
+                  {c.signature ? (
                     <button type="button" onClick={() => handleDownloadContract(c)} className="admin-open-client-btn">
                       Download
                     </button>
@@ -250,7 +280,7 @@ const LocacoesView = () => {
                       disabled={contractSending === c.id}
                       className="admin-open-client-btn"
                     >
-                      {contractSending === c.id ? 'Enviando…' : 'Enviar Contrato'}
+                      {contractSending === c.id ? 'Enviando…' : c.contract_sent ? 'Reenviar Contrato' : 'Enviar Contrato'}
                     </button>
                   )}
                 </div>

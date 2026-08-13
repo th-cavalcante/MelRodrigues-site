@@ -4,7 +4,7 @@
 //   { templateKey: 'birthday', patientId }                       — mensagem de aniversário
 //   { templateKey: 'document_signature_link', patientId, link }  — link de assinatura
 //   { templateKey: 'ficha_link', patientId, link }                — link da ficha de anamnese
-//   { templateKey: 'rental_contract', rentalClientId }            — contrato de locação (Hakon 4D)
+//   { templateKey: 'rental_contract', rentalClientId, link }      — link de assinatura do contrato de locação
 //   { templateKey: 'rental_address', rentalClientId }             — confirmação de endereço (locação)
 //
 // Segredos necessários (já configurados via `supabase secrets set`):
@@ -103,25 +103,23 @@ serve(async (req) => {
       text = fillTemplate(body, { nome: firstName, link });
     } else if (templateKey === 'rental_contract') {
       if (!rentalClientId) return jsonResponse({ error: 'rentalClientId é obrigatório.' }, 400);
+      if (!link) return jsonResponse({ error: 'link é obrigatório.' }, 400);
 
       const { data: rc, error: rcError } = await supabaseAdmin
         .from('rental_clients')
-        .select('name, phone, rental_date, rental_value')
+        .select('name, phone')
         .eq('id', rentalClientId)
         .maybeSingle();
       if (rcError || !rc) return jsonResponse({ error: 'Cliente de locação não encontrado.' }, 404);
 
       phoneDigits = formatPhoneForEvolution(rc.phone);
       const firstName = (rc.name || '').trim().split(/\s+/)[0] || '';
-      const [year, month, day] = (rc.rental_date || '').split('-');
-      const dateLabel = year ? `${day}/${month}/${year}` : 'a combinar';
-      const valorLabel = rc.rental_value != null ? Number(rc.rental_value).toFixed(2).replace('.', ',') : 'a combinar';
       const body = await getTemplate(
         supabaseAdmin,
         'rental_contract',
-        '{{nome}}, segue o contrato de locação do equipamento Hakon 4D — data: {{data}}, valor: R$ {{valor}}. Qualquer dúvida, estou à disposição!'
+        '{{nome}}, segue o link para assinatura do contrato de locação do equipamento Hakon 4D: {{link}}'
       );
-      text = fillTemplate(body, { nome: firstName, data: dateLabel, valor: valorLabel });
+      text = fillTemplate(body, { nome: firstName, link });
     } else if (templateKey === 'rental_address') {
       if (!rentalClientId) return jsonResponse({ error: 'rentalClientId é obrigatório.' }, 400);
 
