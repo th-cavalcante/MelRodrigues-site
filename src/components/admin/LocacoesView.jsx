@@ -6,7 +6,7 @@ import {
   markRentalContractSent,
   deleteRentalClient,
 } from '../../lib/rentals';
-import { sendRentalContract, sendRentalAddress } from '../../lib/evolution';
+import { sendRentalContract } from '../../lib/evolution';
 import { buildRentalContractBody, formatRentalEndereco } from './rentalContract';
 import { downloadDocPdf } from '../cliente/docPdf';
 import { IconChevronRight, IconTrash } from './Icons';
@@ -34,9 +34,6 @@ const LocacoesView = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [contractSending, setContractSending] = useState(null);
   const [contractError, setContractError] = useState({});
-  const [addressSending, setAddressSending] = useState(null);
-  const [addressSent, setAddressSent] = useState({});
-  const [addressError, setAddressError] = useState({});
   const [addressCopied, setAddressCopied] = useState(false);
 
   useEffect(() => {
@@ -108,21 +105,6 @@ const LocacoesView = () => {
     });
   };
 
-  const handleSendAddress = async (client) => {
-    setAddressError((m) => ({ ...m, [client.id]: '' }));
-    setAddressSending(client.id);
-    try {
-      await sendRentalAddress(client.id);
-      setAddressSent((m) => ({ ...m, [client.id]: true }));
-      setTimeout(() => setAddressSent((m) => ({ ...m, [client.id]: false })), 2500);
-    } catch (err) {
-      console.error('Erro ao enviar endereço:', err);
-      setAddressError((m) => ({ ...m, [client.id]: err.message || 'Não foi possível enviar o endereço.' }));
-    } finally {
-      setAddressSending(null);
-    }
-  };
-
   const handleCopyAddress = async (client) => {
     try {
       await navigator.clipboard.writeText(formatRentalEndereco(client));
@@ -145,6 +127,8 @@ const LocacoesView = () => {
   };
 
   const selected = clients.find((c) => c.id === selectedId) || null;
+  const totalValue = clients.reduce((sum, c) => sum + (Number(c.rental_value) || 0), 0);
+  const totalValueLabel = totalValue.toFixed(2).replace('.', ',');
 
   return (
     <div>
@@ -154,12 +138,18 @@ const LocacoesView = () => {
         <p className="admin-page-subtitle">Cadastro e gestão dos clientes que alugam o equipamento Hakon 4D.</p>
       </div>
 
-      <button type="button" onClick={() => setShowForm(true)} className="admin-open-client-btn admin-locacoes-new-btn">
-        + Cadastrar Cliente
-      </button>
+      <div className="admin-locacoes-toolbar">
+        <button type="button" onClick={() => setShowForm(true)} className="admin-open-client-btn">
+          + Cadastrar Cliente
+        </button>
+        <div className="admin-locacoes-total">
+          <span className="admin-small-label">Total em Locações</span>
+          <span className="admin-locacoes-total-value">R$ {totalValueLabel}</span>
+        </div>
+      </div>
 
       <div className="admin-card">
-        <div className="admin-card-title">Clientes em Locação</div>
+        <div className="admin-card-title">Clientes</div>
 
         {loading && <p className="admin-page-subtitle">Carregando...</p>}
         {!loading && clients.length === 0 && <p className="admin-page-subtitle">Nenhuma locação cadastrada ainda.</p>}
@@ -308,26 +298,6 @@ const LocacoesView = () => {
                 />
               </div>
               <div>
-                <span className="admin-small-label">Horário</span>
-                <div className="admin-locacoes-time-row">
-                  <input
-                    type="time"
-                    value={selected.rental_start_time ? selected.rental_start_time.slice(0, 5) : ''}
-                    onChange={handleFieldChange(selected.id, 'rental_start_time')}
-                    onBlur={handleFieldBlur(selected.id, 'rental_start_time')}
-                    className="admin-locacoes-plain-input"
-                  />
-                  <span>às</span>
-                  <input
-                    type="time"
-                    value={selected.rental_end_time ? selected.rental_end_time.slice(0, 5) : ''}
-                    onChange={handleFieldChange(selected.id, 'rental_end_time')}
-                    onBlur={handleFieldBlur(selected.id, 'rental_end_time')}
-                    className="admin-locacoes-plain-input"
-                  />
-                </div>
-              </div>
-              <div>
                 <span className="admin-small-label">Valor</span>
                 <input
                   type="number"
@@ -342,6 +312,10 @@ const LocacoesView = () => {
               <div>
                 <span className="admin-small-label">CPF</span>
                 <div className="admin-locacoes-static-value">{selected.cpf || '—'}</div>
+              </div>
+              <div>
+                <span className="admin-small-label">Data de Nascimento</span>
+                <div className="admin-locacoes-static-value">{formatDataBr(selected.birthdate)}</div>
               </div>
               <div>
                 <span className="admin-small-label">E-mail</span>
@@ -376,16 +350,6 @@ const LocacoesView = () => {
                 </button>
               )}
               {contractError[selected.id] && <p className="admin-mkt-wpp-error">{contractError[selected.id]}</p>}
-
-              <button
-                type="button"
-                onClick={() => handleSendAddress(selected)}
-                disabled={addressSending === selected.id}
-                className="admin-locacoes-whatsapp-btn"
-              >
-                {addressSending === selected.id ? 'Enviando…' : addressSent[selected.id] ? 'Enviado ✓' : '💬 Enviar no WhatsApp'}
-              </button>
-              {addressError[selected.id] && <p className="admin-mkt-wpp-error">{addressError[selected.id]}</p>}
             </div>
           </div>
         </div>
