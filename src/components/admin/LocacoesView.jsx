@@ -27,6 +27,7 @@ const formatDataBr = (iso) => {
 const LocacoesView = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState('');
@@ -59,6 +60,7 @@ const LocacoesView = () => {
       const created = await createRentalClient(form);
       setClients((cs) => [created, ...cs]);
       setForm(emptyForm);
+      setShowForm(false);
     } catch (err) {
       console.error('Erro ao cadastrar cliente de locação:', err);
       setFormError(`Não foi possível salvar o cadastro: ${err.message || 'erro desconhecido'}`);
@@ -152,86 +154,9 @@ const LocacoesView = () => {
         <p className="admin-page-subtitle">Cadastro e gestão dos clientes que alugam o equipamento Hakon 4D.</p>
       </div>
 
-      <div className="admin-card">
-        <div className="admin-card-title">Novo Cadastro</div>
-        <form onSubmit={handleSubmit}>
-          <div className="field-row">
-            <div>
-              <label className="field-label" htmlFor="loc-nome">Nome Completo</label>
-              <input id="loc-nome" type="text" placeholder="Digite o nome..." value={form.nome} onChange={setField('nome')} className="field-input" />
-            </div>
-            <div>
-              <label className="field-label" htmlFor="loc-nascimento">Data de Nascimento</label>
-              <input id="loc-nascimento" type="date" value={form.nascimento} onChange={setField('nascimento')} className="field-input" />
-            </div>
-          </div>
-
-          <div className="field-row">
-            <div>
-              <label className="field-label" htmlFor="loc-cpf">CPF</label>
-              <input id="loc-cpf" type="text" placeholder="000.000.000-00" value={form.cpf} onChange={setField('cpf')} className="field-input" />
-            </div>
-            <div>
-              <label className="field-label" htmlFor="loc-telefone">WhatsApp</label>
-              <input id="loc-telefone" type="text" placeholder="(13) 90000-0000" value={form.telefone} onChange={setField('telefone')} className="field-input" />
-            </div>
-          </div>
-
-          <div className="field-wrap">
-            <label className="field-label" htmlFor="loc-email">E-mail</label>
-            <input id="loc-email" type="email" placeholder="cliente@email.com" value={form.email} onChange={setField('email')} className="field-input" />
-          </div>
-
-          <div className="field-wrap">
-            <label className="field-label" htmlFor="loc-rua">Rua e nº</label>
-            <input id="loc-rua" type="text" placeholder="Digite o nome da rua e nº" value={form.rua} onChange={setField('rua')} className="field-input" />
-          </div>
-
-          <div className="field-row">
-            <div>
-              <label className="field-label" htmlFor="loc-bairro">Bairro</label>
-              <input id="loc-bairro" type="text" placeholder="Nome do bairro" value={form.bairro} onChange={setField('bairro')} className="field-input" />
-            </div>
-            <div>
-              <label className="field-label" htmlFor="loc-cidade">Cidade</label>
-              <input id="loc-cidade" type="text" placeholder="Nome da cidade" value={form.cidade} onChange={setField('cidade')} className="field-input" />
-            </div>
-          </div>
-
-          <div className="field-wrap">
-            <label className="field-label" htmlFor="loc-cep">CEP</label>
-            <input id="loc-cep" type="text" placeholder="00000-000" value={form.cep} onChange={setField('cep')} className="field-input" />
-          </div>
-
-          <div className="field-row">
-            <div>
-              <label className="field-label" htmlFor="loc-data">Data da Locação</label>
-              <input id="loc-data" type="date" value={form.dataLocacao} onChange={setField('dataLocacao')} className="field-input" />
-            </div>
-            <div>
-              <label className="field-label" htmlFor="loc-valor">Valor (R$)</label>
-              <input id="loc-valor" type="number" step="0.01" min="0" placeholder="0,00" value={form.valor} onChange={setField('valor')} className="field-input" />
-            </div>
-          </div>
-
-          <div className="field-row field-wrap-last">
-            <div>
-              <label className="field-label" htmlFor="loc-hora-inicio">Horário de Início</label>
-              <input id="loc-hora-inicio" type="time" value={form.horaInicio} onChange={setField('horaInicio')} className="field-input" />
-            </div>
-            <div>
-              <label className="field-label" htmlFor="loc-hora-fim">Horário de Término</label>
-              <input id="loc-hora-fim" type="time" value={form.horaFim} onChange={setField('horaFim')} className="field-input" />
-            </div>
-          </div>
-
-          {formError && <div className="admin-login-error">{formError}</div>}
-
-          <button type="submit" disabled={saving} className="admin-open-client-btn admin-locacoes-save-btn">
-            {saving ? 'Salvando...' : 'Cadastrar Locação'}
-          </button>
-        </form>
-      </div>
+      <button type="button" onClick={() => setShowForm(true)} className="admin-open-client-btn admin-locacoes-new-btn">
+        + Cadastrar Cliente
+      </button>
 
       <div className="admin-card">
         <div className="admin-card-title">Clientes em Locação</div>
@@ -257,6 +182,102 @@ const LocacoesView = () => {
           ))}
         </div>
       </div>
+
+      {showForm && (
+        <div className="admin-agenda-modal-overlay">
+          <form className="admin-agenda-modal admin-agenda-modal-sheet" onSubmit={handleSubmit}>
+            <div className="admin-agenda-modal-header">
+              <h2 className="admin-agenda-modal-title">Novo Cadastro</h2>
+              <button type="button" onClick={() => setShowForm(false)} className="admin-agenda-modal-close" aria-label="Fechar">
+                ×
+              </button>
+            </div>
+
+            <div className="admin-agenda-modal-body">
+              <div className="field-row">
+                <div>
+                  <label className="field-label" htmlFor="loc-nome">Nome Completo</label>
+                  <input id="loc-nome" type="text" placeholder="Digite o nome..." value={form.nome} onChange={setField('nome')} className="field-input" />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor="loc-nascimento">Data de Nascimento</label>
+                  <input id="loc-nascimento" type="date" value={form.nascimento} onChange={setField('nascimento')} className="field-input" />
+                </div>
+              </div>
+
+              <div className="field-row">
+                <div>
+                  <label className="field-label" htmlFor="loc-cpf">CPF</label>
+                  <input id="loc-cpf" type="text" placeholder="000.000.000-00" value={form.cpf} onChange={setField('cpf')} className="field-input" />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor="loc-telefone">WhatsApp</label>
+                  <input id="loc-telefone" type="text" placeholder="(13) 90000-0000" value={form.telefone} onChange={setField('telefone')} className="field-input" />
+                </div>
+              </div>
+
+              <div className="field-wrap">
+                <label className="field-label" htmlFor="loc-email">E-mail</label>
+                <input id="loc-email" type="email" placeholder="cliente@email.com" value={form.email} onChange={setField('email')} className="field-input" />
+              </div>
+
+              <div className="field-wrap">
+                <label className="field-label" htmlFor="loc-rua">Rua e nº</label>
+                <input id="loc-rua" type="text" placeholder="Digite o nome da rua e nº" value={form.rua} onChange={setField('rua')} className="field-input" />
+              </div>
+
+              <div className="field-row">
+                <div>
+                  <label className="field-label" htmlFor="loc-bairro">Bairro</label>
+                  <input id="loc-bairro" type="text" placeholder="Nome do bairro" value={form.bairro} onChange={setField('bairro')} className="field-input" />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor="loc-cidade">Cidade</label>
+                  <input id="loc-cidade" type="text" placeholder="Nome da cidade" value={form.cidade} onChange={setField('cidade')} className="field-input" />
+                </div>
+              </div>
+
+              <div className="field-wrap">
+                <label className="field-label" htmlFor="loc-cep">CEP</label>
+                <input id="loc-cep" type="text" placeholder="00000-000" value={form.cep} onChange={setField('cep')} className="field-input" />
+              </div>
+
+              <div className="field-row">
+                <div>
+                  <label className="field-label" htmlFor="loc-data">Data da Locação</label>
+                  <input id="loc-data" type="date" value={form.dataLocacao} onChange={setField('dataLocacao')} className="field-input" />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor="loc-valor">Valor (R$)</label>
+                  <input id="loc-valor" type="number" step="0.01" min="0" placeholder="0,00" value={form.valor} onChange={setField('valor')} className="field-input" />
+                </div>
+              </div>
+
+              <div className="field-row field-wrap-last">
+                <div>
+                  <label className="field-label" htmlFor="loc-hora-inicio">Horário de Início</label>
+                  <input id="loc-hora-inicio" type="time" value={form.horaInicio} onChange={setField('horaInicio')} className="field-input" />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor="loc-hora-fim">Horário de Término</label>
+                  <input id="loc-hora-fim" type="time" value={form.horaFim} onChange={setField('horaFim')} className="field-input" />
+                </div>
+              </div>
+
+              {formError && <div className="admin-login-error">{formError}</div>}
+            </div>
+
+            <div className="admin-agenda-modal-actions">
+              <button type="button" onClick={() => setShowForm(false)} className="admin-agenda-modal-cancel">
+                CANCELAR
+              </button>
+              <button type="submit" disabled={saving} className="admin-open-client-btn admin-agenda-modal-save">
+                {saving ? 'SALVANDO...' : 'CADASTRAR LOCAÇÃO'}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {selected && (
         <div className="admin-locacoes-drawer-overlay" onClick={() => setSelectedId(null)}>
