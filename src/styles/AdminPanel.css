@@ -907,7 +907,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 24px;
 }
@@ -916,14 +915,40 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 3px;
+  gap: 2px;
+  background: var(--adm-card);
+  border: 1px solid var(--adm-border);
+  border-radius: 12px;
+  padding: 10px 18px;
+  flex-shrink: 0;
+}
+
+.admin-locacoes-total .admin-small-label {
+  margin-bottom: 0;
 }
 
 .admin-locacoes-total-value {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 600;
   color: var(--adm-accent);
+}
+
+@media (max-width: 600px) {
+  .admin-locacoes-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-locacoes-toolbar .admin-open-client-btn {
+    text-align: center;
+  }
+
+  .admin-locacoes-total {
+    align-items: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 .admin-locacoes-list {
