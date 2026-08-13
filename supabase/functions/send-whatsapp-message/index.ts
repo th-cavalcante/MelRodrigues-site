@@ -4,7 +4,7 @@
 //   { templateKey: 'birthday', patientId }                       — mensagem de aniversário
 //   { templateKey: 'document_signature_link', patientId, link }  — link de assinatura
 //   { templateKey: 'ficha_link', patientId, link }                — link da ficha de anamnese
-//   { templateKey: 'rental_contract', rentalClientId, link }      — link de assinatura do contrato de locação
+//   { templateKey: 'rental_contract', rentalBookingId, link }     — link de assinatura do contrato de uma locação
 //   { templateKey: 'rental_address', rentalClientId }             — confirmação de endereço (locação)
 //
 // Segredos necessários (já configurados via `supabase secrets set`):
@@ -35,7 +35,7 @@ serve(async (req) => {
   }
 
   try {
-    const { templateKey, bookingId, patientId, link, rentalClientId } = await req.json();
+    const { templateKey, bookingId, patientId, link, rentalClientId, rentalBookingId } = await req.json();
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -102,18 +102,19 @@ serve(async (req) => {
       );
       text = fillTemplate(body, { nome: firstName, link });
     } else if (templateKey === 'rental_contract') {
-      if (!rentalClientId) return jsonResponse({ error: 'rentalClientId é obrigatório.' }, 400);
+      if (!rentalBookingId) return jsonResponse({ error: 'rentalBookingId é obrigatório.' }, 400);
       if (!link) return jsonResponse({ error: 'link é obrigatório.' }, 400);
 
-      const { data: rc, error: rcError } = await supabaseAdmin
-        .from('rental_clients')
-        .select('name, phone')
-        .eq('id', rentalClientId)
+      const { data: rb, error: rbError } = await supabaseAdmin
+        .from('rental_bookings')
+        .select('rental_clients(name, phone)')
+        .eq('id', rentalBookingId)
         .maybeSingle();
-      if (rcError || !rc) return jsonResponse({ error: 'Cliente de locação não encontrado.' }, 404);
+      if (rbError || !rb) return jsonResponse({ error: 'Locação não encontrada.' }, 404);
 
-      phoneDigits = formatPhoneForEvolution(rc.phone);
-      const firstName = (rc.name || '').trim().split(/\s+/)[0] || '';
+      const client = rb.rental_clients as { name: string; phone: string } | null;
+      phoneDigits = formatPhoneForEvolution(client?.phone);
+      const firstName = (client?.name || '').trim().split(/\s+/)[0] || '';
       const body = await getTemplate(
         supabaseAdmin,
         'rental_contract',

@@ -60,9 +60,9 @@ export const sendDocumentSignatureLink = (patientId, link) =>
 export const sendFichaLink = (patientId, link) =>
   invokeSendMessage({ templateKey: 'ficha_link', patientId, link });
 
-/** Manda o link de assinatura do contrato de locação do Hakon 4D pro cliente via WhatsApp. */
-export const sendRentalContract = (rentalClientId, link) =>
-  invokeSendMessage({ templateKey: 'rental_contract', rentalClientId, link });
+/** Manda o link de assinatura do contrato de uma locação (mês) do Hakon 4D pro cliente via WhatsApp. */
+export const sendRentalContract = (rentalBookingId, link) =>
+  invokeSendMessage({ templateKey: 'rental_contract', rentalBookingId, link });
 
 /** Manda a confirmação do endereço de locação pro cliente via WhatsApp. */
 export const sendRentalAddress = (rentalClientId) =>

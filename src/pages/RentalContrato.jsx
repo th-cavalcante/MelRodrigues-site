@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import SignatureCanvas from '../components/SignatureCanvas';
-import { getRentalClientForDocs, submitRentalSignature, uploadRentalSelfie } from '../lib/rentals';
+import { getRentalBookingForDocs, submitRentalSignature, uploadRentalSelfie } from '../lib/rentals';
 import { buildRentalContractBody } from '../components/admin/rentalContract';
 import { IconCheckCircle, IconAlertCircle } from '../components/admin/Icons';
 import '../styles/ClienteDocumentos.css';
@@ -11,7 +11,7 @@ const todayLabel = new Date().toLocaleDateString('pt-BR');
 
 const RentalContrato = () => {
   const [searchParams] = useSearchParams();
-  const rentalClientId = searchParams.get('rental');
+  const rentalBookingId = searchParams.get('rental');
 
   const [client, setClient] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,18 +29,18 @@ const RentalContrato = () => {
   const [selfieError, setSelfieError] = useState('');
 
   useEffect(() => {
-    if (!rentalClientId) {
+    if (!rentalBookingId) {
       setLoading(false);
       return;
     }
-    getRentalClientForDocs(rentalClientId)
+    getRentalBookingForDocs(rentalBookingId)
       .then(setClient)
       .catch((err) => {
-        console.error('Erro ao carregar dados do cliente:', err);
+        console.error('Erro ao carregar dados da locação:', err);
         setError('Não foi possível carregar os dados. Peça um novo link à clínica.');
       })
       .finally(() => setLoading(false));
-  }, [rentalClientId]);
+  }, [rentalBookingId]);
 
   const handleClearSignature = () => {
     signatureRef.current && signatureRef.current.clear();
@@ -48,12 +48,12 @@ const RentalContrato = () => {
   };
 
   const confirmSign = async () => {
-    if (!agreed || !hasSignature || !rentalClientId) return;
+    if (!agreed || !hasSignature || !rentalBookingId) return;
     const dataUrl = signatureRef.current ? signatureRef.current.toDataURL() : null;
     setSigning(true);
     setSignError('');
     try {
-      await submitRentalSignature(rentalClientId, dataUrl, client?.name);
+      await submitRentalSignature(rentalBookingId, dataUrl, client?.name);
       setStep('selfie');
     } catch (err) {
       console.error('Erro ao assinar contrato:', err);
@@ -70,7 +70,7 @@ const RentalContrato = () => {
     setSelfieUploading(true);
     setSelfieError('');
     try {
-      await uploadRentalSelfie(rentalClientId, file);
+      await uploadRentalSelfie(rentalBookingId, file);
       setStep('done');
     } catch (err) {
       console.error('Erro ao enviar selfie:', err);
@@ -99,7 +99,7 @@ const RentalContrato = () => {
         <span className="section-eyebrow">Locação Hakon 4D</span>
         <h1 className="cliente-title">Contrato de Locação</h1>
         <p className="cliente-subtitle">
-          {!rentalClientId
+          {!rentalBookingId
             ? 'Este link está incompleto ou inválido. Peça à clínica um novo link.'
             : 'Leia o contrato abaixo com atenção e assine ao final.'}
         </p>
