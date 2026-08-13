@@ -20,6 +20,7 @@ export const listRentalClients = async () => {
 
 export const createRentalClient = async ({
   nome, nascimento, cpf, rua, bairro, cidade, cep, email, telefone,
+  dataLocacao, valor, horaInicio, horaFim,
 }) => {
   const { data, error } = await supabase
     .from('rental_clients')
@@ -33,6 +34,10 @@ export const createRentalClient = async ({
       cep,
       email,
       phone: telefone,
+      rental_date: dataLocacao || null,
+      rental_value: valor ? Number(valor) : null,
+      rental_start_time: horaInicio || null,
+      rental_end_time: horaFim || null,
     })
     .select()
     .single();
