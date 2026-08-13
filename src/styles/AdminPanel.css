@@ -979,7 +979,15 @@
   border-radius: 24px 0 0 24px;
 }
 
-.admin-locacoes-drawer-back {
+.admin-locacoes-drawer-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.admin-locacoes-drawer-back,
+.admin-locacoes-drawer-trash {
   background: var(--adm-card);
   border: 1px solid var(--adm-border);
   width: 36px;
@@ -988,7 +996,14 @@
   font-size: 15px;
   cursor: pointer;
   color: var(--adm-text2);
-  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-locacoes-drawer-trash:hover {
+  color: oklch(50% 0.15 25);
+  border-color: oklch(60% 0.15 25);
 }
 
 .admin-locacoes-drawer-header {
@@ -1014,8 +1029,8 @@
 
 .admin-locacoes-drawer-card {
   background: var(--adm-card);
-  border: 1px solid var(--adm-border);
   border-radius: 20px;
+  box-shadow: 0 2px 14px oklch(20% 0.01 85 / 0.06);
   padding: 22px;
   display: flex;
   flex-direction: column;
@@ -1023,22 +1038,61 @@
   margin-bottom: 20px;
 }
 
-.admin-locacoes-drawer-times {
-  margin-top: -4px;
-}
-
-.admin-locacoes-drawer-field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.admin-locacoes-static-value {
   font-size: 14.5px;
+  margin-top: 3px;
+  line-height: 1.5;
+  color: var(--adm-text);
 }
 
-.admin-locacoes-drawer-status {
+/* inputs editáveis que ficam visualmente idênticos a texto estático,
+ * até o admin clicar pra editar — bate com o mockup (que mostra tudo
+ * como texto simples), sem abrir mão da edição inline já existente. */
+.admin-locacoes-plain-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin-top: 3px;
+  font-size: 14.5px;
+  font-family: 'Manrope', sans-serif;
+  color: var(--adm-text);
+  outline: none;
+}
+
+.admin-locacoes-plain-input-accent {
+  font-weight: 700;
+  color: var(--adm-accent);
+}
+
+.admin-locacoes-time-row {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 20px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+}
+
+.admin-locacoes-time-row .admin-locacoes-plain-input {
+  width: auto;
+  margin-top: 0;
+  flex: 1;
+}
+
+.admin-locacoes-time-row span {
+  font-size: 13px;
+  color: var(--adm-text3);
+}
+
+.admin-locacoes-copy-btn {
+  display: inline-block;
+  margin-top: 8px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--adm-accent);
+  cursor: pointer;
 }
 
 .admin-locacoes-drawer-actions {
@@ -1047,8 +1101,23 @@
   gap: 10px;
 }
 
-.admin-locacoes-drawer-btn {
+.admin-locacoes-primary-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 16px;
+  border: none;
+  background: var(--adm-accent);
+  color: #fff;
+  cursor: pointer;
   text-align: center;
+}
+
+.admin-locacoes-primary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .admin-locacoes-whatsapp-btn {
@@ -1064,11 +1133,6 @@
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-}
-
-.admin-locacoes-drawer-delete {
-  margin-top: 10px;
-  text-align: center;
 }
 
 @media (max-width: 640px) {

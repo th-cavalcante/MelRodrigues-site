@@ -9,7 +9,7 @@ import {
 import { sendRentalContract, sendRentalAddress } from '../../lib/evolution';
 import { buildRentalContractBody, formatRentalEndereco } from './rentalContract';
 import { downloadDocPdf } from '../cliente/docPdf';
-import { IconChevronRight } from './Icons';
+import { IconChevronRight, IconTrash } from './Icons';
 
 const emptyForm = {
   nome: '', nascimento: '', cpf: '', rua: '', bairro: '', cidade: '', cep: '', email: '', telefone: '',
@@ -36,6 +36,7 @@ const LocacoesView = () => {
   const [addressSending, setAddressSending] = useState(null);
   const [addressSent, setAddressSent] = useState({});
   const [addressError, setAddressError] = useState({});
+  const [addressCopied, setAddressCopied] = useState(false);
 
   useEffect(() => {
     listRentalClients()
@@ -117,6 +118,16 @@ const LocacoesView = () => {
       setAddressError((m) => ({ ...m, [client.id]: err.message || 'Não foi possível enviar o endereço.' }));
     } finally {
       setAddressSending(null);
+    }
+  };
+
+  const handleCopyAddress = async (client) => {
+    try {
+      await navigator.clipboard.writeText(formatRentalEndereco(client));
+      setAddressCopied(true);
+      setTimeout(() => setAddressCopied(false), 2000);
+    } catch (err) {
+      console.error('Erro ao copiar endereço:', err);
     }
   };
 
@@ -250,9 +261,14 @@ const LocacoesView = () => {
       {selected && (
         <div className="admin-locacoes-drawer-overlay" onClick={() => setSelectedId(null)}>
           <div className="admin-locacoes-drawer" onClick={(e) => e.stopPropagation()}>
-            <button type="button" onClick={() => setSelectedId(null)} className="admin-locacoes-drawer-back" aria-label="Fechar">
-              ←
-            </button>
+            <div className="admin-locacoes-drawer-topbar">
+              <button type="button" onClick={() => setSelectedId(null)} className="admin-locacoes-drawer-back" aria-label="Fechar">
+                ←
+              </button>
+              <button type="button" onClick={() => handleDelete(selected.id)} className="admin-locacoes-drawer-trash" aria-label="Excluir cliente">
+                <IconTrash size={15} />
+              </button>
+            </div>
 
             <div className="admin-locacoes-drawer-header">
               <div className="admin-client-initial admin-locacoes-drawer-avatar">{(selected.name || '?').charAt(0)}</div>
@@ -260,82 +276,68 @@ const LocacoesView = () => {
             </div>
 
             <div className="admin-locacoes-drawer-card">
-              <div className="field-row">
-                <div>
-                  <label className="admin-small-label">Data da Locação</label>
-                  <input
-                    type="date"
-                    value={selected.rental_date || ''}
-                    onChange={handleFieldChange(selected.id, 'rental_date')}
-                    onBlur={handleFieldBlur(selected.id, 'rental_date')}
-                    className="field-input"
-                  />
-                </div>
-                <div>
-                  <label className="admin-small-label">Valor (R$)</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    value={selected.rental_value ?? ''}
-                    onChange={handleFieldChange(selected.id, 'rental_value')}
-                    onBlur={handleFieldBlur(selected.id, 'rental_value')}
-                    className="field-input"
-                  />
-                </div>
+              <div>
+                <span className="admin-small-label">Data da Locação</span>
+                <input
+                  type="date"
+                  value={selected.rental_date || ''}
+                  onChange={handleFieldChange(selected.id, 'rental_date')}
+                  onBlur={handleFieldBlur(selected.id, 'rental_date')}
+                  className="admin-locacoes-plain-input"
+                />
               </div>
-
-              <div className="field-row admin-locacoes-drawer-times">
-                <div>
-                  <label className="admin-small-label">Horário de Início</label>
+              <div>
+                <span className="admin-small-label">Horário</span>
+                <div className="admin-locacoes-time-row">
                   <input
                     type="time"
                     value={selected.rental_start_time ? selected.rental_start_time.slice(0, 5) : ''}
                     onChange={handleFieldChange(selected.id, 'rental_start_time')}
                     onBlur={handleFieldBlur(selected.id, 'rental_start_time')}
-                    className="field-input"
+                    className="admin-locacoes-plain-input"
                   />
-                </div>
-                <div>
-                  <label className="admin-small-label">Horário de Término</label>
+                  <span>às</span>
                   <input
                     type="time"
                     value={selected.rental_end_time ? selected.rental_end_time.slice(0, 5) : ''}
                     onChange={handleFieldChange(selected.id, 'rental_end_time')}
                     onBlur={handleFieldBlur(selected.id, 'rental_end_time')}
-                    className="field-input"
+                    className="admin-locacoes-plain-input"
                   />
                 </div>
               </div>
-
-              <div className="admin-locacoes-drawer-field">
+              <div>
+                <span className="admin-small-label">Valor</span>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={selected.rental_value ?? ''}
+                  onChange={handleFieldChange(selected.id, 'rental_value')}
+                  onBlur={handleFieldBlur(selected.id, 'rental_value')}
+                  className="admin-locacoes-plain-input admin-locacoes-plain-input-accent"
+                />
+              </div>
+              <div>
                 <span className="admin-small-label">CPF</span>
-                <span>{selected.cpf || '—'}</span>
+                <div className="admin-locacoes-static-value">{selected.cpf || '—'}</div>
               </div>
-              <div className="admin-locacoes-drawer-field">
+              <div>
                 <span className="admin-small-label">E-mail</span>
-                <span>{selected.email || '—'}</span>
+                <div className="admin-locacoes-static-value">{selected.email || '—'}</div>
               </div>
-              <div className="admin-locacoes-drawer-field">
+              <div>
                 <span className="admin-small-label">Endereço</span>
-                <span>{formatRentalEndereco(selected) || '—'}</span>
+                <div className="admin-locacoes-static-value">{formatRentalEndereco(selected) || '—'}</div>
+                <button type="button" onClick={() => handleCopyAddress(selected)} className="admin-locacoes-copy-btn">
+                  {addressCopied ? 'Copiado ✓' : '📋 Copiar Endereço'}
+                </button>
               </div>
-            </div>
-
-            <div className="admin-locacoes-drawer-status">
-              <span className="admin-small-label">Contrato</span>
-              <span className={`admin-document-status ${selected.signature ? 'admin-document-status-signed' : ''}`}>
-                {selected.signature
-                  ? `Assinado por ${selected.signature.client_name_snapshot || selected.name} em ${formatSignedDate(selected.signature.signed_at)} ✓`
-                  : selected.contract_sent
-                    ? 'Link enviado, aguardando assinatura'
-                    : 'Não enviado'}
-              </span>
             </div>
 
             <div className="admin-locacoes-drawer-actions">
               {selected.signature ? (
-                <button type="button" onClick={() => handleDownloadContract(selected)} className="admin-open-client-btn admin-locacoes-drawer-btn">
+                <button type="button" onClick={() => handleDownloadContract(selected)} className="admin-locacoes-primary-btn">
                   ⬇ Download do Contrato
                 </button>
               ) : (
@@ -343,9 +345,13 @@ const LocacoesView = () => {
                   type="button"
                   onClick={() => handleSendContract(selected)}
                   disabled={contractSending === selected.id}
-                  className="admin-open-client-btn admin-locacoes-drawer-btn"
+                  className="admin-locacoes-primary-btn"
                 >
-                  {contractSending === selected.id ? 'Enviando…' : selected.contract_sent ? 'Reenviar Contrato' : 'Enviar Contrato'}
+                  {contractSending === selected.id
+                    ? 'Enviando…'
+                    : selected.contract_sent
+                      ? 'Reenviar Contrato (aguardando assinatura)'
+                      : 'Enviar Contrato'}
                 </button>
               )}
               {contractError[selected.id] && <p className="admin-mkt-wpp-error">{contractError[selected.id]}</p>}
@@ -356,13 +362,9 @@ const LocacoesView = () => {
                 disabled={addressSending === selected.id}
                 className="admin-locacoes-whatsapp-btn"
               >
-                {addressSending === selected.id ? 'Enviando…' : addressSent[selected.id] ? 'Enviado ✓' : '💬 Enviar Endereço no WhatsApp'}
+                {addressSending === selected.id ? 'Enviando…' : addressSent[selected.id] ? 'Enviado ✓' : '💬 Enviar no WhatsApp'}
               </button>
               {addressError[selected.id] && <p className="admin-mkt-wpp-error">{addressError[selected.id]}</p>}
-
-              <button type="button" onClick={() => handleDelete(selected.id)} className="admin-delete-btn admin-locacoes-drawer-delete">
-                Excluir Cliente
-              </button>
             </div>
           </div>
         </div>

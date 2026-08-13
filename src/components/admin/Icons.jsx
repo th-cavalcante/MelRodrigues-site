@@ -193,6 +193,15 @@ export const IconTruck = ({ size = 17 }) => (
   </svg>
 );
 
+export const IconTrash = ({ size = 15 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+    <polyline points="3.5 6.5 5.5 6.5 20.5 6.5" />
+    <path d="M18.5 6.5v13a1.5 1.5 0 0 1-1.5 1.5H7a1.5 1.5 0 0 1-1.5-1.5v-13m2.5 0V4a1.5 1.5 0 0 1 1.5-1.5h4A1.5 1.5 0 0 1 15.5 4v2.5" />
+    <line x1="10" y1="11" x2="10" y2="17" />
+    <line x1="14" y1="11" x2="14" y2="17" />
+  </svg>
+);
+
 export const IconLogOut = ({ size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
