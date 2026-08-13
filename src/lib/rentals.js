@@ -3,16 +3,19 @@ import { supabase } from './supabaseClient';
 const PHOTOS_BUCKET = 'patient-photos';
 
 export const listRentalClients = async () => {
-  const { data, error } = await supabase
-    .from('rental_clients')
-    .select('*, rental_document_signatures(signature_data_url, client_name_snapshot, signed_at)')
-    .order('created_at', { ascending: false });
-  if (error) throw error;
-  return data.map((c) => {
-    const sig = (c.rental_document_signatures || [])[0] || null;
-    const { rental_document_signatures: _omit, ...rest } = c;
-    return { ...rest, signature: sig };
+  const [clientsRes, signaturesRes] = await Promise.all([
+    supabase.from('rental_clients').select('*').order('created_at', { ascending: false }),
+    supabase.from('rental_document_signatures').select('rental_client_id, signature_data_url, client_name_snapshot, signed_at'),
+  ]);
+  if (clientsRes.error) throw clientsRes.error;
+  if (signaturesRes.error) throw signaturesRes.error;
+
+  const signatureByClientId = {};
+  (signaturesRes.data || []).forEach((s) => {
+    signatureByClientId[s.rental_client_id] = s;
   });
+
+  return clientsRes.data.map((c) => ({ ...c, signature: signatureByClientId[c.id] || null }));
 };
 
 export const createRentalClient = async ({
