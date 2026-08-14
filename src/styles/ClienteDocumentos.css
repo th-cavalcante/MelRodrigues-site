@@ -428,3 +428,120 @@
     padding: 32px 24px;
   }
 }
+
+/* =================================
+   VERIFICAÇÃO POR CÓDIGO (OTP) E VALIDAÇÃO DE ASSINATURA
+   ================================= */
+
+.cliente-otp-hint {
+  font-size: 13px;
+  color: var(--text-body);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.cliente-otp-input {
+  width: 100%;
+  padding: 16px;
+  font-size: 22px;
+  letter-spacing: 8px;
+  text-align: center;
+  border: 1.5px solid var(--border-subtle-2);
+  border-radius: 2px;
+  font-family: 'Manrope', sans-serif;
+  margin-bottom: 18px;
+}
+
+.cliente-otp-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.cliente-otp-resend {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+  margin-bottom: 18px;
+  font-family: 'Manrope', sans-serif;
+}
+
+.cliente-otp-resend:hover {
+  opacity: 0.75;
+}
+
+.cliente-otp-resend:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cliente-signature-id {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-subtle-2);
+  border-radius: 2px;
+  font-size: 12.5px;
+  letter-spacing: 0.4px;
+  color: var(--text-body);
+  background: oklch(99% 0.003 85);
+}
+
+.cliente-validation-page {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 60px 24px 100px;
+  text-align: center;
+}
+
+.cliente-validation-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 2px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 22px;
+}
+
+.cliente-validation-status.valid {
+  background: oklch(94% 0.06 145);
+  color: oklch(38% 0.1 145);
+}
+
+.cliente-validation-status.superseded,
+.cliente-validation-status.canceled {
+  background: oklch(94% 0.06 40);
+  color: oklch(42% 0.12 40);
+}
+
+.cliente-validation-fields {
+  text-align: left;
+  border: 1px solid var(--border-subtle-2);
+  border-radius: 4px;
+  padding: 20px 24px;
+  margin: 22px 0;
+}
+
+.cliente-validation-fields dt {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+.cliente-validation-fields dt:first-child {
+  margin-top: 0;
+}
+
+.cliente-validation-fields dd {
+  font-size: 14.5px;
+  color: oklch(25% 0.015 85);
+  margin: 2px 0 0;
+}

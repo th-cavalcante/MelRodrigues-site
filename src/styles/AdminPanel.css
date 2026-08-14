@@ -1224,6 +1224,31 @@
   text-align: center;
 }
 
+.admin-locacoes-audit-log {
+  margin-top: 10px;
+  margin-bottom: 14px;
+  border: 1px solid var(--adm-border-soft);
+  border-radius: 4px;
+  padding: 10px 14px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.admin-locacoes-audit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12.5px;
+  color: var(--adm-text2);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--adm-border-soft);
+}
+
+.admin-locacoes-audit-row:last-child {
+  border-bottom: none;
+}
+
 /* o modal de "Nova Locação" abre por cima do painel de detalhe do
  * cliente (que já está aberto quando esse botão aparece), então precisa
  * de um z-index maior que o do drawer (1200). */

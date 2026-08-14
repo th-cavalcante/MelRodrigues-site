@@ -8,7 +8,10 @@ export const listRentalClients = async () => {
   const [clientsRes, bookingsRes, signaturesRes] = await Promise.all([
     supabase.from('rental_clients').select('*').order('created_at', { ascending: false }),
     supabase.from('rental_bookings').select('*').order('rental_date', { ascending: false, nullsFirst: false }),
-    supabase.from('rental_document_signatures').select('rental_booking_id, signature_data_url, client_name_snapshot, signed_at'),
+    supabase
+      .from('rental_document_signatures')
+      .select('rental_booking_id, signature_data_url, client_name_snapshot, signed_at, signature_id, document_hash, pdf_storage_path')
+      .eq('status', 'valid'),
   ]);
   if (clientsRes.error) throw clientsRes.error;
   if (bookingsRes.error) throw bookingsRes.error;
@@ -102,14 +105,11 @@ export const getRentalBookingForDocs = async (rentalBookingId) => {
   return data && data[0] ? data[0] : null;
 };
 
-/** RPC — chamado pela página pública ao assinar o contrato de uma locação. */
-export const submitRentalSignature = async (rentalBookingId, signatureDataUrl, clientName) => {
-  const { error } = await supabase.rpc('submit_rental_signature', {
-    p_rental_booking_id: rentalBookingId,
-    p_signature_data_url: signatureDataUrl,
-    p_client_name_snapshot: clientName,
-  });
+/** URL temporária (60s) pra baixar o PDF assinado guardado no Storage privado. */
+export const getSignedDocumentUrl = async (storagePath) => {
+  const { data, error } = await supabase.storage.from('signed-documents').createSignedUrl(storagePath, 60);
   if (error) throw error;
+  return data.signedUrl;
 };
 
 /** Chamado pela página pública, logo após assinar, pra enviar a selfie do cliente. */

@@ -8,11 +8,26 @@ import {
   updateRentalBooking,
   markRentalBookingContractSent,
   deleteRentalBooking,
+  getSignedDocumentUrl,
 } from '../../lib/rentals';
 import { sendRentalContract } from '../../lib/evolution';
+import { signRentalAsLandlord, listSignatureAuditLog } from '../../lib/signatures';
 import { buildRentalContractBody, formatRentalEndereco } from './rentalContract';
 import { downloadDocPdf } from '../cliente/docPdf';
 import { IconChevronRight, IconTrash } from './Icons';
+
+const AUDIT_EVENT_LABELS = {
+  viewed: 'Cliente abriu o contrato',
+  consent_confirmed: 'Cliente confirmou que leu e concorda',
+  otp_sent: 'Código de verificação enviado',
+  otp_verified: 'Código de verificação confirmado',
+  otp_failed: 'Tentativa de código incorreta',
+  signature_completed: 'Assinatura concluída',
+  pdf_generated: 'PDF final gerado',
+  hash_recorded: 'Hash SHA-256 registrado',
+  document_locked: 'Documento bloqueado para edição',
+  landlord_signed: 'Locadora assinou',
+};
 
 const emptyClientForm = {
   nome: '', nascimento: '', cpf: '', rua: '', bairro: '', cidade: '', cep: '', email: '', telefone: '',
@@ -50,6 +65,11 @@ const LocacoesView = () => {
 
   const [contractSending, setContractSending] = useState(null);
   const [contractError, setContractError] = useState({});
+  const [landlordSigning, setLandlordSigning] = useState(null);
+  const [downloadingId, setDownloadingId] = useState(null);
+  const [auditBookingId, setAuditBookingId] = useState(null);
+  const [auditEvents, setAuditEvents] = useState([]);
+  const [auditLoading, setAuditLoading] = useState(false);
 
   useEffect(() => {
     listRentalClients()
@@ -183,7 +203,45 @@ const LocacoesView = () => {
     }
   };
 
-  const handleDownloadContract = (client, booking) => {
+  const handleSignAsLandlord = async (client, booking) => {
+    setLandlordSigning(booking.id);
+    try {
+      await signRentalAsLandlord(booking.id);
+      setClients((cs) =>
+        cs.map((c) =>
+          c.id === client.id
+            ? { ...c, bookings: c.bookings.map((b) => (b.id === booking.id ? { ...b, landlord_signed_at: new Date().toISOString() } : b)) }
+            : c
+        )
+      );
+    } catch (err) {
+      console.error('Erro ao assinar como locadora:', err);
+      setContractError((m) => ({ ...m, [booking.id]: err.message || 'Não foi possível registrar a assinatura da locadora.' }));
+    } finally {
+      setLandlordSigning(null);
+    }
+  };
+
+  const handleDownloadContract = async (client, booking) => {
+    // Documento já assinado: baixa o PDF exatamente como foi gerado no
+    // momento da assinatura (armazenado no Storage), em vez de regenerar a
+    // partir dos dados atuais do cadastro — que podem ter mudado desde então.
+    if (booking.signature?.pdf_storage_path) {
+      setDownloadingId(booking.id);
+      try {
+        const url = await getSignedDocumentUrl(booking.signature.pdf_storage_path);
+        window.open(url, '_blank', 'noopener');
+      } catch (err) {
+        console.error('Erro ao gerar link de download:', err);
+        setContractError((m) => ({ ...m, [booking.id]: 'Não foi possível baixar o PDF assinado.' }));
+      } finally {
+        setDownloadingId(null);
+      }
+      return;
+    }
+
+    // Assinaturas antigas (anteriores a este reforço de segurança) não têm
+    // PDF armazenado — mantém o comportamento anterior como fallback.
     downloadDocPdf({
       title: 'Contrato de Locação — Hakon 4D',
       body: buildRentalContractBody({ ...client, ...booking }),
@@ -191,6 +249,24 @@ const LocacoesView = () => {
       patientName: booking.signature?.client_name_snapshot || client.name,
       dateLabel: formatSignedDate(booking.signature?.signed_at),
     });
+  };
+
+  const handleToggleAuditLog = async (booking) => {
+    if (auditBookingId === booking.id) {
+      setAuditBookingId(null);
+      return;
+    }
+    setAuditBookingId(booking.id);
+    setAuditLoading(true);
+    try {
+      const events = await listSignatureAuditLog('rental_contract', booking.id);
+      setAuditEvents(events);
+    } catch (err) {
+      console.error('Erro ao carregar trilha de auditoria:', err);
+      setAuditEvents([]);
+    } finally {
+      setAuditLoading(false);
+    }
   };
 
   const handleDeleteBooking = async (client, booking) => {
@@ -416,7 +492,13 @@ const LocacoesView = () => {
                       <div>
                         <div className="admin-locacoes-booking-date">{formatDataBr(b.rental_date)}</div>
                         <div className={`admin-document-status ${b.signature ? 'admin-document-status-signed' : ''}`}>
-                          {b.signature ? 'Assinado ✓' : b.contract_sent ? 'Aguardando assinatura' : 'Contrato não enviado'}
+                          {b.signature
+                            ? 'Assinado ✓'
+                            : !b.landlord_signed_at
+                              ? 'Aguardando assinatura da locadora'
+                              : b.contract_sent
+                                ? 'Aguardando assinatura'
+                                : 'Contrato não enviado'}
                         </div>
                       </div>
                       <div className="admin-locacoes-booking-value">{formatValorBr(b.rental_value)}</div>
@@ -450,8 +532,22 @@ const LocacoesView = () => {
                         </div>
 
                         {b.signature ? (
-                          <button type="button" onClick={() => handleDownloadContract(selectedClient, b)} className="admin-locacoes-primary-btn">
-                            ⬇ Download do Contrato
+                          <button
+                            type="button"
+                            onClick={() => handleDownloadContract(selectedClient, b)}
+                            disabled={downloadingId === b.id}
+                            className="admin-locacoes-primary-btn"
+                          >
+                            {downloadingId === b.id ? 'Gerando link…' : '⬇ Download do Contrato'}
+                          </button>
+                        ) : !b.landlord_signed_at ? (
+                          <button
+                            type="button"
+                            onClick={() => handleSignAsLandlord(selectedClient, b)}
+                            disabled={landlordSigning === b.id}
+                            className="admin-locacoes-primary-btn"
+                          >
+                            {landlordSigning === b.id ? 'Assinando…' : 'Revisar e Assinar como Locadora'}
                           </button>
                         ) : (
                           <button
@@ -464,6 +560,32 @@ const LocacoesView = () => {
                           </button>
                         )}
                         {contractError[b.id] && <p className="admin-mkt-wpp-error">{contractError[b.id]}</p>}
+
+                        {b.signature && (
+                          <>
+                            <p className="admin-small-label" style={{ marginTop: '10px' }}>
+                              ID da assinatura: {b.signature.signature_id || '—'}
+                            </p>
+                            <button type="button" onClick={() => handleToggleAuditLog(b)} className="admin-locacoes-copy-btn">
+                              {auditBookingId === b.id ? 'Ocultar trilha de auditoria' : '🔍 Ver trilha de auditoria'}
+                            </button>
+                            {auditBookingId === b.id && (
+                              <div className="admin-locacoes-audit-log">
+                                {auditLoading && <p className="admin-page-subtitle">Carregando...</p>}
+                                {!auditLoading && auditEvents.length === 0 && (
+                                  <p className="admin-page-subtitle">Nenhum evento registrado.</p>
+                                )}
+                                {!auditLoading &&
+                                  auditEvents.map((ev) => (
+                                    <div key={ev.id} className="admin-locacoes-audit-row">
+                                      <span>{AUDIT_EVENT_LABELS[ev.event_type] || ev.event_type}</span>
+                                      <span>{new Date(ev.occurred_at).toLocaleString('pt-BR')}</span>
+                                    </div>
+                                  ))}
+                              </div>
+                            )}
+                          </>
+                        )}
 
                         <button type="button" onClick={() => handleDeleteBooking(selectedClient, b)} className="admin-delete-btn admin-locacoes-booking-delete">
                           Excluir Locação

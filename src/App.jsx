@@ -16,6 +16,7 @@ import ConfirmarSessao from './pages/ConfirmarSessao';
 import AgendaOnline from './pages/AgendaOnline';
 import AnamneseOnline from './pages/AnamneseOnline';
 import RentalContrato from './pages/RentalContrato';
+import ValidarAssinatura from './pages/ValidarAssinatura';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/cliente/agendar" element={<AgendaOnline />} />
           <Route path="/cliente/anamnese" element={<AnamneseOnline />} />
           <Route path="/cliente/locacao" element={<RentalContrato />} />
+          <Route path="/validar/:signatureId" element={<ValidarAssinatura />} />
           {/* Rotas futuras serão adicionadas aqui */}
           {/* <Route path="/precos" element={<Precos />} /> */}
           {/* <Route path="/sobre" element={<Sobre />} /> */}
