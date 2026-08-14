@@ -33,7 +33,13 @@ const emptyClientForm = {
   nome: '', nascimento: '', cpf: '', rua: '', bairro: '', cidade: '', cep: '', email: '', telefone: '',
 };
 
-const emptyBookingForm = { dataLocacao: '', valor: '', horaInicio: '', horaFim: '' };
+const emptyBookingForm = { dataLocacao: '', valor: '', periodoHoras: '' };
+
+const PERIODO_OPTIONS = [
+  { value: '6', label: '6 horas' },
+  { value: '8', label: '8 horas' },
+  { value: '12', label: '12 horas' },
+];
 
 const formatSignedDate = (iso) => (iso ? new Date(iso).toLocaleDateString('pt-BR') : null);
 
@@ -531,6 +537,23 @@ const LocacoesView = () => {
                           </div>
                         </div>
 
+                        <div className="field-wrap admin-locacoes-fields">
+                          <label className="admin-small-label">Período</label>
+                          <select
+                            value={b.rental_period_hours ?? ''}
+                            onChange={(e) => {
+                              handleBookingFieldChange(b.id, 'rental_period_hours')(e);
+                              handleBookingFieldBlur(b.id, 'rental_period_hours')(e);
+                            }}
+                            className="field-input"
+                          >
+                            <option value="">Selecione...</option>
+                            {PERIODO_OPTIONS.map((p) => (
+                              <option key={p.value} value={p.value}>{p.label}</option>
+                            ))}
+                          </select>
+                        </div>
+
                         {b.signature ? (
                           <button
                             type="button"
@@ -622,15 +645,14 @@ const LocacoesView = () => {
                 </div>
               </div>
 
-              <div className="field-row field-wrap-last">
-                <div>
-                  <label className="field-label" htmlFor="book-hora-inicio">Horário de Início</label>
-                  <input id="book-hora-inicio" type="time" value={bookingForm.horaInicio} onChange={setBookingField('horaInicio')} className="field-input" />
-                </div>
-                <div>
-                  <label className="field-label" htmlFor="book-hora-fim">Horário de Término</label>
-                  <input id="book-hora-fim" type="time" value={bookingForm.horaFim} onChange={setBookingField('horaFim')} className="field-input" />
-                </div>
+              <div className="field-wrap-last">
+                <label className="field-label" htmlFor="book-periodo">Período</label>
+                <select id="book-periodo" value={bookingForm.periodoHoras} onChange={setBookingField('periodoHoras')} className="field-input">
+                  <option value="">Selecione...</option>
+                  {PERIODO_OPTIONS.map((p) => (
+                    <option key={p.value} value={p.value}>{p.label}</option>
+                  ))}
+                </select>
               </div>
 
               {bookingFormError && <div className="admin-login-error">{bookingFormError}</div>}

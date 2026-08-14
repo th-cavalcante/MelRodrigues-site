@@ -1251,8 +1251,12 @@
 
 /* o modal de "Nova Locação" abre por cima do painel de detalhe do
  * cliente (que já está aberto quando esse botão aparece), então precisa
- * de um z-index maior que o do drawer (1200). */
-.admin-locacoes-booking-modal-overlay {
+ * de um z-index maior que o do drawer (1200). Precisa do seletor composto
+ * (duas classes) pra ganhar de ".admin-agenda-modal-overlay" mesmo com a
+ * mesma especificidade — senão quem vence é a regra que vier depois no
+ * arquivo, que por acaso é a de z-index:1000, escondendo o modal atrás do
+ * painel do cliente (parece que o botão não faz nada). */
+.admin-agenda-modal-overlay.admin-locacoes-booking-modal-overlay {
   z-index: 1300;
 }
 

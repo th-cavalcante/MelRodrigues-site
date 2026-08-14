@@ -13,10 +13,7 @@ const formatDataCurta = (isoDate) => {
   return `${d}/${m}/${y}`;
 };
 
-const formatHora = (isoTime) => {
-  if (!isoTime) return '[horário a definir]';
-  return isoTime.slice(0, 5);
-};
+const formatPeriodo = (hours) => (hours ? `${hours} horas` : '[período a definir]');
 
 export const formatRentalEndereco = (rc) => {
   if (!rc) return '';
@@ -35,8 +32,7 @@ export const buildRentalContractBody = (rc) => {
   const cpf = (rc && rc.cpf) || '';
   const endereco = formatRentalEndereco(rc);
   const dataLocacao = formatDataCurta(rc && rc.rental_date);
-  const horaInicio = formatHora(rc && rc.rental_start_time);
-  const horaFim = formatHora(rc && rc.rental_end_time);
+  const periodo = formatPeriodo(rc && rc.rental_period_hours);
   const valor = rc && rc.rental_value != null ? Number(rc.rental_value).toFixed(2).replace('.', ',') : '[valor a definir]';
   const dataExtenso = formatDateExtenso(new Date());
 
@@ -49,9 +45,9 @@ export const buildRentalContractBody = (rc) => {
     ].join('\n'),
     '2. DO OBJETO',
     '2.1. O objeto deste contrato é a locação do equipamento de depilação a laser HAKON 4D, marca Medical San, em perfeito estado de conservação e funcionamento, acompanhado de seus acessórios: 01 cabo de força, 01 par de óculos operador, 01 par de óculos paciente, 01 ponteira.',
-    '3. DO PRAZO E HORÁRIO',
+    '3. DO PRAZO',
     [
-      `3.1. A locação terá a duração de 1 dia, com início em ${dataLocacao} às ${horaInicio} e término em ${dataLocacao} às ${horaFim}.`,
+      `3.1. A locação terá duração de ${periodo}, na data de ${dataLocacao}.`,
       '3.2. O atraso na devolução do equipamento implicará em multa de R$ 50,00 por hora excedente.',
     ].join('\n'),
     '4. DO VALOR E FORMA DE PAGAMENTO',
