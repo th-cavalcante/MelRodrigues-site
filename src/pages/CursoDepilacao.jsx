@@ -82,7 +82,6 @@ const pricingPlans = [
     features: [
       '8 horas de curso — teoria e muita prática',
       'Coffee Break',
-      'Almoço Incluso (Restaurante & Buffet Torre Grill)',
       'Primeira Locação do Equipamento Hakon 4D Grátis',
       'Certificado de conclusão',
       '1 ano de acesso grátis ao App Teaga — Agenda Inteligente',
@@ -97,13 +96,14 @@ const pricingPlans = [
     installments: 'até 6x de R$ 249,98 no cartão',
     badge: 'MAIS EXCLUSIVO',
     features: [
+      'A aluna mentorada escolhe a data da sua mentoria em 1ª lugar na lista',
       '8 horas de curso — teoria e muita prática',
       'Coffee Break',
       'Almoço Incluso (Restaurante & Buffet Torre Grill)',
       'Primeira Locação do Equipamento Hakon 4D Grátis',
       'Certificado de conclusão',
       '1 ano de acesso grátis ao App Teaga — Agenda Inteligente',
-      'Suporte pós-curso',
+      'Supervisão (via WhatsApp) durante todo o seu primeiro Laser Day',
     ],
   },
 ];
