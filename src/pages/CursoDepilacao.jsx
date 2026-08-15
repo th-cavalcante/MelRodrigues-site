@@ -76,6 +76,7 @@ const pricingPlans = [
     key: 'turma',
     label: 'Curso em Turma',
     subtitle: 'Turma de apenas 4 alunas, para ter um aprendizado mais eficiente.',
+    price: 999.9,
     pixPrice: '999,90',
     installments: 'até 6x no cartão de crédito (Juros pelo parcelamento)',
     badge: null,
@@ -92,6 +93,7 @@ const pricingPlans = [
     key: 'individual',
     label: 'Mentoria Individual',
     subtitle: 'Um dia exclusivo, com atenção 100% voltada para você e seu desenvolvimento prático.',
+    price: 1499.9,
     pixPrice: '1.499,90',
     installments: 'até 6x no cartão de crédito (Juros pelo parcelamento)',
     badge: 'MAIS EXCLUSIVO',
@@ -125,6 +127,8 @@ const testimonials = [
 ];
 
 const emptyForm = { name: '', email: '', phone: '' };
+
+const formatBRL = (value) => value.toFixed(2).replace('.', ',');
 
 const GalleryCarousel = () => {
   const trackRef = useRef(null);
@@ -208,11 +212,13 @@ const CursoDepilacao = () => {
   const [checkoutOpen, setCheckoutOpen] = useState(!!mpReturn);
   const [step, setStep] = useState(mpReturn ? 'result' : 1);
   const [planKey, setPlanKey] = useState('turma');
+  const [paymentOption, setPaymentOption] = useState('total');
   const [form, setForm] = useState(emptyForm);
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState('');
 
   const selectedPlan = pricingPlans.find((p) => p.key === planKey) || pricingPlans[0];
+  const chargeAmount = paymentOption === 'sinal' ? selectedPlan.price / 2 : selectedPlan.price;
 
   useEffect(() => {
     document.body.style.overflow = checkoutOpen ? 'hidden' : '';
@@ -233,6 +239,7 @@ const CursoDepilacao = () => {
     setPaying(false);
     setPayError('');
     setForm(emptyForm);
+    setPaymentOption('total');
   };
 
   const setFormField = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
@@ -245,13 +252,14 @@ const CursoDepilacao = () => {
     try {
       const { initPoint, orderId } = await createCourseMpPreference({
         planKey: selectedPlan.key,
+        paymentOption,
         name: form.name,
         email: form.email,
         phone: form.phone,
       });
       sessionStorage.setItem(
         `curso-order-${orderId}`,
-        JSON.stringify({ planLabel: selectedPlan.label, amount: selectedPlan.pixPrice })
+        JSON.stringify({ planLabel: selectedPlan.label, amount: formatBRL(chargeAmount) })
       );
       window.location.href = initPoint;
     } catch (err) {
@@ -526,9 +534,36 @@ const CursoDepilacao = () => {
                 <h2 className="curso-checkout-title">Confirme e pague</h2>
                 <p className="curso-checkout-step-label">Passo 3 de 3</p>
 
+                <div className="curso-checkout-plan-list">
+                  <button
+                    type="button"
+                    className={`curso-checkout-plan-card ${paymentOption === 'total' ? 'selected' : ''}`}
+                    onClick={() => setPaymentOption('total')}
+                  >
+                    <div>
+                      <div className="curso-checkout-plan-label">Valor total</div>
+                      <div className="curso-checkout-plan-price">R$ {formatBRL(selectedPlan.price)}</div>
+                    </div>
+                    <span className="curso-checkout-plan-mark">{paymentOption === 'total' ? '✓' : '›'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={`curso-checkout-plan-card ${paymentOption === 'sinal' ? 'selected' : ''}`}
+                    onClick={() => setPaymentOption('sinal')}
+                  >
+                    <div>
+                      <div className="curso-checkout-plan-label">Sinal (50%) para reservar a vaga</div>
+                      <div className="curso-checkout-plan-price">
+                        R$ {formatBRL(selectedPlan.price / 2)} agora — restante combinado até o dia do curso
+                      </div>
+                    </div>
+                    <span className="curso-checkout-plan-mark">{paymentOption === 'sinal' ? '✓' : '›'}</span>
+                  </button>
+                </div>
+
                 <div className="curso-checkout-summary">
-                  <span>{selectedPlan.label}</span>
-                  <strong>R$ {selectedPlan.pixPrice}</strong>
+                  <span>{selectedPlan.label}{paymentOption === 'sinal' ? ' — Sinal (50%)' : ''}</span>
+                  <strong>R$ {formatBRL(chargeAmount)}</strong>
                 </div>
 
                 {payError && <div className="admin-login-error">{payError}</div>}

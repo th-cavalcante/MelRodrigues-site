@@ -4,9 +4,9 @@ import { supabase } from './supabaseClient';
  * pagamento no Mercado Pago, e devolve { initPoint, orderId }. O preço é
  * definido no servidor a partir do planKey — nunca confia em valor vindo
  * do navegador. */
-export const createCourseMpPreference = async ({ planKey, name, email, phone }) => {
+export const createCourseMpPreference = async ({ planKey, paymentOption, name, email, phone }) => {
   const { data, error } = await supabase.functions.invoke('create-course-mp-preference', {
-    body: { planKey, name, email, phone, siteUrl: window.location.origin },
+    body: { planKey, paymentOption, name, email, phone, siteUrl: window.location.origin },
   });
   if (error) {
     let message = error.message;

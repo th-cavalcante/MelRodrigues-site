@@ -30,8 +30,9 @@ serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
   try {
-    const { planKey, name, email, phone, siteUrl } = (await req.json()) as {
+    const { planKey, paymentOption, name, email, phone, siteUrl } = (await req.json()) as {
       planKey: string;
+      paymentOption: string;
       name: string;
       email: string;
       phone: string;
@@ -40,10 +41,18 @@ serve(async (req) => {
 
     const plan = PLANS[planKey];
     if (!plan) return jsonResponse({ error: 'Modalidade inválida.' }, 400);
+    if (paymentOption !== 'total' && paymentOption !== 'sinal') {
+      return jsonResponse({ error: 'Forma de pagamento inválida.' }, 400);
+    }
     if (!name?.trim() || !email?.trim() || !phone?.trim()) {
       return jsonResponse({ error: 'Preencha nome, e-mail e WhatsApp.' }, 400);
     }
     if (!siteUrl) return jsonResponse({ error: 'Dados incompletos para gerar o pagamento.' }, 400);
+
+    // Valor cobrado nunca vem do frontend: total ou 50% de sinal, calculado
+    // aqui a partir do preço fixo do plano.
+    const chargeAmount = paymentOption === 'sinal' ? Math.round(plan.price * 50) / 100 : plan.price;
+    const itemLabel = paymentOption === 'sinal' ? `${plan.label} — Sinal (50%)` : plan.label;
 
     const accessToken = Deno.env.get('MP_ACCESS_TOKEN');
     if (!accessToken) {
@@ -60,7 +69,9 @@ serve(async (req) => {
       .from('course_orders')
       .insert({
         plan_key: planKey,
-        amount: plan.price,
+        amount: chargeAmount,
+        payment_option: paymentOption,
+        course_price: plan.price,
         customer_name: name.trim(),
         customer_email: email.trim(),
         customer_phone: phone.trim(),
@@ -78,10 +89,10 @@ serve(async (req) => {
     const preference = {
       items: [
         {
-          title: plan.label,
-          description: plan.label,
+          title: itemLabel,
+          description: itemLabel,
           quantity: 1,
-          unit_price: plan.price,
+          unit_price: chargeAmount,
           currency_id: 'BRL',
         },
       ],

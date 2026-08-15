@@ -75,7 +75,7 @@ serve(async (req) => {
         try {
           const { data: order } = await supabaseAdmin
             .from('course_orders')
-            .select('customer_name, customer_phone')
+            .select('customer_name, customer_phone, payment_option, amount, course_price')
             .eq('id', orderId)
             .maybeSingle();
 
@@ -89,7 +89,13 @@ serve(async (req) => {
           if (phoneDigits && template?.active !== false) {
             const firstName = (order?.customer_name || '').trim().split(/\s+/)[0] || '';
             const body = template?.body || '{{nome}}, sua vaga no curso está confirmada!';
-            const text = fillTemplate(body, { nome: firstName });
+            let text = fillTemplate(body, { nome: firstName });
+
+            if (order?.payment_option === 'sinal' && order?.course_price != null && order?.amount != null) {
+              const restante = (Number(order.course_price) - Number(order.amount)).toFixed(2).replace('.', ',');
+              text += `\n\nVocê pagou o sinal de R$ ${Number(order.amount).toFixed(2).replace('.', ',')}. Restam R$ ${restante} a combinar até o dia do curso.`;
+            }
+
             const result = await sendWhatsAppText(phoneDigits, text);
             if (!result.ok) console.error('Erro ao enviar confirmação do curso por WhatsApp:', result.error);
           }
