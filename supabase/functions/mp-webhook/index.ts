@@ -44,8 +44,8 @@ serve(async (req) => {
     }
 
     const payment = await mpRes.json();
-    const bookingId = payment.external_reference;
-    if (!bookingId) {
+    const externalReference = payment.external_reference;
+    if (!externalReference) {
       return new Response('ok', { status: 200 });
     }
 
@@ -53,6 +53,55 @@ serve(async (req) => {
     // em payment_method_id ("pix"). Cartão/boleto usam payment_type_id mesmo.
     const cardTypeMap = { credit_card: 'Cartão', debit_card: 'Cartão', ticket: 'Boleto' };
     const paymentMethod = payment.payment_method_id === 'pix' ? 'Pix' : cardTypeMap[payment.payment_type_id] || null;
+
+    const supabaseAdmin = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
+    // Inscrição no Curso de Depilação a Laser — external_reference vem
+    // prefixado com "curso:" pra diferenciar de um agendamento normal.
+    if (typeof externalReference === 'string' && externalReference.startsWith('curso:')) {
+      const orderId = externalReference.slice('curso:'.length);
+      const orderStatus = payment.status === 'approved' ? 'paid' : payment.status === 'rejected' ? 'failed' : 'pending';
+
+      const { error: orderError } = await supabaseAdmin
+        .from('course_orders')
+        .update({ status: orderStatus, mp_payment_id: String(payment.id), payment_method: paymentMethod })
+        .eq('id', orderId);
+      if (orderError) console.error('Erro ao atualizar pedido do curso a partir do webhook:', orderError);
+
+      if (!orderError && orderStatus === 'paid') {
+        try {
+          const { data: order } = await supabaseAdmin
+            .from('course_orders')
+            .select('customer_name, customer_phone')
+            .eq('id', orderId)
+            .maybeSingle();
+
+          const phoneDigits = formatPhoneForEvolution(order?.customer_phone);
+          const { data: template } = await supabaseAdmin
+            .from('message_templates')
+            .select('body, active')
+            .eq('key', 'course_purchase_confirmed')
+            .maybeSingle();
+
+          if (phoneDigits && template?.active !== false) {
+            const firstName = (order?.customer_name || '').trim().split(/\s+/)[0] || '';
+            const body = template?.body || '{{nome}}, sua vaga no curso está confirmada!';
+            const text = fillTemplate(body, { nome: firstName });
+            const result = await sendWhatsAppText(phoneDigits, text);
+            if (!result.ok) console.error('Erro ao enviar confirmação do curso por WhatsApp:', result.error);
+          }
+        } catch (whatsappErr) {
+          console.error('Erro inesperado ao enviar confirmação do curso por WhatsApp:', whatsappErr);
+        }
+      }
+
+      return new Response('ok', { status: 200 });
+    }
+
+    const bookingId = externalReference;
 
     // A Agenda Online só cobra o sinal de 50% — nunca o valor cheio — então
     // um pagamento aprovado por aqui sempre vira "Pago Sinal 50%", nunca "Pago".
@@ -64,11 +113,6 @@ serve(async (req) => {
     if (payment.status === 'approved') {
       updates.status = 'confirmado';
     }
-
-    const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
 
     const { error } = await supabaseAdmin.from('bookings').update(updates).eq('id', bookingId);
     if (error) console.error('Erro ao atualizar agendamento a partir do webhook:', error);

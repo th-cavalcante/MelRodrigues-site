@@ -1,4 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { createCourseMpPreference } from '../lib/courseOrders';
 import '../styles/CursoDepilacao.css';
 
 const WHATSAPP_LINK = 'https://wa.me/5513996753432?text=Olá%20MR%20Laser!%20Gostaria%20de%20saber%20mais%20sobre%20o%20Curso%20de%20Depilação%20a%20Laser.';
@@ -48,8 +50,8 @@ const reasons = [
 
 const courseInfo = [
   { icon: '📍', label: 'Local', value: 'São Vicente - Litoral de SP', note: 'R. Benjamin Constant, 61, Sala 515 - Centro, São Vicente (Helbor Offices)' },
-  { icon: '📅', label: 'Próxima Data', value: '[A definir]', note: 'Turmas altamente reduzidas' },
-  { icon: '🏨', label: 'Hospedagem', value: 'Hotel Incluso', note: '1 Diária no Mont Rey Hotel com café da manhã incluso acompanhante' },
+  { icon: '📅', label: 'Próxima Data', value: '28/09', note: 'Turmas reduzidas de até 4 alunas para maior aproveitamento' },
+  { icon: '🎓', label: 'Certificado', value: 'Incluso', note: 'Certificado válido em todo território nacional' },
 ];
 
 const curriculum = [
@@ -74,14 +76,14 @@ const pricingPlans = [
     key: 'turma',
     label: 'Curso em Turma',
     subtitle: 'Turma de apenas 4 alunas, para ter um aprendizado mais eficiente.',
-    pixPrice: '1.199,90',
-    installments: 'até 6x de R$ 199,98 no cartão',
+    pixPrice: '999,90',
+    installments: 'até 6x de R$ 166,65 no cartão',
     badge: null,
     features: [
       '8 horas de curso — teoria e muita prática',
       'Coffee Break',
       'Almoço Incluso (Restaurante & Buffet Torre Grill)',
-      'Hotel Incluso (1 Diária no Mont Rey Hotel com café da manhã)',
+      'Primeira Locação do Equipamento Hakon 4D Grátis',
       'Certificado de conclusão',
       '1 ano de acesso grátis ao App Teaga — Agenda Inteligente',
       'Suporte pós-curso',
@@ -98,7 +100,7 @@ const pricingPlans = [
       '8 horas de curso — teoria e muita prática',
       'Coffee Break',
       'Almoço Incluso (Restaurante & Buffet Torre Grill)',
-      'Hotel Incluso (1 Diária no Mont Rey Hotel com café da manhã)',
+      'Primeira Locação do Equipamento Hakon 4D Grátis',
       'Certificado de conclusão',
       '1 ano de acesso grátis ao App Teaga — Agenda Inteligente',
       'Suporte pós-curso',
@@ -125,7 +127,6 @@ const testimonials = [
 ];
 
 const emptyForm = { name: '', email: '', phone: '' };
-const emptyCard = { number: '', name: '', expiry: '', cvv: '' };
 
 const GalleryCarousel = () => {
   const trackRef = useRef(null);
@@ -190,44 +191,76 @@ const GalleryCarousel = () => {
 };
 
 const CursoDepilacao = () => {
-  const [checkoutOpen, setCheckoutOpen] = useState(false);
-  const [step, setStep] = useState(1);
+  const [searchParams] = useSearchParams();
+  const cursoOrderId = searchParams.get('curso_order');
+  const cursoStatus = searchParams.get('curso_status');
+  const mpReturn = cursoOrderId ? { orderId: cursoOrderId, status: cursoStatus } : null;
+
+  const [returnedSummary] = useState(() => {
+    if (!mpReturn) return null;
+    try {
+      const raw = sessionStorage.getItem(`curso-order-${mpReturn.orderId}`);
+      return raw ? JSON.parse(raw) : null;
+    } catch (err) {
+      console.error('Erro ao ler resumo do pedido salvo:', err);
+      return null;
+    }
+  });
+
+  const [checkoutOpen, setCheckoutOpen] = useState(!!mpReturn);
+  const [step, setStep] = useState(mpReturn ? 'result' : 1);
   const [planKey, setPlanKey] = useState('turma');
   const [form, setForm] = useState(emptyForm);
-  const [paymentMethod, setPaymentMethod] = useState('cartao');
-  const [card, setCard] = useState(emptyCard);
-  const [processing, setProcessing] = useState(false);
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState('');
 
   const selectedPlan = pricingPlans.find((p) => p.key === planKey) || pricingPlans[0];
+
+  useEffect(() => {
+    document.body.style.overflow = checkoutOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [checkoutOpen]);
 
   const openCheckout = (key) => {
     setPlanKey(key || planKey);
     setStep(1);
-    document.body.style.overflow = 'hidden';
     setCheckoutOpen(true);
   };
 
   const closeCheckout = () => {
-    document.body.style.overflow = '';
     setCheckoutOpen(false);
     setStep(1);
-    setProcessing(false);
+    setPaying(false);
+    setPayError('');
     setForm(emptyForm);
-    setCard(emptyCard);
-    setPaymentMethod('cartao');
   };
 
   const setFormField = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
-  const setCardField = (key) => (e) => setCard((c) => ({ ...c, [key]: e.target.value }));
 
   const step2Disabled = !form.name.trim() || !form.email.trim() || !form.phone.trim();
 
-  const handlePay = () => {
-    setProcessing(true);
-    setTimeout(() => {
-      setProcessing(false);
-      setStep(4);
-    }, 1400);
+  const handlePay = async () => {
+    setPaying(true);
+    setPayError('');
+    try {
+      const { initPoint, orderId } = await createCourseMpPreference({
+        planKey: selectedPlan.key,
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+      });
+      sessionStorage.setItem(
+        `curso-order-${orderId}`,
+        JSON.stringify({ planLabel: selectedPlan.label, amount: selectedPlan.pixPrice })
+      );
+      window.location.href = initPoint;
+    } catch (err) {
+      console.error('Erro ao iniciar pagamento do curso:', err);
+      setPayError(err.message || 'Não foi possível iniciar o pagamento. Tente novamente.');
+      setPaying(false);
+    }
   };
 
   return (
@@ -243,7 +276,7 @@ const CursoDepilacao = () => {
           </h1>
           <p className="curso-subtitle">
             Curso presencial e prático de Depilação a Laser, com equipamento
-            Hakon 4D, hospedagem e certificado inclusos.
+            Hakon 4D, coffee break e certificado inclusos.
           </p>
           <button type="button" className="curso-btn-primary curso-hero-btn" onClick={() => openCheckout('turma')}>
             QUERO GARANTIR MINHA VAGA
@@ -338,8 +371,8 @@ const CursoDepilacao = () => {
 
       <section className="curso-gallery">
         <div className="section-header">
-          <span className="section-eyebrow">Bastidores</span>
-          <h2 className="curso-section-title">Álbum da Prática</h2>
+          <span className="section-eyebrow">Fotos do último curso</span>
+          <h2 className="curso-section-title">Bastidores</h2>
         </div>
         <GalleryCarousel />
         <div className="curso-gallery-grid">
@@ -407,7 +440,7 @@ const CursoDepilacao = () => {
             GARANTIR MINHA VAGA AGORA
           </button>
           <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="curso-btn-outline-dark curso-cta-btn">
-            💬 TIRAR DÚVIDAS NO WHATSAPP
+            💬 TIRAR DÚVIDAS NO WHATSAPP: (13) 99675-3432
           </a>
         </div>
       </section>
@@ -424,25 +457,27 @@ const CursoDepilacao = () => {
               ×
             </button>
 
-            <div className="curso-checkout-stepper">
-              {[1, 2, 3, 4].map((n) => {
-                const done = step > n;
-                const active = step === n;
-                return (
-                  <div className="curso-checkout-stepper-item" key={n}>
-                    <div className={`curso-checkout-step-circle ${done ? 'done' : ''} ${active ? 'active' : ''}`}>
-                      {done ? '✓' : n}
+            {typeof step === 'number' && (
+              <div className="curso-checkout-stepper">
+                {[1, 2, 3].map((n) => {
+                  const done = step > n;
+                  const active = step === n;
+                  return (
+                    <div className="curso-checkout-stepper-item" key={n}>
+                      <div className={`curso-checkout-step-circle ${done ? 'done' : ''} ${active ? 'active' : ''}`}>
+                        {done ? '✓' : n}
+                      </div>
+                      {n < 3 && <div className={`curso-checkout-step-line ${done ? 'done' : ''}`} />}
                     </div>
-                    {n < 4 && <div className={`curso-checkout-step-line ${done ? 'done' : ''}`} />}
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            )}
 
             {step === 1 && (
               <div>
                 <h2 className="curso-checkout-title">Confirme sua modalidade</h2>
-                <p className="curso-checkout-step-label">Passo 1 de 4</p>
+                <p className="curso-checkout-step-label">Passo 1 de 3</p>
 
                 <div className="curso-checkout-plan-list">
                   {pricingPlans.map((p) => (
@@ -470,7 +505,7 @@ const CursoDepilacao = () => {
             {step === 2 && (
               <div>
                 <h2 className="curso-checkout-title">Seus dados</h2>
-                <p className="curso-checkout-step-label">Passo 2 de 4</p>
+                <p className="curso-checkout-step-label">Passo 2 de 3</p>
 
                 <div className="field-wrap">
                   <label className="field-label">Nome completo</label>
@@ -496,89 +531,82 @@ const CursoDepilacao = () => {
 
             {step === 3 && (
               <div>
-                <h2 className="curso-checkout-title">Pagamento</h2>
-                <p className="curso-checkout-step-label">Passo 3 de 4</p>
+                <h2 className="curso-checkout-title">Confirme e pague</h2>
+                <p className="curso-checkout-step-label">Passo 3 de 3</p>
 
                 <div className="curso-checkout-summary">
                   <span>{selectedPlan.label}</span>
                   <strong>R$ {selectedPlan.pixPrice}</strong>
                 </div>
 
-                <div className="curso-checkout-payment-methods">
-                  <button
-                    type="button"
-                    className={`curso-checkout-payment-btn ${paymentMethod === 'cartao' ? 'selected' : ''}`}
-                    onClick={() => setPaymentMethod('cartao')}
-                  >
-                    💳 Cartão de Crédito
-                  </button>
-                  <button
-                    type="button"
-                    className={`curso-checkout-payment-btn ${paymentMethod === 'pix' ? 'selected' : ''}`}
-                    onClick={() => setPaymentMethod('pix')}
-                  >
-                    ⚡ Pix
-                  </button>
-                </div>
+                <p className="curso-checkout-step-label">
+                  Você será redirecionada ao Mercado Pago para concluir o pagamento com segurança —
+                  cartão de crédito, Pix ou boleto.
+                </p>
 
-                {paymentMethod === 'cartao' && (
-                  <>
-                    <div className="field-wrap">
-                      <label className="field-label">Número do Cartão</label>
-                      <input type="text" placeholder="0000 0000 0000 0000" value={card.number} onChange={setCardField('number')} className="field-input" />
-                    </div>
-                    <div className="field-wrap">
-                      <label className="field-label">Nome no Cartão</label>
-                      <input type="text" placeholder="Como está impresso" value={card.name} onChange={setCardField('name')} className="field-input" />
-                    </div>
-                    <div className="curso-checkout-card-row">
-                      <div>
-                        <label className="field-label">Validade</label>
-                        <input type="text" placeholder="MM/AA" value={card.expiry} onChange={setCardField('expiry')} className="field-input" />
-                      </div>
-                      <div>
-                        <label className="field-label">CVV</label>
-                        <input type="text" placeholder="000" value={card.cvv} onChange={setCardField('cvv')} className="field-input" />
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {paymentMethod === 'pix' && (
-                  <div className="curso-checkout-pix">
-                    <div className="curso-checkout-pix-qr" />
-                    <p>Escaneie o QR Code com o app do seu banco.</p>
-                  </div>
-                )}
+                {payError && <div className="admin-login-error">{payError}</div>}
 
                 <div className="curso-checkout-actions">
                   <button type="button" className="curso-checkout-back" onClick={() => setStep(2)}>VOLTAR</button>
-                  <button type="button" className="curso-btn-primary curso-checkout-next" disabled={processing} onClick={handlePay}>
-                    {processing ? 'PROCESSANDO...' : 'PAGAR E GARANTIR VAGA'}
+                  <button type="button" className="curso-btn-primary curso-checkout-next" disabled={paying} onClick={handlePay}>
+                    {paying ? 'REDIRECIONANDO...' : 'PAGAR COM MERCADO PAGO'}
                   </button>
                 </div>
               </div>
             )}
 
-            {step === 4 && (
+            {step === 'result' && (
               <div className="curso-checkout-success">
-                <div className="curso-checkout-success-icon">✓</div>
-                <h2 className="curso-checkout-title">Vaga garantida!</h2>
-                <p className="curso-checkout-success-text">
-                  Enviamos a confirmação e os próximos passos para o seu WhatsApp e e-mail.
-                </p>
-                <div className="curso-checkout-summary curso-checkout-summary-left">
-                  <div>
-                    <div className="curso-checkout-summary-label">Modalidade</div>
-                    <div className="curso-checkout-summary-strong">{selectedPlan.label}</div>
+                {cursoStatus === 'approved' && (
+                  <>
+                    <div className="curso-checkout-success-icon">✓</div>
+                    <h2 className="curso-checkout-title">Vaga garantida!</h2>
+                    <p className="curso-checkout-success-text">
+                      Enviamos a confirmação e os próximos passos para o seu WhatsApp.
+                    </p>
+                  </>
+                )}
+                {cursoStatus === 'pending' && (
+                  <>
+                    <div className="curso-checkout-success-icon">⏳</div>
+                    <h2 className="curso-checkout-title">Pagamento em análise</h2>
+                    <p className="curso-checkout-success-text">
+                      Assim que for aprovado, confirmamos sua vaga pelo WhatsApp.
+                    </p>
+                  </>
+                )}
+                {(cursoStatus === 'failure' || !cursoStatus) && (
+                  <>
+                    <div className="curso-checkout-success-icon">✕</div>
+                    <h2 className="curso-checkout-title">Pagamento não concluído</h2>
+                    <p className="curso-checkout-success-text">
+                      Não foi possível confirmar o pagamento. Você pode tentar novamente.
+                    </p>
+                  </>
+                )}
+
+                {returnedSummary && (
+                  <div className="curso-checkout-summary curso-checkout-summary-left">
+                    <div>
+                      <div className="curso-checkout-summary-label">Modalidade</div>
+                      <div className="curso-checkout-summary-strong">{returnedSummary.planLabel}</div>
+                    </div>
+                    <div>
+                      <div className="curso-checkout-summary-label">Valor</div>
+                      <div className="curso-checkout-summary-strong">R$ {returnedSummary.amount}</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="curso-checkout-summary-label">Valor pago</div>
-                    <div className="curso-checkout-summary-strong">R$ {selectedPlan.pixPrice}</div>
-                  </div>
-                </div>
-                <button type="button" className="curso-btn-primary curso-checkout-continue" onClick={closeCheckout}>
-                  FECHAR
+                )}
+
+                <button
+                  type="button"
+                  className="curso-btn-primary curso-checkout-continue"
+                  onClick={() => {
+                    if (cursoStatus === 'approved' || cursoStatus === 'pending') closeCheckout();
+                    else setStep(1);
+                  }}
+                >
+                  {cursoStatus === 'approved' || cursoStatus === 'pending' ? 'FECHAR' : 'TENTAR NOVAMENTE'}
                 </button>
               </div>
             )}
