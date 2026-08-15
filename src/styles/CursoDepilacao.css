@@ -1027,25 +1027,6 @@
     bottom: 3%;
   }
 
-  /* Efeito maior/degradê só no CTA do Hero, e só em mobile — desktop e
-   * todos os outros botões da página ficam no estilo original. */
-  .curso-btn-primary.curso-hero-btn {
-    padding: 30px 46px;
-    background: linear-gradient(135deg, #d4b17e 0%, var(--primary-color) 55%, #8a6738 100%);
-    font-size: 16px;
-    letter-spacing: 0.8px;
-    font-weight: 700;
-    border-radius: 50px;
-    box-shadow: 0 12px 30px oklch(60% 0.1 75 / 0.4);
-    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
-  }
-
-  .curso-btn-primary.curso-hero-btn:hover {
-    filter: brightness(1.06);
-    transform: translateY(-2px);
-    box-shadow: 0 16px 36px oklch(60% 0.1 75 / 0.5);
-  }
-
   .curso-badge {
     margin-bottom: 12px;
   }
@@ -1065,9 +1046,7 @@
   }
 
   .curso-hero-btn {
-    margin-top: 14px;
-    padding: 14px 30px;
-    font-size: 12px;
+    margin-top: 16px;
   }
 
   .curso-reasons,
