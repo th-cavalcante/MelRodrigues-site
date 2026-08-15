@@ -77,7 +77,7 @@ const pricingPlans = [
     label: 'Curso em Turma',
     subtitle: 'Turma de apenas 4 alunas, para ter um aprendizado mais eficiente.',
     pixPrice: '999,90',
-    installments: 'até 6x de R$ 166,65 no cartão',
+    installments: 'até 6x no cartão de crédito (Juros pelo parcelamento)',
     badge: null,
     features: [
       '8 horas de curso — teoria e muita prática',
@@ -93,7 +93,7 @@ const pricingPlans = [
     label: 'Mentoria Individual',
     subtitle: 'Atenção inteira, somente para a mentorada.',
     pixPrice: '1.499,90',
-    installments: 'até 6x de R$ 249,98 no cartão',
+    installments: 'até 6x no cartão de crédito (Juros pelo parcelamento)',
     badge: 'MAIS EXCLUSIVO',
     features: [
       'A aluna mentorada escolhe a data da sua mentoria.',
