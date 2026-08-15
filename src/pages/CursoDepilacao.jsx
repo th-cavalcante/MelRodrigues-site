@@ -91,7 +91,7 @@ const pricingPlans = [
   {
     key: 'individual',
     label: 'Mentoria Individual',
-    subtitle: 'Atenção inteira, somente para a mentorada.',
+    subtitle: 'Um dia exclusivo, com atenção 100% voltada para você e seu desenvolvimento prático.',
     pixPrice: '1.499,90',
     installments: 'até 6x no cartão de crédito (Juros pelo parcelamento)',
     badge: 'MAIS EXCLUSIVO',
