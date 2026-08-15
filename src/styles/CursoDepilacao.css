@@ -403,9 +403,25 @@
   color: var(--primary-color);
 }
 
+/* Os cards de preço mantêm o botão no estilo fino original — o efeito
+ * maior/degradê é só pro CTA do hero e do checkout. */
 .curso-pricing-card .curso-btn-primary {
   margin-top: auto;
   text-align: center;
+  padding: 18px 38px;
+  background: var(--primary-color);
+  font-size: 13px;
+  letter-spacing: 1.2px;
+  font-weight: 600;
+  border-radius: 2px;
+  box-shadow: none;
+}
+
+.curso-pricing-card .curso-btn-primary:hover {
+  opacity: 0.88;
+  filter: none;
+  transform: none;
+  box-shadow: none;
 }
 
 /* ÁLBUM DE FOTOS / CARROSSEL */
