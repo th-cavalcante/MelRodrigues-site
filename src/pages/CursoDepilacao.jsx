@@ -96,7 +96,7 @@ const pricingPlans = [
     installments: 'até 6x de R$ 249,98 no cartão',
     badge: 'MAIS EXCLUSIVO',
     features: [
-      'A aluna mentorada escolhe a data da sua mentoria em 1ª lugar na lista',
+      'A aluna mentorada escolhe a data da sua mentoria.',
       '8 horas de curso — teoria e muita prática',
       'Coffee Break',
       'Almoço Incluso (Restaurante & Buffet Torre Grill)',
