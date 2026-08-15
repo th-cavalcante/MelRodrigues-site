@@ -82,7 +82,7 @@
 .curso-btn-primary {
   display: inline-block;
   margin-top: 40px;
-  padding: 22px 46px;
+  padding: 30px 46px;
   background: linear-gradient(135deg, #d4b17e 0%, var(--primary-color) 55%, #8a6738 100%);
   color: #fff;
   font-size: 16px;
