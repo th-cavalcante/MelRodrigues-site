@@ -440,7 +440,7 @@ const CursoDepilacao = () => {
             GARANTIR MINHA VAGA AGORA
           </button>
           <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="curso-btn-outline-dark curso-cta-btn">
-            💬 TIRAR DÚVIDAS NO WHATSAPP: (13) 99675-3432
+            Falar no Whatsapp
           </a>
         </div>
       </section>
@@ -539,19 +539,17 @@ const CursoDepilacao = () => {
                   <strong>R$ {selectedPlan.pixPrice}</strong>
                 </div>
 
-                <p className="curso-checkout-step-label">
-                  Você será redirecionada ao Mercado Pago para concluir o pagamento com segurança —
-                  cartão de crédito, Pix ou boleto.
-                </p>
-
                 {payError && <div className="admin-login-error">{payError}</div>}
 
                 <div className="curso-checkout-actions">
                   <button type="button" className="curso-checkout-back" onClick={() => setStep(2)}>VOLTAR</button>
                   <button type="button" className="curso-btn-primary curso-checkout-next" disabled={paying} onClick={handlePay}>
-                    {paying ? 'REDIRECIONANDO...' : 'PAGAR COM MERCADO PAGO'}
+                    {paying ? 'REDIRECIONANDO...' : 'PAGAR'}
                   </button>
                 </div>
+                <p className="curso-checkout-payment-note">
+                  O pagamento será processado com segurança pelo Mercado Pago — cartão de crédito, Pix ou boleto.
+                </p>
               </div>
             )}
 

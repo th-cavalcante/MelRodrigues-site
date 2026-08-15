@@ -32,9 +32,7 @@
   width: 100%;
   max-width: 320px;
   height: auto;
-  border-radius: 12px;
   display: block;
-  background: var(--bg-cream-alt);
 }
 
 .curso-hero-content {
@@ -836,6 +834,13 @@
   gap: 14px;
 }
 
+.curso-checkout-payment-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 14px 0 0;
+}
+
 .curso-checkout-back {
   flex: 1;
   padding: 15px;
@@ -981,12 +986,57 @@
 
 /* Responsive */
 @media (max-width: 900px) {
+  /* A foto some pra fora do grid e vira o "fundo" da seção — o texto flutua
+   * por cima dela, ancorado perto da base (abaixo da linha do quadril),
+   * com um degradê escuro atrás só o suficiente pra garantir contraste,
+   * sem tampar o rosto/tronco da profissional. */
   .curso-hero {
-    padding: 60px 24px;
+    padding: 0 0 28px;
+    display: block;
+    overflow: visible;
+  }
+
+  .curso-hero-media img {
+    max-width: 100%;
+  }
+
+  .curso-hero-content {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 3%;
+    padding: 16px 18px 18px;
+    border-radius: 18px;
+    background: linear-gradient(
+      180deg,
+      oklch(20% 0.02 85 / 0.35) 0%,
+      oklch(18% 0.02 85 / 0.75) 25%,
+      oklch(13% 0.015 85 / 0.94) 100%
+    );
+  }
+
+  .curso-badge {
+    margin-bottom: 12px;
   }
 
   .curso-title {
-    font-size: 40px;
+    font-size: 22px;
+    line-height: 1.15;
+    margin: 0 0 10px;
+    color: #fff;
+    text-shadow: 0 2px 12px oklch(0% 0 0 / 0.4);
+  }
+
+  .curso-subtitle {
+    font-size: 14px;
+    line-height: 1.5;
+    color: oklch(96% 0.004 85);
+  }
+
+  .curso-hero-btn {
+    margin-top: 14px;
+    padding: 14px 30px;
+    font-size: 12px;
   }
 
   .curso-reasons,
