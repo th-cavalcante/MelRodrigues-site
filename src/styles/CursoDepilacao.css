@@ -996,8 +996,29 @@
     overflow: visible;
   }
 
+  .curso-hero-media {
+    position: relative;
+  }
+
   .curso-hero-media img {
     max-width: 100%;
+  }
+
+  /* Degradê aplicado na própria foto (não numa caixa por cima): clareado
+   * do rosto até a altura do quadril, escurecendo progressivamente nas
+   * pernas, pra dar contraste pro texto sem parecer um "cartão" colado. */
+  .curso-hero-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 52%,
+      oklch(15% 0.02 85 / 0.45) 64%,
+      oklch(9% 0.015 85 / 0.85) 100%
+    );
   }
 
   .curso-hero-content {
@@ -1005,14 +1026,6 @@
     left: 16px;
     right: 16px;
     bottom: 3%;
-    padding: 16px 18px 18px;
-    border-radius: 18px;
-    background: linear-gradient(
-      180deg,
-      oklch(20% 0.02 85 / 0.35) 0%,
-      oklch(18% 0.02 85 / 0.75) 25%,
-      oklch(13% 0.015 85 / 0.94) 100%
-    );
   }
 
   .curso-badge {
