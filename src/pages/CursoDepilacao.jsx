@@ -118,8 +118,6 @@ const gallery = [
   { src: '/images/curso/curso-7.jpg', caption: 'Assinatura do certificado' },
 ];
 
-const galleryGrid = [...gallery, { src: null, caption: 'Momento da formatura' }];
-
 const testimonials = [
   { quote: 'O curso mudou minha carreira. Hoje atendo com total confiança graças à prática real que tive.', name: 'Patrícia Nunes', turma: 'Turma de Março' },
   { quote: 'Atenção individual de verdade — poucas alunas por turma faz toda a diferença no aprendizado.', name: 'Renata Silva', turma: 'Turma de Abril' },
@@ -376,17 +374,11 @@ const CursoDepilacao = () => {
         </div>
         <GalleryCarousel />
         <div className="curso-gallery-grid">
-          {galleryGrid.map((g) =>
-            g.src ? (
-              <div key={g.caption} className="curso-gallery-cell">
-                <img src={g.src} alt={g.caption} loading="lazy" />
-              </div>
-            ) : (
-              <div key={g.caption} className="curso-gallery-cell curso-gallery-cell-empty">
-                <span>{g.caption}</span>
-              </div>
-            )
-          )}
+          {gallery.map((g) => (
+            <div key={g.caption} className="curso-gallery-cell">
+              <img src={g.src} alt={g.caption} loading="lazy" />
+            </div>
+          ))}
         </div>
       </section>
 
