@@ -171,7 +171,9 @@
 
 @media (max-width: 900px) {
   .hero {
-    padding: 24px 24px 28px;
+    /* Sem padding embaixo — a foto encosta rente na linha final da seção,
+     * dando o efeito de que as pernas dela ficam "por trás" do limite. */
+    padding: 24px 24px 0;
     min-height: 0;
     align-items: flex-start;
   }
