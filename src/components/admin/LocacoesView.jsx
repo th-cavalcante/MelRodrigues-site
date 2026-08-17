@@ -289,8 +289,16 @@ const LocacoesView = () => {
   };
 
   const selectedClient = clients.find((c) => c.id === selectedClientId) || null;
+
+  // Só contabiliza locações do mês corrente — uma locação agendada pra um
+  // cliente no mês seguinte não entra nesse total até o mês dela chegar.
+  const currentMonthPrefix = new Date().toISOString().slice(0, 7);
   const totalValue = clients.reduce(
-    (sum, c) => sum + (c.bookings || []).reduce((s, b) => s + (Number(b.rental_value) || 0), 0),
+    (sum, c) =>
+      sum +
+      (c.bookings || [])
+        .filter((b) => (b.rental_date || '').startsWith(currentMonthPrefix))
+        .reduce((s, b) => s + (Number(b.rental_value) || 0), 0),
     0
   );
 
@@ -307,7 +315,7 @@ const LocacoesView = () => {
           + Cadastrar Cliente
         </button>
         <div className="admin-locacoes-total">
-          <span className="admin-small-label">Total em Locações</span>
+          <span className="admin-small-label">Total em Locações (Mês Atual)</span>
           <span className="admin-locacoes-total-value">{formatValorBr(totalValue)}</span>
         </div>
       </div>
