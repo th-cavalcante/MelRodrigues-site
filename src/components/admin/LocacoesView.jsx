@@ -14,7 +14,7 @@ import { sendRentalContract } from '../../lib/evolution';
 import { signRentalAsLandlord, listSignatureAuditLog } from '../../lib/signatures';
 import { buildRentalContractBody, formatRentalEndereco } from './rentalContract';
 import { downloadDocPdf } from '../cliente/docPdf';
-import { IconChevronRight, IconTrash } from './Icons';
+import { IconChevronRight, IconTrash, IconPencil } from './Icons';
 
 const AUDIT_EVENT_LABELS = {
   viewed: 'Cliente abriu o contrato',
@@ -33,7 +33,7 @@ const emptyClientForm = {
   nome: '', nascimento: '', cpf: '', rua: '', bairro: '', cidade: '', cep: '', email: '', telefone: '',
 };
 
-const emptyBookingForm = { dataLocacao: '', valor: '', periodoHoras: '' };
+const emptyBookingForm = { dataLocacao: '', valor: '', periodoHoras: '', numDias: '1', desconto: '' };
 
 const PERIODO_OPTIONS = [
   { value: '6', label: '6 horas' },
@@ -49,7 +49,48 @@ const formatDataBr = (iso) => {
   return y ? `${d}/${m}/${y}` : '—';
 };
 
+/** Data de início + quantidade de dias -> "10/03" (1 dia) ou "10/03 a 12/03 · 3 dias". */
+const formatDataRangeBr = (iso, numDays) => {
+  if (!iso) return '—';
+  const days = Number(numDays) || 1;
+  if (days <= 1) return formatDataBr(iso);
+  const [y, m, d] = iso.split('-').map(Number);
+  if (!y) return formatDataBr(iso);
+  const end = new Date(y, m - 1, d);
+  end.setDate(end.getDate() + (days - 1));
+  const endIso = `${end.getFullYear()}-${String(end.getMonth() + 1).padStart(2, '0')}-${String(end.getDate()).padStart(2, '0')}`;
+  return `${formatDataBr(iso)} a ${formatDataBr(endIso)} · ${days} dias`;
+};
+
 const formatValorBr = (v) => `R$ ${(Number(v) || 0).toFixed(2).replace('.', ',')}`;
+
+/** Campo com valor "travado" (readOnly) até clicar no lápis — evita edição
+ * acidental, mas deixa corrigir erro de digitação com 1 clique. Re-trava
+ * sozinho ao sair do campo (onBlur já salva a alteração). */
+const EditableField = ({ label, value, onChange, onBlur, type = 'text', placeholder, unlocked, onUnlock, onLock }) => (
+  <div>
+    <span className="admin-small-label">{label}</span>
+    <div className="admin-locacoes-editable-row">
+      <input
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        readOnly={!unlocked}
+        onChange={onChange}
+        onBlur={(e) => {
+          onBlur(e);
+          onLock();
+        }}
+        className={`admin-locacoes-plain-input ${unlocked ? 'admin-locacoes-plain-input-unlocked' : ''}`}
+      />
+      {!unlocked && (
+        <button type="button" onClick={onUnlock} className="admin-locacoes-edit-pencil" aria-label={`Editar ${label}`}>
+          <IconPencil size={13} />
+        </button>
+      )}
+    </div>
+  </div>
+);
 
 const LocacoesView = () => {
   const [clients, setClients] = useState([]);
@@ -63,6 +104,7 @@ const LocacoesView = () => {
   const [selectedClientId, setSelectedClientId] = useState(null);
   const [selectedBookingId, setSelectedBookingId] = useState(null);
   const [addressCopied, setAddressCopied] = useState(false);
+  const [unlockedField, setUnlockedField] = useState(null);
 
   const [showBookingForm, setShowBookingForm] = useState(false);
   const [bookingForm, setBookingForm] = useState(emptyBookingForm);
@@ -422,12 +464,12 @@ const LocacoesView = () => {
       )}
 
       {selectedClient && (
-        <div className="admin-locacoes-drawer-overlay" onClick={() => { setSelectedClientId(null); setSelectedBookingId(null); }}>
+        <div className="admin-locacoes-drawer-overlay" onClick={() => { setSelectedClientId(null); setSelectedBookingId(null); setUnlockedField(null); }}>
           <div className="admin-locacoes-drawer" onClick={(e) => e.stopPropagation()}>
             <div className="admin-locacoes-drawer-topbar">
               <button
                 type="button"
-                onClick={() => { setSelectedClientId(null); setSelectedBookingId(null); }}
+                onClick={() => { setSelectedClientId(null); setSelectedBookingId(null); setUnlockedField(null); }}
                 className="admin-locacoes-drawer-back"
                 aria-label="Fechar"
               >
@@ -440,99 +482,101 @@ const LocacoesView = () => {
 
             <div className="admin-locacoes-drawer-header">
               <div className="admin-client-initial admin-locacoes-drawer-avatar">{(selectedClient.name || '?').charAt(0)}</div>
-              <input
-                type="text"
-                value={selectedClient.name || ''}
-                onChange={handleFieldChange(selectedClient.id, 'name')}
-                onBlur={handleFieldBlur(selectedClient.id, 'name')}
-                placeholder="Sem nome"
-                className="admin-locacoes-plain-input admin-locacoes-drawer-name-input"
-              />
+              <div className="admin-locacoes-editable-row admin-locacoes-editable-row-name">
+                <input
+                  type="text"
+                  value={selectedClient.name || ''}
+                  placeholder="Sem nome"
+                  readOnly={unlockedField !== 'name'}
+                  onChange={handleFieldChange(selectedClient.id, 'name')}
+                  onBlur={(e) => { handleFieldBlur(selectedClient.id, 'name')(e); setUnlockedField(null); }}
+                  className={`admin-locacoes-plain-input admin-locacoes-drawer-name-input ${unlockedField === 'name' ? 'admin-locacoes-plain-input-unlocked' : ''}`}
+                />
+                {unlockedField !== 'name' && (
+                  <button type="button" onClick={() => setUnlockedField('name')} className="admin-locacoes-edit-pencil" aria-label="Editar nome">
+                    <IconPencil size={13} />
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="admin-locacoes-drawer-card">
-              <div>
-                <span className="admin-small-label">CPF</span>
-                <input
-                  type="text"
-                  value={selectedClient.cpf || ''}
-                  onChange={handleFieldChange(selectedClient.id, 'cpf')}
-                  onBlur={handleFieldBlur(selectedClient.id, 'cpf')}
-                  className="admin-locacoes-plain-input"
-                />
-              </div>
-              <div>
-                <span className="admin-small-label">Data de Nascimento</span>
-                <input
-                  type="date"
-                  value={selectedClient.birthdate || ''}
-                  onChange={handleFieldChange(selectedClient.id, 'birthdate')}
-                  onBlur={handleFieldBlur(selectedClient.id, 'birthdate')}
-                  className="admin-locacoes-plain-input"
-                />
-              </div>
-              <div>
-                <span className="admin-small-label">WhatsApp</span>
-                <input
-                  type="text"
-                  value={selectedClient.phone || ''}
-                  onChange={handleFieldChange(selectedClient.id, 'phone')}
-                  onBlur={handleFieldBlur(selectedClient.id, 'phone')}
-                  className="admin-locacoes-plain-input"
-                />
-              </div>
-              <div>
-                <span className="admin-small-label">E-mail</span>
-                <input
-                  type="email"
-                  value={selectedClient.email || ''}
-                  onChange={handleFieldChange(selectedClient.id, 'email')}
-                  onBlur={handleFieldBlur(selectedClient.id, 'email')}
-                  className="admin-locacoes-plain-input"
-                />
-              </div>
-              <div>
-                <span className="admin-small-label">Rua e nº</span>
-                <input
-                  type="text"
-                  value={selectedClient.street || ''}
-                  onChange={handleFieldChange(selectedClient.id, 'street')}
-                  onBlur={handleFieldBlur(selectedClient.id, 'street')}
-                  className="admin-locacoes-plain-input"
-                />
-              </div>
+              <EditableField
+                label="CPF"
+                value={selectedClient.cpf || ''}
+                onChange={handleFieldChange(selectedClient.id, 'cpf')}
+                onBlur={handleFieldBlur(selectedClient.id, 'cpf')}
+                unlocked={unlockedField === 'cpf'}
+                onUnlock={() => setUnlockedField('cpf')}
+                onLock={() => setUnlockedField(null)}
+              />
+              <EditableField
+                label="Data de Nascimento"
+                type="date"
+                value={selectedClient.birthdate || ''}
+                onChange={handleFieldChange(selectedClient.id, 'birthdate')}
+                onBlur={handleFieldBlur(selectedClient.id, 'birthdate')}
+                unlocked={unlockedField === 'birthdate'}
+                onUnlock={() => setUnlockedField('birthdate')}
+                onLock={() => setUnlockedField(null)}
+              />
+              <EditableField
+                label="WhatsApp"
+                value={selectedClient.phone || ''}
+                onChange={handleFieldChange(selectedClient.id, 'phone')}
+                onBlur={handleFieldBlur(selectedClient.id, 'phone')}
+                unlocked={unlockedField === 'phone'}
+                onUnlock={() => setUnlockedField('phone')}
+                onLock={() => setUnlockedField(null)}
+              />
+              <EditableField
+                label="E-mail"
+                type="email"
+                value={selectedClient.email || ''}
+                onChange={handleFieldChange(selectedClient.id, 'email')}
+                onBlur={handleFieldBlur(selectedClient.id, 'email')}
+                unlocked={unlockedField === 'email'}
+                onUnlock={() => setUnlockedField('email')}
+                onLock={() => setUnlockedField(null)}
+              />
+              <EditableField
+                label="Rua e nº"
+                value={selectedClient.street || ''}
+                onChange={handleFieldChange(selectedClient.id, 'street')}
+                onBlur={handleFieldBlur(selectedClient.id, 'street')}
+                unlocked={unlockedField === 'street'}
+                onUnlock={() => setUnlockedField('street')}
+                onLock={() => setUnlockedField(null)}
+              />
               <div className="field-row admin-locacoes-fields">
-                <div>
-                  <span className="admin-small-label">Bairro</span>
-                  <input
-                    type="text"
-                    value={selectedClient.neighborhood || ''}
-                    onChange={handleFieldChange(selectedClient.id, 'neighborhood')}
-                    onBlur={handleFieldBlur(selectedClient.id, 'neighborhood')}
-                    className="admin-locacoes-plain-input"
-                  />
-                </div>
-                <div>
-                  <span className="admin-small-label">Cidade</span>
-                  <input
-                    type="text"
-                    value={selectedClient.city || ''}
-                    onChange={handleFieldChange(selectedClient.id, 'city')}
-                    onBlur={handleFieldBlur(selectedClient.id, 'city')}
-                    className="admin-locacoes-plain-input"
-                  />
-                </div>
-              </div>
-              <div>
-                <span className="admin-small-label">CEP</span>
-                <input
-                  type="text"
-                  value={selectedClient.cep || ''}
-                  onChange={handleFieldChange(selectedClient.id, 'cep')}
-                  onBlur={handleFieldBlur(selectedClient.id, 'cep')}
-                  className="admin-locacoes-plain-input"
+                <EditableField
+                  label="Bairro"
+                  value={selectedClient.neighborhood || ''}
+                  onChange={handleFieldChange(selectedClient.id, 'neighborhood')}
+                  onBlur={handleFieldBlur(selectedClient.id, 'neighborhood')}
+                  unlocked={unlockedField === 'neighborhood'}
+                  onUnlock={() => setUnlockedField('neighborhood')}
+                  onLock={() => setUnlockedField(null)}
+                />
+                <EditableField
+                  label="Cidade"
+                  value={selectedClient.city || ''}
+                  onChange={handleFieldChange(selectedClient.id, 'city')}
+                  onBlur={handleFieldBlur(selectedClient.id, 'city')}
+                  unlocked={unlockedField === 'city'}
+                  onUnlock={() => setUnlockedField('city')}
+                  onLock={() => setUnlockedField(null)}
                 />
               </div>
+              <EditableField
+                label="CEP"
+                value={selectedClient.cep || ''}
+                onChange={handleFieldChange(selectedClient.id, 'cep')}
+                onBlur={handleFieldBlur(selectedClient.id, 'cep')}
+                unlocked={unlockedField === 'cep'}
+                onUnlock={() => setUnlockedField('cep')}
+                onLock={() => setUnlockedField(null)}
+              />
               <div>
                 <button type="button" onClick={() => handleCopyAddress(selectedClient)} className="admin-locacoes-copy-btn">
                   {addressCopied ? 'Copiado ✓' : '📋 Copiar Endereço'}
@@ -561,7 +605,7 @@ const LocacoesView = () => {
                       className="admin-locacoes-booking-row"
                     >
                       <div>
-                        <div className="admin-locacoes-booking-date">{formatDataBr(b.rental_date)}</div>
+                        <div className="admin-locacoes-booking-date">{formatDataRangeBr(b.rental_date, b.num_days)}</div>
                         <div className={`admin-document-status ${b.signature ? 'admin-document-status-signed' : ''}`}>
                           {b.signature
                             ? 'Assinado ✓'
@@ -572,14 +616,19 @@ const LocacoesView = () => {
                                 : 'Contrato não enviado'}
                         </div>
                       </div>
-                      <div className="admin-locacoes-booking-value">{formatValorBr(b.rental_value)}</div>
+                      <div className="admin-locacoes-booking-value-col">
+                        <div className="admin-locacoes-booking-value">{formatValorBr(b.rental_value)}</div>
+                        {Number(b.discount) > 0 && (
+                          <div className="admin-locacoes-booking-discount">desconto {formatValorBr(b.discount)}</div>
+                        )}
+                      </div>
                     </button>
 
                     {isOpen && (
                       <div className="admin-locacoes-booking-detail">
                         <div className="field-row admin-locacoes-fields">
                           <div>
-                            <label className="admin-small-label">Data da Locação</label>
+                            <label className="admin-small-label">Data de Início</label>
                             <input
                               type="date"
                               value={b.rental_date || ''}
@@ -589,7 +638,22 @@ const LocacoesView = () => {
                             />
                           </div>
                           <div>
-                            <label className="admin-small-label">Valor (R$)</label>
+                            <label className="admin-small-label">Quantidade de Dias</label>
+                            <input
+                              type="number"
+                              step="1"
+                              min="1"
+                              value={b.num_days ?? 1}
+                              onChange={handleBookingFieldChange(b.id, 'num_days')}
+                              onBlur={handleBookingFieldBlur(b.id, 'num_days')}
+                              className="field-input"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="field-row admin-locacoes-fields">
+                          <div>
+                            <label className="admin-small-label">Valor Total (R$)</label>
                             <input
                               type="number"
                               step="0.01"
@@ -600,10 +664,23 @@ const LocacoesView = () => {
                               className="field-input"
                             />
                           </div>
+                          <div>
+                            <label className="admin-small-label">Desconto (R$)</label>
+                            <input
+                              type="number"
+                              step="0.01"
+                              min="0"
+                              placeholder="0,00"
+                              value={b.discount ?? ''}
+                              onChange={handleBookingFieldChange(b.id, 'discount')}
+                              onBlur={handleBookingFieldBlur(b.id, 'discount')}
+                              className="field-input"
+                            />
+                          </div>
                         </div>
 
                         <div className="field-wrap admin-locacoes-fields">
-                          <label className="admin-small-label">Período</label>
+                          <label className="admin-small-label">Período (por dia)</label>
                           <select
                             value={b.rental_period_hours ?? ''}
                             onChange={(e) => {
@@ -701,17 +778,28 @@ const LocacoesView = () => {
             <div className="admin-agenda-modal-body">
               <div className="field-row">
                 <div>
-                  <label className="field-label" htmlFor="book-data">Data da Locação</label>
+                  <label className="field-label" htmlFor="book-data">Data de Início</label>
                   <input id="book-data" type="date" value={bookingForm.dataLocacao} onChange={setBookingField('dataLocacao')} className="field-input" />
                 </div>
                 <div>
-                  <label className="field-label" htmlFor="book-valor">Valor (R$)</label>
+                  <label className="field-label" htmlFor="book-dias">Quantidade de Dias</label>
+                  <input id="book-dias" type="number" step="1" min="1" value={bookingForm.numDias} onChange={setBookingField('numDias')} className="field-input" />
+                </div>
+              </div>
+
+              <div className="field-row">
+                <div>
+                  <label className="field-label" htmlFor="book-valor">Valor Total (R$)</label>
                   <input id="book-valor" type="number" step="0.01" min="0" placeholder="0,00" value={bookingForm.valor} onChange={setBookingField('valor')} className="field-input" />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor="book-desconto">Desconto (R$)</label>
+                  <input id="book-desconto" type="number" step="0.01" min="0" placeholder="0,00" value={bookingForm.desconto} onChange={setBookingField('desconto')} className="field-input" />
                 </div>
               </div>
 
               <div className="field-wrap-last">
-                <label className="field-label" htmlFor="book-periodo">Período</label>
+                <label className="field-label" htmlFor="book-periodo">Período (por dia)</label>
                 <select id="book-periodo" value={bookingForm.periodoHoras} onChange={setBookingField('periodoHoras')} className="field-input">
                   <option value="">Selecione...</option>
                   {PERIODO_OPTIONS.map((p) => (

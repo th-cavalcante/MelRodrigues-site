@@ -1102,7 +1102,7 @@
 }
 
 /* input editável que fica visualmente idêntico a texto estático, até o
- * admin clicar pra editar (CPF/nascimento/e-mail do cliente). */
+ * admin clicar no lápis pra destravar (evita edição acidental). */
 .admin-locacoes-plain-input {
   width: 100%;
   border: none;
@@ -1113,6 +1113,46 @@
   font-family: 'Manrope', sans-serif;
   color: var(--adm-text);
   outline: none;
+}
+
+.admin-locacoes-plain-input-unlocked {
+  border-bottom: 1.5px solid var(--adm-accent);
+  padding-bottom: 2px;
+}
+
+.admin-locacoes-editable-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-locacoes-editable-row .admin-locacoes-plain-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-locacoes-editable-row-name {
+  margin-top: 0;
+}
+
+.admin-locacoes-edit-pencil {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--adm-text2);
+  opacity: 0.85;
+  cursor: pointer;
+}
+
+.admin-locacoes-edit-pencil:hover {
+  opacity: 1;
+  color: var(--adm-accent);
 }
 
 .admin-locacoes-copy-btn {
@@ -1208,12 +1248,22 @@
   font-weight: 600;
 }
 
+.admin-locacoes-booking-value-col {
+  flex-shrink: 0;
+  text-align: right;
+}
+
 .admin-locacoes-booking-value {
   font-family: 'Cormorant Garamond', serif;
   font-size: 17px;
   font-weight: 600;
   color: var(--adm-accent);
-  flex-shrink: 0;
+}
+
+.admin-locacoes-booking-discount {
+  font-size: 11px;
+  color: var(--adm-text2);
+  margin-top: 2px;
 }
 
 .admin-locacoes-booking-detail {

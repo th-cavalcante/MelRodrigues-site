@@ -13,6 +13,20 @@ const formatDataCurta = (isoDate) => {
   return `${d}/${m}/${y}`;
 };
 
+/** Data de início + quantidade de dias -> "10/03/2026" (1 dia) ou
+ * "10/03/2026 a 12/03/2026 (3 dias)". */
+const formatDataLocacao = (isoDate, numDays) => {
+  const days = Number(numDays) || 1;
+  if (days <= 1) return formatDataCurta(isoDate);
+  if (!isoDate) return '[data a definir]';
+  const [y, m, d] = isoDate.split('-').map(Number);
+  if (!y) return '[data a definir]';
+  const end = new Date(y, m - 1, d);
+  end.setDate(end.getDate() + (days - 1));
+  const endIso = `${end.getFullYear()}-${String(end.getMonth() + 1).padStart(2, '0')}-${String(end.getDate()).padStart(2, '0')}`;
+  return `${formatDataCurta(isoDate)} a ${formatDataCurta(endIso)} (${days} dias)`;
+};
+
 const formatPeriodo = (hours) => (hours ? `${hours} horas` : '[período a definir]');
 
 export const formatRentalEndereco = (rc) => {
@@ -31,9 +45,10 @@ export const buildRentalContractBody = (rc) => {
   const nome = (rc && rc.name) || '';
   const cpf = (rc && rc.cpf) || '';
   const endereco = formatRentalEndereco(rc);
-  const dataLocacao = formatDataCurta(rc && rc.rental_date);
+  const dataLocacao = formatDataLocacao(rc && rc.rental_date, rc && rc.num_days);
   const periodo = formatPeriodo(rc && rc.rental_period_hours);
   const valor = rc && rc.rental_value != null ? Number(rc.rental_value).toFixed(2).replace('.', ',') : '[valor a definir]';
+  const desconto = rc && Number(rc.discount) > 0 ? Number(rc.discount).toFixed(2).replace('.', ',') : null;
   const dataExtenso = formatDateExtenso(new Date());
 
   return [
@@ -47,12 +62,12 @@ export const buildRentalContractBody = (rc) => {
     '2.1. O objeto deste contrato é a locação do equipamento de depilação a laser HAKON 4D, marca Medical San, em perfeito estado de conservação e funcionamento, acompanhado de seus acessórios: 01 cabo de força, 01 par de óculos operador, 01 par de óculos paciente, 01 ponteira.',
     '3. DO PRAZO',
     [
-      `3.1. A locação terá duração de ${periodo}, na data de ${dataLocacao}.`,
+      `3.1. A locação terá duração de ${periodo} por dia, no período de ${dataLocacao}.`,
       '3.2. O atraso na devolução do equipamento implicará em multa de R$ 50,00 por hora excedente.',
     ].join('\n'),
     '4. DO VALOR E FORMA DE PAGAMENTO',
     [
-      `4.1. Pela locação do equipamento, o LOCATÁRIO pagará o valor total de R$ ${valor}.`,
+      `4.1. Pela locação do equipamento, o LOCATÁRIO pagará o valor total de R$ ${valor}${desconto ? ` (já com desconto de R$ ${desconto} aplicado)` : ''}.`,
       '4.2. O pagamento será realizado da seguinte forma: À vista.',
       '4.3. Pagamentos via PIX deverão ser enviados para a chave: 41.484.009/0001-00.',
     ].join('\n'),

@@ -202,6 +202,13 @@ export const IconTrash = ({ size = 15 }) => (
   </svg>
 );
 
+export const IconPencil = ({ size = 13 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+    <path d="M17.5 3.5a2.12 2.12 0 0 1 3 3L8 19 3 20.5 4.5 15.5 17.5 3.5Z" />
+    <line x1="15.5" y1="5.5" x2="18.5" y2="8.5" />
+  </svg>
+);
+
 export const IconLogOut = ({ size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
