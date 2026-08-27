@@ -440,7 +440,14 @@ const LocacoesView = () => {
 
             <div className="admin-locacoes-drawer-header">
               <div className="admin-client-initial admin-locacoes-drawer-avatar">{(selectedClient.name || '?').charAt(0)}</div>
-              <h2 className="admin-locacoes-drawer-name">{selectedClient.name || 'Sem nome'}</h2>
+              <input
+                type="text"
+                value={selectedClient.name || ''}
+                onChange={handleFieldChange(selectedClient.id, 'name')}
+                onBlur={handleFieldBlur(selectedClient.id, 'name')}
+                placeholder="Sem nome"
+                className="admin-locacoes-plain-input admin-locacoes-drawer-name-input"
+              />
             </div>
 
             <div className="admin-locacoes-drawer-card">
@@ -465,6 +472,16 @@ const LocacoesView = () => {
                 />
               </div>
               <div>
+                <span className="admin-small-label">WhatsApp</span>
+                <input
+                  type="text"
+                  value={selectedClient.phone || ''}
+                  onChange={handleFieldChange(selectedClient.id, 'phone')}
+                  onBlur={handleFieldBlur(selectedClient.id, 'phone')}
+                  className="admin-locacoes-plain-input"
+                />
+              </div>
+              <div>
                 <span className="admin-small-label">E-mail</span>
                 <input
                   type="email"
@@ -475,8 +492,48 @@ const LocacoesView = () => {
                 />
               </div>
               <div>
-                <span className="admin-small-label">Endereço</span>
-                <div className="admin-locacoes-static-value">{formatRentalEndereco(selectedClient) || '—'}</div>
+                <span className="admin-small-label">Rua e nº</span>
+                <input
+                  type="text"
+                  value={selectedClient.street || ''}
+                  onChange={handleFieldChange(selectedClient.id, 'street')}
+                  onBlur={handleFieldBlur(selectedClient.id, 'street')}
+                  className="admin-locacoes-plain-input"
+                />
+              </div>
+              <div className="field-row admin-locacoes-fields">
+                <div>
+                  <span className="admin-small-label">Bairro</span>
+                  <input
+                    type="text"
+                    value={selectedClient.neighborhood || ''}
+                    onChange={handleFieldChange(selectedClient.id, 'neighborhood')}
+                    onBlur={handleFieldBlur(selectedClient.id, 'neighborhood')}
+                    className="admin-locacoes-plain-input"
+                  />
+                </div>
+                <div>
+                  <span className="admin-small-label">Cidade</span>
+                  <input
+                    type="text"
+                    value={selectedClient.city || ''}
+                    onChange={handleFieldChange(selectedClient.id, 'city')}
+                    onBlur={handleFieldBlur(selectedClient.id, 'city')}
+                    className="admin-locacoes-plain-input"
+                  />
+                </div>
+              </div>
+              <div>
+                <span className="admin-small-label">CEP</span>
+                <input
+                  type="text"
+                  value={selectedClient.cep || ''}
+                  onChange={handleFieldChange(selectedClient.id, 'cep')}
+                  onBlur={handleFieldBlur(selectedClient.id, 'cep')}
+                  className="admin-locacoes-plain-input"
+                />
+              </div>
+              <div>
                 <button type="button" onClick={() => handleCopyAddress(selectedClient)} className="admin-locacoes-copy-btn">
                   {addressCopied ? 'Copiado ✓' : '📋 Copiar Endereço'}
                 </button>

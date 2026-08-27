@@ -1075,6 +1075,14 @@
   overflow-wrap: break-word;
 }
 
+.admin-locacoes-drawer-name-input {
+  font-weight: 700;
+  font-size: 15.5px;
+  line-height: 1.3;
+  min-width: 0;
+  margin-top: 0;
+}
+
 .admin-locacoes-drawer-card {
   background: var(--adm-card);
   border-radius: 20px;
