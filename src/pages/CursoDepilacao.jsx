@@ -50,7 +50,7 @@ const reasons = [
 
 const courseInfo = [
   { icon: '📍', label: 'Local', value: 'São Vicente - Litoral de SP', note: 'R. Benjamin Constant, 61, Sala 515 - Centro, São Vicente (Helbor Offices)' },
-  { icon: '📅', label: 'Próxima Data', value: '28/09', note: 'Turmas reduzidas de até 4 alunas para maior aproveitamento' },
+  { icon: '📅', label: 'Próxima Data', value: '05/10', note: 'Turmas reduzidas de até 4 alunas para maior aproveitamento' },
   { icon: '🎓', label: 'Certificado', value: 'Incluso', note: 'Certificado válido em todo território nacional' },
 ];
 
