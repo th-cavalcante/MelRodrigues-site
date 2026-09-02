@@ -7,13 +7,20 @@ export { priceForService };
 export const listBookings = async ({ from, to }) => {
   const { data, error } = await supabase
     .from('bookings')
-    .select('*, patients(name, phone, status)')
+    .select('*, patients(name, phone, status, dreno_package_total, dreno_sessions_remaining, last_session_confirmed_at)')
     .gte('booking_date', from)
     .lte('booking_date', to)
     .order('booking_date', { ascending: true })
     .order('booking_time', { ascending: true });
   if (error) throw error;
   return data;
+};
+
+/** "Pacote com 4 sessões" (em qualquer parte do texto) -> 4. null se o
+ * serviço complementar não for um pacote de sessões. */
+const parsePackageSessions = (complementaryService) => {
+  const match = String(complementaryService || '').match(/pacote com (\d+) sess/i);
+  return match ? Number(match[1]) : null;
 };
 
 export const createBooking = async ({ patient, room, professional, bookingDate, bookingTime, service, complementaryService, valor }) => {
@@ -39,9 +46,24 @@ export const createBooking = async ({ patient, room, professional, bookingDate, 
       health_alert: healthAlert,
       health_reason: healthReason,
     })
-    .select('*, patients(name, phone, status)')
+    .select('*, patients(name, phone, status, dreno_package_total, dreno_sessions_remaining, last_session_confirmed_at)')
     .single();
   if (error) throw error;
+
+  // Agendou um pacote de sessões (ex: Dreno Relaxante) -> reseta o saldo da
+  // paciente pra esse total, pra contar "faltam X sessões" a partir daqui.
+  const packageTotal = parsePackageSessions(complementaryService);
+  if (packageTotal) {
+    const { error: pkgError } = await supabase
+      .from('patients')
+      .update({ dreno_package_total: packageTotal, dreno_sessions_remaining: packageTotal })
+      .eq('id', patient.id);
+    if (pkgError) console.error('Erro ao atualizar saldo do pacote de drenagem:', pkgError);
+    else {
+      data.patients = { ...data.patients, dreno_package_total: packageTotal, dreno_sessions_remaining: packageTotal };
+    }
+  }
+
   return data;
 };
 
@@ -50,7 +72,7 @@ export const updateBooking = async (bookingId, fields) => {
     .from('bookings')
     .update(fields)
     .eq('id', bookingId)
-    .select('*, patients(name, phone, status)')
+    .select('*, patients(name, phone, status, dreno_package_total, dreno_sessions_remaining, last_session_confirmed_at)')
     .single();
   if (error) throw error;
   return data;

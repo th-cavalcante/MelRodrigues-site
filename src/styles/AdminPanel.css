@@ -2049,6 +2049,12 @@
   white-space: nowrap;
 }
 
+.admin-agenda-booking-history {
+  font-size: 11px;
+  color: var(--adm-accent);
+  margin-top: 2px;
+}
+
 .admin-agenda-booking-notes {
   font-size: 11px;
   color: var(--adm-text3);

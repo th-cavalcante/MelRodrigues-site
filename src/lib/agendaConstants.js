@@ -40,6 +40,18 @@ export const bookingServiceLabel = (booking) => {
   return parts.join(' + ') || 'Sem serviço';
 };
 
+/** "Última sessão em dd/mm/aaaa" (+ "Faltam X sessões" se a paciente tiver
+ * um pacote de Drenagem ativo) — usado na Ficha do Cliente e na Agenda.
+ * null se ela ainda não confirmou nenhuma sessão. */
+export const sessionHistoryLabel = (patient) => {
+  if (!patient || !patient.last_session_confirmed_at) return null;
+  const dateLabel = new Date(patient.last_session_confirmed_at).toLocaleDateString('pt-BR');
+  if (patient.dreno_package_total != null) {
+    return `Última sessão em ${dateLabel} · Faltam ${patient.dreno_sessions_remaining ?? 0} sessões`;
+  }
+  return `Última sessão em ${dateLabel}`;
+};
+
 /** Monta o link wa.me a partir de um telefone livre (com ou sem DDI/máscara). */
 export const buildWhatsAppLink = (phone, text) => {
   if (!phone) return null;

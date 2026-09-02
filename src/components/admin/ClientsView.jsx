@@ -17,7 +17,7 @@ import {
   deletePatient,
 } from '../../lib/patients';
 import { sendDocumentSignatureLink } from '../../lib/evolution';
-import { buildWhatsAppLink } from '../../lib/agendaConstants';
+import { buildWhatsAppLink, sessionHistoryLabel } from '../../lib/agendaConstants';
 import { IconWhatsApp } from './Icons';
 
 const documentsMeta = [
@@ -209,10 +209,10 @@ const ClientsView = ({ clients, setClients }) => {
           />
           <div>
             <h2 className="admin-client-name">{selectedClient.name || 'Aguardando preenchimento'}</h2>
-            <div className="admin-client-meta">
-              {selectedClient.age != null ? `${selectedClient.age} anos · ` : ''}
-              Última sessão em {selectedClient.lastSession || '—'}
-            </div>
+            {selectedClient.age != null && <div className="admin-client-meta">{selectedClient.age} anos</div>}
+            {sessionHistoryLabel(selectedClient) && (
+              <div className="admin-client-meta">{sessionHistoryLabel(selectedClient)}</div>
+            )}
           </div>
         </div>
 
@@ -490,7 +490,7 @@ const ClientsView = ({ clients, setClients }) => {
               <span>{c.name || 'Aguardando preenchimento'}</span>
             </div>
             <div className="admin-clients-cell">{c.age != null ? c.age : '—'}</div>
-            <div className="admin-clients-cell">{c.lastSession || '—'}</div>
+            <div className="admin-clients-cell">{sessionHistoryLabel(c) || '—'}</div>
             <div className="admin-clients-row-actions">
               <button
                 type="button"

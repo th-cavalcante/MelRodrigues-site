@@ -35,19 +35,14 @@ const calcAge = (birthdate) => {
 export const listPatients = async () => {
   const { data, error } = await supabase
     .from('patients')
-    .select('*, sessions(session_num, session_date), document_signatures(doc_key)')
+    .select('*, document_signatures(doc_key)')
     .order('created_at', { ascending: false });
   if (error) throw error;
 
   return data.map((p) => {
-    const sessions = p.sessions || [];
-    const lastSession = sessions.reduce(
-      (latest, s) => (!latest || (s.session_date && s.session_date > latest) ? s.session_date : latest),
-      null
-    );
     const hasContrato = (p.document_signatures || []).some((d) => d.doc_key === 'contrato');
     const hasTermo = (p.document_signatures || []).some((d) => d.doc_key === 'termo');
-    return { ...p, age: calcAge(p.birthdate), lastSession, sessionCount: sessions.length, hasContrato, hasTermo };
+    return { ...p, age: calcAge(p.birthdate), hasContrato, hasTermo };
   });
 };
 
