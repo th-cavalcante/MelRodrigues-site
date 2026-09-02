@@ -12,8 +12,12 @@ const formatMoney = (v) =>
 const todayLabel = () =>
   new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
 
+const RECEITA_PERIODS = ['hoje', 'semana', 'mes'];
+const RECEITA_LABELS = { hoje: 'Receita hoje', semana: 'Receita semana', mes: 'Receita mês' };
+
 const MobileHome = ({ userEmail }) => {
   const [stats, setStats] = useState(null);
+  const [receitaIndex, setReceitaIndex] = useState(0);
   const firstName = ADMIN_FIRST_NAMES[userEmail] || 'Admin';
 
   useEffect(() => {
@@ -25,6 +29,9 @@ const MobileHome = ({ userEmail }) => {
   }
 
   const next = stats.upcoming[0];
+  const receitaPeriod = RECEITA_PERIODS[receitaIndex];
+  const receitaValue = { hoje: stats.receitaHoje, semana: stats.receitaSemana, mes: stats.receitaMes }[receitaPeriod];
+  const cycleReceita = (dir) => setReceitaIndex((i) => (i + dir + RECEITA_PERIODS.length) % RECEITA_PERIODS.length);
 
   return (
     <div className="admin-mobile-home">
@@ -37,14 +44,18 @@ const MobileHome = ({ userEmail }) => {
         <div className="admin-mobile-next-card">
           <span className="admin-mobile-next-label">Próximo atendimento</span>
           <span className="admin-mobile-next-name">{next.name}</span>
-          <span className="admin-mobile-next-meta">{next.service} · {next.when}</span>
+          <span className="admin-mobile-next-meta">{bookingServiceLabel(next)} · {next.when}</span>
         </div>
       )}
 
       <div className="admin-mobile-stats-scroll">
         <div className="admin-mobile-stat-card">
-          <span className="admin-mobile-stat-label">Receita hoje</span>
-          <span className="admin-mobile-stat-value">{formatMoney(stats.receitaHoje)}</span>
+          <div className="admin-mobile-stat-receita-row">
+            <button type="button" onClick={() => cycleReceita(-1)} className="admin-mobile-stat-arrow" aria-label="Período anterior">‹</button>
+            <span className="admin-mobile-stat-label">{RECEITA_LABELS[receitaPeriod]}</span>
+            <button type="button" onClick={() => cycleReceita(1)} className="admin-mobile-stat-arrow" aria-label="Próximo período">›</button>
+          </div>
+          <span className="admin-mobile-stat-value">{formatMoney(receitaValue)}</span>
         </div>
         <div className="admin-mobile-stat-card">
           <span className="admin-mobile-stat-label">Agendamentos hoje</span>

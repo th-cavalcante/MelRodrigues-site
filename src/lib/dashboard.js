@@ -16,6 +16,8 @@ const addDays = (date, days) => {
 
 const startOfMonth = (date) => new Date(date.getFullYear(), date.getMonth(), 1);
 const endOfMonth = (date) => new Date(date.getFullYear(), date.getMonth() + 1, 0);
+const startOfWeek = (date) => addDays(date, -date.getDay());
+const endOfWeek = (date) => addDays(date, 6 - date.getDay());
 
 const formatRelativeTime = (isoString) => {
   const then = new Date(isoString);
@@ -63,6 +65,8 @@ export const getDashboardStats = async () => {
   const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const lastMonthStart = toISODate(startOfMonth(lastMonthDate));
   const lastMonthEnd = toISODate(endOfMonth(lastMonthDate));
+  const thisWeekStart = toISODate(startOfWeek(now));
+  const thisWeekEnd = toISODate(endOfWeek(now));
 
   const [
     windowBookings,
@@ -75,6 +79,7 @@ export const getDashboardStats = async () => {
     patientsLastMonth,
     financeThisMonth,
     financeLastMonth,
+    financeThisWeek,
   ] = await Promise.all([
     supabase.from('bookings').select('booking_date, status').gte('booking_date', yesterday).lte('booking_date', in7Days),
     supabase
@@ -103,6 +108,7 @@ export const getDashboardStats = async () => {
     supabase.from('patients').select('id', { count: 'exact', head: true }).gte('created_at', lastMonthStart).lte('created_at', `${lastMonthEnd}T23:59:59`),
     getFinancialData({ from: thisMonthStart, to: thisMonthEnd }),
     getFinancialData({ from: lastMonthStart, to: lastMonthEnd }),
+    getFinancialData({ from: thisWeekStart, to: thisWeekEnd }),
   ]);
 
   if (windowBookings.error) throw windowBookings.error;
@@ -127,6 +133,8 @@ export const getDashboardStats = async () => {
   // Dado já buscado pelo financeThisMonth (dailyEntries) — só filtra o dia
   // de hoje, sem precisar de outra query pra tela Início do mobile.
   const receitaHoje = financeThisMonth.dailyEntries.find((d) => d.date === today)?.value || 0;
+  const receitaSemana = financeThisWeek.faturamentoTotal;
+  const receitaMes = financeThisMonth.faturamentoTotal;
 
   const metrics = [
     {
@@ -170,5 +178,5 @@ export const getDashboardStats = async () => {
     complementary_service: b.complementary_service,
   }));
 
-  return { metrics, activity, upcoming, todayBookings, receitaHoje };
+  return { metrics, activity, upcoming, todayBookings, receitaHoje, receitaSemana, receitaMes };
 };

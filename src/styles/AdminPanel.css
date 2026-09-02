@@ -3471,6 +3471,32 @@
     color: var(--adm-text3);
   }
 
+  .admin-mobile-stat-receita-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .admin-mobile-stat-arrow {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: 15px;
+    line-height: 1;
+    color: var(--adm-text3);
+    cursor: pointer;
+  }
+
+  .admin-mobile-stat-arrow:hover {
+    color: var(--adm-accent);
+  }
+
   .admin-mobile-stat-value {
     font: 800 18px 'Manrope', sans-serif;
   }
