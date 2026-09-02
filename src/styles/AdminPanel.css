@@ -861,17 +861,28 @@
 
 .admin-client-header {
   display: flex;
-  align-items: center;
-  gap: 24px;
+  flex-direction: column;
+  gap: 18px;
   margin-bottom: 24px;
-  background: linear-gradient(135deg, color-mix(in oklch, var(--adm-accent) 8%, var(--adm-card)), var(--adm-card));
+}
+
+.admin-client-top-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
 }
 
 .admin-client-avatar {
-  width: 88px;
-  height: 88px;
+  width: 72px;
+  height: 72px;
   flex-shrink: 0;
   border: 2px solid var(--adm-accent);
+}
+
+.admin-client-name-col {
+  min-width: 0;
+  flex: 1;
 }
 
 .admin-client-name-row {
@@ -904,52 +915,50 @@
   padding-bottom: 2px;
 }
 
-.admin-client-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
+.admin-client-meta {
+  font-size: 14.5px;
+  color: var(--adm-text3);
+  margin-top: 6px;
 }
 
-.admin-client-chip {
+.admin-client-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-client-field {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 6px 10px;
-  max-width: 100%;
-  background: color-mix(in oklch, var(--adm-accent) 10%, var(--adm-card));
-  border: 1px solid color-mix(in oklch, var(--adm-accent) 25%, transparent);
-  border-radius: 20px;
+  gap: 10px;
+  width: 90%;
+  padding: 12px 16px;
+  background: var(--adm-bg);
+  border: 1px solid var(--adm-border);
+  border-radius: 8px;
   color: var(--adm-text2);
 }
 
-.admin-client-chip svg {
+.admin-client-field svg {
   flex-shrink: 0;
   color: var(--adm-accent);
   opacity: 0.9;
 }
 
-.admin-client-chip-unlocked {
+.admin-client-field-unlocked {
   border-color: var(--adm-accent);
-  background: var(--adm-card);
 }
 
-.admin-client-chip-input {
+.admin-client-field-input {
   border: none;
   background: transparent;
   padding: 0;
-  font-size: 12.5px;
+  font-size: 14.5px;
   font-family: 'Manrope', sans-serif;
-  color: var(--adm-text2);
+  color: var(--adm-text);
   outline: none;
   min-width: 0;
-  width: 100px;
-  max-width: 40vw;
-}
-
-.admin-client-chip .admin-locacoes-edit-pencil {
-  width: 18px;
-  height: 18px;
+  flex: 1;
 }
 
 .admin-client-save-btn {
@@ -970,41 +979,23 @@
 }
 
 .admin-client-save-btn-sm {
-  padding: 3px 10px;
+  padding: 5px 12px;
   font-size: 11px;
   border-radius: 12px;
 }
 
-.admin-client-meta {
-  font-size: 14.5px;
-  color: var(--adm-text3);
-  margin-top: 6px;
-}
-
-.admin-client-header-info {
-  min-width: 0;
-  flex: 1;
-}
-
 @media (max-width: 640px) {
   .admin-client-header {
-    flex-wrap: wrap;
-    gap: 14px;
     padding: 20px;
   }
 
   .admin-client-avatar {
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
   }
 
-  .admin-client-header-info {
+  .admin-client-field {
     width: 100%;
-    flex-basis: 100%;
-  }
-
-  .admin-client-chip-input {
-    max-width: 55vw;
   }
 }
 

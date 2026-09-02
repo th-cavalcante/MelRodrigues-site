@@ -184,7 +184,28 @@ export const listPatientPhotos = async (patientId) => {
   return data;
 };
 
-export const uploadPatientPhoto = async (patientId, sessionId, kind, file) => {
+/** Sobe uma foto pro slot (kind + sessão + posição na galeria, se for o
+ * caso) — apaga a foto antiga desse mesmo slot primeiro (storage + linha),
+ * senão o app continuava mostrando a foto antiga (buscava a primeira
+ * daquele slot, que ficava sendo sempre a original). */
+export const uploadPatientPhoto = async (patientId, sessionId, kind, file, galleryIndex = null) => {
+  let existingQuery = supabase
+    .from('photos')
+    .select('id, storage_path')
+    .eq('patient_id', patientId)
+    .eq('kind', kind);
+  existingQuery = sessionId ? existingQuery.eq('session_id', sessionId) : existingQuery.is('session_id', null);
+  existingQuery = galleryIndex != null ? existingQuery.eq('gallery_index', galleryIndex) : existingQuery.is('gallery_index', null);
+  const { data: existing, error: existingError } = await existingQuery;
+  if (existingError) throw existingError;
+
+  if (existing && existing.length > 0) {
+    const paths = existing.map((p) => p.storage_path);
+    await supabase.storage.from(PHOTOS_BUCKET).remove(paths);
+    const { error: deleteError } = await supabase.from('photos').delete().in('id', existing.map((p) => p.id));
+    if (deleteError) throw deleteError;
+  }
+
   const ext = file.name.split('.').pop() || 'png';
   const path = sessionId
     ? `${patientId}/sessions/${sessionId}/${kind}-${Date.now()}.${ext}`
@@ -195,7 +216,7 @@ export const uploadPatientPhoto = async (patientId, sessionId, kind, file) => {
 
   const { data, error } = await supabase
     .from('photos')
-    .insert({ patient_id: patientId, session_id: sessionId || null, kind, storage_path: path })
+    .insert({ patient_id: patientId, session_id: sessionId || null, kind, storage_path: path, gallery_index: galleryIndex })
     .select()
     .single();
   if (error) throw error;

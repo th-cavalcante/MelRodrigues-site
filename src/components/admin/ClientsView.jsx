@@ -180,10 +180,20 @@ const ClientsView = ({ clients, setClients }) => {
     }
   };
 
-  const handlePhotoUpload = (kind, sessionId) => async (file) => {
+  const handlePhotoUpload = (kind, sessionId, galleryIndex = null) => async (file) => {
     try {
-      const photo = await uploadPatientPhoto(selectedClientId, sessionId, kind, file);
-      setPhotos((ps) => [...ps, photo]);
+      const photo = await uploadPatientPhoto(selectedClientId, sessionId, kind, file, galleryIndex);
+      setPhotos((ps) => [
+        ...ps.filter(
+          (p) =>
+            !(
+              p.kind === kind &&
+              (p.session_id || null) === (sessionId || null) &&
+              (p.gallery_index ?? null) === (galleryIndex ?? null)
+            )
+        ),
+        photo,
+      ]);
       const urls = await getSignedPhotoUrls([photo.storage_path]);
       setPhotoUrls((u) => ({ ...u, ...urls }));
     } catch (err) {
@@ -199,8 +209,7 @@ const ClientsView = ({ clients, setClients }) => {
   };
 
   const galleryPhotoUrl = (sessionId, index) => {
-    const galleryPhotos = photos.filter((p) => p.kind === 'gallery' && p.session_id === sessionId);
-    const photo = galleryPhotos[index];
+    const photo = photos.find((p) => p.kind === 'gallery' && p.session_id === sessionId && p.gallery_index === index);
     return photo ? photoUrls[photo.storage_path] : null;
   };
 
@@ -222,82 +231,84 @@ const ClientsView = ({ clients, setClients }) => {
         </button>
 
         <div className="admin-card admin-client-header">
-          <ImageDropSlot
-            shape="circle"
-            placeholder="Foto"
-            className="admin-client-avatar"
-            initialUrl={findPhotoUrl('avatar', null)}
-            onFileSelected={handlePhotoUpload('avatar', null)}
-          />
-          <div className="admin-client-header-info">
-            <div className="admin-client-name-row">
+          <div className="admin-client-top-row">
+            <ImageDropSlot
+              shape="circle"
+              placeholder="Foto"
+              className="admin-client-avatar"
+              initialUrl={findPhotoUrl('avatar', null)}
+              onFileSelected={handlePhotoUpload('avatar', null)}
+            />
+            <div className="admin-client-name-col">
+              <div className="admin-client-name-row">
+                <input
+                  type="text"
+                  value={selectedClient.name || ''}
+                  placeholder="Aguardando preenchimento"
+                  readOnly={unlockedField !== 'name'}
+                  onChange={handlePatientFieldChange('name')}
+                  className={`admin-client-name-input ${unlockedField === 'name' ? 'admin-client-name-input-unlocked' : ''}`}
+                />
+                {unlockedField === 'name' ? (
+                  <button type="button" onClick={savePatientField('name')} disabled={savingField === 'name'} className="admin-client-save-btn">
+                    {savingField === 'name' ? '...' : 'Salvar'}
+                  </button>
+                ) : (
+                  <button type="button" onClick={() => setUnlockedField('name')} className="admin-locacoes-edit-pencil" aria-label="Editar nome">
+                    <IconPencil size={13} />
+                  </button>
+                )}
+              </div>
+
+              {(selectedClient.age != null || sessionHistoryLabel(selectedClient)) && (
+                <div className="admin-client-meta">
+                  {[selectedClient.age != null ? `${selectedClient.age} anos` : null, sessionHistoryLabel(selectedClient)]
+                    .filter(Boolean)
+                    .join(' · ')}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="admin-client-fields">
+            <div className={`admin-client-field ${unlockedField === 'birthdate' ? 'admin-client-field-unlocked' : ''}`}>
+              <IconCalendar size={15} />
               <input
-                type="text"
-                value={selectedClient.name || ''}
-                placeholder="Aguardando preenchimento"
-                readOnly={unlockedField !== 'name'}
-                onChange={handlePatientFieldChange('name')}
-                className={`admin-client-name-input ${unlockedField === 'name' ? 'admin-client-name-input-unlocked' : ''}`}
+                type="date"
+                value={selectedClient.birthdate || ''}
+                readOnly={unlockedField !== 'birthdate'}
+                onChange={handlePatientFieldChange('birthdate')}
+                className="admin-client-field-input"
               />
-              {unlockedField === 'name' ? (
-                <button type="button" onClick={savePatientField('name')} disabled={savingField === 'name'} className="admin-client-save-btn">
-                  {savingField === 'name' ? '...' : 'Salvar'}
+              {unlockedField === 'birthdate' ? (
+                <button type="button" onClick={savePatientField('birthdate')} disabled={savingField === 'birthdate'} className="admin-client-save-btn admin-client-save-btn-sm">
+                  {savingField === 'birthdate' ? '...' : 'Salvar'}
                 </button>
               ) : (
-                <button type="button" onClick={() => setUnlockedField('name')} className="admin-locacoes-edit-pencil" aria-label="Editar nome">
+                <button type="button" onClick={() => setUnlockedField('birthdate')} className="admin-locacoes-edit-pencil" aria-label="Editar data de nascimento">
                   <IconPencil size={13} />
                 </button>
               )}
             </div>
-
-            {(selectedClient.age != null || sessionHistoryLabel(selectedClient)) && (
-              <div className="admin-client-meta">
-                {[selectedClient.age != null ? `${selectedClient.age} anos` : null, sessionHistoryLabel(selectedClient)]
-                  .filter(Boolean)
-                  .join(' · ')}
-              </div>
-            )}
-
-            <div className="admin-client-chips">
-              <div className={`admin-client-chip ${unlockedField === 'birthdate' ? 'admin-client-chip-unlocked' : ''}`}>
-                <IconCalendar size={13} />
-                <input
-                  type="date"
-                  value={selectedClient.birthdate || ''}
-                  readOnly={unlockedField !== 'birthdate'}
-                  onChange={handlePatientFieldChange('birthdate')}
-                  className="admin-client-chip-input"
-                />
-                {unlockedField === 'birthdate' ? (
-                  <button type="button" onClick={savePatientField('birthdate')} disabled={savingField === 'birthdate'} className="admin-client-save-btn admin-client-save-btn-sm">
-                    {savingField === 'birthdate' ? '...' : 'Salvar'}
-                  </button>
-                ) : (
-                  <button type="button" onClick={() => setUnlockedField('birthdate')} className="admin-locacoes-edit-pencil" aria-label="Editar data de nascimento">
-                    <IconPencil size={12} />
-                  </button>
-                )}
-              </div>
-              <div className={`admin-client-chip ${unlockedField === 'phone' ? 'admin-client-chip-unlocked' : ''}`}>
-                <IconWhatsApp size={13} />
-                <input
-                  type="text"
-                  value={selectedClient.phone || ''}
-                  placeholder="sem WhatsApp"
-                  readOnly={unlockedField !== 'phone'}
-                  onChange={handlePatientFieldChange('phone')}
-                  className="admin-client-chip-input"
-                />
-                {unlockedField === 'phone' ? (
-                  <button type="button" onClick={savePatientField('phone')} disabled={savingField === 'phone'} className="admin-client-save-btn admin-client-save-btn-sm">
-                    {savingField === 'phone' ? '...' : 'Salvar'}
-                  </button>
-                ) : (
-                  <button type="button" onClick={() => setUnlockedField('phone')} className="admin-locacoes-edit-pencil" aria-label="Editar WhatsApp">
-                    <IconPencil size={12} />
-                  </button>
-                )}
-              </div>
+            <div className={`admin-client-field ${unlockedField === 'phone' ? 'admin-client-field-unlocked' : ''}`}>
+              <IconWhatsApp size={15} />
+              <input
+                type="text"
+                value={selectedClient.phone || ''}
+                placeholder="sem WhatsApp"
+                readOnly={unlockedField !== 'phone'}
+                onChange={handlePatientFieldChange('phone')}
+                className="admin-client-field-input"
+              />
+              {unlockedField === 'phone' ? (
+                <button type="button" onClick={savePatientField('phone')} disabled={savingField === 'phone'} className="admin-client-save-btn admin-client-save-btn-sm">
+                  {savingField === 'phone' ? '...' : 'Salvar'}
+                </button>
+              ) : (
+                <button type="button" onClick={() => setUnlockedField('phone')} className="admin-locacoes-edit-pencil" aria-label="Editar WhatsApp">
+                  <IconPencil size={13} />
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -476,7 +487,7 @@ const ClientsView = ({ clients, setClients }) => {
                           placeholder="Foto"
                           className="admin-gallery-slot"
                           initialUrl={galleryPhotoUrl(sess.id, n)}
-                          onFileSelected={handlePhotoUpload('gallery', sess.id)}
+                          onFileSelected={handlePhotoUpload('gallery', sess.id, n)}
                         />
                       ))}
                     </div>
