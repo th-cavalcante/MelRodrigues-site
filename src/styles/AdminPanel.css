@@ -885,6 +885,36 @@
   margin-top: 6px;
 }
 
+.admin-client-header-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.admin-client-header-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+  margin-top: 12px;
+}
+
+.admin-client-header-fields .admin-locacoes-editable-row {
+  width: auto;
+}
+
+.admin-client-header-fields .admin-small-label {
+  display: inline;
+  margin-bottom: 0;
+  text-transform: none;
+  font-weight: 500;
+  margin-right: 4px;
+}
+
+.admin-client-header-fields .admin-locacoes-plain-input {
+  width: auto;
+  min-width: 90px;
+  margin-top: 0;
+}
+
 .admin-documents-card {
   margin-bottom: 24px;
 }

@@ -15,10 +15,11 @@ import {
   uploadPatientPhoto,
   getSignedPhotoUrls,
   deletePatient,
+  updatePatientFields,
 } from '../../lib/patients';
 import { sendDocumentSignatureLink } from '../../lib/evolution';
 import { buildWhatsAppLink, sessionHistoryLabel } from '../../lib/agendaConstants';
-import { IconWhatsApp } from './Icons';
+import { IconWhatsApp, IconPencil } from './Icons';
 
 const documentsMeta = [
   { key: 'anamnese', icon: '📋', label: 'Ficha de Anamnese' },
@@ -39,6 +40,7 @@ const ClientsView = ({ clients, setClients }) => {
   const [savedSessionId, setSavedSessionId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [fichaLinkCopied, setFichaLinkCopied] = useState(false);
+  const [unlockedField, setUnlockedField] = useState(null);
 
   const selectedClient = clients.find((c) => c.id === selectedClientId) || null;
   const filteredClients = clients.filter((c) =>
@@ -49,6 +51,7 @@ const ClientsView = ({ clients, setClients }) => {
     setAssinaturaSent(false);
     setAssinaturaError('');
     setFichaLinkCopied(false);
+    setUnlockedField(null);
     if (!selectedClientId) return undefined;
     let cancelled = false;
 
@@ -77,6 +80,19 @@ const ClientsView = ({ clients, setClients }) => {
       cancelled = true;
     };
   }, [selectedClientId, setClients]);
+
+  const handlePatientFieldChange = (field) => (e) => {
+    const { value } = e.target;
+    setClients((cs) => cs.map((c) => (c.id === selectedClientId ? { ...c, [field]: value } : c)));
+  };
+
+  const handlePatientFieldBlur = (field) => (e) => {
+    const { value } = e.target;
+    updatePatientFields(selectedClientId, { [field]: value || null }).catch((err) =>
+      console.error('Erro ao salvar alteração do cliente:', err)
+    );
+    setUnlockedField(null);
+  };
 
   const handleObsChange = (sessionId) => (e) => {
     const { value } = e.target;
@@ -207,12 +223,48 @@ const ClientsView = ({ clients, setClients }) => {
             initialUrl={findPhotoUrl('avatar', null)}
             onFileSelected={handlePhotoUpload('avatar', null)}
           />
-          <div>
+          <div className="admin-client-header-info">
             <h2 className="admin-client-name">{selectedClient.name || 'Aguardando preenchimento'}</h2>
             {selectedClient.age != null && <div className="admin-client-meta">{selectedClient.age} anos</div>}
             {sessionHistoryLabel(selectedClient) && (
               <div className="admin-client-meta">{sessionHistoryLabel(selectedClient)}</div>
             )}
+
+            <div className="admin-client-header-fields">
+              <div className="admin-locacoes-editable-row">
+                <span className="admin-small-label">Nascimento:</span>
+                <input
+                  type="date"
+                  value={selectedClient.birthdate || ''}
+                  readOnly={unlockedField !== 'birthdate'}
+                  onChange={handlePatientFieldChange('birthdate')}
+                  onBlur={handlePatientFieldBlur('birthdate')}
+                  className={`admin-locacoes-plain-input ${unlockedField === 'birthdate' ? 'admin-locacoes-plain-input-unlocked' : ''}`}
+                />
+                {unlockedField !== 'birthdate' && (
+                  <button type="button" onClick={() => setUnlockedField('birthdate')} className="admin-locacoes-edit-pencil" aria-label="Editar data de nascimento">
+                    <IconPencil size={13} />
+                  </button>
+                )}
+              </div>
+              <div className="admin-locacoes-editable-row">
+                <span className="admin-small-label">WhatsApp:</span>
+                <input
+                  type="text"
+                  value={selectedClient.phone || ''}
+                  placeholder="—"
+                  readOnly={unlockedField !== 'phone'}
+                  onChange={handlePatientFieldChange('phone')}
+                  onBlur={handlePatientFieldBlur('phone')}
+                  className={`admin-locacoes-plain-input ${unlockedField === 'phone' ? 'admin-locacoes-plain-input-unlocked' : ''}`}
+                />
+                {unlockedField !== 'phone' && (
+                  <button type="button" onClick={() => setUnlockedField('phone')} className="admin-locacoes-edit-pencil" aria-label="Editar WhatsApp">
+                    <IconPencil size={13} />
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 

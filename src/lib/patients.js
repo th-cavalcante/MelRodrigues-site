@@ -74,6 +74,11 @@ export const updatePatientPhone = async (patientId, telefone) => {
   if (error) throw error;
 };
 
+export const updatePatientFields = async (patientId, fields) => {
+  const { error } = await supabase.from('patients').update(fields).eq('id', patientId);
+  if (error) throw error;
+};
+
 export const deletePatient = async (patientId) => {
   const { error } = await supabase.from('patients').delete().eq('id', patientId);
   if (error) throw error;
