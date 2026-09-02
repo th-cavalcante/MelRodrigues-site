@@ -4,7 +4,11 @@ import { fetchLaserServices, formatPrice } from '../lib/services';
 import { fetchSiteCombos, fetchComplementaryCards } from '../lib/siteContent';
 import '../styles/TabelaValores.css';
 
-const WHATSAPP_LINK = 'https://wa.me/5511987654321?text=Olá%20MR%20Laser!%20Gostaria%20de%20agendar%20uma%20sessão.';
+const WHATSAPP_NUMBER = '5513996753432';
+const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=Olá%20MR%20Laser!%20Gostaria%20de%20agendar%20uma%20sessão.`;
+
+const complementaryItemWhatsAppLink = (label) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Olá, gostaria de agendar "${label}"`)}`;
 
 const initials = (name) => name.trim().charAt(0).toUpperCase();
 
@@ -110,16 +114,20 @@ const TabelaValores = () => {
               <div className="complementary-card-title">{card.title}</div>
               {card.items.map((item) => (
                 <div key={item.id} className="complementary-row">
-                  <span>{item.label}</span>
-                  <span className="complementary-row-price">{item.price}</span>
+                  <div>
+                    <div className="complementary-row-label">{item.label}</div>
+                    <div className="complementary-row-price">{item.price}</div>
+                  </div>
+                  <a
+                    href={complementaryItemWhatsAppLink(item.label)}
+                    className="complementary-cta"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    AGENDAR
+                  </a>
                 </div>
               ))}
-              <Link
-                to={`/cliente/agendar?service=${encodeURIComponent(card.title)}`}
-                className="complementary-cta"
-              >
-                AGENDAR
-              </Link>
             </div>
           ))}
         </div>
