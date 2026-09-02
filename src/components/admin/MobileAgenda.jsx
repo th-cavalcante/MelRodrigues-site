@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import BookingDrawer from './BookingDrawer';
 import { listBookings, updateBooking, deleteBooking } from '../../lib/bookings';
-import { STATUS_OPTIONS, toISODate } from '../../lib/agendaConstants';
+import { STATUS_OPTIONS, toISODate, bookingServiceLabel } from '../../lib/agendaConstants';
 import { IconChevronLeft, IconChevronRight } from './Icons';
 
 const WEEKDAY_LABELS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
@@ -123,7 +123,7 @@ const MobileAgenda = ({ clients, setClients }) => {
               <div className="admin-mobile-today-info">
                 <span className="admin-mobile-today-name">{b.patients ? b.patients.name : '—'}</span>
                 <span className="admin-mobile-today-service">
-                  {b.service} · {bookingTimeLabel(b)}
+                  {bookingServiceLabel(b)} · {bookingTimeLabel(b)}
                 </span>
               </div>
               <span className={`admin-mobile-status-pill status-${b.status}`}>{meta.label}</span>

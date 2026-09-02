@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getDashboardStats } from '../../lib/dashboard';
+import { bookingServiceLabel } from '../../lib/agendaConstants';
 
 const DashboardView = () => {
   const [stats, setStats] = useState(null);
@@ -39,7 +40,7 @@ const DashboardView = () => {
             {stats.todayBookings.map((b, i) => (
               <div key={i} className="admin-upcoming-row">
                 <div className="admin-upcoming-name">{b.name}</div>
-                <div className="admin-upcoming-meta">{b.time} · {b.service}</div>
+                <div className="admin-upcoming-meta">{b.time} · {bookingServiceLabel(b)}</div>
               </div>
             ))}
           </div>
@@ -65,7 +66,7 @@ const DashboardView = () => {
               {stats.upcoming.map((u, i) => (
                 <div key={i} className="admin-upcoming-row">
                   <div className="admin-upcoming-name">{u.name}</div>
-                  <div className="admin-upcoming-meta">{u.when} · {u.service}</div>
+                  <div className="admin-upcoming-meta">{u.when} · {bookingServiceLabel(u)}</div>
                 </div>
               ))}
             </div>

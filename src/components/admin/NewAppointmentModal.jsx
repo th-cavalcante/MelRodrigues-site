@@ -163,8 +163,8 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
   const handleSubmit = async (e) => {
     e.preventDefault();
     const name = search.trim();
-    if (!name || selectedServices.length === 0 || selectedDayOffset === null || !selectedTime) {
-      setError('Preencha o nome da cliente, escolha um dia e horário e selecione ao menos um serviço.');
+    if (!name || (selectedServices.length === 0 && selectedComplementary.length === 0) || selectedDayOffset === null || !selectedTime) {
+      setError('Preencha o nome da cliente, escolha um dia e horário e selecione ao menos um serviço (de depilação a laser ou complementar).');
       return;
     }
     setError('');

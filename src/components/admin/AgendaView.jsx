@@ -4,7 +4,7 @@ import NewAppointmentModal from './NewAppointmentModal';
 import BlockSlotModal from './BlockSlotModal';
 import { listBookings, updateBooking, deleteBooking } from '../../lib/bookings';
 import { listBlockedSlots, deleteBlockedSlot } from '../../lib/blockedSlots';
-import { STATUS_OPTIONS, BLOCKED_SLOTS, toISODate } from '../../lib/agendaConstants';
+import { STATUS_OPTIONS, BLOCKED_SLOTS, toISODate, bookingServiceLabel } from '../../lib/agendaConstants';
 import { useIsMobile } from '../../hooks/useIsMobile';
 
 const VIEW_MODES = [
@@ -214,7 +214,7 @@ const AgendaView = ({ clients, setClients }) => {
             <span title="Documentos">{docsIcon(b.patients)}</span>
           </span>
         </div>
-        <div className="admin-agenda-booking-service">{b.service}</div>
+        <div className="admin-agenda-booking-service">{bookingServiceLabel(b)}</div>
         {b.notes && (
           <div className="admin-agenda-booking-notes">
             <strong>Observações:</strong> {b.notes}
@@ -439,7 +439,7 @@ const AgendaView = ({ clients, setClients }) => {
               <div>
                 {b.patients ? b.patients.name : '—'} {b.health_alert && <span title={b.health_reason}>⚠️</span>}
               </div>
-              <div>{b.service}</div>
+              <div>{bookingServiceLabel(b)}</div>
               <div>
                 <span className="admin-agenda-status-pill" style={{ color: meta.color, borderColor: meta.color }}>
                   {meta.label}

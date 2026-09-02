@@ -35,6 +35,13 @@ export const toISODate = (date) => {
   return `${y}-${m}-${d}`;
 };
 
+/** Rótulo do(s) serviço(s) de um agendamento pra exibição — junta laser +
+ * complementares, já que um agendamento pode ter só um dos dois. */
+export const bookingServiceLabel = (booking) => {
+  const parts = [booking.service, booking.complementary_service].filter(Boolean);
+  return parts.join(' + ') || 'Sem serviço';
+};
+
 /** Monta o link wa.me a partir de um telefone livre (com ou sem DDI/máscara). */
 export const buildWhatsAppLink = (phone, text) => {
   if (!phone) return null;

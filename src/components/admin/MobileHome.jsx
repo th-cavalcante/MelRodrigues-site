@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getDashboardStats } from '../../lib/dashboard';
+import { bookingServiceLabel } from '../../lib/agendaConstants';
 
 const ADMIN_FIRST_NAMES = {
   'contato@melrodrigues.com.br': 'Mel',
@@ -59,7 +60,7 @@ const MobileHome = ({ userEmail }) => {
             <div key={i} className="admin-mobile-today-row">
               <div className="admin-mobile-today-info">
                 <span className="admin-mobile-today-name">{b.name}</span>
-                <span className="admin-mobile-today-service">{b.service}</span>
+                <span className="admin-mobile-today-service">{bookingServiceLabel(b)}</span>
               </div>
               <span className="admin-mobile-today-time">{b.time}</span>
             </div>

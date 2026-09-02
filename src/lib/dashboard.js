@@ -79,14 +79,14 @@ export const getDashboardStats = async () => {
     supabase.from('bookings').select('booking_date, status').gte('booking_date', yesterday).lte('booking_date', in7Days),
     supabase
       .from('bookings')
-      .select('booking_time, service, patients(name)')
+      .select('booking_time, service, complementary_service, patients(name)')
       .eq('booking_date', today)
       .neq('status', 'cancelado')
       .order('booking_time', { ascending: true }),
     supabase.from('bookings').select('created_at, service, patients(name)').order('created_at', { ascending: false }).limit(5),
     supabase
       .from('bookings')
-      .select('booking_date, booking_time, service, patients(name)')
+      .select('booking_date, booking_time, service, complementary_service, patients(name)')
       .gte('booking_date', today)
       .not('status', 'in', '("cancelado","concluido")')
       .order('booking_date', { ascending: true })
@@ -121,6 +121,7 @@ export const getDashboardStats = async () => {
     name: b.patients?.name || 'Paciente',
     time: formatTime(b.booking_time),
     service: b.service,
+    complementary_service: b.complementary_service,
   }));
 
   // Dado já buscado pelo financeThisMonth (dailyEntries) — só filtra o dia
@@ -166,6 +167,7 @@ export const getDashboardStats = async () => {
     name: b.patients?.name || 'Paciente',
     when: formatWhen(b.booking_date, b.booking_time),
     service: b.service,
+    complementary_service: b.complementary_service,
   }));
 
   return { metrics, activity, upcoming, todayBookings, receitaHoje };
