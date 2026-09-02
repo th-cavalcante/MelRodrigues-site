@@ -69,7 +69,6 @@ const ConfirmarSessao = () => {
 
         {sessionId && !loading && session && !confirmed && (
           <div className="confirmar-card">
-            <span className="section-eyebrow">Antes do seu atendimento</span>
             <h1 className="confirmar-title">Confirme sua sessão</h1>
             <p className="confirmar-subtitle">
               Olá, {session.patient_name || 'paciente'}! Confirme abaixo sua

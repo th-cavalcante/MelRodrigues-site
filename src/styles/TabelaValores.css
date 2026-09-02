@@ -308,6 +308,11 @@
   border-bottom: none;
 }
 
+.complementary-row-text {
+  min-width: 0;
+  flex: 1;
+}
+
 .complementary-row-label {
   margin-bottom: 4px;
 }
@@ -316,7 +321,6 @@
   font-size: 13.5px;
   font-weight: 600;
   color: var(--text-muted);
-  white-space: nowrap;
 }
 
 .complementary-cta {
@@ -379,5 +383,18 @@
 
   .tabela-title {
     font-size: 32px;
+  }
+
+  .complementary-card {
+    padding: 26px 20px;
+  }
+
+  .complementary-row {
+    flex-wrap: wrap;
+  }
+
+  .complementary-cta {
+    width: 100%;
+    text-align: center;
   }
 }

@@ -123,7 +123,7 @@ const TabelaValores = () => {
               <div className="complementary-card-title">{card.title}</div>
               {card.items.map((item) => (
                 <div key={item.id} className="complementary-row">
-                  <div>
+                  <div className="complementary-row-text">
                     <div className="complementary-row-label">{item.label}</div>
                     <div className="complementary-row-price">{item.price}</div>
                   </div>
