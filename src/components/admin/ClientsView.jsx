@@ -17,6 +17,8 @@ import {
   deletePatient,
 } from '../../lib/patients';
 import { sendDocumentSignatureLink } from '../../lib/evolution';
+import { buildWhatsAppLink } from '../../lib/agendaConstants';
+import { IconWhatsApp } from './Icons';
 
 const documentsMeta = [
   { key: 'anamnese', icon: '📋', label: 'Ficha de Anamnese' },
@@ -116,6 +118,14 @@ const ClientsView = ({ clients, setClients }) => {
     } catch (err) {
       console.error('Erro ao copiar link:', err);
     }
+  };
+
+  /** Link pronto pra abrir o WhatsApp já com o link de confirmação da sessão
+   * preenchido pro número da própria cliente — null se ela não tiver
+   * WhatsApp cadastrado. */
+  const buildSessionWhatsAppLink = (sessionId, clientName, clientPhone) => {
+    const url = `${window.location.origin}/cliente/sessao?session=${sessionId}`;
+    return buildWhatsAppLink(clientPhone, `Olá ${clientName || ''}! Segue o link para confirmar sua sessão na MR Laser: ${url}`);
   };
 
   const handleDelete = async (clientId) => {
@@ -405,13 +415,24 @@ const ClientsView = ({ clients, setClients }) => {
                       <div>
                         <div className="admin-document-test-title">Enviar confirmação de sessão para o paciente</div>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => handleCopySessionLink(sess.id)}
-                        className="admin-open-client-btn"
-                      >
-                        {copiedSessionId === sess.id ? 'Copiado ✓' : 'ENVIAR LINK DE CONFIRMAÇÃO'}
-                      </button>
+                      {(() => {
+                        const waLink = buildSessionWhatsAppLink(sess.id, selectedClient.name, selectedClient.phone);
+                        return waLink ? (
+                          <a href={waLink} target="_blank" rel="noopener noreferrer" className="admin-wa-confirm-btn">
+                            <IconWhatsApp size={16} />
+                            ENVIAR LINK DE CONFIRMAÇÃO
+                          </a>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => handleCopySessionLink(sess.id)}
+                            className="admin-open-client-btn"
+                            title="Cliente sem WhatsApp cadastrado"
+                          >
+                            {copiedSessionId === sess.id ? 'Copiado ✓' : 'COPIAR LINK DE CONFIRMAÇÃO'}
+                          </button>
+                        );
+                      })()}
                     </>
                   )}
                 </div>

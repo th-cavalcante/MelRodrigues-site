@@ -766,6 +766,29 @@
   font-family: 'Manrope', sans-serif;
 }
 
+.admin-wa-confirm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  background: #25D366;
+  border: 1px solid #25D366;
+  color: #fff;
+  font-size: 12.5px;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Manrope', sans-serif;
+  text-decoration: none;
+}
+
+.admin-wa-confirm-btn:hover {
+  background: #1ebe5b;
+  border-color: #1ebe5b;
+}
+
 .admin-open-client-btn:hover {
   background: var(--adm-accent);
   color: #fff;
