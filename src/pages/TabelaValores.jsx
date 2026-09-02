@@ -7,8 +7,17 @@ import '../styles/TabelaValores.css';
 const WHATSAPP_NUMBER = '5513996753432';
 const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=Olá%20MR%20Laser!%20Gostaria%20de%20agendar%20uma%20sessão.`;
 
-const complementaryItemWhatsAppLink = (label) =>
-  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Olá, gostaria de agendar "${label}"`)}`;
+/** Card com uma única linha de preço (ex: Limpeza de Pele) -> mensagem usa o
+ * título do card ("Olá, gostaria de agendar limpeza de pele!"), já que o
+ * texto da linha ("Sessão") sozinho não diz do que se trata. Card com várias
+ * linhas (ex: Dreno Relaxante) -> mensagem cita o item exato escolhido. */
+const complementaryItemWhatsAppLink = (card, item) => {
+  const text =
+    card.items.length === 1
+      ? `Olá, gostaria de agendar ${card.title.toLowerCase()}!`
+      : `Olá, gostaria de agendar "${item.label}"`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+};
 
 const initials = (name) => name.trim().charAt(0).toUpperCase();
 
@@ -119,7 +128,7 @@ const TabelaValores = () => {
                     <div className="complementary-row-price">{item.price}</div>
                   </div>
                   <a
-                    href={complementaryItemWhatsAppLink(item.label)}
+                    href={complementaryItemWhatsAppLink(card, item)}
                     className="complementary-cta"
                     target="_blank"
                     rel="noopener noreferrer"
