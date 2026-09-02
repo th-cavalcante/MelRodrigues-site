@@ -19,7 +19,7 @@ import {
 } from '../../lib/patients';
 import { sendDocumentSignatureLink } from '../../lib/evolution';
 import { buildWhatsAppLink, sessionHistoryLabel } from '../../lib/agendaConstants';
-import { IconWhatsApp, IconPencil } from './Icons';
+import { IconWhatsApp, IconPencil, IconCalendar } from './Icons';
 
 const documentsMeta = [
   { key: 'anamnese', icon: '📋', label: 'Ficha de Anamnese' },
@@ -224,43 +224,62 @@ const ClientsView = ({ clients, setClients }) => {
             onFileSelected={handlePhotoUpload('avatar', null)}
           />
           <div className="admin-client-header-info">
-            <h2 className="admin-client-name">{selectedClient.name || 'Aguardando preenchimento'}</h2>
-            {selectedClient.age != null && <div className="admin-client-meta">{selectedClient.age} anos</div>}
-            {sessionHistoryLabel(selectedClient) && (
-              <div className="admin-client-meta">{sessionHistoryLabel(selectedClient)}</div>
+            <div className="admin-client-name-row">
+              <input
+                type="text"
+                value={selectedClient.name || ''}
+                placeholder="Aguardando preenchimento"
+                readOnly={unlockedField !== 'name'}
+                onChange={handlePatientFieldChange('name')}
+                onBlur={handlePatientFieldBlur('name')}
+                className={`admin-client-name-input ${unlockedField === 'name' ? 'admin-client-name-input-unlocked' : ''}`}
+              />
+              {unlockedField !== 'name' && (
+                <button type="button" onClick={() => setUnlockedField('name')} className="admin-locacoes-edit-pencil" aria-label="Editar nome">
+                  <IconPencil size={13} />
+                </button>
+              )}
+            </div>
+
+            {(selectedClient.age != null || sessionHistoryLabel(selectedClient)) && (
+              <div className="admin-client-meta">
+                {[selectedClient.age != null ? `${selectedClient.age} anos` : null, sessionHistoryLabel(selectedClient)]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </div>
             )}
 
-            <div className="admin-client-header-fields">
-              <div className="admin-locacoes-editable-row">
-                <span className="admin-small-label">Nascimento:</span>
+            <div className="admin-client-chips">
+              <div className={`admin-client-chip ${unlockedField === 'birthdate' ? 'admin-client-chip-unlocked' : ''}`}>
+                <IconCalendar size={13} />
                 <input
                   type="date"
                   value={selectedClient.birthdate || ''}
                   readOnly={unlockedField !== 'birthdate'}
                   onChange={handlePatientFieldChange('birthdate')}
                   onBlur={handlePatientFieldBlur('birthdate')}
-                  className={`admin-locacoes-plain-input ${unlockedField === 'birthdate' ? 'admin-locacoes-plain-input-unlocked' : ''}`}
+                  className="admin-client-chip-input"
                 />
                 {unlockedField !== 'birthdate' && (
                   <button type="button" onClick={() => setUnlockedField('birthdate')} className="admin-locacoes-edit-pencil" aria-label="Editar data de nascimento">
-                    <IconPencil size={13} />
+                    <IconPencil size={12} />
                   </button>
                 )}
               </div>
-              <div className="admin-locacoes-editable-row">
-                <span className="admin-small-label">WhatsApp:</span>
+              <div className={`admin-client-chip ${unlockedField === 'phone' ? 'admin-client-chip-unlocked' : ''}`}>
+                <IconWhatsApp size={13} />
                 <input
                   type="text"
                   value={selectedClient.phone || ''}
-                  placeholder="—"
+                  placeholder="sem WhatsApp"
                   readOnly={unlockedField !== 'phone'}
                   onChange={handlePatientFieldChange('phone')}
                   onBlur={handlePatientFieldBlur('phone')}
-                  className={`admin-locacoes-plain-input ${unlockedField === 'phone' ? 'admin-locacoes-plain-input-unlocked' : ''}`}
+                  className="admin-client-chip-input"
                 />
                 {unlockedField !== 'phone' && (
                   <button type="button" onClick={() => setUnlockedField('phone')} className="admin-locacoes-edit-pencil" aria-label="Editar WhatsApp">
-                    <IconPencil size={13} />
+                    <IconPencil size={12} />
                   </button>
                 )}
               </div>

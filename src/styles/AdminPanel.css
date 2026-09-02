@@ -873,10 +873,77 @@
   border: 1px solid var(--adm-accent);
 }
 
-.admin-client-name {
-  font-weight: 500;
-  font-size: 30px;
-  margin: 0;
+.admin-client-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-client-name-input {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 21px;
+  color: var(--adm-text);
+  border: none;
+  background: transparent;
+  padding: 0;
+  min-width: 0;
+  flex: 1;
+  outline: none;
+}
+
+.admin-client-name-input::placeholder {
+  color: var(--adm-text3);
+  font-style: italic;
+}
+
+.admin-client-name-input-unlocked {
+  border-bottom: 1.5px solid var(--adm-accent);
+  padding-bottom: 2px;
+}
+
+.admin-client-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.admin-client-chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  background: var(--adm-card2);
+  border: 1px solid var(--adm-border);
+  border-radius: 20px;
+  color: var(--adm-text2);
+}
+
+.admin-client-chip svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.admin-client-chip-unlocked {
+  border-color: var(--adm-accent);
+  background: var(--adm-bg);
+}
+
+.admin-client-chip-input {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: 12.5px;
+  font-family: 'Manrope', sans-serif;
+  color: var(--adm-text2);
+  outline: none;
+  min-width: 74px;
+}
+
+.admin-client-chip .admin-locacoes-edit-pencil {
+  width: 18px;
+  height: 18px;
 }
 
 .admin-client-meta {
@@ -888,31 +955,6 @@
 .admin-client-header-info {
   min-width: 0;
   flex: 1;
-}
-
-.admin-client-header-fields {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 24px;
-  margin-top: 12px;
-}
-
-.admin-client-header-fields .admin-locacoes-editable-row {
-  width: auto;
-}
-
-.admin-client-header-fields .admin-small-label {
-  display: inline;
-  margin-bottom: 0;
-  text-transform: none;
-  font-weight: 500;
-  margin-right: 4px;
-}
-
-.admin-client-header-fields .admin-locacoes-plain-input {
-  width: auto;
-  min-width: 90px;
-  margin-top: 0;
 }
 
 .admin-documents-card {
@@ -1750,10 +1792,6 @@
 
   .admin-page-title {
     font-size: 26px;
-  }
-
-  .admin-client-name {
-    font-size: 21px;
   }
 
   .admin-clients-row-header {
