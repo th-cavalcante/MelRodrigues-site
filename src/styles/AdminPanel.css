@@ -769,6 +769,7 @@
 .admin-wa-confirm-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   padding: 9px 18px;
   background: #25D366;
@@ -777,11 +778,13 @@
   font-size: 12.5px;
   letter-spacing: 0.5px;
   font-weight: 600;
-  border-radius: 2px;
+  border-radius: 6px;
   cursor: pointer;
   white-space: nowrap;
   font-family: 'Manrope', sans-serif;
   text-decoration: none;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .admin-wa-confirm-btn:hover {
@@ -1345,6 +1348,21 @@
   .admin-locacoes-drawer {
     max-width: 100%;
     border-radius: 0;
+  }
+
+  /* Botão de WhatsApp (e o de copiar, no fallback sem telefone) estouravam
+   * a largura do card nessa linha — empilha e ocupa 100% no mobile. */
+  .admin-document-test-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-document-test-row .admin-wa-confirm-btn,
+  .admin-document-test-row .admin-open-client-btn {
+    width: 100%;
+    white-space: normal;
+    text-align: center;
+    box-sizing: border-box;
   }
 }
 
