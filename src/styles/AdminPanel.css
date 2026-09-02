@@ -862,21 +862,23 @@
 .admin-client-header {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
   margin-bottom: 24px;
+  background: linear-gradient(135deg, color-mix(in oklch, var(--adm-accent) 8%, var(--adm-card)), var(--adm-card));
 }
 
 .admin-client-avatar {
   width: 88px;
   height: 88px;
   flex-shrink: 0;
-  border: 1px solid var(--adm-accent);
+  border: 2px solid var(--adm-accent);
 }
 
 .admin-client-name-row {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
 }
 
 .admin-client-name-input {
@@ -888,7 +890,7 @@
   background: transparent;
   padding: 0;
   min-width: 0;
-  flex: 1;
+  width: 100%;
   outline: none;
 }
 
@@ -914,20 +916,22 @@
   align-items: center;
   gap: 7px;
   padding: 6px 10px;
-  background: var(--adm-card2);
-  border: 1px solid var(--adm-border);
+  max-width: 100%;
+  background: color-mix(in oklch, var(--adm-accent) 10%, var(--adm-card));
+  border: 1px solid color-mix(in oklch, var(--adm-accent) 25%, transparent);
   border-radius: 20px;
   color: var(--adm-text2);
 }
 
 .admin-client-chip svg {
   flex-shrink: 0;
-  opacity: 0.7;
+  color: var(--adm-accent);
+  opacity: 0.9;
 }
 
 .admin-client-chip-unlocked {
   border-color: var(--adm-accent);
-  background: var(--adm-bg);
+  background: var(--adm-card);
 }
 
 .admin-client-chip-input {
@@ -938,12 +942,37 @@
   font-family: 'Manrope', sans-serif;
   color: var(--adm-text2);
   outline: none;
-  min-width: 74px;
+  min-width: 0;
+  width: 100px;
+  max-width: 40vw;
 }
 
 .admin-client-chip .admin-locacoes-edit-pencil {
   width: 18px;
   height: 18px;
+}
+
+.admin-client-save-btn {
+  flex-shrink: 0;
+  border: none;
+  background: var(--adm-accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.admin-client-save-btn:hover {
+  filter: brightness(1.08);
+}
+
+.admin-client-save-btn-sm {
+  padding: 3px 10px;
+  font-size: 11px;
+  border-radius: 12px;
 }
 
 .admin-client-meta {
@@ -955,6 +984,28 @@
 .admin-client-header-info {
   min-width: 0;
   flex: 1;
+}
+
+@media (max-width: 640px) {
+  .admin-client-header {
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 20px;
+  }
+
+  .admin-client-avatar {
+    width: 64px;
+    height: 64px;
+  }
+
+  .admin-client-header-info {
+    width: 100%;
+    flex-basis: 100%;
+  }
+
+  .admin-client-chip-input {
+    max-width: 55vw;
+  }
 }
 
 .admin-documents-card {

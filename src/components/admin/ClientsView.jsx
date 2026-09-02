@@ -41,6 +41,7 @@ const ClientsView = ({ clients, setClients }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [fichaLinkCopied, setFichaLinkCopied] = useState(false);
   const [unlockedField, setUnlockedField] = useState(null);
+  const [savingField, setSavingField] = useState(null);
 
   const selectedClient = clients.find((c) => c.id === selectedClientId) || null;
   const filteredClients = clients.filter((c) =>
@@ -86,11 +87,16 @@ const ClientsView = ({ clients, setClients }) => {
     setClients((cs) => cs.map((c) => (c.id === selectedClientId ? { ...c, [field]: value } : c)));
   };
 
-  const handlePatientFieldBlur = (field) => (e) => {
-    const { value } = e.target;
-    updatePatientFields(selectedClientId, { [field]: value || null }).catch((err) =>
-      console.error('Erro ao salvar alteração do cliente:', err)
-    );
+  const savePatientField = (field) => async () => {
+    const current = clients.find((c) => c.id === selectedClientId);
+    const value = current ? current[field] : null;
+    setSavingField(field);
+    try {
+      await updatePatientFields(selectedClientId, { [field]: value || null });
+    } catch (err) {
+      console.error('Erro ao salvar alteração do cliente:', err);
+    }
+    setSavingField(null);
     setUnlockedField(null);
   };
 
@@ -231,10 +237,13 @@ const ClientsView = ({ clients, setClients }) => {
                 placeholder="Aguardando preenchimento"
                 readOnly={unlockedField !== 'name'}
                 onChange={handlePatientFieldChange('name')}
-                onBlur={handlePatientFieldBlur('name')}
                 className={`admin-client-name-input ${unlockedField === 'name' ? 'admin-client-name-input-unlocked' : ''}`}
               />
-              {unlockedField !== 'name' && (
+              {unlockedField === 'name' ? (
+                <button type="button" onClick={savePatientField('name')} disabled={savingField === 'name'} className="admin-client-save-btn">
+                  {savingField === 'name' ? '...' : 'Salvar'}
+                </button>
+              ) : (
                 <button type="button" onClick={() => setUnlockedField('name')} className="admin-locacoes-edit-pencil" aria-label="Editar nome">
                   <IconPencil size={13} />
                 </button>
@@ -257,10 +266,13 @@ const ClientsView = ({ clients, setClients }) => {
                   value={selectedClient.birthdate || ''}
                   readOnly={unlockedField !== 'birthdate'}
                   onChange={handlePatientFieldChange('birthdate')}
-                  onBlur={handlePatientFieldBlur('birthdate')}
                   className="admin-client-chip-input"
                 />
-                {unlockedField !== 'birthdate' && (
+                {unlockedField === 'birthdate' ? (
+                  <button type="button" onClick={savePatientField('birthdate')} disabled={savingField === 'birthdate'} className="admin-client-save-btn admin-client-save-btn-sm">
+                    {savingField === 'birthdate' ? '...' : 'Salvar'}
+                  </button>
+                ) : (
                   <button type="button" onClick={() => setUnlockedField('birthdate')} className="admin-locacoes-edit-pencil" aria-label="Editar data de nascimento">
                     <IconPencil size={12} />
                   </button>
@@ -274,10 +286,13 @@ const ClientsView = ({ clients, setClients }) => {
                   placeholder="sem WhatsApp"
                   readOnly={unlockedField !== 'phone'}
                   onChange={handlePatientFieldChange('phone')}
-                  onBlur={handlePatientFieldBlur('phone')}
                   className="admin-client-chip-input"
                 />
-                {unlockedField !== 'phone' && (
+                {unlockedField === 'phone' ? (
+                  <button type="button" onClick={savePatientField('phone')} disabled={savingField === 'phone'} className="admin-client-save-btn admin-client-save-btn-sm">
+                    {savingField === 'phone' ? '...' : 'Salvar'}
+                  </button>
+                ) : (
                   <button type="button" onClick={() => setUnlockedField('phone')} className="admin-locacoes-edit-pencil" aria-label="Editar WhatsApp">
                     <IconPencil size={12} />
                   </button>
