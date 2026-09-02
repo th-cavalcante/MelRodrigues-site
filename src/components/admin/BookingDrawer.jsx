@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getPatientAttendanceStats } from '../../lib/bookings';
-import { fetchLaserServices } from '../../lib/services';
-import { STATUS_OPTIONS, PAYMENT_STATUS_OPTIONS, PAYMENT_METHOD_OPTIONS, COMPLEMENTARY_SERVICE_OPTIONS, buildWhatsAppLink } from '../../lib/agendaConstants';
+import { fetchLaserServices, fetchComplementaryServices } from '../../lib/services';
+import { STATUS_OPTIONS, PAYMENT_STATUS_OPTIONS, PAYMENT_METHOD_OPTIONS, buildWhatsAppLink } from '../../lib/agendaConstants';
 import { sendTestReminder, sendFichaLink, sendDocumentSignatureLink } from '../../lib/evolution';
 
 const MAX_SERVICE_SLOTS = 10;
@@ -27,6 +27,7 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
   const [draft, setDraft] = useState(() => buildDraft(booking));
   const [stats, setStats] = useState(null);
   const [laserServices, setLaserServices] = useState([]);
+  const [complementaryOptions, setComplementaryOptions] = useState([]);
   const [fichaLinkState, setFichaLinkState] = useState('idle');
   const [fichaLinkError, setFichaLinkError] = useState('');
   const [assinaturaLinkState, setAssinaturaLinkState] = useState('idle');
@@ -52,10 +53,22 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
 
   useEffect(() => {
     fetchLaserServices().then(setLaserServices).catch((err) => console.error('Erro ao carregar tabela de preço:', err));
+    fetchComplementaryServices().then(setComplementaryOptions).catch((err) => console.error('Erro ao carregar serviços complementares:', err));
   }, []);
 
   const setField = (key) => (e) => {
     setDraft((d) => ({ ...d, [key]: e.target.value }));
+  };
+
+  const laserTotal = (slots) =>
+    slots.filter(Boolean).reduce((sum, name) => {
+      const found = laserServices.find((s) => s.name === name);
+      return sum + (found ? Number(found.price) : 0);
+    }, 0);
+
+  const complementaryPrice = (name) => {
+    const found = complementaryOptions.find((s) => s.name === name);
+    return found ? Number(found.price) : 0;
   };
 
   // Recalcula o valor a partir dos serviços só quando o admin de fato troca
@@ -66,12 +79,18 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
     const value = e.target.value;
     setDraft((d) => {
       const newSlots = d.serviceSlots.map((v, i) => (i === index ? value : v));
-      const newTotal = newSlots.filter(Boolean).reduce((sum, name) => {
-        const found = laserServices.find((s) => s.name === name);
-        return sum + (found ? Number(found.price) : 0);
-      }, 0);
+      const newTotal = laserTotal(newSlots) + complementaryPrice(d.complementaryService);
       return { ...d, serviceSlots: newSlots, valor: String(newTotal) };
     });
+  };
+
+  const handleComplementaryChange = (e) => {
+    const value = e.target.value;
+    setDraft((d) => ({
+      ...d,
+      complementaryService: value,
+      valor: String(laserTotal(d.serviceSlots) + complementaryPrice(value)),
+    }));
   };
 
   const addServiceSlot = () => {
@@ -268,10 +287,10 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
 
         <div className="field-wrap">
           <label className="admin-small-label">Serviço Complementar</label>
-          <select value={draft.complementaryService} onChange={setField('complementaryService')} className="field-input">
+          <select value={draft.complementaryService} onChange={handleComplementaryChange} className="field-input">
             <option value="">Nenhum</option>
-            {COMPLEMENTARY_SERVICE_OPTIONS.map((s) => (
-              <option key={s} value={s}>{s}</option>
+            {complementaryOptions.map((s) => (
+              <option key={s.id} value={s.name}>{s.name}</option>
             ))}
           </select>
         </div>

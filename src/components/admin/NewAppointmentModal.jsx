@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { createBooking, getBookedTimes } from '../../lib/bookings';
 import { createPatient, updatePatientPhone } from '../../lib/patients';
-import { fetchLaserServices } from '../../lib/services';
+import { fetchLaserServices, fetchComplementaryServices } from '../../lib/services';
 import { getPublicBlockedSlots, getPublicBlockedDays } from '../../lib/blockedSlots';
-import { PROFESSIONALS, COMPLEMENTARY_SERVICE_OPTIONS, BLOCKED_SLOTS, toISODate } from '../../lib/agendaConstants';
+import { PROFESSIONALS, BLOCKED_SLOTS, toISODate } from '../../lib/agendaConstants';
 import { IconChevronLeft, IconChevronRight } from './Icons';
 
 const DEFAULT_ROOM = 'Sala Laser Hakon 4D';
@@ -68,9 +68,11 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [laserServices, setLaserServices] = useState([]);
+  const [complementaryOptions, setComplementaryOptions] = useState([]);
 
   useEffect(() => {
     fetchLaserServices().then(setLaserServices).catch((err) => console.error('Erro ao carregar tabela de preço:', err));
+    fetchComplementaryServices().then(setComplementaryOptions).catch((err) => console.error('Erro ao carregar serviços complementares:', err));
   }, []);
 
   const weekStart = startOfWeek(addDays(today, weekOffset * 7));
@@ -148,15 +150,20 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
   };
 
   const addComplementarySlot = () => {
-    setComplementaryServices((s) => (s.length < COMPLEMENTARY_SERVICE_OPTIONS.length ? [...s, ''] : s));
+    setComplementaryServices((s) => (s.length < complementaryOptions.length ? [...s, ''] : s));
   };
 
   const selectedServices = services.filter(Boolean);
   const selectedComplementary = complementaryServices.filter(Boolean);
-  const subtotal = selectedServices.reduce((sum, name) => {
-    const found = laserServices.find((s) => s.name === name);
-    return sum + (found ? Number(found.price) : 0);
-  }, 0);
+  const subtotal =
+    selectedServices.reduce((sum, name) => {
+      const found = laserServices.find((s) => s.name === name);
+      return sum + (found ? Number(found.price) : 0);
+    }, 0) +
+    selectedComplementary.reduce((sum, name) => {
+      const found = complementaryOptions.find((s) => s.name === name);
+      return sum + (found ? Number(found.price) : 0);
+    }, 0);
   const discountValue = Number(discount) || 0;
   const total = Math.max(subtotal - discountValue, 0);
 
@@ -338,13 +345,13 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
                   className="field-input"
                 >
                   <option value="">Nenhum</option>
-                  {COMPLEMENTARY_SERVICE_OPTIONS.map((s) => (
-                    <option key={s} value={s}>{s}</option>
+                  {complementaryOptions.map((s) => (
+                    <option key={s.id} value={s.name}>{s.name}</option>
                   ))}
                 </select>
               ))}
             </div>
-            {complementaryServices[complementaryServices.length - 1] && complementaryServices.length < COMPLEMENTARY_SERVICE_OPTIONS.length && (
+            {complementaryServices[complementaryServices.length - 1] && complementaryServices.length < complementaryOptions.length && (
               <button type="button" onClick={addComplementarySlot} className="admin-appt-add-btn">
                 + Adicionar serviço complementar
               </button>

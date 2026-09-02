@@ -20,8 +20,6 @@ export const PAYMENT_METHOD_OPTIONS = [
   { value: 'Boleto', label: 'Boleto', icon: '📄' },
 ];
 
-export const COMPLEMENTARY_SERVICE_OPTIONS = ['Limpeza de Pele', 'Drenagem Linfática'];
-
 /** Horários bloqueados na grade da visão Dia — sem bloqueio fixo hoje. Usar
  * "Bloquear Horário" pra bloquear o horário do dia que for necessário. */
 export const BLOCKED_SLOTS = [];

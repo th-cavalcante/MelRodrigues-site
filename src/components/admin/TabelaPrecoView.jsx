@@ -2,25 +2,32 @@ import React, { useEffect, useState } from 'react';
 import {
   fetchSiteCombos, createSiteCombo, updateSiteCombo, deleteSiteCombo,
 } from '../../lib/siteContent';
-import { fetchLaserServices, createLaserService, updateLaserService, deleteLaserService } from '../../lib/services';
+import {
+  fetchLaserServices, createLaserService, updateLaserService, deleteLaserService,
+  fetchComplementaryServices, createComplementaryService, updateComplementaryService, deleteComplementaryService,
+} from '../../lib/services';
 
 const emptyServiceForm = { name: '', note: '', price: '', original: '', installment: '' };
 const emptyComboForm = { label: '', title: '', price_from: '', price_to: '' };
+const emptyComplementaryForm = { name: '', price: '' };
 
 const TabelaPrecoView = () => {
   const [loading, setLoading] = useState(true);
   const [servicesList, setServicesList] = useState([]);
   const [combosList, setCombosList] = useState([]);
+  const [complementaryList, setComplementaryList] = useState([]);
   const [newService, setNewService] = useState(emptyServiceForm);
   const [newCombo, setNewCombo] = useState(emptyComboForm);
+  const [newComplementary, setNewComplementary] = useState(emptyComplementaryForm);
   const [savingRow, setSavingRow] = useState(null);
   const [savedRow, setSavedRow] = useState(null);
 
   useEffect(() => {
-    Promise.all([fetchLaserServices(), fetchSiteCombos()])
-      .then(([servicesData, combosData]) => {
+    Promise.all([fetchLaserServices(), fetchSiteCombos(), fetchComplementaryServices()])
+      .then(([servicesData, combosData, complementaryData]) => {
         setServicesList(servicesData);
         setCombosList(combosData);
+        setComplementaryList(complementaryData);
       })
       .catch((err) => console.error('Erro ao carregar tabela de preço:', err))
       .finally(() => setLoading(false));
@@ -149,6 +156,60 @@ const TabelaPrecoView = () => {
     }
   };
 
+  const setComplementaryField = (id, field) => (e) => {
+    const { value } = e.target;
+    setComplementaryList((list) => list.map((s) => (s.id === id ? { ...s, [field]: value } : s)));
+  };
+
+  const handleSaveComplementary = async (svc) => {
+    setSavingRow(svc.id);
+    try {
+      await updateComplementaryService(svc.id, {
+        name: svc.name,
+        price: Number(svc.price) || 0,
+      });
+      flashSaved(svc.id);
+    } catch (err) {
+      console.error('Erro ao salvar serviço complementar:', err);
+      window.alert(`Não foi possível salvar: ${err.message || 'erro desconhecido'}`);
+    } finally {
+      setSavingRow(null);
+    }
+  };
+
+  const handleDeleteComplementary = async (id) => {
+    if (!window.confirm('Remover este serviço complementar?')) return;
+    try {
+      await deleteComplementaryService(id);
+      setComplementaryList((list) => list.filter((s) => s.id !== id));
+    } catch (err) {
+      console.error('Erro ao remover serviço complementar:', err);
+      window.alert(`Não foi possível remover: ${err.message || 'erro desconhecido'}`);
+    }
+  };
+
+  const handleAddComplementary = async () => {
+    if (!newComplementary.name.trim() || !newComplementary.price) {
+      window.alert('Preencha o nome e o preço do serviço complementar.');
+      return;
+    }
+    setSavingRow('new-complementary');
+    try {
+      const created = await createComplementaryService({
+        name: newComplementary.name.trim(),
+        price: Number(newComplementary.price) || 0,
+        sort_order: complementaryList.length + 1,
+      });
+      setComplementaryList((list) => [...list, created]);
+      setNewComplementary(emptyComplementaryForm);
+    } catch (err) {
+      console.error('Erro ao adicionar serviço complementar:', err);
+      window.alert(`Não foi possível adicionar: ${err.message || 'erro desconhecido'}`);
+    } finally {
+      setSavingRow(null);
+    }
+  };
+
   if (loading) {
     return (
       <div>
@@ -212,6 +273,46 @@ const TabelaPrecoView = () => {
               <div className="admin-price-row-actions">
                 <button type="button" onClick={handleAddService} disabled={savingRow === 'new-service'} className="admin-save-button admin-save-button-sm">
                   {savingRow === 'new-service' ? '...' : '+ Adicionar'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="admin-card">
+          <div className="admin-site-card-header">
+            <h3 className="admin-card-title">Serviços Complementares</h3>
+          </div>
+          <p className="admin-page-subtitle">Usados no agendamento (Limpeza de Pele, Drenagem Linfática etc.) — o preço aqui entra na conta do agendamento.</p>
+          <div className="admin-price-table admin-price-table-complementary">
+            <div className="admin-price-row admin-price-row-header admin-price-row-complementary">
+              <span>Serviço</span>
+              <span>Preço</span>
+              <span></span>
+            </div>
+            {complementaryList.map((s) => (
+              <div key={s.id} className="admin-price-row admin-price-row-complementary">
+                <input type="text" value={s.name} onChange={setComplementaryField(s.id, 'name')} className="field-input" />
+                <input type="number" step="0.01" value={s.price} onChange={setComplementaryField(s.id, 'price')} className="field-input" />
+                <div className="admin-price-row-actions">
+                  <button
+                    type="button"
+                    onClick={() => handleSaveComplementary(s)}
+                    disabled={savingRow === s.id}
+                    className={`admin-save-button admin-save-button-sm ${savedRow === s.id ? 'saved' : ''}`}
+                  >
+                    {savingRow === s.id ? '...' : savedRow === s.id ? '✓' : 'Salvar'}
+                  </button>
+                  <button type="button" onClick={() => handleDeleteComplementary(s.id)} className="admin-delete-row-btn">✕</button>
+                </div>
+              </div>
+            ))}
+            <div className="admin-price-row admin-price-row-new admin-price-row-complementary">
+              <input type="text" placeholder="Nome do serviço" value={newComplementary.name} onChange={(e) => setNewComplementary((f) => ({ ...f, name: e.target.value }))} className="field-input" />
+              <input type="number" step="0.01" placeholder="Preço" value={newComplementary.price} onChange={(e) => setNewComplementary((f) => ({ ...f, price: e.target.value }))} className="field-input" />
+              <div className="admin-price-row-actions">
+                <button type="button" onClick={handleAddComplementary} disabled={savingRow === 'new-complementary'} className="admin-save-button admin-save-button-sm">
+                  {savingRow === 'new-complementary' ? '...' : '+ Adicionar'}
                 </button>
               </div>
             </div>
