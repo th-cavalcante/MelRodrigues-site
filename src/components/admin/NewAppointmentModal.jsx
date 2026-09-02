@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { createBooking, getBookedTimes } from '../../lib/bookings';
 import { createPatient, updatePatientPhone } from '../../lib/patients';
-import { fetchLaserServices, fetchComplementaryServices } from '../../lib/services';
+import { fetchLaserServices } from '../../lib/services';
+import { fetchComplementaryCards, flattenComplementaryOptions } from '../../lib/siteContent';
 import { getPublicBlockedSlots, getPublicBlockedDays } from '../../lib/blockedSlots';
 import { PROFESSIONALS, BLOCKED_SLOTS, toISODate } from '../../lib/agendaConstants';
 import { IconChevronLeft, IconChevronRight } from './Icons';
@@ -72,7 +73,9 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
 
   useEffect(() => {
     fetchLaserServices().then(setLaserServices).catch((err) => console.error('Erro ao carregar tabela de preço:', err));
-    fetchComplementaryServices().then(setComplementaryOptions).catch((err) => console.error('Erro ao carregar serviços complementares:', err));
+    fetchComplementaryCards()
+      .then((cards) => setComplementaryOptions(flattenComplementaryOptions(cards)))
+      .catch((err) => console.error('Erro ao carregar serviços complementares:', err));
   }, []);
 
   const weekStart = startOfWeek(addDays(today, weekOffset * 7));
@@ -161,7 +164,7 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
       return sum + (found ? Number(found.price) : 0);
     }, 0) +
     selectedComplementary.reduce((sum, name) => {
-      const found = complementaryOptions.find((s) => s.name === name);
+      const found = complementaryOptions.find((s) => s.value === name);
       return sum + (found ? Number(found.price) : 0);
     }, 0);
   const discountValue = Number(discount) || 0;
@@ -346,7 +349,7 @@ const NewAppointmentModal = ({ clients, setClients, bookingDate, onClose, onCrea
                 >
                   <option value="">Nenhum</option>
                   {complementaryOptions.map((s) => (
-                    <option key={s.id} value={s.name}>{s.name}</option>
+                    <option key={s.value} value={s.value}>{s.value}</option>
                   ))}
                 </select>
               ))}

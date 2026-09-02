@@ -132,3 +132,24 @@ export const deleteComplementaryCardItem = async (id) => {
   const { error } = await supabase.from('site_complementary_card_items').delete().eq('id', id);
   if (error) throw error;
 };
+
+/** O preço de uma linha de card é texto livre ("R$ 480,00 (3x sem juros)")
+ * — extrai o valor numérico (primeiro "R$ X,XX" encontrado) pra poder somar
+ * no total de um agendamento. */
+export const parseComplementaryPrice = (priceText) => {
+  const match = String(priceText || '').match(/([\d.]+),(\d{2})/);
+  if (!match) return 0;
+  return Number(`${match[1].replace(/\./g, '')}.${match[2]}`) || 0;
+};
+
+/** Achata os cards de Serviços Complementares em opções de agendamento — uma
+ * opção por linha de preço, rotulada só com o título do card quando ele tem
+ * uma única linha (ex: "Limpeza de Pele"), ou "Card — Linha" quando tem
+ * várias (ex: "Dreno Relaxante — Pacote com 4 sessões"). */
+export const flattenComplementaryOptions = (cards) =>
+  cards.flatMap((card) =>
+    card.items.map((item) => ({
+      value: card.items.length === 1 ? card.title : `${card.title} — ${item.label}`,
+      price: parseComplementaryPrice(item.price),
+    }))
+  );

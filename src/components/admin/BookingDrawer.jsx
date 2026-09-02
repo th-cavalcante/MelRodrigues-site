@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getPatientAttendanceStats } from '../../lib/bookings';
-import { fetchLaserServices, fetchComplementaryServices } from '../../lib/services';
+import { fetchLaserServices } from '../../lib/services';
+import { fetchComplementaryCards, flattenComplementaryOptions } from '../../lib/siteContent';
 import { STATUS_OPTIONS, PAYMENT_STATUS_OPTIONS, PAYMENT_METHOD_OPTIONS, buildWhatsAppLink } from '../../lib/agendaConstants';
 import { sendTestReminder, sendFichaLink, sendDocumentSignatureLink } from '../../lib/evolution';
 
@@ -53,7 +54,9 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
 
   useEffect(() => {
     fetchLaserServices().then(setLaserServices).catch((err) => console.error('Erro ao carregar tabela de preço:', err));
-    fetchComplementaryServices().then(setComplementaryOptions).catch((err) => console.error('Erro ao carregar serviços complementares:', err));
+    fetchComplementaryCards()
+      .then((cards) => setComplementaryOptions(flattenComplementaryOptions(cards)))
+      .catch((err) => console.error('Erro ao carregar serviços complementares:', err));
   }, []);
 
   const setField = (key) => (e) => {
@@ -67,7 +70,7 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
     }, 0);
 
   const complementaryPrice = (name) => {
-    const found = complementaryOptions.find((s) => s.name === name);
+    const found = complementaryOptions.find((s) => s.value === name);
     return found ? Number(found.price) : 0;
   };
 
@@ -290,7 +293,7 @@ const BookingDrawer = ({ booking, patient, onUpdate, onDelete, onClose }) => {
           <select value={draft.complementaryService} onChange={handleComplementaryChange} className="field-input">
             <option value="">Nenhum</option>
             {complementaryOptions.map((s) => (
-              <option key={s.id} value={s.name}>{s.name}</option>
+              <option key={s.value} value={s.value}>{s.value}</option>
             ))}
           </select>
         </div>

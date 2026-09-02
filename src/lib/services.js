@@ -38,34 +38,6 @@ export const deleteLaserService = async (id) => {
   if (error) throw error;
 };
 
-/** Serviços Complementares (Limpeza de Pele, Drenagem Linfática etc.), com
- * preço próprio — editável pelo painel ("Tabela de Preço") e usado no
- * agendamento pra entrar na conta junto com os serviços de laser. */
-export const fetchComplementaryServices = async () => {
-  const { data, error } = await supabase
-    .from('complementary_services')
-    .select('*')
-    .order('sort_order', { ascending: true });
-  if (error) throw error;
-  return data;
-};
-
-export const createComplementaryService = async (service) => {
-  const { data, error } = await supabase.from('complementary_services').insert(service).select().single();
-  if (error) throw error;
-  return data;
-};
-
-export const updateComplementaryService = async (id, fields) => {
-  const { error } = await supabase.from('complementary_services').update(fields).eq('id', id);
-  if (error) throw error;
-};
-
-export const deleteComplementaryService = async (id) => {
-  const { error } = await supabase.from('complementary_services').delete().eq('id', id);
-  if (error) throw error;
-};
-
 /** Formata um número (100) como preço em reais no padrão brasileiro ("100,00"). */
 export const formatPrice = (value) => {
   const n = Number(value);
