@@ -84,3 +84,51 @@ export const deleteSiteFaqItem = async (id) => {
   const { error } = await supabase.from('site_faq').delete().eq('id', id);
   if (error) throw error;
 };
+
+/** Cards de "Serviços Complementares" da Tabela de Preço pública (ex:
+ * Limpeza de Pele, Dreno Relaxante) — cada card tem um título e uma lista
+ * de linhas de preço, editáveis pelo painel administrativo. */
+export const fetchComplementaryCards = async () => {
+  const [cardsRes, itemsRes] = await Promise.all([
+    supabase.from('site_complementary_cards').select('*').order('sort_order', { ascending: true }),
+    supabase.from('site_complementary_card_items').select('*').order('sort_order', { ascending: true }),
+  ]);
+  if (cardsRes.error) throw cardsRes.error;
+  if (itemsRes.error) throw itemsRes.error;
+  return cardsRes.data.map((card) => ({
+    ...card,
+    items: itemsRes.data.filter((item) => item.card_id === card.id),
+  }));
+};
+
+export const createComplementaryCard = async (card) => {
+  const { data, error } = await supabase.from('site_complementary_cards').insert(card).select().single();
+  if (error) throw error;
+  return { ...data, items: [] };
+};
+
+export const updateComplementaryCard = async (id, fields) => {
+  const { error } = await supabase.from('site_complementary_cards').update(fields).eq('id', id);
+  if (error) throw error;
+};
+
+export const deleteComplementaryCard = async (id) => {
+  const { error } = await supabase.from('site_complementary_cards').delete().eq('id', id);
+  if (error) throw error;
+};
+
+export const createComplementaryCardItem = async (item) => {
+  const { data, error } = await supabase.from('site_complementary_card_items').insert(item).select().single();
+  if (error) throw error;
+  return data;
+};
+
+export const updateComplementaryCardItem = async (id, fields) => {
+  const { error } = await supabase.from('site_complementary_card_items').update(fields).eq('id', id);
+  if (error) throw error;
+};
+
+export const deleteComplementaryCardItem = async (id) => {
+  const { error } = await supabase.from('site_complementary_card_items').delete().eq('id', id);
+  if (error) throw error;
+};

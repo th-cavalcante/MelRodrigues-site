@@ -252,6 +252,85 @@
   opacity: 0.88;
 }
 
+/* SERVIÇOS COMPLEMENTARES */
+.tabela-complementary {
+  padding: 100px 56px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.tabela-complementary .section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.complementary-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 44px;
+  margin: 20px 0 0;
+}
+
+.complementary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+}
+
+.complementary-card {
+  background: #fff;
+  border: 1px solid var(--border-subtle-2);
+  padding: 36px 34px;
+  display: flex;
+  flex-direction: column;
+}
+
+.complementary-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 26px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--primary-color);
+  margin-bottom: 8px;
+}
+
+.complementary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px;
+  padding: 15px 0;
+  border-bottom: 1px solid oklch(93% 0.006 85);
+  font-size: 14.5px;
+}
+
+.complementary-row:last-of-type {
+  border-bottom: none;
+}
+
+.complementary-row-price {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.complementary-cta {
+  display: block;
+  margin-top: 22px;
+  padding: 13px;
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 12.5px;
+  letter-spacing: 0.8px;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.complementary-cta:hover {
+  opacity: 0.88;
+}
+
 /* FOOTER */
 .tabela-footer {
   background: var(--bg-dark);
@@ -281,6 +360,10 @@
   }
 
   .tabela-combos {
+    padding: 70px 24px;
+  }
+
+  .tabela-complementary {
     padding: 70px 24px;
   }
 }

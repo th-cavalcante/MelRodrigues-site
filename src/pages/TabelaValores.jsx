@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchLaserServices, formatPrice } from '../lib/services';
-import { fetchSiteCombos } from '../lib/siteContent';
+import { fetchSiteCombos, fetchComplementaryCards } from '../lib/siteContent';
 import '../styles/TabelaValores.css';
 
 const WHATSAPP_LINK = 'https://wa.me/5511987654321?text=Olá%20MR%20Laser!%20Gostaria%20de%20agendar%20uma%20sessão.';
@@ -11,10 +11,12 @@ const initials = (name) => name.trim().charAt(0).toUpperCase();
 const TabelaValores = () => {
   const [sessions, setSessions] = useState([]);
   const [combos, setCombos] = useState([]);
+  const [complementaryCards, setComplementaryCards] = useState([]);
 
   useEffect(() => {
     fetchLaserServices().then(setSessions).catch((err) => console.error('Erro ao carregar tabela de preço:', err));
     fetchSiteCombos().then(setCombos).catch((err) => console.error('Erro ao carregar combos:', err));
+    fetchComplementaryCards().then(setComplementaryCards).catch((err) => console.error('Erro ao carregar serviços complementares:', err));
   }, []);
 
   return (
@@ -93,6 +95,33 @@ const TabelaValores = () => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="tabela-complementary">
+        <div className="section-header">
+          <span className="section-eyebrow">Além do Laser</span>
+          <h2 className="complementary-title">Serviços Complementares</h2>
+        </div>
+
+        <div className="complementary-grid">
+          {complementaryCards.map((card) => (
+            <div key={card.id} className="complementary-card">
+              <div className="complementary-card-title">{card.title}</div>
+              {card.items.map((item) => (
+                <div key={item.id} className="complementary-row">
+                  <span>{item.label}</span>
+                  <span className="complementary-row-price">{item.price}</span>
+                </div>
+              ))}
+              <Link
+                to={`/cliente/agendar?service=${encodeURIComponent(card.title)}`}
+                className="complementary-cta"
+              >
+                AGENDAR
+              </Link>
+            </div>
+          ))}
         </div>
       </section>
 

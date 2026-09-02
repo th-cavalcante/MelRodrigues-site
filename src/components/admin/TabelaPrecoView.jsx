@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
   fetchSiteCombos, createSiteCombo, updateSiteCombo, deleteSiteCombo,
+  fetchComplementaryCards, createComplementaryCard, updateComplementaryCard, deleteComplementaryCard,
+  createComplementaryCardItem, updateComplementaryCardItem, deleteComplementaryCardItem,
 } from '../../lib/siteContent';
 import {
   fetchLaserServices, createLaserService, updateLaserService, deleteLaserService,
@@ -10,24 +12,29 @@ import {
 const emptyServiceForm = { name: '', note: '', price: '', original: '', installment: '' };
 const emptyComboForm = { label: '', title: '', price_from: '', price_to: '' };
 const emptyComplementaryForm = { name: '', price: '' };
+const emptyCardItemForm = { label: '', price: '' };
 
 const TabelaPrecoView = () => {
   const [loading, setLoading] = useState(true);
   const [servicesList, setServicesList] = useState([]);
   const [combosList, setCombosList] = useState([]);
   const [complementaryList, setComplementaryList] = useState([]);
+  const [cardsList, setCardsList] = useState([]);
   const [newService, setNewService] = useState(emptyServiceForm);
   const [newCombo, setNewCombo] = useState(emptyComboForm);
   const [newComplementary, setNewComplementary] = useState(emptyComplementaryForm);
+  const [newCardTitle, setNewCardTitle] = useState('');
+  const [newItemForms, setNewItemForms] = useState({});
   const [savingRow, setSavingRow] = useState(null);
   const [savedRow, setSavedRow] = useState(null);
 
   useEffect(() => {
-    Promise.all([fetchLaserServices(), fetchSiteCombos(), fetchComplementaryServices()])
-      .then(([servicesData, combosData, complementaryData]) => {
+    Promise.all([fetchLaserServices(), fetchSiteCombos(), fetchComplementaryServices(), fetchComplementaryCards()])
+      .then(([servicesData, combosData, complementaryData, cardsData]) => {
         setServicesList(servicesData);
         setCombosList(combosData);
         setComplementaryList(complementaryData);
+        setCardsList(cardsData);
       })
       .catch((err) => console.error('Erro ao carregar tabela de preço:', err))
       .finally(() => setLoading(false));
@@ -210,6 +217,117 @@ const TabelaPrecoView = () => {
     }
   };
 
+  const setCardTitle = (id) => (e) => {
+    const { value } = e.target;
+    setCardsList((list) => list.map((c) => (c.id === id ? { ...c, title: value } : c)));
+  };
+
+  const handleSaveCardTitle = async (card) => {
+    setSavingRow(card.id);
+    try {
+      await updateComplementaryCard(card.id, { title: card.title });
+      flashSaved(card.id);
+    } catch (err) {
+      console.error('Erro ao salvar card:', err);
+      window.alert(`Não foi possível salvar: ${err.message || 'erro desconhecido'}`);
+    } finally {
+      setSavingRow(null);
+    }
+  };
+
+  const handleDeleteCard = async (id) => {
+    if (!window.confirm('Remover este card inteiro (com todas as linhas de preço) da Tabela de Preço?')) return;
+    try {
+      await deleteComplementaryCard(id);
+      setCardsList((list) => list.filter((c) => c.id !== id));
+    } catch (err) {
+      console.error('Erro ao remover card:', err);
+      window.alert(`Não foi possível remover: ${err.message || 'erro desconhecido'}`);
+    }
+  };
+
+  const handleAddCard = async () => {
+    if (!newCardTitle.trim()) {
+      window.alert('Preencha o título do card.');
+      return;
+    }
+    setSavingRow('new-card');
+    try {
+      const created = await createComplementaryCard({ title: newCardTitle.trim(), sort_order: cardsList.length + 1 });
+      setCardsList((list) => [...list, created]);
+      setNewCardTitle('');
+    } catch (err) {
+      console.error('Erro ao adicionar card:', err);
+      window.alert(`Não foi possível adicionar: ${err.message || 'erro desconhecido'}`);
+    } finally {
+      setSavingRow(null);
+    }
+  };
+
+  const setCardItemField = (cardId, itemId, field) => (e) => {
+    const { value } = e.target;
+    setCardsList((list) =>
+      list.map((c) =>
+        c.id === cardId ? { ...c, items: c.items.map((it) => (it.id === itemId ? { ...it, [field]: value } : it)) } : c
+      )
+    );
+  };
+
+  const handleSaveCardItem = async (item) => {
+    setSavingRow(item.id);
+    try {
+      await updateComplementaryCardItem(item.id, { label: item.label, price: item.price });
+      flashSaved(item.id);
+    } catch (err) {
+      console.error('Erro ao salvar linha do card:', err);
+      window.alert(`Não foi possível salvar: ${err.message || 'erro desconhecido'}`);
+    } finally {
+      setSavingRow(null);
+    }
+  };
+
+  const handleDeleteCardItem = async (cardId, itemId) => {
+    if (!window.confirm('Remover esta linha de preço do card?')) return;
+    try {
+      await deleteComplementaryCardItem(itemId);
+      setCardsList((list) =>
+        list.map((c) => (c.id === cardId ? { ...c, items: c.items.filter((it) => it.id !== itemId) } : c))
+      );
+    } catch (err) {
+      console.error('Erro ao remover linha do card:', err);
+      window.alert(`Não foi possível remover: ${err.message || 'erro desconhecido'}`);
+    }
+  };
+
+  const setNewItemField = (cardId, field) => (e) => {
+    const { value } = e.target;
+    setNewItemForms((forms) => ({ ...forms, [cardId]: { ...(forms[cardId] || emptyCardItemForm), [field]: value } }));
+  };
+
+  const handleAddCardItem = async (card) => {
+    const form = newItemForms[card.id] || emptyCardItemForm;
+    if (!form.label.trim() || !form.price.trim()) {
+      window.alert('Preencha o texto e o preço da linha.');
+      return;
+    }
+    setSavingRow(`new-item-${card.id}`);
+    try {
+      const created = await createComplementaryCardItem({
+        card_id: card.id,
+        label: form.label.trim(),
+        price: form.price.trim(),
+        sort_order: card.items.length + 1,
+      });
+      setCardsList((list) => list.map((c) => (c.id === card.id ? { ...c, items: [...c.items, created] } : c)));
+      setNewItemForms((forms) => ({ ...forms, [card.id]: emptyCardItemForm }));
+    } catch (err) {
+      console.error('Erro ao adicionar linha do card:', err);
+      window.alert(`Não foi possível adicionar: ${err.message || 'erro desconhecido'}`);
+    } finally {
+      setSavingRow(null);
+    }
+  };
+
   if (loading) {
     return (
       <div>
@@ -281,9 +399,9 @@ const TabelaPrecoView = () => {
 
         <div className="admin-card">
           <div className="admin-site-card-header">
-            <h3 className="admin-card-title">Serviços Complementares</h3>
+            <h3 className="admin-card-title">Serviços Complementares (Agendamento)</h3>
           </div>
-          <p className="admin-page-subtitle">Usados no agendamento (Limpeza de Pele, Drenagem Linfática etc.) — o preço aqui entra na conta do agendamento.</p>
+          <p className="admin-page-subtitle">Usados só internamente, ao criar/editar um agendamento — o preço aqui entra na conta do agendamento. Não aparece no site.</p>
           <div className="admin-price-table admin-price-table-complementary">
             <div className="admin-price-row admin-price-row-header admin-price-row-complementary">
               <span>Serviço</span>
@@ -360,6 +478,93 @@ const TabelaPrecoView = () => {
                   {savingRow === 'new-combo' ? '...' : '+ Adicionar'}
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="admin-card">
+          <div className="admin-site-card-header">
+            <h3 className="admin-card-title">Serviços Complementares (Site)</h3>
+          </div>
+          <p className="admin-page-subtitle">
+            Cards exibidos na seção "Serviços Complementares" da Tabela de Preço do site (ex: Limpeza de Pele, Dreno
+            Relaxante). Cada card pode ter várias linhas de preço.
+          </p>
+
+          <div className="admin-comp-cards">
+            {cardsList.map((card) => (
+              <div key={card.id} className="admin-comp-card">
+                <div className="admin-comp-card-title-row">
+                  <input type="text" value={card.title} onChange={setCardTitle(card.id)} className="field-input admin-comp-card-title-input" />
+                  <button
+                    type="button"
+                    onClick={() => handleSaveCardTitle(card)}
+                    disabled={savingRow === card.id}
+                    className={`admin-save-button admin-save-button-sm ${savedRow === card.id ? 'saved' : ''}`}
+                  >
+                    {savingRow === card.id ? '...' : savedRow === card.id ? '✓' : 'Salvar'}
+                  </button>
+                  <button type="button" onClick={() => handleDeleteCard(card.id)} className="admin-delete-row-btn">✕</button>
+                </div>
+
+                {card.items.map((item) => (
+                  <div key={item.id} className="admin-price-row admin-price-row-complementary">
+                    <input type="text" value={item.label} onChange={setCardItemField(card.id, item.id, 'label')} className="field-input" />
+                    <input type="text" value={item.price} onChange={setCardItemField(card.id, item.id, 'price')} className="field-input" />
+                    <div className="admin-price-row-actions">
+                      <button
+                        type="button"
+                        onClick={() => handleSaveCardItem(item)}
+                        disabled={savingRow === item.id}
+                        className={`admin-save-button admin-save-button-sm ${savedRow === item.id ? 'saved' : ''}`}
+                      >
+                        {savingRow === item.id ? '...' : savedRow === item.id ? '✓' : 'Salvar'}
+                      </button>
+                      <button type="button" onClick={() => handleDeleteCardItem(card.id, item.id)} className="admin-delete-row-btn">✕</button>
+                    </div>
+                  </div>
+                ))}
+
+                <div className="admin-price-row admin-price-row-new admin-price-row-complementary">
+                  <input
+                    type="text"
+                    placeholder="Ex: Pacote com 4 sessões"
+                    value={(newItemForms[card.id] || emptyCardItemForm).label}
+                    onChange={setNewItemField(card.id, 'label')}
+                    className="field-input"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Ex: R$ 480,00 (3x sem juros)"
+                    value={(newItemForms[card.id] || emptyCardItemForm).price}
+                    onChange={setNewItemField(card.id, 'price')}
+                    className="field-input"
+                  />
+                  <div className="admin-price-row-actions">
+                    <button
+                      type="button"
+                      onClick={() => handleAddCardItem(card)}
+                      disabled={savingRow === `new-item-${card.id}`}
+                      className="admin-save-button admin-save-button-sm"
+                    >
+                      {savingRow === `new-item-${card.id}` ? '...' : '+ Linha'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            <div className="admin-comp-card admin-comp-card-new">
+              <input
+                type="text"
+                placeholder="Título do novo card (ex: Peeling)"
+                value={newCardTitle}
+                onChange={(e) => setNewCardTitle(e.target.value)}
+                className="field-input"
+              />
+              <button type="button" onClick={handleAddCard} disabled={savingRow === 'new-card'} className="admin-save-button admin-save-button-sm">
+                {savingRow === 'new-card' ? '...' : '+ Adicionar Card'}
+              </button>
             </div>
           </div>
         </div>
