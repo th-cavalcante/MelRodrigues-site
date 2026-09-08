@@ -1,0 +1,38 @@
+# Configuração de verify_jwt por Edge Function — documenta explicitamente o
+# que cada "Deploy:" nos comentários de cada função já dizia. Sem isso, um
+# `supabase functions deploy <nome>` sem flag NÃO reverte um --no-verify-jwt
+# aplicado antes (a configuração fica "presa" no servidor) — só um deploy
+# com verify_jwt explícito aqui corrige.
+
+[functions.create-admin-user]
+verify_jwt = true
+
+[functions.create-course-mp-preference]
+verify_jwt = false
+
+[functions.create-mp-preference]
+verify_jwt = true
+
+[functions.evolution-connect]
+verify_jwt = true
+
+[functions.finalize-signature]
+verify_jwt = false
+
+[functions.mp-webhook]
+verify_jwt = false
+
+[functions.send-campaign]
+verify_jwt = true
+
+[functions.send-scheduled-reminders]
+verify_jwt = false
+
+[functions.send-signature-otp]
+verify_jwt = false
+
+[functions.send-whatsapp-message]
+verify_jwt = true
+
+[functions.verify-signature-otp]
+verify_jwt = false

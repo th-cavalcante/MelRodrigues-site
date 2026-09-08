@@ -16,11 +16,27 @@ export const sendWhatsAppText = async (
     return { ok: false, error: 'Secrets da Evolution API não configurados.' };
   }
 
-  const res = await fetch(`${apiUrl}/message/sendText/${instanceName}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', apikey: apiKey },
-    body: JSON.stringify({ number, text }),
-  });
+  // Sem timeout, se o WhatsApp da clínica cair (instância desconectada), o
+  // fetch pode ficar pendurado até o runtime da function matar a execução —
+  // aí o front só vê "Connection Closed", sem dica nenhuma do que houve.
+  // Com AbortController, falha rápido e com uma mensagem que aponta a causa.
+  let res: Response;
+  try {
+    res = await fetch(`${apiUrl}/message/sendText/${instanceName}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', apikey: apiKey },
+      body: JSON.stringify({ number, text }),
+      signal: AbortSignal.timeout(20000),
+    });
+  } catch (err) {
+    const timedOut = err instanceof Error && err.name === 'TimeoutError';
+    return {
+      ok: false,
+      error: timedOut
+        ? 'O WhatsApp da clínica não respondeu a tempo — provavelmente está desconectado. Reconecte em Marketing.'
+        : 'Não foi possível conectar ao WhatsApp da clínica.',
+    };
+  }
   const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
