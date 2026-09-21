@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/CuidadosSessao.css';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const CUIDADOS = [
   {
@@ -64,7 +65,15 @@ const CUIDADOS = [
   },
 ];
 
-const CuidadosSessao = () => (
+const CuidadosSessao = () => {
+  usePageMeta({
+    title: 'Cuidados Pré e Pós-Sessão de Depilação a Laser | MR Laser',
+    description:
+      'Orientações antes e depois de cada sessão de depilação a laser para garantir sua segurança e o melhor resultado do tratamento.',
+    path: '/recomendacoes',
+  });
+
+  return (
   <div className="cuidados-page">
     <nav className="cuidados-nav">
       <Link to="/" className="cuidados-back">
@@ -97,6 +106,7 @@ const CuidadosSessao = () => (
       © {new Date().getFullYear()} MR Laser. Em caso de dúvidas, fale com a equipe pelo WhatsApp.
     </footer>
   </div>
-);
+  );
+};
 
 export default CuidadosSessao;

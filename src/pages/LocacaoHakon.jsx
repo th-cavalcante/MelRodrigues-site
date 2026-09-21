@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import '../styles/LocacaoHakon.css';
+import { usePageMeta } from '../hooks/usePageMeta';
 
-const WHATSAPP_LINK = 'https://wa.me/5511987654321?text=Olá%20MR%20Laser!%20Gostaria%20de%20saber%20mais%20sobre%20a%20locação%20do%20Hakon%204D.';
+const WHATSAPP_LINK = 'https://wa.me/5513996753432?text=Olá%20MR%20Laser!%20Gostaria%20de%20saber%20mais%20sobre%20a%20locação%20do%20Hakon%204D.';
 
 const inclusos = [
   'Óculos de proteção (Profissional e Paciente)',
@@ -14,6 +15,13 @@ const pricing = [
 ];
 
 const LocacaoHakon = () => {
+  usePageMeta({
+    title: 'Locação do Laser Hakon 4D - Baixada Santista | MR Laser Concept',
+    description:
+      'Alugue o laser de depilação Hakon 4D, indicado para todos os fototipos, com suporte técnico e frete grátis para a Baixada Santista. Consulte as diárias.',
+    path: '/locacao-hakon',
+  });
+
   const videoRef = useRef(null);
   const [muted, setMuted] = useState(true);
 

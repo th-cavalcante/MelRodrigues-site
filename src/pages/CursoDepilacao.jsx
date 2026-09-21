@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { createCourseMpPreference } from '../lib/courseOrders';
 import '../styles/CursoDepilacao.css';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const WHATSAPP_LINK = 'https://wa.me/5513996753432?text=Olá%20MR%20Laser!%20Gostaria%20de%20saber%20mais%20sobre%20o%20Curso%20de%20Depilação%20a%20Laser.';
 
@@ -193,6 +194,13 @@ const GalleryCarousel = () => {
 };
 
 const CursoDepilacao = () => {
+  usePageMeta({
+    title: 'Curso de Depilação a Laser em São Vicente | MR Laser Concept',
+    description:
+      'Curso presencial e prático de depilação a laser em São Vicente - SP, com equipamento Hakon 4D, coffee break e certificado. Turmas de até 4 alunas.',
+    path: '/cursos',
+  });
+
   const [searchParams] = useSearchParams();
   const cursoOrderId = searchParams.get('curso_order');
   const cursoStatus = searchParams.get('curso_status');

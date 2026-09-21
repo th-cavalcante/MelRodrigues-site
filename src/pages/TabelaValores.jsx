@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { fetchLaserServices, formatPrice } from '../lib/services';
 import { fetchSiteCombos, fetchComplementaryCards } from '../lib/siteContent';
 import '../styles/TabelaValores.css';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const WHATSAPP_NUMBER = '5513996753432';
 const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=Olá%20MR%20Laser!%20Gostaria%20de%20agendar%20uma%20sessão.`;
@@ -22,6 +23,13 @@ const complementaryItemWhatsAppLink = (card, item) => {
 const initials = (name) => name.trim().charAt(0).toUpperCase();
 
 const TabelaValores = () => {
+  usePageMeta({
+    title: 'Tabela de Preço - Depilação a Laser em São Vicente | MR Laser',
+    description:
+      'Valores das sessões avulsas de depilação a laser por região e dos pacotes combinados, com condição especial para pagamento em 2x sem juros.',
+    path: '/valores',
+  });
+
   const [sessions, setSessions] = useState([]);
   const [combos, setCombos] = useState([]);
   const [complementaryCards, setComplementaryCards] = useState([]);

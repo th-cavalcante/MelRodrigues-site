@@ -8,8 +8,16 @@ import Depoimentos from '../components/Depoimentos';
 import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 import { SiteContentProvider } from '../context/SiteContentContext';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const Home = () => {
+  usePageMeta({
+    title: 'Depilação a Laser em São Vicente | MR Laser Concept',
+    description:
+      'Clínica de depilação a laser em São Vicente - SP, no Centro. Equipamento Hakon 4D e atendimento personalizado. Agende pelo WhatsApp.',
+    path: '/',
+  });
+
   return (
     <SiteContentProvider>
       <div className="home">

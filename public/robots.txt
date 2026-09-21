@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /cliente
+Disallow: /validar
+
+Sitemap: https://www.melrodrigues.com.br/sitemap.xml
