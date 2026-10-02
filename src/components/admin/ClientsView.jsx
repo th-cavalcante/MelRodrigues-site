@@ -20,6 +20,7 @@ import {
 import { sendDocumentSignatureLink } from '../../lib/evolution';
 import { buildWhatsAppLink, sessionHistoryLabel } from '../../lib/agendaConstants';
 import { IconWhatsApp, IconPencil, IconCalendar } from './Icons';
+import { downloadClientsCsv } from '../../lib/exportClients';
 
 const documentsMeta = [
   { key: 'anamnese', icon: '📋', label: 'Ficha de Anamnese' },
@@ -42,6 +43,7 @@ const ClientsView = ({ clients, setClients }) => {
   const [fichaLinkCopied, setFichaLinkCopied] = useState(false);
   const [unlockedField, setUnlockedField] = useState(null);
   const [savingField, setSavingField] = useState(null);
+  const [exportedCount, setExportedCount] = useState(null);
 
   const selectedClient = clients.find((c) => c.id === selectedClientId) || null;
   const filteredClients = clients.filter((c) =>
@@ -81,6 +83,11 @@ const ClientsView = ({ clients, setClients }) => {
       cancelled = true;
     };
   }, [selectedClientId, setClients]);
+
+  const handleExportClients = () => {
+    setExportedCount(downloadClientsCsv(clients));
+    setTimeout(() => setExportedCount(null), 3000);
+  };
 
   const handlePatientFieldChange = (field) => (e) => {
     const { value } = e.target;
@@ -554,9 +561,14 @@ const ClientsView = ({ clients, setClients }) => {
 
   return (
     <div>
-      <div className="admin-page-header">
-        <span className="section-eyebrow">Área Clínica</span>
-        <h1 className="admin-page-title">Clientes e Sessões</h1>
+      <div className="admin-fin-header-row">
+        <div>
+          <span className="section-eyebrow">Área Clínica</span>
+          <h1 className="admin-page-title">Clientes e Sessões</h1>
+        </div>
+        <button type="button" onClick={handleExportClients} className="admin-open-client-btn">
+          {exportedCount != null ? `✓ ${exportedCount} clientes exportados` : '⬇ Exportar clientes (CSV)'}
+        </button>
       </div>
 
       <div className="admin-clients-search">
