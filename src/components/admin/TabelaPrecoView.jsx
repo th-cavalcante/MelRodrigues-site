@@ -5,6 +5,7 @@ import {
   createComplementaryCardItem, updateComplementaryCardItem, deleteComplementaryCardItem,
 } from '../../lib/siteContent';
 import { fetchLaserServices, createLaserService, updateLaserService, deleteLaserService } from '../../lib/services';
+import { downloadServicesCsv } from '../../lib/exportServices';
 
 const emptyServiceForm = { name: '', note: '', price: '', original: '', installment: '' };
 const emptyComboForm = { label: '', title: '', price_from: '', price_to: '' };
@@ -21,6 +22,8 @@ const TabelaPrecoView = () => {
   const [newItemForms, setNewItemForms] = useState({});
   const [savingRow, setSavingRow] = useState(null);
   const [savedRow, setSavedRow] = useState(null);
+  const [exporting, setExporting] = useState(false);
+  const [exportedCount, setExportedCount] = useState(null);
 
   useEffect(() => {
     Promise.all([fetchLaserServices(), fetchSiteCombos(), fetchComplementaryCards()])
@@ -32,6 +35,19 @@ const TabelaPrecoView = () => {
       .catch((err) => console.error('Erro ao carregar tabela de preço:', err))
       .finally(() => setLoading(false));
   }, []);
+
+  const handleExportServices = async () => {
+    setExporting(true);
+    try {
+      setExportedCount(await downloadServicesCsv());
+      setTimeout(() => setExportedCount(null), 3000);
+    } catch (err) {
+      console.error('Erro ao exportar serviços:', err);
+      window.alert(`Não foi possível exportar: ${err.message || 'erro desconhecido'}`);
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const flashSaved = (rowId) => {
     setSavedRow(rowId);
@@ -281,10 +297,15 @@ const TabelaPrecoView = () => {
 
   return (
     <div>
-      <div className="admin-page-header">
-        <span className="section-eyebrow">Preços</span>
-        <h1 className="admin-page-title">Tabela de Preço</h1>
-        <p className="admin-page-subtitle">Edite os tratamentos avulsos e os combos exibidos na Tabela de Preço do site.</p>
+      <div className="admin-fin-header-row">
+        <div>
+          <span className="section-eyebrow">Preços</span>
+          <h1 className="admin-page-title">Tabela de Preço</h1>
+          <p className="admin-page-subtitle">Edite os tratamentos avulsos e os combos exibidos na Tabela de Preço do site.</p>
+        </div>
+        <button type="button" onClick={handleExportServices} disabled={exporting} className="admin-open-client-btn">
+          {exporting ? 'Gerando...' : exportedCount != null ? `✓ ${exportedCount} serviços exportados` : '⬇ Exportar serviços (CSV)'}
+        </button>
       </div>
 
       <div className="admin-site-sections">
