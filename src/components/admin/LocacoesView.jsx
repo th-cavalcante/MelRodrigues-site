@@ -33,7 +33,7 @@ const emptyClientForm = {
   nome: '', nascimento: '', cpf: '', rua: '', bairro: '', cidade: '', cep: '', email: '', telefone: '',
 };
 
-const emptyBookingForm = { dataLocacao: '', valor: '', periodoHoras: '', numDias: '1', desconto: '' };
+const emptyBookingForm = { dataLocacao: '', valor: '', periodoHoras: '', horaInicio: '', horaFim: '', numDias: '1', desconto: '' };
 
 const PERIODO_OPTIONS = [
   { value: '6', label: '6 horas' },
@@ -41,7 +41,17 @@ const PERIODO_OPTIONS = [
   { value: '12', label: '12 horas' },
 ];
 
-const formatSignedDate = (iso) => (iso ? new Date(iso).toLocaleDateString('pt-BR') : null);
+/** "08:00" + 12 horas -> "20:00" (vazio se passar da meia-noite — nesse caso
+ * o término é digitado à mão). Só serve de sugestão: o campo continua editável. */
+const addHoursToTime = (time, hours) => {
+  if (!time || !hours) return '';
+  const [h, m] = String(time).split(':').map(Number);
+  const total = h * 60 + (m || 0) + Number(hours) * 60;
+  if (Number.isNaN(total) || total >= 24 * 60) return '';
+  return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
+};
+
+const formatSignedDate =(iso) => (iso ? new Date(iso).toLocaleDateString('pt-BR') : null);
 
 const formatDataBr = (iso) => {
   if (!iso) return '—';
@@ -129,6 +139,16 @@ const LocacoesView = () => {
   const setClientField = (key) => (e) => setClientForm((f) => ({ ...f, [key]: e.target.value }));
   const setBookingField = (key) => (e) => setBookingForm((f) => ({ ...f, [key]: e.target.value }));
 
+  // Início ou período mudou e o término ainda está vazio: sugere início + período.
+  const setBookingScheduleField = (key) => (e) => {
+    const { value } = e.target;
+    setBookingForm((f) => {
+      const next = { ...f, [key]: value };
+      if (!next.horaFim) next.horaFim = addHoursToTime(next.horaInicio, next.periodoHoras);
+      return next;
+    });
+  };
+
   const handleSubmitClient = async (e) => {
     e.preventDefault();
     if (!clientForm.nome.trim() || !clientForm.telefone.trim()) {
@@ -214,6 +234,25 @@ const LocacoesView = () => {
       )
     );
     updateRentalBooking(bookingId, { [field]: value || null }).catch((err) =>
+      console.error('Erro ao salvar alteração da locação:', err)
+    );
+  };
+
+  // Mesma sugestão do formulário de nova locação, mas numa locação já
+  // cadastrada: preenche (e salva) o término se ele ainda está vazio.
+  const suggestEndTime = (booking, patch) => {
+    const merged = { ...booking, ...patch };
+    if (merged.rental_end_time) return;
+    const end = addHoursToTime(merged.rental_start_time, merged.rental_period_hours);
+    if (!end) return;
+    setClients((cs) =>
+      cs.map((c) =>
+        c.id === selectedClientId
+          ? { ...c, bookings: c.bookings.map((x) => (x.id === booking.id ? { ...x, rental_end_time: end } : x)) }
+          : c
+      )
+    );
+    updateRentalBooking(booking.id, { rental_end_time: end }).catch((err) =>
       console.error('Erro ao salvar alteração da locação:', err)
     );
   };
@@ -686,6 +725,7 @@ const LocacoesView = () => {
                             onChange={(e) => {
                               handleBookingFieldChange(b.id, 'rental_period_hours')(e);
                               handleBookingFieldBlur(b.id, 'rental_period_hours')(e);
+                              suggestEndTime(b, { rental_period_hours: e.target.value });
                             }}
                             className="field-input"
                           >
@@ -694,6 +734,32 @@ const LocacoesView = () => {
                               <option key={p.value} value={p.value}>{p.label}</option>
                             ))}
                           </select>
+                        </div>
+
+                        <div className="field-row admin-locacoes-fields">
+                          <div>
+                            <label className="admin-small-label">Horário de Início</label>
+                            <input
+                              type="time"
+                              value={(b.rental_start_time || '').slice(0, 5)}
+                              onChange={handleBookingFieldChange(b.id, 'rental_start_time')}
+                              onBlur={(e) => {
+                                handleBookingFieldBlur(b.id, 'rental_start_time')(e);
+                                suggestEndTime(b, { rental_start_time: e.target.value });
+                              }}
+                              className="field-input"
+                            />
+                          </div>
+                          <div>
+                            <label className="admin-small-label">Horário de Término</label>
+                            <input
+                              type="time"
+                              value={(b.rental_end_time || '').slice(0, 5)}
+                              onChange={handleBookingFieldChange(b.id, 'rental_end_time')}
+                              onBlur={handleBookingFieldBlur(b.id, 'rental_end_time')}
+                              className="field-input"
+                            />
+                          </div>
                         </div>
 
                         {b.signature ? (
@@ -798,14 +864,25 @@ const LocacoesView = () => {
                 </div>
               </div>
 
-              <div className="field-wrap-last">
+              <div className="field-wrap">
                 <label className="field-label" htmlFor="book-periodo">Período (por dia)</label>
-                <select id="book-periodo" value={bookingForm.periodoHoras} onChange={setBookingField('periodoHoras')} className="field-input">
+                <select id="book-periodo" value={bookingForm.periodoHoras} onChange={setBookingScheduleField('periodoHoras')} className="field-input">
                   <option value="">Selecione...</option>
                   {PERIODO_OPTIONS.map((p) => (
                     <option key={p.value} value={p.value}>{p.label}</option>
                   ))}
                 </select>
+              </div>
+
+              <div className="field-row">
+                <div>
+                  <label className="field-label" htmlFor="book-hora-inicio">Horário de Início</label>
+                  <input id="book-hora-inicio" type="time" value={bookingForm.horaInicio} onChange={setBookingScheduleField('horaInicio')} className="field-input" />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor="book-hora-fim">Horário de Término</label>
+                  <input id="book-hora-fim" type="time" value={bookingForm.horaFim} onChange={setBookingField('horaFim')} className="field-input" />
+                </div>
               </div>
 
               {bookingFormError && <div className="admin-login-error">{bookingFormError}</div>}

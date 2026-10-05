@@ -29,6 +29,20 @@ const formatDataLocacao = (isoDate, numDays) => {
 
 const formatPeriodo = (hours) => (hours ? `${hours} horas` : '[período a definir]');
 
+/** "08:00:00" (vem do banco) -> "08:00". */
+const formatHora = (time) => (time ? String(time).slice(0, 5) : '');
+
+/** ", das 08:00 às 20:00" (ou só o início, se o término não foi preenchido);
+ * vazio se nenhum horário foi informado. */
+const formatHorario = (start, end) => {
+  const inicio = formatHora(start);
+  const fim = formatHora(end);
+  if (inicio && fim) return `, das ${inicio} às ${fim}`;
+  if (inicio) return `, com início às ${inicio}`;
+  if (fim) return `, com término às ${fim}`;
+  return '';
+};
+
 export const formatRentalEndereco = (rc) => {
   if (!rc) return '';
   const parts = [rc.street, rc.neighborhood, rc.city].filter(Boolean);
@@ -47,6 +61,7 @@ export const buildRentalContractBody = (rc) => {
   const endereco = formatRentalEndereco(rc);
   const dataLocacao = formatDataLocacao(rc && rc.rental_date, rc && rc.num_days);
   const periodo = formatPeriodo(rc && rc.rental_period_hours);
+  const horario = formatHorario(rc && rc.rental_start_time, rc && rc.rental_end_time);
   const valor = rc && rc.rental_value != null ? Number(rc.rental_value).toFixed(2).replace('.', ',') : '[valor a definir]';
   const desconto = rc && Number(rc.discount) > 0 ? Number(rc.discount).toFixed(2).replace('.', ',') : null;
   const dataExtenso = formatDateExtenso(new Date());
@@ -62,7 +77,7 @@ export const buildRentalContractBody = (rc) => {
     '2.1. O objeto deste contrato é a locação do equipamento de depilação a laser HAKON 4D, marca Medical San, em perfeito estado de conservação e funcionamento, acompanhado de seus acessórios: 01 cabo de força, 01 par de óculos operador, 01 par de óculos paciente, 01 ponteira.',
     '3. DO PRAZO',
     [
-      `3.1. A locação terá duração de ${periodo} por dia, no período de ${dataLocacao}.`,
+      `3.1. A locação terá duração de ${periodo} por dia${horario}, no período de ${dataLocacao}.`,
       '3.2. O atraso na devolução do equipamento implicará em multa de R$ 50,00 por hora excedente.',
     ].join('\n'),
     '4. DO VALOR E FORMA DE PAGAMENTO',

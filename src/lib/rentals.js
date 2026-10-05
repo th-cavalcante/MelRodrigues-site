@@ -63,7 +63,7 @@ export const deleteRentalClient = async (id) => {
 
 /** Cria uma nova locação pra um cliente já cadastrado — pode durar mais de
  * um dia (numDias) e já sair com desconto registrado. */
-export const createRentalBooking = async (rentalClientId, { dataLocacao, valor, periodoHoras, numDias, desconto }) => {
+export const createRentalBooking = async (rentalClientId, { dataLocacao, valor, periodoHoras, horaInicio, horaFim, numDias, desconto }) => {
   const { data, error } = await supabase
     .from('rental_bookings')
     .insert({
@@ -71,6 +71,8 @@ export const createRentalBooking = async (rentalClientId, { dataLocacao, valor, 
       rental_date: dataLocacao || null,
       rental_value: valor ? Number(valor) : null,
       rental_period_hours: periodoHoras ? Number(periodoHoras) : null,
+      rental_start_time: horaInicio || null,
+      rental_end_time: horaFim || null,
       num_days: numDias ? Number(numDias) : 1,
       discount: desconto ? Number(desconto) : 0,
     })
