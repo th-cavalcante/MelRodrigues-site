@@ -46,7 +46,7 @@ const HeroSection = () => {
 
           <div className="hero-buttons">
             <a
-              href="/cliente/agendar"
+              href="https://www.teaga.app.br/agendar/mr_laser_concept"
               className="btn btn-primary"
               target="_blank"
               rel="noopener noreferrer"
