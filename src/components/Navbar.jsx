@@ -37,7 +37,7 @@ const Navbar = () => {
             <a href="#depoimentos" className="nav-link" onClick={handleNavClick}>Depoimentos</a>
           </li>
           <li className="nav-item">
-            <a href="/cliente/agendar" target="_blank" rel="noopener noreferrer" className="nav-link" onClick={handleNavClick}>Agenda Online</a>
+            <a href="https://www.teaga.app.br/agendar/mr_laser_concept" target="_blank" rel="noopener noreferrer" className="nav-link" onClick={handleNavClick}>Agenda Online</a>
           </li>
           <li className="nav-item">
             <a href="/locacao-hakon" target="_blank" rel="noopener noreferrer" className="nav-link" onClick={handleNavClick}>Locação Hakon 4D</a>
